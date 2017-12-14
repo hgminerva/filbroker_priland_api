@@ -59,16 +59,17 @@ namespace priland_api.Controllers
         {
             try
             {
-                Data.MstProject newMstProject = new Data.MstProject();
-
-                newMstProject.ProjectCode = addMstProject.ProjectCode;
-                newMstProject.Project = addMstProject.Project;
-                newMstProject.Address = addMstProject.Address;
-                newMstProject.Status = addMstProject.Status;
-                newMstProject.CreatedBy = addMstProject.CreatedBy;
-                newMstProject.CreatedDateTime = Convert.ToDateTime( addMstProject.CreatedDateTime);
-                newMstProject.UpdatedBy = addMstProject.UpdatedBy;
-                newMstProject.UpdatedDateTime =Convert.ToDateTime( addMstProject.UpdatedDateTime);
+                Data.MstProject newMstProject = new Data.MstProject()
+                {
+                    ProjectCode = addMstProject.ProjectCode,
+                    Project = addMstProject.Project,
+                    Address = addMstProject.Address,
+                    Status = addMstProject.Status,
+                    CreatedBy = addMstProject.CreatedBy,
+                    CreatedDateTime = Convert.ToDateTime(addMstProject.CreatedDateTime),
+                    UpdatedBy = addMstProject.UpdatedBy,
+                    UpdatedDateTime = Convert.ToDateTime(addMstProject.UpdatedDateTime)
+                };
 
                 db.MstProjects.InsertOnSubmit(newMstProject);
                 db.SubmitChanges();
