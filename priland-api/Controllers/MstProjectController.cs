@@ -34,7 +34,7 @@ namespace priland_api.Controllers
             return MstProjectData.ToList();
         }
 
-        [HttpGet, Route("api/MstProject/Detail")]
+        [HttpGet, Route("api/MstProject/Detail/{id}")]
         public Models.MstProject GetMstProjectId(string id)
         {
             var MstProjectData = from d in db.MstProjects
@@ -107,7 +107,7 @@ namespace priland_api.Controllers
             }
         }
 
-        [HttpPut,Route("api/MstProject/Update/Detail")]
+        [HttpPut,Route("api/MstProject/Update/{id}")]
         public HttpResponseMessage UpdateProject(string id,Models.MstProject UpdateMstProject)
         {
             try
