@@ -15,7 +15,7 @@ namespace priland_api.Controllers
     public class MstUserController : ApiController
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
-
+        [HttpPost,Route("Add")]
         public Int32 PostMstUser()
         {
             try
