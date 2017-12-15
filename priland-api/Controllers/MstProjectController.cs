@@ -55,20 +55,20 @@ namespace priland_api.Controllers
         }
 
         [HttpPost,Route("api/MstProject/Add")]
-        public int PostMstProject(Models.MstProject addMstProject)
+        public Int32  PostMstProject()
         {
             try
             {
                 Data.MstProject newMstProject = new Data.MstProject()
                 {
-                    ProjectCode = addMstProject.ProjectCode,
-                    Project = addMstProject.Project,
-                    Address = addMstProject.Address,
-                    Status = addMstProject.Status,
-                    CreatedBy = addMstProject.CreatedBy,
-                    CreatedDateTime = Convert.ToDateTime(addMstProject.CreatedDateTime),
-                    UpdatedBy = addMstProject.UpdatedBy,
-                    UpdatedDateTime = Convert.ToDateTime(addMstProject.UpdatedDateTime)
+                    ProjectCode = "NA",
+                    Project = "NA",
+                    Address ="NA",
+                    Status = "NA",
+                    CreatedBy= 1,
+                    CreatedDateTime = DateTime.Today ,
+                    UpdatedBy = 1,
+                    UpdatedDateTime = DateTime.Today
                 };
 
                 db.MstProjects.InsertOnSubmit(newMstProject);
