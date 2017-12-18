@@ -23,6 +23,7 @@ namespace priland_api.Controllers
             var MstUserData = from d in db.MstUsers 
                                  select new Models.MstUser
                                  {
+
                                      Id = d.Id,
                                      Username=d.Username,
                                      FullName=d.FullName,

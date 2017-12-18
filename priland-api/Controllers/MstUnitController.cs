@@ -23,6 +23,7 @@ namespace priland_api.Controllers
             var MstUnitData = from d in db.MstUnits
                               select new MstUnit
                               {
+
                                   Id = d.Id,
                                   UnitCode = d.UnitCode,
                                   Block = d.Block,

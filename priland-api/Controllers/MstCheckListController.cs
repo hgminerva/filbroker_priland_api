@@ -23,6 +23,7 @@ namespace priland_api.Controllers
             var MstCheckListData = from d in db.MstCheckLists
                                  select new Models.MstChecList
                                  {
+
                                      Id = d.Id,
                                      CheckListCode=d.CheckListCode,
                                      CheckList=d.CheckList,

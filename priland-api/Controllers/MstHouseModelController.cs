@@ -23,6 +23,7 @@ namespace priland_api.Controllers
             var MstHouseModel = from d in db.MstHouseModels
                                 select new Models.MstHouseModel
                                 {
+
                                     Id = d.Id,
                                     HouseModelCode = d.HouseModelCode,
                                     HouseModel = d.HouseModel,

@@ -23,6 +23,7 @@ namespace priland_api.Controllers
             var MstProjectData = from d in db.MstProjects
                                  select new Models.MstProject
                                  {
+
                                      Id = d.Id,
                                      ProjectCode = d.ProjectCode,
                                      Project = d.Project,

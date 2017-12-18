@@ -23,6 +23,7 @@ namespace priland_api.Controllers
             var MstCustomerData = from d in db.MstCustomers
                                   select new Models.MstCustomer
                                   {
+
                                       Id = d.Id,
                                       CustomerCode = d.CustomerCode,
                                       LastName = d.LastName,

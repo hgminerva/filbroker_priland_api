@@ -1446,6 +1446,8 @@ namespace priland_api.Data
 		
 		private string _Status;
 		
+		private bool _IsLocked;
+		
 		private int _CreatedBy;
 		
 		private System.DateTime _CreatedDateTime;
@@ -1522,6 +1524,8 @@ namespace priland_api.Data
     partial void OnPictureChanged();
     partial void OnStatusChanging(string value);
     partial void OnStatusChanged();
+    partial void OnIsLockedChanging(bool value);
+    partial void OnIsLockedChanged();
     partial void OnCreatedByChanging(int value);
     partial void OnCreatedByChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -2101,6 +2105,26 @@ namespace priland_api.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLocked", DbType="Bit NOT NULL")]
+		public bool IsLocked
+		{
+			get
+			{
+				return this._IsLocked;
+			}
+			set
+			{
+				if ((this._IsLocked != value))
+				{
+					this.OnIsLockedChanging(value);
+					this.SendPropertyChanging();
+					this._IsLocked = value;
+					this.SendPropertyChanged("IsLocked");
+					this.OnIsLockedChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="Int NOT NULL")]
 		public int CreatedBy
 		{
@@ -2348,6 +2372,8 @@ namespace priland_api.Data
 		
 		private string _Status;
 		
+		private bool _IsLocked;
+		
 		private int _CreatedBy;
 		
 		private System.DateTime _CreatedDateTime;
@@ -2384,6 +2410,8 @@ namespace priland_api.Data
     partial void OnRemarksChanged();
     partial void OnStatusChanging(string value);
     partial void OnStatusChanged();
+    partial void OnIsLockedChanging(bool value);
+    partial void OnIsLockedChanged();
     partial void OnCreatedByChanging(int value);
     partial void OnCreatedByChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -2544,6 +2572,26 @@ namespace priland_api.Data
 					this._Status = value;
 					this.SendPropertyChanged("Status");
 					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLocked", DbType="Bit NOT NULL")]
+		public bool IsLocked
+		{
+			get
+			{
+				return this._IsLocked;
+			}
+			set
+			{
+				if ((this._IsLocked != value))
+				{
+					this.OnIsLockedChanging(value);
+					this.SendPropertyChanging();
+					this._IsLocked = value;
+					this.SendPropertyChanged("IsLocked");
+					this.OnIsLockedChanged();
 				}
 			}
 		}
@@ -3158,6 +3206,8 @@ namespace priland_api.Data
 		
 		private string _Picture;
 		
+		private bool _IsLocked;
+		
 		private int _CreatedBy;
 		
 		private System.DateTime _CreatedDateTime;
@@ -3244,6 +3294,8 @@ namespace priland_api.Data
     partial void OnStatusChanged();
     partial void OnPictureChanging(string value);
     partial void OnPictureChanged();
+    partial void OnIsLockedChanging(bool value);
+    partial void OnIsLockedChanged();
     partial void OnCreatedByChanging(int value);
     partial void OnCreatedByChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -3942,6 +3994,26 @@ namespace priland_api.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLocked", DbType="Bit NOT NULL")]
+		public bool IsLocked
+		{
+			get
+			{
+				return this._IsLocked;
+			}
+			set
+			{
+				if ((this._IsLocked != value))
+				{
+					this.OnIsLockedChanging(value);
+					this.SendPropertyChanging();
+					this._IsLocked = value;
+					this.SendPropertyChanged("IsLocked");
+					this.OnIsLockedChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="Int NOT NULL")]
 		public int CreatedBy
 		{
@@ -4162,6 +4234,8 @@ namespace priland_api.Data
 		
 		private decimal _Price;
 		
+		private bool _IsLocked;
+		
 		private int _CreatedBy;
 		
 		private System.DateTime _CreatedDateTime;
@@ -4171,12 +4245,6 @@ namespace priland_api.Data
 		private System.DateTime _UpdatedDateTime;
 		
 		private EntitySet<MstUnit> _MstUnits;
-		
-		private EntityRef<MstProject> _MstProject;
-		
-		private EntityRef<MstUser> _MstUser;
-		
-		private EntityRef<MstUser> _MstUser1;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -4194,6 +4262,8 @@ namespace priland_api.Data
     partial void OnTFAChanged();
     partial void OnPriceChanging(decimal value);
     partial void OnPriceChanged();
+    partial void OnIsLockedChanging(bool value);
+    partial void OnIsLockedChanged();
     partial void OnCreatedByChanging(int value);
     partial void OnCreatedByChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -4207,9 +4277,6 @@ namespace priland_api.Data
 		public MstHouseModel()
 		{
 			this._MstUnits = new EntitySet<MstUnit>(new Action<MstUnit>(this.attach_MstUnits), new Action<MstUnit>(this.detach_MstUnits));
-			this._MstProject = default(EntityRef<MstProject>);
-			this._MstUser = default(EntityRef<MstUser>);
-			this._MstUser1 = default(EntityRef<MstUser>);
 			OnCreated();
 		}
 		
@@ -4284,10 +4351,6 @@ namespace priland_api.Data
 			{
 				if ((this._ProjectId != value))
 				{
-					if (this._MstProject.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnProjectIdChanging(value);
 					this.SendPropertyChanging();
 					this._ProjectId = value;
@@ -4337,6 +4400,26 @@ namespace priland_api.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLocked", DbType="Bit NOT NULL")]
+		public bool IsLocked
+		{
+			get
+			{
+				return this._IsLocked;
+			}
+			set
+			{
+				if ((this._IsLocked != value))
+				{
+					this.OnIsLockedChanging(value);
+					this.SendPropertyChanging();
+					this._IsLocked = value;
+					this.SendPropertyChanged("IsLocked");
+					this.OnIsLockedChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="Int NOT NULL")]
 		public int CreatedBy
 		{
@@ -4348,10 +4431,6 @@ namespace priland_api.Data
 			{
 				if ((this._CreatedBy != value))
 				{
-					if (this._MstUser.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnCreatedByChanging(value);
 					this.SendPropertyChanging();
 					this._CreatedBy = value;
@@ -4392,10 +4471,6 @@ namespace priland_api.Data
 			{
 				if ((this._UpdatedBy != value))
 				{
-					if (this._MstUser1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnUpdatedByChanging(value);
 					this.SendPropertyChanging();
 					this._UpdatedBy = value;
@@ -4435,108 +4510,6 @@ namespace priland_api.Data
 			set
 			{
 				this._MstUnits.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstProject_MstHouseModel", Storage="_MstProject", ThisKey="ProjectId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public MstProject MstProject
-		{
-			get
-			{
-				return this._MstProject.Entity;
-			}
-			set
-			{
-				MstProject previousValue = this._MstProject.Entity;
-				if (((previousValue != value) 
-							|| (this._MstProject.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._MstProject.Entity = null;
-						previousValue.MstHouseModels.Remove(this);
-					}
-					this._MstProject.Entity = value;
-					if ((value != null))
-					{
-						value.MstHouseModels.Add(this);
-						this._ProjectId = value.Id;
-					}
-					else
-					{
-						this._ProjectId = default(int);
-					}
-					this.SendPropertyChanged("MstProject");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstUser_MstHouseModel", Storage="_MstUser", ThisKey="CreatedBy", OtherKey="Id", IsForeignKey=true)]
-		public MstUser MstUser
-		{
-			get
-			{
-				return this._MstUser.Entity;
-			}
-			set
-			{
-				MstUser previousValue = this._MstUser.Entity;
-				if (((previousValue != value) 
-							|| (this._MstUser.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._MstUser.Entity = null;
-						previousValue.MstHouseModels.Remove(this);
-					}
-					this._MstUser.Entity = value;
-					if ((value != null))
-					{
-						value.MstHouseModels.Add(this);
-						this._CreatedBy = value.Id;
-					}
-					else
-					{
-						this._CreatedBy = default(int);
-					}
-					this.SendPropertyChanged("MstUser");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstUser_MstHouseModel1", Storage="_MstUser1", ThisKey="UpdatedBy", OtherKey="Id", IsForeignKey=true)]
-		public MstUser MstUser1
-		{
-			get
-			{
-				return this._MstUser1.Entity;
-			}
-			set
-			{
-				MstUser previousValue = this._MstUser1.Entity;
-				if (((previousValue != value) 
-							|| (this._MstUser1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._MstUser1.Entity = null;
-						previousValue.MstHouseModels1.Remove(this);
-					}
-					this._MstUser1.Entity = value;
-					if ((value != null))
-					{
-						value.MstHouseModels1.Add(this);
-						this._UpdatedBy = value.Id;
-					}
-					else
-					{
-						this._UpdatedBy = default(int);
-					}
-					this.SendPropertyChanged("MstUser1");
-				}
 			}
 		}
 		
@@ -4589,6 +4562,8 @@ namespace priland_api.Data
 		
 		private string _Status;
 		
+		private bool _IsLocked;
+		
 		private int _CreatedBy;
 		
 		private System.DateTime _CreatedDateTime;
@@ -4598,8 +4573,6 @@ namespace priland_api.Data
 		private System.DateTime _UpdatedDateTime;
 		
 		private EntitySet<MstCheckList> _MstCheckLists;
-		
-		private EntitySet<MstHouseModel> _MstHouseModels;
 		
 		private EntitySet<MstUnit> _MstUnits;
 		
@@ -4623,6 +4596,8 @@ namespace priland_api.Data
     partial void OnAddressChanged();
     partial void OnStatusChanging(string value);
     partial void OnStatusChanged();
+    partial void OnIsLockedChanging(bool value);
+    partial void OnIsLockedChanged();
     partial void OnCreatedByChanging(int value);
     partial void OnCreatedByChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -4636,7 +4611,6 @@ namespace priland_api.Data
 		public MstProject()
 		{
 			this._MstCheckLists = new EntitySet<MstCheckList>(new Action<MstCheckList>(this.attach_MstCheckLists), new Action<MstCheckList>(this.detach_MstCheckLists));
-			this._MstHouseModels = new EntitySet<MstHouseModel>(new Action<MstHouseModel>(this.attach_MstHouseModels), new Action<MstHouseModel>(this.detach_MstHouseModels));
 			this._MstUnits = new EntitySet<MstUnit>(new Action<MstUnit>(this.attach_MstUnits), new Action<MstUnit>(this.detach_MstUnits));
 			this._TrnSoldUnits = new EntitySet<TrnSoldUnit>(new Action<TrnSoldUnit>(this.attach_TrnSoldUnits), new Action<TrnSoldUnit>(this.detach_TrnSoldUnits));
 			this._MstUser = default(EntityRef<MstUser>);
@@ -4744,6 +4718,26 @@ namespace priland_api.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLocked", DbType="Bit NOT NULL")]
+		public bool IsLocked
+		{
+			get
+			{
+				return this._IsLocked;
+			}
+			set
+			{
+				if ((this._IsLocked != value))
+				{
+					this.OnIsLockedChanging(value);
+					this.SendPropertyChanging();
+					this._IsLocked = value;
+					this.SendPropertyChanged("IsLocked");
+					this.OnIsLockedChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="Int NOT NULL")]
 		public int CreatedBy
 		{
@@ -4842,19 +4836,6 @@ namespace priland_api.Data
 			set
 			{
 				this._MstCheckLists.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstProject_MstHouseModel", Storage="_MstHouseModels", ThisKey="Id", OtherKey="ProjectId")]
-		public EntitySet<MstHouseModel> MstHouseModels
-		{
-			get
-			{
-				return this._MstHouseModels;
-			}
-			set
-			{
-				this._MstHouseModels.Assign(value);
 			}
 		}
 		
@@ -4984,18 +4965,6 @@ namespace priland_api.Data
 			entity.MstProject = null;
 		}
 		
-		private void attach_MstHouseModels(MstHouseModel entity)
-		{
-			this.SendPropertyChanging();
-			entity.MstProject = this;
-		}
-		
-		private void detach_MstHouseModels(MstHouseModel entity)
-		{
-			this.SendPropertyChanging();
-			entity.MstProject = null;
-		}
-		
 		private void attach_MstUnits(MstUnit entity)
 		{
 			this.SendPropertyChanging();
@@ -5047,6 +5016,8 @@ namespace priland_api.Data
 		
 		private string _Status;
 		
+		private bool _IsLocked;
+		
 		private int _CreatedBy;
 		
 		private System.DateTime _CreatedDateTime;
@@ -5089,6 +5060,8 @@ namespace priland_api.Data
     partial void OnPriceChanged();
     partial void OnStatusChanging(string value);
     partial void OnStatusChanged();
+    partial void OnIsLockedChanging(bool value);
+    partial void OnIsLockedChanged();
     partial void OnCreatedByChanging(int value);
     partial void OnCreatedByChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -5313,6 +5286,26 @@ namespace priland_api.Data
 					this._Status = value;
 					this.SendPropertyChanged("Status");
 					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLocked", DbType="Bit NOT NULL")]
+		public bool IsLocked
+		{
+			get
+			{
+				return this._IsLocked;
+			}
+			set
+			{
+				if ((this._IsLocked != value))
+				{
+					this.OnIsLockedChanging(value);
+					this.SendPropertyChanging();
+					this._IsLocked = value;
+					this.SendPropertyChanged("IsLocked");
+					this.OnIsLockedChanged();
 				}
 			}
 		}
@@ -5619,10 +5612,6 @@ namespace priland_api.Data
 		
 		private EntitySet<MstCustomer> _MstCustomers1;
 		
-		private EntitySet<MstHouseModel> _MstHouseModels;
-		
-		private EntitySet<MstHouseModel> _MstHouseModels1;
-		
 		private EntitySet<MstProject> _MstProjects;
 		
 		private EntitySet<MstProject> _MstProjects1;
@@ -5680,8 +5669,6 @@ namespace priland_api.Data
 			this._MstCheckLists1 = new EntitySet<MstCheckList>(new Action<MstCheckList>(this.attach_MstCheckLists1), new Action<MstCheckList>(this.detach_MstCheckLists1));
 			this._MstCustomers = new EntitySet<MstCustomer>(new Action<MstCustomer>(this.attach_MstCustomers), new Action<MstCustomer>(this.detach_MstCustomers));
 			this._MstCustomers1 = new EntitySet<MstCustomer>(new Action<MstCustomer>(this.attach_MstCustomers1), new Action<MstCustomer>(this.detach_MstCustomers1));
-			this._MstHouseModels = new EntitySet<MstHouseModel>(new Action<MstHouseModel>(this.attach_MstHouseModels), new Action<MstHouseModel>(this.detach_MstHouseModels));
-			this._MstHouseModels1 = new EntitySet<MstHouseModel>(new Action<MstHouseModel>(this.attach_MstHouseModels1), new Action<MstHouseModel>(this.detach_MstHouseModels1));
 			this._MstProjects = new EntitySet<MstProject>(new Action<MstProject>(this.attach_MstProjects), new Action<MstProject>(this.detach_MstProjects));
 			this._MstProjects1 = new EntitySet<MstProject>(new Action<MstProject>(this.attach_MstProjects1), new Action<MstProject>(this.detach_MstProjects1));
 			this._MstUnits = new EntitySet<MstUnit>(new Action<MstUnit>(this.attach_MstUnits), new Action<MstUnit>(this.detach_MstUnits));
@@ -5908,32 +5895,6 @@ namespace priland_api.Data
 			set
 			{
 				this._MstCustomers1.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstUser_MstHouseModel", Storage="_MstHouseModels", ThisKey="Id", OtherKey="CreatedBy")]
-		public EntitySet<MstHouseModel> MstHouseModels
-		{
-			get
-			{
-				return this._MstHouseModels;
-			}
-			set
-			{
-				this._MstHouseModels.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstUser_MstHouseModel1", Storage="_MstHouseModels1", ThisKey="Id", OtherKey="UpdatedBy")]
-		public EntitySet<MstHouseModel> MstHouseModels1
-		{
-			get
-			{
-				return this._MstHouseModels1;
-			}
-			set
-			{
-				this._MstHouseModels1.Assign(value);
 			}
 		}
 		
@@ -6231,30 +6192,6 @@ namespace priland_api.Data
 		}
 		
 		private void detach_MstCustomers1(MstCustomer entity)
-		{
-			this.SendPropertyChanging();
-			entity.MstUser1 = null;
-		}
-		
-		private void attach_MstHouseModels(MstHouseModel entity)
-		{
-			this.SendPropertyChanging();
-			entity.MstUser = this;
-		}
-		
-		private void detach_MstHouseModels(MstHouseModel entity)
-		{
-			this.SendPropertyChanging();
-			entity.MstUser = null;
-		}
-		
-		private void attach_MstHouseModels1(MstHouseModel entity)
-		{
-			this.SendPropertyChanging();
-			entity.MstUser1 = this;
-		}
-		
-		private void detach_MstHouseModels1(MstHouseModel entity)
 		{
 			this.SendPropertyChanging();
 			entity.MstUser1 = null;
@@ -7333,6 +7270,8 @@ namespace priland_api.Data
 		
 		private string _Status;
 		
+		private bool _IsLocked;
+		
 		private int _CreatedBy;
 		
 		private System.DateTime _CreatedDateTime;
@@ -7383,6 +7322,8 @@ namespace priland_api.Data
     partial void OnApprovedByChanged();
     partial void OnStatusChanging(string value);
     partial void OnStatusChanged();
+    partial void OnIsLockedChanging(bool value);
+    partial void OnIsLockedChanged();
     partial void OnCreatedByChanging(int value);
     partial void OnCreatedByChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -7661,6 +7602,26 @@ namespace priland_api.Data
 					this._Status = value;
 					this.SendPropertyChanged("Status");
 					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLocked", DbType="Bit NOT NULL")]
+		public bool IsLocked
+		{
+			get
+			{
+				return this._IsLocked;
+			}
+			set
+			{
+				if ((this._IsLocked != value))
+				{
+					this.OnIsLockedChanging(value);
+					this.SendPropertyChanging();
+					this._IsLocked = value;
+					this.SendPropertyChanged("IsLocked");
+					this.OnIsLockedChanged();
 				}
 			}
 		}
@@ -8052,6 +8013,8 @@ namespace priland_api.Data
 		
 		private string _Status;
 		
+		private bool _IsLocked;
+		
 		private int _CreatedBy;
 		
 		private System.DateTime _CreatedDateTime;
@@ -8122,6 +8085,8 @@ namespace priland_api.Data
     partial void OnApprovedByChanged();
     partial void OnStatusChanging(string value);
     partial void OnStatusChanged();
+    partial void OnIsLockedChanging(bool value);
+    partial void OnIsLockedChanged();
     partial void OnCreatedByChanging(int value);
     partial void OnCreatedByChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -8517,6 +8482,26 @@ namespace priland_api.Data
 					this._Status = value;
 					this.SendPropertyChanged("Status");
 					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLocked", DbType="Bit NOT NULL")]
+		public bool IsLocked
+		{
+			get
+			{
+				return this._IsLocked;
+			}
+			set
+			{
+				if ((this._IsLocked != value))
+				{
+					this.OnIsLockedChanging(value);
+					this.SendPropertyChanging();
+					this._IsLocked = value;
+					this.SendPropertyChanged("IsLocked");
+					this.OnIsLockedChanged();
 				}
 			}
 		}

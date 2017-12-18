@@ -24,6 +24,7 @@ namespace priland_api.Controllers
                                    where d.UserId == Convert.ToInt32(id)
                                    select new Models.MstUserRight
                                    {
+
                                        Id = d.Id,
                                        UserId = d.UserId,
                                        PageId = d.PageId,
