@@ -5,14 +5,19 @@ using System.Web;
 
 namespace priland_api.Models
 {
-    public class MstChecList
+    public class TrnCommissionRequest
     {
         public Int32 Id { get; set; }
-        public String CheckListCode { get; set; }
-        public String CheckList { get; set; }
-        public String CheckListDate { get; set; }
-        public Int32 ProjectId { get; set; }
+        public String CommissionRequestNumber { get; set; }
+        public String CommissionRequestDate { get; set; }
+        public Int32 BrokerId { get; set; }
+        public Int32 SoldUnitId { get; set; }
+        public String CommissionNumber { get; set; }
+        public Decimal Amount { get; set; }
         public String Remarks { get; set; }
+        public Int32 PreparedBy { get; set; }
+        public Int32 CheckedBy { get; set; }
+        public Int32 ApprovedBy { get; set; }
         public String Status { get; set; }
         public Boolean IsLocked { get; set; }
         public Int32 CreatedBy { get; set; }
