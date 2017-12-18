@@ -23,7 +23,6 @@ namespace priland_api.Controllers
             var MstBrokerData = from d in db.MstBrokers
                                 select new Models.MstBroker
                                 {
-
                                     Id = d.Id,
                                     BrokerCode = d.BrokerCode,
                                     LastName = d.LastName,
