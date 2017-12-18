@@ -11,7 +11,7 @@ using priland_api.Models;
 namespace priland_api.Controllers
 {
     [Authorize]
-    [RoutePrefix("api/MstBroker")]
+    [RoutePrefix("api/MstBroker")] 
     public class MstBrokerController : ApiController
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();

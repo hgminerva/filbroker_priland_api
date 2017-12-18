@@ -16,7 +16,7 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
-        //List
+        //List 
         [HttpGet, Route("List")]
         public List<MstUserRight> GetMstUserRight(string id)
         {

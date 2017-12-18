@@ -19,7 +19,7 @@ namespace priland_api.Controllers
         //List
         [HttpGet, Route("List")]
         public List<MstCustomer> GetMstCustomer()
-        {
+        { 
             var MstCustomerData = from d in db.MstCustomers
                                   select new Models.MstCustomer
                                   {
