@@ -11,13 +11,12 @@ using Microsoft.AspNet.Identity;
 namespace priland_api.Controllers
 {
     [Authorize]
-    [RoutePrefix("api/MstHouseModel")]
     public class MstHouseModelController : ApiController
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
          
         //List
-        [HttpGet, Route("List")]
+        [HttpGet, Route("api/MstHouseModel/List")]
         public List<Models.MstHouseModel> GetMstHouseModel()
         {
             var MstHouseModel = from d in db.MstHouseModels
@@ -30,7 +29,6 @@ namespace priland_api.Controllers
                                     ProjectId = d.ProjectId,
                                     TFA = d.TFA,
                                     Price = d.Price,
-                                    IsLocked = d.IsLocked,
                                     CreatedBy = d.CreatedBy,
                                     CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                     UpdatedBy = d.UpdatedBy,
@@ -39,7 +37,7 @@ namespace priland_api.Controllers
             return MstHouseModel.ToList();
         }
         //Get Record Detail
-        [HttpGet, Route("Detail/{id}")]
+        [HttpGet, Route("api/MstHouseModel/Detail/{id}")]
         public Models.MstHouseModel GetMstHouseModelId(string id)
         {
             var MstHouseModelData = from d in db.MstHouseModels
@@ -52,7 +50,6 @@ namespace priland_api.Controllers
                                         ProjectId = d.ProjectId,
                                         TFA = d.TFA,
                                         Price = d.Price,
-                                        IsLocked = d.IsLocked,
                                         CreatedBy = d.CreatedBy,
                                         CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                         UpdatedBy = d.UpdatedBy,
@@ -62,24 +59,23 @@ namespace priland_api.Controllers
         }
 
         //Add New Record
-        [HttpPost, Route("Add")]
+        [HttpPost, Route("api/MstHouseModel/Add")]
         public int PostMstHouseModel(Models.MstHouseModel addMstHouseModel)
         {
             try
             {
-                Data.MstHouseModel newMstHouseModel = new Data.MstHouseModel()
-                {
-                    HouseModelCode = addMstHouseModel.HouseModelCode,
-                    HouseModel = addMstHouseModel.HouseModel,
-                    ProjectId = addMstHouseModel.ProjectId,
-                    TFA = addMstHouseModel.TFA,
-                    Price = addMstHouseModel.Price,
-                    IsLocked = addMstHouseModel.IsLocked,
-                    CreatedBy = addMstHouseModel.CreatedBy,
-                    CreatedDateTime = Convert.ToDateTime(addMstHouseModel.CreatedDateTime),
-                    UpdatedBy = addMstHouseModel.UpdatedBy,
-                    UpdatedDateTime = Convert.ToDateTime(addMstHouseModel.UpdatedDateTime)
-                };
+                Data.MstHouseModel newMstHouseModel = new Data.MstHouseModel();
+
+                newMstHouseModel.HouseModelCode = addMstHouseModel.HouseModelCode;
+                newMstHouseModel.HouseModel = addMstHouseModel.HouseModel;
+                newMstHouseModel.ProjectId = addMstHouseModel.ProjectId;
+                newMstHouseModel.TFA = addMstHouseModel.TFA;
+                newMstHouseModel.Price = addMstHouseModel.Price;
+                newMstHouseModel.CreatedBy = addMstHouseModel.CreatedBy;
+                newMstHouseModel.CreatedDateTime = Convert.ToDateTime(addMstHouseModel.CreatedDateTime);
+                newMstHouseModel.UpdatedBy = addMstHouseModel.UpdatedBy;
+                newMstHouseModel.UpdatedDateTime = Convert.ToDateTime(addMstHouseModel.UpdatedDateTime);
+
                 db.MstHouseModels.InsertOnSubmit(newMstHouseModel);
                 db.SubmitChanges();
 
@@ -94,7 +90,7 @@ namespace priland_api.Controllers
 
 
         //Delete Record
-        [HttpDelete, Route("Delete/{id}")]
+        [HttpDelete, Route("api/MstHouseModel/Delete/{id}")]
         public HttpResponseMessage DeleteMstHouseModel(string id)
         {
             try
@@ -120,7 +116,7 @@ namespace priland_api.Controllers
         }
 
         //Update Record Data
-        [HttpPut, Route("Lock/{id}")]
+        [HttpPut, Route("api/MstHouseModel/Update/{id}")]
         public HttpResponseMessage UpdateHouseModel(string id, Models.MstHouseModel UpdateMstHouseModel)
         {
             try
@@ -128,29 +124,21 @@ namespace priland_api.Controllers
                 var MstHouseModelData = from d in db.MstHouseModels where d.Id == Convert.ToInt32(id) select d;
                 if (MstHouseModelData.Any())
                 {
-                    if (!MstHouseModelData.First().IsLocked)
-                    {
-                        var UpdateHouseModelData = MstHouseModelData.FirstOrDefault();
+                    var UpdateHouseModelData = MstHouseModelData.FirstOrDefault();
 
-                        UpdateHouseModelData.HouseModelCode = UpdateMstHouseModel.HouseModelCode;
-                        UpdateHouseModelData.HouseModel = UpdateMstHouseModel.HouseModel;
-                        UpdateHouseModelData.ProjectId = UpdateMstHouseModel.ProjectId;
-                        UpdateHouseModelData.TFA = UpdateMstHouseModel.TFA;
-                        UpdateHouseModelData.Price = UpdateMstHouseModel.Price;
-                        UpdateHouseModelData.CreatedBy = UpdateMstHouseModel.CreatedBy;
-                        UpdateHouseModelData.CreatedDateTime = Convert.ToDateTime(UpdateMstHouseModel.CreatedDateTime);
-                        UpdateHouseModelData.UpdatedBy = UpdateMstHouseModel.UpdatedBy;
-                        UpdateHouseModelData.UpdatedDateTime = Convert.ToDateTime(UpdateMstHouseModel.UpdatedDateTime);
+                    UpdateHouseModelData.HouseModelCode = UpdateMstHouseModel.HouseModelCode;
+                    UpdateHouseModelData.HouseModel = UpdateMstHouseModel.HouseModel;
+                    UpdateHouseModelData.ProjectId = UpdateMstHouseModel.ProjectId;
+                    UpdateHouseModelData.TFA = UpdateMstHouseModel.TFA;
+                    UpdateHouseModelData.Price = UpdateMstHouseModel.Price;
+                    UpdateHouseModelData.CreatedBy = UpdateMstHouseModel.CreatedBy;
+                    UpdateHouseModelData.CreatedDateTime = Convert.ToDateTime(UpdateMstHouseModel.CreatedDateTime);
+                    UpdateHouseModelData.UpdatedBy = UpdateMstHouseModel.UpdatedBy;
+                    UpdateHouseModelData.UpdatedDateTime = Convert.ToDateTime(UpdateMstHouseModel.UpdatedDateTime);
 
-                        db.SubmitChanges();
+                    db.SubmitChanges();
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
-                    }
-                    else
-                    {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest);
-                    }
-
+                    return Request.CreateResponse(HttpStatusCode.OK);
                 }
                 else
                 {
@@ -162,42 +150,7 @@ namespace priland_api.Controllers
                 Debug.WriteLine(e);
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
-        }
 
-        //UnLock Record
-        [HttpPut, Route("UnLock/{id}")]
-        public HttpResponseMessage UnLock(string id, MstHouseModel UnLockMstHouseModel)
-        {
-            try
-            {
-                var MstHouseModelData = from d in db.MstHouseModels where d.Id == Convert.ToInt32(id) select d;
-                if (MstHouseModelData.Any())
-                {
-                    if (MstHouseModelData.First().IsLocked)
-                    {
-                        var UnLockHouseModel = MstHouseModelData.FirstOrDefault();
-
-                        UnLockHouseModel.IsLocked = false;
-
-                        db.SubmitChanges();
-
-                        return Request.CreateResponse(HttpStatusCode.OK);
-                    }
-                    else
-                    {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest);
-                    }
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
         }
     }
 }
