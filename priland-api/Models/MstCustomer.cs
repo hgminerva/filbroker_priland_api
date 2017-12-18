@@ -30,7 +30,7 @@ namespace priland_api.Models
         public String EmployerIndustry { get; set; }
         public Int32 NoOfYearsEmployed { get; set; }
         public String Position { get; set; }
-        public String EmployementStatus { get; set; }
+        public String EmploymentStatus { get; set; }
         public String EmployerAddress { get; set; }
         public String EmployerCity { get; set; }
         public String EmployerProvince { get; set; }
