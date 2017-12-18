@@ -14,7 +14,7 @@ namespace priland_api.Controllers
     public class MstHouseModelController : ApiController
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
-
+         
         //List
         [HttpGet, Route("api/MstHouseModel/List")]
         public List<Models.MstHouseModel> GetMstHouseModel()
@@ -22,6 +22,7 @@ namespace priland_api.Controllers
             var MstHouseModel = from d in db.MstHouseModels
                                 select new Models.MstHouseModel
                                 {
+
                                     Id = d.Id,
                                     HouseModelCode = d.HouseModelCode,
                                     HouseModel = d.HouseModel,

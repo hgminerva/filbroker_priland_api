@@ -16,7 +16,7 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
-        //List
+        //List 
         [HttpGet, Route("List")]
         public List<MstUserRight> GetMstUserRight(string id)
         {
@@ -24,6 +24,7 @@ namespace priland_api.Controllers
                                    where d.UserId == Convert.ToInt32(id)
                                    select new Models.MstUserRight
                                    {
+
                                        Id = d.Id,
                                        UserId = d.UserId,
                                        PageId = d.PageId,
