@@ -191,8 +191,21 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MstBrokerController.cs" />
+    <Compile Include="Controllers\MstCheckListController.cs" />
+    <Compile Include="Controllers\MstCheckListRequirementController.cs" />
+    <Compile Include="Controllers\MstCustomerController.cs" />
     <Compile Include="Controllers\MstHouseModelController.cs" />
     <Compile Include="Controllers\MstProjectController.cs" />
+    <Compile Include="Controllers\MstUnitController.cs" />
+    <Compile Include="Controllers\MstUserController.cs" />
+    <Compile Include="Controllers\MstUserRightController.cs" />
+    <Compile Include="Controllers\SysDropDownController.cs" />
+    <Compile Include="Controllers\SysPageController.cs" />
+    <Compile Include="Controllers\TrnCommissionRequestController.cs" />
+    <Compile Include="Controllers\TrnSoldUnitController.cs" />
+    <Compile Include="Controllers\TrnSoldUnitRequirementActivityController.cs" />
+    <Compile Include="Controllers\TrnSoldUnitRequirementController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Data\FilbrokerDB.designer.cs">
       <AutoGen>True</AutoGen>

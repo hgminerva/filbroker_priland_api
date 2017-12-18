@@ -8,7 +8,7 @@ namespace priland_api.Models
     public class TrnSoldUnitRequirement
     {
         public Int32 Id { get; set; }
-        public Int32 SoldUniId { get; set; }
+        public Int32 SoldUnitId { get; set; }
         public Int32 CheckListRequirementId { get; set; }
         public String Attachment1 { get; set; }
         public String Attachment2 { get; set; }
