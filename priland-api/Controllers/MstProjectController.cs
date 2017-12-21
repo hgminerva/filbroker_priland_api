@@ -60,29 +60,40 @@ namespace priland_api.Controllers
             return (Models.MstProject)MstProjectData.FirstOrDefault();
         }
 
-        //ADD
+        //Add
         [HttpPost, Route("Add")]
-        public Int32 PostMstProject(MstProject addMstProject)
+        public Int32 PostMstProject(MstProject project)
         {
             try
             {
-                Data.MstProject newMstProject = new Data.MstProject()
+                var currentUser = from d in db.MstUsers
+                                  where d.AspNetId == User.Identity.GetUserId()
+                                  select d;
+
+                if (currentUser.Any())
                 {
-                    ProjectCode = addMstProject.ProjectCode,
-                    Project = addMstProject.Project,
-                    Address = addMstProject.Address,
-                    Status = addMstProject.Status,
-                    IsLocked = addMstProject.IsLocked,
-                    CreatedBy = addMstProject.CreatedBy,
-                    CreatedDateTime = Convert.ToDateTime(addMstProject.CreatedDateTime),
-                    UpdatedBy = addMstProject.UpdatedBy,
-                    UpdatedDateTime = Convert.ToDateTime(addMstProject.UpdatedDateTime)
-                };
+                    Data.MstProject newMstProject = new Data.MstProject()
+                    {
+                        ProjectCode = project.ProjectCode,
+                        Project = project.Project,
+                        Address = project.Address,
+                        Status = project.Status,
+                        IsLocked = project.IsLocked,
+                        CreatedBy = currentUser.FirstOrDefault().Id,
+                        CreatedDateTime = DateTime.Now,
+                        UpdatedBy = currentUser.FirstOrDefault().Id,
+                        UpdatedDateTime = DateTime.Now
+                    };
 
-                db.MstProjects.InsertOnSubmit(newMstProject);
-                db.SubmitChanges();
+                    db.MstProjects.InsertOnSubmit(newMstProject);
+                    db.SubmitChanges();
 
-                return newMstProject.Id;
+                    return newMstProject.Id;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch (Exception e)
             {
@@ -122,27 +133,77 @@ namespace priland_api.Controllers
         }
 
         //Lock
-        [HttpPut, Route("Lock/{id}")]
-        public HttpResponseMessage UpdateProject(string id, Models.MstProject UpdateMstProject)
+        [HttpPut, Route("Save")]
+        public HttpResponseMessage SaveMstProject(MstProject project)
         {
             try
             {
-                var MstProjectData = from d in db.MstProjects where d.Id == Convert.ToInt32(id) select d;
+                var MstProjectData = from d in db.MstProjects where d.Id == Convert.ToInt32(project.Id) select d;
                 if (MstProjectData.Any())
                 {
                     if (!MstProjectData.First().IsLocked)
                     {
+                        var currentUser = from d in db.MstUsers
+                                          where d.AspNetId == User.Identity.GetUserId()
+                                          select d;
+
+                        if (currentUser.Any())
+                        {
+                            var UpdateProjectData = MstProjectData.FirstOrDefault();
+
+                            UpdateProjectData.ProjectCode = project.ProjectCode;
+                            UpdateProjectData.Project = project.Project;
+                            UpdateProjectData.Address = project.Address;
+                            UpdateProjectData.Status = project.Status;
+                            UpdateProjectData.UpdatedBy = currentUser.FirstOrDefault().Id;
+                            UpdateProjectData.UpdatedDateTime = DateTime.Now;
+
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        //Lock
+        [HttpPut, Route("Lock")]
+        public HttpResponseMessage LockMstProject(MstProject project)
+        {
+            try
+            {
+                var MstProjectData = from d in db.MstProjects where d.Id == Convert.ToInt32(project.Id) select d;
+                if (MstProjectData.Any())
+                {
+                    var currentUser = from d in db.MstUsers
+                                        where d.AspNetId == User.Identity.GetUserId()
+                                        select d;
+
+                    if (currentUser.Any())
+                    {
                         var UpdateProjectData = MstProjectData.FirstOrDefault();
 
-                        UpdateProjectData.ProjectCode = UpdateMstProject.ProjectCode;
-                        UpdateProjectData.Project = UpdateMstProject.Project;
-                        UpdateProjectData.Address = UpdateMstProject.Address;
-                        UpdateProjectData.Status = UpdateMstProject.Status;
                         UpdateProjectData.IsLocked = true;
-                        UpdateProjectData.CreatedBy = UpdateMstProject.CreatedBy;
-                        UpdateProjectData.CreatedDateTime = Convert.ToDateTime(UpdateMstProject.CreatedDateTime);
-                        UpdateProjectData.UpdatedBy = UpdateMstProject.UpdatedBy;
-                        UpdateProjectData.UpdatedDateTime = Convert.ToDateTime(UpdateMstProject.UpdatedDateTime);
+                        UpdateProjectData.UpdatedBy = currentUser.FirstOrDefault().Id;
+                        UpdateProjectData.UpdatedDateTime = DateTime.Now;
 
                         db.SubmitChanges();
 
@@ -166,19 +227,25 @@ namespace priland_api.Controllers
         }
 
         //Unlock
-        [HttpPut, Route("UnLock/{id}")]
-        public HttpResponseMessage UnLock(string id, Models.MstProject UnLockMstProject)
+        [HttpPut, Route("UnLock")]
+        public HttpResponseMessage UnLockMstProject(MstProject project)
         {
             try
             {
-                var MstProjectData = from d in db.MstProjects where d.Id == Convert.ToInt32(id) select d;
+                var MstProjectData = from d in db.MstProjects where d.Id == Convert.ToInt32(project.Id) select d;
                 if (MstProjectData.Any())
                 {
-                    if (MstProjectData.First().IsLocked)
-                    {
-                        var UnLockProjectData = MstProjectData.FirstOrDefault();
+                    var currentUser = from d in db.MstUsers
+                                        where d.AspNetId == User.Identity.GetUserId()
+                                        select d;
 
-                        UnLockProjectData.IsLocked = false;
+                    if (currentUser.Any())
+                    {
+                        var UpdateProjectData = MstProjectData.FirstOrDefault();
+
+                        UpdateProjectData.IsLocked = false;
+                        UpdateProjectData.UpdatedBy = currentUser.FirstOrDefault().Id;
+                        UpdateProjectData.UpdatedDateTime = DateTime.Now;
 
                         db.SubmitChanges();
 
@@ -200,5 +267,6 @@ namespace priland_api.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+
     }
 }
