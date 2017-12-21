@@ -204,6 +204,7 @@
     <Compile Include="Controllers\SysPageController.cs" />
     <Compile Include="Controllers\TrnCommissionRequestController.cs" />
     <Compile Include="Controllers\TrnSoldUnitController.cs" />
+    <Compile Include="Controllers\TrnSoldUnitRequirementActivityController.cs" />
     <Compile Include="Controllers\TrnSoldUnitRequirementController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Data\FilbrokerDB.designer.cs">

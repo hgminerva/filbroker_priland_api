@@ -24,7 +24,6 @@ namespace priland_api.Controllers
                                               where d.CheckListId == Convert.ToInt32(id)
                                               select new Models.MstCheckListRequirement
                                               {
-
                                                   Id = d.Id,
                                                   RequirementNo = d.RequirementNo,
                                                   Requirement = d.Requirement,
