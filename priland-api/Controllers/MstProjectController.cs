@@ -40,7 +40,7 @@ namespace priland_api.Controllers
 
         //Detail
         [HttpGet, Route("Detail/{id}")]
-        public Models.MstProject GetMstProjectId(string id)
+        public MstProject GetMstProjectId(string id)
         {
             var MstProjectData = from d in db.MstProjects
                                  where d.Id == Convert.ToInt32(id)
@@ -111,14 +111,17 @@ namespace priland_api.Controllers
                 var MstProjectData = from d in db.MstProjects where d.Id == Convert.ToInt32(id) select d;
                 if (MstProjectData.Any())
                 {
-                    if (!MstProjectData.First().IsLocked)
+                    if (MstProjectData.FirstOrDefault().IsLocked == false)
                     {
-                        db.MstProjects.DeleteOnSubmit(MstProjectData.First());
+                        db.MstProjects.DeleteOnSubmit(MstProjectData.FirstOrDefault());
                         db.SubmitChanges();
 
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
-                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -132,7 +135,7 @@ namespace priland_api.Controllers
             }
         }
 
-        //Lock
+        //Save
         [HttpPut, Route("Save")]
         public HttpResponseMessage SaveMstProject(MstProject project)
         {
@@ -141,7 +144,7 @@ namespace priland_api.Controllers
                 var MstProjectData = from d in db.MstProjects where d.Id == Convert.ToInt32(project.Id) select d;
                 if (MstProjectData.Any())
                 {
-                    if (!MstProjectData.First().IsLocked)
+                    if (MstProjectData.First().IsLocked == false)
                     {
                         var currentUser = from d in db.MstUsers
                                           where d.AspNetId == User.Identity.GetUserId()
@@ -201,6 +204,10 @@ namespace priland_api.Controllers
                     {
                         var UpdateProjectData = MstProjectData.FirstOrDefault();
 
+                        UpdateProjectData.ProjectCode = project.ProjectCode;
+                        UpdateProjectData.Project = project.Project;
+                        UpdateProjectData.Address = project.Address;
+                        UpdateProjectData.Status = project.Status;
                         UpdateProjectData.IsLocked = true;
                         UpdateProjectData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UpdateProjectData.UpdatedDateTime = DateTime.Now;
