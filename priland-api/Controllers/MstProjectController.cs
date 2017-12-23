@@ -199,7 +199,6 @@ namespace priland_api.Controllers
                     var currentUser = from d in db.MstUsers
                                         where d.AspNetId == User.Identity.GetUserId()
                                         select d;
-
                     if (currentUser.Any())
                     {
                         var UpdateProjectData = MstProjectData.FirstOrDefault();

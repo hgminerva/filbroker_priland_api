@@ -12,7 +12,9 @@ namespace priland_api.Models
         public String Block { get; set; }
         public String Lot { get; set; }
         public Int32 ProjectId { get; set; }
+        public String Project { get; set; }
         public Int32 HouseModelId { get; set; }
+        public String HouseModel { get; set; }
         public Decimal TLA { get; set; }
         public Decimal TFA { get; set; }
         public Decimal Price { get; set; }

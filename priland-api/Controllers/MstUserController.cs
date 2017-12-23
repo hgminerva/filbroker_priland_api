@@ -57,19 +57,29 @@ namespace priland_api.Controllers
         {
             try
             {
-                Data.MstUser newMstUser = new Data.MstUser()
+                var currentUser = from d in db.MstUsers
+                                  where d.AspNetId == User.Identity.GetUserId()
+                                  select d;
+                if (currentUser.Any())
                 {
-                    Username = addMstUser.Username,
-                    FullName = addMstUser.FullName,
-                    Password = addMstUser.Password,
-                    Status = addMstUser.Status,
-                    AspNetId = addMstUser.AspNetId
-                };
+                    Data.MstUser newMstUser = new Data.MstUser()
+                    {
+                        Username = addMstUser.Username,
+                        FullName = addMstUser.FullName,
+                        Password = addMstUser.Password,
+                        Status = addMstUser.Status,
+                        AspNetId = addMstUser.AspNetId
+                    };
 
-                db.MstUsers.InsertOnSubmit(newMstUser);
-                db.SubmitChanges();
+                    db.MstUsers.InsertOnSubmit(newMstUser);
+                    db.SubmitChanges();
 
-                return newMstUser.Id;
+                    return newMstUser.Id;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch (Exception e)
             {
@@ -105,12 +115,12 @@ namespace priland_api.Controllers
         }
 
         //List
-        [HttpPut, Route("Update/{id}")]
-        public HttpResponseMessage UpdateUser(string id, Models.MstUser UpdateMstUser)
+        [HttpPut, Route("Update")]
+        public HttpResponseMessage UpdateUser(MstUser UpdateMstUser)
         {
             try
             {
-                var MstUserData = from d in db.MstUsers where d.Id == Convert.ToInt32(id) select d;
+                var MstUserData = from d in db.MstUsers where d.Id == Convert.ToInt32(UpdateMstUser.Id) select d;
                 if (MstUserData.Any())
                 {
                     var UpdateUserData = MstUserData.FirstOrDefault();

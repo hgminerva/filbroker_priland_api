@@ -3365,6 +3365,8 @@ namespace priland_api.Data
 		
 		private EntitySet<MstUnit> _MstUnits;
 		
+		private EntityRef<MstProject> _MstProject;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -3396,6 +3398,7 @@ namespace priland_api.Data
 		public MstHouseModel()
 		{
 			this._MstUnits = new EntitySet<MstUnit>(new Action<MstUnit>(this.attach_MstUnits), new Action<MstUnit>(this.detach_MstUnits));
+			this._MstProject = default(EntityRef<MstProject>);
 			OnCreated();
 		}
 		
@@ -3470,6 +3473,10 @@ namespace priland_api.Data
 			{
 				if ((this._ProjectId != value))
 				{
+					if (this._MstProject.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnProjectIdChanging(value);
 					this.SendPropertyChanging();
 					this._ProjectId = value;
@@ -3632,6 +3639,40 @@ namespace priland_api.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstProject_MstHouseModel", Storage="_MstProject", ThisKey="ProjectId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public MstProject MstProject
+		{
+			get
+			{
+				return this._MstProject.Entity;
+			}
+			set
+			{
+				MstProject previousValue = this._MstProject.Entity;
+				if (((previousValue != value) 
+							|| (this._MstProject.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MstProject.Entity = null;
+						previousValue.MstHouseModels.Remove(this);
+					}
+					this._MstProject.Entity = value;
+					if ((value != null))
+					{
+						value.MstHouseModels.Add(this);
+						this._ProjectId = value.Id;
+					}
+					else
+					{
+						this._ProjectId = default(int);
+					}
+					this.SendPropertyChanged("MstProject");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -3693,6 +3734,8 @@ namespace priland_api.Data
 		
 		private EntitySet<MstCheckList> _MstCheckLists;
 		
+		private EntitySet<MstHouseModel> _MstHouseModels;
+		
 		private EntitySet<MstUnit> _MstUnits;
 		
 		private EntitySet<TrnSoldUnit> _TrnSoldUnits;
@@ -3730,6 +3773,7 @@ namespace priland_api.Data
 		public MstProject()
 		{
 			this._MstCheckLists = new EntitySet<MstCheckList>(new Action<MstCheckList>(this.attach_MstCheckLists), new Action<MstCheckList>(this.detach_MstCheckLists));
+			this._MstHouseModels = new EntitySet<MstHouseModel>(new Action<MstHouseModel>(this.attach_MstHouseModels), new Action<MstHouseModel>(this.detach_MstHouseModels));
 			this._MstUnits = new EntitySet<MstUnit>(new Action<MstUnit>(this.attach_MstUnits), new Action<MstUnit>(this.detach_MstUnits));
 			this._TrnSoldUnits = new EntitySet<TrnSoldUnit>(new Action<TrnSoldUnit>(this.attach_TrnSoldUnits), new Action<TrnSoldUnit>(this.detach_TrnSoldUnits));
 			this._MstUser = default(EntityRef<MstUser>);
@@ -3958,6 +4002,19 @@ namespace priland_api.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstProject_MstHouseModel", Storage="_MstHouseModels", ThisKey="Id", OtherKey="ProjectId")]
+		public EntitySet<MstHouseModel> MstHouseModels
+		{
+			get
+			{
+				return this._MstHouseModels;
+			}
+			set
+			{
+				this._MstHouseModels.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstProject_MstUnit", Storage="_MstUnits", ThisKey="Id", OtherKey="ProjectId")]
 		public EntitySet<MstUnit> MstUnits
 		{
@@ -4079,6 +4136,18 @@ namespace priland_api.Data
 		}
 		
 		private void detach_MstCheckLists(MstCheckList entity)
+		{
+			this.SendPropertyChanging();
+			entity.MstProject = null;
+		}
+		
+		private void attach_MstHouseModels(MstHouseModel entity)
+		{
+			this.SendPropertyChanging();
+			entity.MstProject = this;
+		}
+		
+		private void detach_MstHouseModels(MstHouseModel entity)
 		{
 			this.SendPropertyChanging();
 			entity.MstProject = null;

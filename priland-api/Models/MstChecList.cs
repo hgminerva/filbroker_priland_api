@@ -12,6 +12,7 @@ namespace priland_api.Models
         public String CheckList { get; set; }
         public String CheckListDate { get; set; }
         public Int32 ProjectId { get; set; }
+        public String Project { get; set; }
         public String Remarks { get; set; }
         public String Status { get; set; }
         public Boolean IsLocked { get; set; }

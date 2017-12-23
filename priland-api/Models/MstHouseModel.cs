@@ -11,6 +11,7 @@ namespace priland_api.Models
         public String HouseModelCode { get; set; }
         public String HouseModel { get; set; }
         public Int32 ProjectId { get; set; }
+        public String Project { get; set; }
         public Decimal TFA { get; set; }
         public Decimal Price { get; set; }
         public Boolean IsLocked { get; set; }

@@ -10,6 +10,7 @@ namespace priland_api.Models
         public Int32 Id { get; set; }
         public Int32 UserId { get; set; }
         public Int32 PageId { get; set; }
+        public String Page { get; set; }
         public Boolean CanEdit { get; set; }
         public Boolean CanSave { get; set; }
         public Boolean CanLock { get; set; }

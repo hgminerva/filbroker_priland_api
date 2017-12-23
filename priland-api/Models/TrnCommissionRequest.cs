@@ -11,13 +11,18 @@ namespace priland_api.Models
         public String CommissionRequestNumber { get; set; }
         public String CommissionRequestDate { get; set; }
         public Int32 BrokerId { get; set; }
+        public String Broker { get; set; }
         public Int32 SoldUnitId { get; set; }
+        public String SoldUnit { get; set; }
         public String CommissionNumber { get; set; }
         public Decimal Amount { get; set; }
         public String Remarks { get; set; }
         public Int32 PreparedBy { get; set; }
+        public String Prepeared { get; set; }
         public Int32 CheckedBy { get; set; }
+        public String Checked { get; set; }
         public Int32 ApprovedBy { get; set; }
+        public String Approved { get; set; }
         public String Status { get; set; }
         public Boolean IsLocked { get; set; }
         public Int32 CreatedBy { get; set; }

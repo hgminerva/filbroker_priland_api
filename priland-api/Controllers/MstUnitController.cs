@@ -29,6 +29,7 @@ namespace priland_api.Controllers
                                   Block = d.Block,
                                   Lot = d.Lot,
                                   ProjectId=d.ProjectId,
+                                  Project=d.MstProject.Project,
                                   HouseModelId=d.HouseModelId,
                                   TLA=d.TLA,
                                   TFA=d.TFA,
@@ -76,28 +77,38 @@ namespace priland_api.Controllers
         {
             try
             {
-                Data.MstUnit newMstUnit = new Data.MstUnit()
+                var currentUser = from d in db.MstUsers
+                                  where d.AspNetId == User.Identity.GetUserId()
+                                  select d;
+                if (currentUser.Any())
                 {
-                    UnitCode = addMstUnit.UnitCode,
-                    Block = addMstUnit.Block,
-                    Lot = addMstUnit.Lot,
-                    ProjectId = addMstUnit.ProjectId,
-                    HouseModelId = addMstUnit.HouseModelId,
-                    TLA = addMstUnit.TLA,
-                    TFA = addMstUnit.TFA,
-                    Price = addMstUnit.Price,
-                    Status = addMstUnit.Status,
-                    IsLocked = addMstUnit.IsLocked,
-                    CreatedBy = addMstUnit.CreatedBy,
-                    CreatedDateTime = Convert.ToDateTime(addMstUnit.CreatedDateTime),
-                    UpdatedBy = addMstUnit.UpdatedBy,
-                    UpdatedDateTime = Convert.ToDateTime(addMstUnit.UpdatedDateTime)
-                };
+                    Data.MstUnit newMstUnit = new Data.MstUnit()
+                    {
+                        UnitCode = addMstUnit.UnitCode,
+                        Block = addMstUnit.Block,
+                        Lot = addMstUnit.Lot,
+                        ProjectId = addMstUnit.ProjectId,
+                        HouseModelId = addMstUnit.HouseModelId,
+                        TLA = addMstUnit.TLA,
+                        TFA = addMstUnit.TFA,
+                        Price = addMstUnit.Price,
+                        Status = addMstUnit.Status,
+                        IsLocked = addMstUnit.IsLocked,
+                        CreatedBy = currentUser.FirstOrDefault().Id,
+                        CreatedDateTime = DateTime.Now,
+                        UpdatedBy = currentUser.FirstOrDefault().Id,
+                        UpdatedDateTime = DateTime.Now
+                    };
 
-                db.MstUnits.InsertOnSubmit(newMstUnit);
-                db.SubmitChanges();
+                    db.MstUnits.InsertOnSubmit(newMstUnit);
+                    db.SubmitChanges();
 
-                return newMstUnit.Id;
+                    return newMstUnit.Id;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch (Exception e)
             {
@@ -122,7 +133,10 @@ namespace priland_api.Controllers
 
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
-                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -136,16 +150,76 @@ namespace priland_api.Controllers
             }
         }
 
-        //Lock
-        [HttpPut, Route("Lock/{id}")]
-        public HttpResponseMessage UpdateUnit(string id, MstUnit UpdateMstUnit)
+        //Save
+        [HttpPut, Route("Save")]
+        public HttpResponseMessage SaveUnit(MstUnit unit)
         {
             try
             {
-                var MstUnitData = from d in db.MstUnits where d.Id == Convert.ToInt32(id) select d;
+                var MstUnitData = from d in db.MstUnits where d.Id == Convert.ToInt32(unit.Id) select d;
                 if (MstUnitData.Any())
                 {
-                    if (!MstUnitData.First().IsLocked)
+                    if (MstUnitData.First().IsLocked == false)
+                    {
+                        var currentUser = from d in db.MstUsers
+                                          where d.AspNetId == User.Identity.GetUserId()
+                                          select d;
+
+                        if (currentUser.Any())
+                        {
+                            var UpdateMstUnitData = MstUnitData.FirstOrDefault();
+
+                            UpdateMstUnitData.UnitCode = unit.UnitCode;
+                            UpdateMstUnitData.Block = unit.Block;
+                            UpdateMstUnitData.Lot = unit.Lot;
+                            UpdateMstUnitData.ProjectId = unit.ProjectId;
+                            UpdateMstUnitData.HouseModelId = unit.HouseModelId;
+                            UpdateMstUnitData.TLA = unit.TLA;
+                            UpdateMstUnitData.TFA = unit.TFA;
+                            UpdateMstUnitData.Price = unit.Price;
+                            UpdateMstUnitData.Status = unit.Status;
+                            UpdateMstUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
+                            UpdateMstUnitData.UpdatedDateTime = DateTime.Now;
+
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        //Lock
+        [HttpPut, Route("Lock")]
+        public HttpResponseMessage UpdateUnit(MstUnit UpdateMstUnit)
+        {
+            try
+            {
+                var MstUnitData = from d in db.MstUnits where d.Id == Convert.ToInt32(UpdateMstUnit.Id) select d;
+                if (MstUnitData.Any())
+                {
+                    var currentUser = from d in db.MstUsers
+                                      where d.AspNetId == User.Identity.GetUserId()
+                                      select d;
+                    if (currentUser.Any())
                     {
                         var UpdateMstUnitData = MstUnitData.FirstOrDefault();
 
@@ -159,10 +233,8 @@ namespace priland_api.Controllers
                         UpdateMstUnitData.Price = UpdateMstUnit.Price;
                         UpdateMstUnitData.Status = UpdateMstUnit.Status;
                         UpdateMstUnitData.IsLocked = true;
-                        UpdateMstUnitData.CreatedBy = UpdateMstUnit.CreatedBy;
-                        UpdateMstUnitData.CreatedDateTime = Convert.ToDateTime(UpdateMstUnit.CreatedDateTime);
-                        UpdateMstUnitData.UpdatedBy = UpdateMstUnit.UpdatedBy;
-                        UpdateMstUnitData.UpdatedDateTime = Convert.ToDateTime(UpdateMstUnit.UpdatedDateTime);
+                        UpdateMstUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
+                        UpdateMstUnitData.UpdatedDateTime = DateTime.Now;
 
                         db.SubmitChanges();
 
@@ -186,19 +258,24 @@ namespace priland_api.Controllers
         }
 
         //Unlock
-        [HttpPut, Route("UnLock/{id}")]
-        public HttpResponseMessage UnLock(string id, MstUnit UnLockMstUnit)
+        [HttpPut, Route("UnLock")]
+        public HttpResponseMessage UnLock(MstUnit UnLockMstUnit)
         {
             try
             {
-                var MstUnitData = from d in db.MstUnits where d.Id == Convert.ToInt32(id) select d;
+                var MstUnitData = from d in db.MstUnits where d.Id == Convert.ToInt32(UnLockMstUnit.Id) select d;
                 if (MstUnitData.Any())
                 {
-                    if (MstUnitData.First().IsLocked)
+                    var currentUser = from d in db.MstUsers
+                                      where d.AspNetId == User.Identity.GetUserId()
+                                      select d;
+                    if (currentUser.Any())
                     {
                         var UnLockMstUnitData = MstUnitData.FirstOrDefault();
 
                         UnLockMstUnitData.IsLocked = false;
+                        UnLockMstUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
+                        UnLockMstUnitData.UpdatedDateTime = DateTime.Now;
 
                         db.SubmitChanges();
 

@@ -110,12 +110,12 @@ namespace priland_api.Controllers
         }
 
         //UPDATE
-        [HttpPut, Route("Update/{id}")]
-        public HttpResponseMessage UpdateCheckListRequirements(string id, MstCheckListRequirement UpdateMstCheckListRequirements)
+        [HttpPut, Route("Update")]
+        public HttpResponseMessage UpdateCheckListRequirements(MstCheckListRequirement UpdateMstCheckListRequirements)
         {
             try
             {
-                var MstCheckListRequirementsData = from d in db.MstCheckListRequirements where d.Id == Convert.ToInt32(id) select d;
+                var MstCheckListRequirementsData = from d in db.MstCheckListRequirements where d.Id == Convert.ToInt32(UpdateMstCheckListRequirements.Id) select d;
                 if (MstCheckListRequirementsData.Any())
                 {
 
