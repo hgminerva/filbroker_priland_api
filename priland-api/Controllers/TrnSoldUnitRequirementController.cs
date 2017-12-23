@@ -67,24 +67,34 @@ namespace priland_api.Controllers
         {
             try
             {
-                Data.TrnSoldUnitRequirement newTrnSoldUnitRequirement = new Data.TrnSoldUnitRequirement()
+                var currentUser = from d in db.MstUsers
+                                  where d.AspNetId == User.Identity.GetUserId()
+                                  select d;
+                if (currentUser.Any())
                 {
-                    SoldUnitId = addTrnSoldUnitRequirement.SoldUnitId,
-                    CheckListRequirementId = addTrnSoldUnitRequirement.CheckListRequirementId,
-                    Attachment1 = addTrnSoldUnitRequirement.Attachment1,
-                    Attachment2 = addTrnSoldUnitRequirement.Attachment2,
-                    Attachment3 = addTrnSoldUnitRequirement.Attachment3,
-                    Attachment4 = addTrnSoldUnitRequirement.Attachment4,
-                    Attachment5 = addTrnSoldUnitRequirement.Attachment5,
-                    Remarks = addTrnSoldUnitRequirement.Remarks,
-                    Status = addTrnSoldUnitRequirement.Status,
-                    StatusDate = Convert.ToDateTime(addTrnSoldUnitRequirement.StatusDate)
-                };
+                    Data.TrnSoldUnitRequirement newTrnSoldUnitRequirement = new Data.TrnSoldUnitRequirement()
+                    {
+                        SoldUnitId = addTrnSoldUnitRequirement.SoldUnitId,
+                        CheckListRequirementId = addTrnSoldUnitRequirement.CheckListRequirementId,
+                        Attachment1 = addTrnSoldUnitRequirement.Attachment1,
+                        Attachment2 = addTrnSoldUnitRequirement.Attachment2,
+                        Attachment3 = addTrnSoldUnitRequirement.Attachment3,
+                        Attachment4 = addTrnSoldUnitRequirement.Attachment4,
+                        Attachment5 = addTrnSoldUnitRequirement.Attachment5,
+                        Remarks = addTrnSoldUnitRequirement.Remarks,
+                        Status = addTrnSoldUnitRequirement.Status,
+                        StatusDate = Convert.ToDateTime(addTrnSoldUnitRequirement.StatusDate)
+                    };
 
-                db.TrnSoldUnitRequirements.InsertOnSubmit(newTrnSoldUnitRequirement);
-                db.SubmitChanges();
+                    db.TrnSoldUnitRequirements.InsertOnSubmit(newTrnSoldUnitRequirement);
+                    db.SubmitChanges();
 
-                return newTrnSoldUnitRequirement.Id;
+                    return newTrnSoldUnitRequirement.Id;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch (Exception e)
             {
@@ -120,30 +130,40 @@ namespace priland_api.Controllers
         }
 
         //Lock
-        [HttpPut, Route("Update/{id}")]
-        public HttpResponseMessage UpdateSoldUnitRequirement(string id, TrnSoldUnitRequirement UpdateTrnSoldUnitRequirement)
+        [HttpPut, Route("Update")]
+        public HttpResponseMessage UpdateSoldUnitRequirement(TrnSoldUnitRequirement UpdateTrnSoldUnitRequirement)
         {
             try
             {
-                var TrnSoldUnitRequirementData = from d in db.TrnSoldUnitRequirements where d.Id == Convert.ToInt32(id) select d;
+                var TrnSoldUnitRequirementData = from d in db.TrnSoldUnitRequirements where d.Id == Convert.ToInt32(UpdateTrnSoldUnitRequirement.Id) select d;
                 if (TrnSoldUnitRequirementData.Any())
                 {
-                    var UpdateTrnSoldUnitRequirementData = TrnSoldUnitRequirementData.FirstOrDefault();
+                    var currentUser = from d in db.MstUsers
+                                      where d.AspNetId == User.Identity.GetUserId()
+                                      select d;
+                    if (currentUser.Any())
+                    {
+                        var UpdateTrnSoldUnitRequirementData = TrnSoldUnitRequirementData.FirstOrDefault();
 
-                    UpdateTrnSoldUnitRequirementData.SoldUnitId = UpdateTrnSoldUnitRequirement.SoldUnitId;
-                    UpdateTrnSoldUnitRequirementData.CheckListRequirementId = UpdateTrnSoldUnitRequirement.CheckListRequirementId;
-                    UpdateTrnSoldUnitRequirementData.Attachment1 = UpdateTrnSoldUnitRequirement.Attachment1;
-                    UpdateTrnSoldUnitRequirementData.Attachment2 = UpdateTrnSoldUnitRequirement.Attachment2;
-                    UpdateTrnSoldUnitRequirementData.Attachment3 = UpdateTrnSoldUnitRequirement.Attachment3;
-                    UpdateTrnSoldUnitRequirementData.Attachment4 = UpdateTrnSoldUnitRequirement.Attachment4;
-                    UpdateTrnSoldUnitRequirementData.Attachment5 = UpdateTrnSoldUnitRequirement.Attachment5;
-                    UpdateTrnSoldUnitRequirementData.Remarks = UpdateTrnSoldUnitRequirement.Remarks;
-                    UpdateTrnSoldUnitRequirementData.Status = UpdateTrnSoldUnitRequirement.Status;
-                    UpdateTrnSoldUnitRequirementData.StatusDate = Convert.ToDateTime(UpdateTrnSoldUnitRequirement.StatusDate);
+                        UpdateTrnSoldUnitRequirementData.SoldUnitId = UpdateTrnSoldUnitRequirement.SoldUnitId;
+                        UpdateTrnSoldUnitRequirementData.CheckListRequirementId = UpdateTrnSoldUnitRequirement.CheckListRequirementId;
+                        UpdateTrnSoldUnitRequirementData.Attachment1 = UpdateTrnSoldUnitRequirement.Attachment1;
+                        UpdateTrnSoldUnitRequirementData.Attachment2 = UpdateTrnSoldUnitRequirement.Attachment2;
+                        UpdateTrnSoldUnitRequirementData.Attachment3 = UpdateTrnSoldUnitRequirement.Attachment3;
+                        UpdateTrnSoldUnitRequirementData.Attachment4 = UpdateTrnSoldUnitRequirement.Attachment4;
+                        UpdateTrnSoldUnitRequirementData.Attachment5 = UpdateTrnSoldUnitRequirement.Attachment5;
+                        UpdateTrnSoldUnitRequirementData.Remarks = UpdateTrnSoldUnitRequirement.Remarks;
+                        UpdateTrnSoldUnitRequirementData.Status = UpdateTrnSoldUnitRequirement.Status;
+                        UpdateTrnSoldUnitRequirementData.StatusDate = Convert.ToDateTime(UpdateTrnSoldUnitRequirement.StatusDate);
 
-                    db.SubmitChanges();
+                        db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {

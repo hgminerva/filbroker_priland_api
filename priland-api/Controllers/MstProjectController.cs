@@ -144,7 +144,7 @@ namespace priland_api.Controllers
                 var MstProjectData = from d in db.MstProjects where d.Id == Convert.ToInt32(project.Id) select d;
                 if (MstProjectData.Any())
                 {
-                    if (MstProjectData.First().IsLocked == false)
+                    if (MstProjectData.FirstOrDefault().IsLocked == false)
                     {
                         var currentUser = from d in db.MstUsers
                                           where d.AspNetId == User.Identity.GetUserId()

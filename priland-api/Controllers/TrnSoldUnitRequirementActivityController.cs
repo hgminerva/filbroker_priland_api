@@ -57,19 +57,31 @@ namespace priland_api.Controllers
         {
             try
             {
-                Data.TrnSoldUnitRequirementActivity newTrnSoldUnitRequirementActivity = new Data.TrnSoldUnitRequirementActivity()
+                var currentUser = from d in db.MstUsers
+                                  where d.AspNetId == User.Identity.GetUserId()
+                                  select d;
+
+                if (currentUser.Any())
                 {
-                    SoldUnitRequirementId = addTrnSoldUnitRequirementActivity.SoldUnitRequirementId,
-                    ActivityDate = Convert.ToDateTime(addTrnSoldUnitRequirementActivity.ActivityDate),
-                    Activity = addTrnSoldUnitRequirementActivity.Activity,
-                    Remarks = addTrnSoldUnitRequirementActivity.Remarks,
-                    UserId = addTrnSoldUnitRequirementActivity.UserId
-                };
+                    Data.TrnSoldUnitRequirementActivity newTrnSoldUnitRequirementActivity = new Data.TrnSoldUnitRequirementActivity()
+                    {
+                        SoldUnitRequirementId = addTrnSoldUnitRequirementActivity.SoldUnitRequirementId,
+                        ActivityDate = Convert.ToDateTime(addTrnSoldUnitRequirementActivity.ActivityDate),
+                        Activity = addTrnSoldUnitRequirementActivity.Activity,
+                        Remarks = addTrnSoldUnitRequirementActivity.Remarks,
+                        UserId = addTrnSoldUnitRequirementActivity.UserId
+                    };
 
-                db.TrnSoldUnitRequirementActivities.InsertOnSubmit(newTrnSoldUnitRequirementActivity);
-                db.SubmitChanges();
+                    db.TrnSoldUnitRequirementActivities.InsertOnSubmit(newTrnSoldUnitRequirementActivity);
+                    db.SubmitChanges();
 
-                return newTrnSoldUnitRequirementActivity.Id;
+                    return newTrnSoldUnitRequirementActivity.Id;
+                }
+                else
+                {
+                    return 0;
+                }
+                 
             }
             catch (Exception e)
             {
@@ -105,26 +117,36 @@ namespace priland_api.Controllers
             }
         }
 
-        //Lock
-        [HttpPut, Route("Lock/{id}")]
-        public HttpResponseMessage Update(string id, TrnSoldUnitRequirementActivity UpdateTrnSoldUnitRequirementActivity)
+        //Update
+        [HttpPut, Route("Update")]
+        public HttpResponseMessage Update(TrnSoldUnitRequirementActivity UpdateTrnSoldUnitRequirementActivity)
         {
             try
             {
-                var TrnSoldUnitRequirementActivityData = from d in db.TrnSoldUnitRequirementActivities where d.Id == Convert.ToInt32(id) select d;
+                var TrnSoldUnitRequirementActivityData = from d in db.TrnSoldUnitRequirementActivities where d.Id == Convert.ToInt32(UpdateTrnSoldUnitRequirementActivity.Ids) select d;
                 if (TrnSoldUnitRequirementActivityData.Any())
                 {
-                    var UpdateTrnSoldUnitRequirementActivityData = TrnSoldUnitRequirementActivityData.FirstOrDefault();
+                    var currentUser = from d in db.MstUsers
+                                      where d.AspNetId == User.Identity.GetUserId()
+                                      select d;
+                    if (currentUser.Any())
+                    {
+                        var UpdateTrnSoldUnitRequirementActivityData = TrnSoldUnitRequirementActivityData.FirstOrDefault();
 
-                    UpdateTrnSoldUnitRequirementActivityData.SoldUnitRequirementId = UpdateTrnSoldUnitRequirementActivity.SoldUnitRequirementId;
-                    UpdateTrnSoldUnitRequirementActivityData.ActivityDate = Convert.ToDateTime(UpdateTrnSoldUnitRequirementActivity.ActivityDate);
-                    UpdateTrnSoldUnitRequirementActivityData.Activity = UpdateTrnSoldUnitRequirementActivity.Activity;
-                    UpdateTrnSoldUnitRequirementActivityData.Remarks = UpdateTrnSoldUnitRequirementActivity.Remarks;
-                    UpdateTrnSoldUnitRequirementActivityData.UserId = UpdateTrnSoldUnitRequirementActivity.UserId;
+                        UpdateTrnSoldUnitRequirementActivityData.SoldUnitRequirementId = UpdateTrnSoldUnitRequirementActivity.SoldUnitRequirementId;
+                        UpdateTrnSoldUnitRequirementActivityData.ActivityDate = Convert.ToDateTime(UpdateTrnSoldUnitRequirementActivity.ActivityDate);
+                        UpdateTrnSoldUnitRequirementActivityData.Activity = UpdateTrnSoldUnitRequirementActivity.Activity;
+                        UpdateTrnSoldUnitRequirementActivityData.Remarks = UpdateTrnSoldUnitRequirementActivity.Remarks;
+                        UpdateTrnSoldUnitRequirementActivityData.UserId = UpdateTrnSoldUnitRequirementActivity.UserId;
 
-                    db.SubmitChanges();
+                        db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
