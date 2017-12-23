@@ -123,7 +123,7 @@ namespace priland_api.Controllers
         {
             try
             {
-                var TrnSoldUnitRequirementActivityData = from d in db.TrnSoldUnitRequirementActivities where d.Id == Convert.ToInt32(UpdateTrnSoldUnitRequirementActivity.Ids) select d;
+                var TrnSoldUnitRequirementActivityData = from d in db.TrnSoldUnitRequirementActivities where d.Id == Convert.ToInt32(UpdateTrnSoldUnitRequirementActivity.Id) select d;
                 if (TrnSoldUnitRequirementActivityData.Any())
                 {
                     var currentUser = from d in db.MstUsers
