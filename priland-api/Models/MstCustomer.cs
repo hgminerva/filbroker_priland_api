@@ -40,6 +40,7 @@ namespace priland_api.Models
         public String EmployerMobileNumber { get; set; }
         public String Remarks { get; set; }
         public String Status { get; set; }
+        public Boolean IsLocked { get; set; }
         public String Picture { get; set; }
         public Int32 CreatedBy { get; set; }
         public String CreatedDateTime { get; set; }

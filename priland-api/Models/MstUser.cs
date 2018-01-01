@@ -12,6 +12,7 @@ namespace priland_api.Models
         public String FullName { get; set; }
         public String Password { get; set; }
         public String Status { get; set; }
+        public Boolean IsLocked { get; set; }
         public String AspNetId { get; set; }
     }
 }
