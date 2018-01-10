@@ -5,7 +5,7 @@ using System.Web;
 
 namespace priland_api.Models
 {
-    public class SysSetting
+    public class SysSettings
     {
         public Int32 Id { get; set; }
         public String Company { get; set; }

@@ -16,6 +16,19 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
+        public String padNumWithZero(Int32 number, Int32 length)
+        {
+            var result = number.ToString();
+            var pad = length - result.Length;
+            while (pad > 0)
+            {
+                result = '0' + result;
+                pad--;
+            }
+
+            return result;
+        }
+
         //List
         [HttpGet, Route("List")]
         public List<TrnSoldUnit> GetTrnSoldUnit()
@@ -34,19 +47,63 @@ namespace priland_api.Controllers
                                       Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                       BrokerId = d.BrokerId,
                                       Broker= d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
-                                      CheckListId = d.CheckListId,
-                                      CheckList=d.MstCheckList.CheckList,
+                                      ChecklistId = d.CheckListId,
+                                      Checklist=d.MstCheckList.CheckList,
                                       Price = d.Price,
                                       TotalInvestment = d.TotalInvestment,
                                       PaymentOptions = d.PaymentOptions,
                                       Financing = d.Financing,
                                       Remarks = d.Remarks,
                                       PreparedBy = d.PreparedBy,
-                                      Prepared=d.MstUser.Username,
+                                      PreparedByUser = d.MstUser2.Username,
                                       CheckedBy = d.CheckedBy,
-                                      Checked=d.MstUser.Username,
+                                      CheckedByUser = d.MstUser3.Username,
                                       ApprovedBy = d.ApprovedBy,
-                                      Approved=d.MstUser.Username,
+                                      ApprovedByUser = d.MstUser4.Username,
+                                      Status = d.Status,
+                                      IsLocked = d.IsLocked,
+                                      CreatedBy = d.CreatedBy,
+                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                      UpdatedBy = d.UpdatedBy,
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                  };
+            return TrnSoldUnitData.ToList();
+        }
+
+        //List per date range
+        [HttpGet, Route("ListPerDates/{dateStart}/{dateEnd}")]
+        public List<TrnSoldUnit> GetTrnSoldUnitPerDates(string dateStart, string dateEnd)
+        {
+            var TrnSoldUnitData = from d in db.TrnSoldUnits
+                                  where d.SoldUnitDate >= Convert.ToDateTime(dateStart) &&
+                                        d.SoldUnitDate <= Convert.ToDateTime(dateEnd)
+                                  orderby d.SoldUnitNumber descending
+                                  select new TrnSoldUnit
+                                  {
+                                      Id = d.Id,
+                                      SoldUnitNumber = d.SoldUnitNumber,
+                                      SoldUnitDate = d.SoldUnitDate.ToShortDateString(),
+                                      ProjectId = d.ProjectId,
+                                      Project = d.MstProject.Project,
+                                      UnitId = d.UnitId,
+                                      Unit = d.MstUnit.Block + " " + d.MstUnit.Lot,
+                                      CustomerId = d.CustomerId,
+                                      Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
+                                      BrokerId = d.BrokerId,
+                                      Broker = d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
+                                      ChecklistId = d.CheckListId,
+                                      Checklist = d.MstCheckList.CheckList,
+                                      Price = d.Price,
+                                      TotalInvestment = d.TotalInvestment,
+                                      PaymentOptions = d.PaymentOptions,
+                                      Financing = d.Financing,
+                                      Remarks = d.Remarks,
+                                      PreparedBy = d.PreparedBy,
+                                      PreparedByUser = d.MstUser2.Username,
+                                      CheckedBy = d.CheckedBy,
+                                      CheckedByUser = d.MstUser3.Username,
+                                      ApprovedBy = d.ApprovedBy,
+                                      ApprovedByUser = d.MstUser4.Username,
                                       Status = d.Status,
                                       IsLocked = d.IsLocked,
                                       CreatedBy = d.CreatedBy,
@@ -72,15 +129,18 @@ namespace priland_api.Controllers
                                       UnitId = d.UnitId,
                                       CustomerId = d.CustomerId,
                                       BrokerId = d.BrokerId,
-                                      CheckListId = d.CheckListId,
+                                      ChecklistId = d.CheckListId,
                                       Price = d.Price,
                                       TotalInvestment = d.TotalInvestment,
                                       PaymentOptions = d.PaymentOptions,
                                       Financing = d.Financing,
                                       Remarks = d.Remarks,
                                       PreparedBy = d.PreparedBy,
+                                      PreparedByUser = d.MstUser2.Username,
                                       CheckedBy = d.CheckedBy,
+                                      CheckedByUser = d.MstUser3.Username,
                                       ApprovedBy = d.ApprovedBy,
+                                      ApprovedByUser = d.MstUser4.Username,
                                       Status = d.Status,
                                       IsLocked = d.IsLocked,
                                       CreatedBy = d.CreatedBy,
@@ -91,46 +151,56 @@ namespace priland_api.Controllers
             return (TrnSoldUnit)TrnSoldUnitData.FirstOrDefault();
         }
 
-        //ADD
+        //Add
         [HttpPost, Route("Add")]
-        public Int32 PostTrnSoldUnit(TrnSoldUnit addTrnSoldUnit)
+        public Int32 PostTrnSoldUnit(TrnSoldUnit soldUnit)
         {
             try
             {
                 var currentUser = from d in db.MstUsers
                                   where d.AspNetId == User.Identity.GetUserId()
                                   select d;
+
                 if (currentUser.Any())
                 {
-                    Data.TrnSoldUnit newMstProject = new Data.TrnSoldUnit()
+
+                    string soldUnitNumber = "0000000001";
+                    var soldUnits = from d in db.TrnSoldUnits.OrderByDescending(d => d.Id) select d;
+                    if (soldUnits.Any())
                     {
-                        SoldUnitNumber = addTrnSoldUnit.SoldUnitNumber,
-                        SoldUnitDate = Convert.ToDateTime(addTrnSoldUnit.SoldUnitDate),
-                        ProjectId = addTrnSoldUnit.ProjectId,
-                        UnitId = addTrnSoldUnit.UnitId,
-                        CustomerId = addTrnSoldUnit.CustomerId,
-                        BrokerId = addTrnSoldUnit.BrokerId,
-                        CheckListId = addTrnSoldUnit.CheckListId,
-                        Price = addTrnSoldUnit.Price,
-                        TotalInvestment = addTrnSoldUnit.TotalInvestment,
-                        PaymentOptions = addTrnSoldUnit.PaymentOptions,
-                        Financing = addTrnSoldUnit.Financing,
-                        Remarks = addTrnSoldUnit.Remarks,
-                        PreparedBy = addTrnSoldUnit.PreparedBy,
-                        CheckedBy = addTrnSoldUnit.CheckedBy,
-                        ApprovedBy = addTrnSoldUnit.ApprovedBy,
-                        Status = addTrnSoldUnit.Status,
-                        IsLocked = addTrnSoldUnit.IsLocked,
+                        Int32 nextSoldUnitNumber = Convert.ToInt32(soldUnits.FirstOrDefault().SoldUnitNumber) + 1;
+                        soldUnitNumber = padNumWithZero(nextSoldUnitNumber, 10);
+                    }
+
+                    Data.TrnSoldUnit newTrnSoldUnit = new Data.TrnSoldUnit()
+                    {
+                        SoldUnitNumber = soldUnitNumber,
+                        SoldUnitDate = Convert.ToDateTime(soldUnit.SoldUnitDate),
+                        ProjectId = soldUnit.ProjectId,
+                        UnitId = soldUnit.UnitId,
+                        CustomerId = soldUnit.CustomerId,
+                        BrokerId = soldUnit.BrokerId,
+                        CheckListId = soldUnit.ChecklistId,
+                        Price = soldUnit.Price,
+                        TotalInvestment = soldUnit.TotalInvestment,
+                        PaymentOptions = soldUnit.PaymentOptions,
+                        Financing = soldUnit.Financing,
+                        Remarks = soldUnit.Remarks,
+                        PreparedBy = soldUnit.PreparedBy,
+                        CheckedBy = soldUnit.CheckedBy,
+                        ApprovedBy = soldUnit.ApprovedBy,
+                        Status = soldUnit.Status,
+                        IsLocked = soldUnit.IsLocked,
                         CreatedBy = currentUser.FirstOrDefault().Id,
                         CreatedDateTime = DateTime.Now,
                         UpdatedBy = currentUser.FirstOrDefault().Id,
                         UpdatedDateTime = DateTime.Now
                     };
 
-                    db.TrnSoldUnits.InsertOnSubmit(newMstProject);
+                    db.TrnSoldUnits.InsertOnSubmit(newTrnSoldUnit);
                     db.SubmitChanges();
 
-                    return newMstProject.Id;
+                    return newTrnSoldUnit.Id;
                 }
                 else
                 {
@@ -153,7 +223,7 @@ namespace priland_api.Controllers
                 var TrnSoldUnitData = from d in db.TrnSoldUnits where d.Id == Convert.ToInt32(id) select d;
                 if (TrnSoldUnitData.Any())
                 {
-                    if (!TrnSoldUnitData.First().IsLocked)
+                    if (TrnSoldUnitData.First().IsLocked == false)
                     {
                         db.TrnSoldUnits.DeleteOnSubmit(TrnSoldUnitData.First());
                         db.SubmitChanges();
@@ -179,11 +249,11 @@ namespace priland_api.Controllers
 
         //Save
         [HttpPut, Route("Save")]
-        public HttpResponseMessage SaveSoldUnit(TrnSoldUnit soldunit)
+        public HttpResponseMessage SaveSoldUnit(TrnSoldUnit soldUnit)
         {
             try
             {
-                var TrnSoldUniData = from d in db.TrnSoldUnits where d.Id == Convert.ToInt32(soldunit.Id) select d;
+                var TrnSoldUniData = from d in db.TrnSoldUnits where d.Id == Convert.ToInt32(soldUnit.Id) select d;
                 if (TrnSoldUniData.Any())
                 {
                     var currentUser = from d in db.MstUsers
@@ -193,22 +263,21 @@ namespace priland_api.Controllers
                     {
                         var UpdateTrnSoldUnitData = TrnSoldUniData.FirstOrDefault();
 
-                        UpdateTrnSoldUnitData.SoldUnitNumber = soldunit.SoldUnitNumber;
-                        UpdateTrnSoldUnitData.SoldUnitDate = Convert.ToDateTime(soldunit.SoldUnitDate);
-                        UpdateTrnSoldUnitData.ProjectId = soldunit.ProjectId;
-                        UpdateTrnSoldUnitData.UnitId = soldunit.UnitId;
-                        UpdateTrnSoldUnitData.CustomerId = soldunit.CustomerId;
-                        UpdateTrnSoldUnitData.BrokerId = soldunit.BrokerId;
-                        UpdateTrnSoldUnitData.CheckListId = soldunit.CheckListId;
-                        UpdateTrnSoldUnitData.Price = soldunit.Price;
-                        UpdateTrnSoldUnitData.TotalInvestment = soldunit.TotalInvestment;
-                        UpdateTrnSoldUnitData.PaymentOptions = soldunit.PaymentOptions;
-                        UpdateTrnSoldUnitData.Financing = soldunit.Financing;
-                        UpdateTrnSoldUnitData.Remarks = soldunit.Remarks;
-                        UpdateTrnSoldUnitData.PreparedBy = soldunit.PreparedBy;
-                        UpdateTrnSoldUnitData.CheckedBy = soldunit.CheckedBy;
-                        UpdateTrnSoldUnitData.ApprovedBy = soldunit.ApprovedBy;
-                        UpdateTrnSoldUnitData.Status = soldunit.Status;
+                        UpdateTrnSoldUnitData.SoldUnitDate = Convert.ToDateTime(soldUnit.SoldUnitDate);
+                        UpdateTrnSoldUnitData.ProjectId = soldUnit.ProjectId;
+                        UpdateTrnSoldUnitData.UnitId = soldUnit.UnitId;
+                        UpdateTrnSoldUnitData.CustomerId = soldUnit.CustomerId;
+                        UpdateTrnSoldUnitData.BrokerId = soldUnit.BrokerId;
+                        UpdateTrnSoldUnitData.CheckListId = soldUnit.ChecklistId;
+                        UpdateTrnSoldUnitData.Price = soldUnit.Price;
+                        UpdateTrnSoldUnitData.TotalInvestment = soldUnit.TotalInvestment;
+                        UpdateTrnSoldUnitData.PaymentOptions = soldUnit.PaymentOptions;
+                        UpdateTrnSoldUnitData.Financing = soldUnit.Financing;
+                        UpdateTrnSoldUnitData.Remarks = soldUnit.Remarks;
+                        UpdateTrnSoldUnitData.PreparedBy = soldUnit.PreparedBy;
+                        UpdateTrnSoldUnitData.CheckedBy = soldUnit.CheckedBy;
+                        UpdateTrnSoldUnitData.ApprovedBy = soldUnit.ApprovedBy;
+                        UpdateTrnSoldUnitData.Status = soldUnit.Status;
                         UpdateTrnSoldUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UpdateTrnSoldUnitData.UpdatedDateTime = DateTime.Now;
 
@@ -232,38 +301,41 @@ namespace priland_api.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+        
         //Lock
         [HttpPut, Route("Lock")]
-        public HttpResponseMessage UpdateSoldUnit(TrnSoldUnit UpdateTrnSoldUnit)
+        public HttpResponseMessage LockSoldUnit(TrnSoldUnit soldUnit)
         {
             try
             {
-                var TrnSoldUniData = from d in db.TrnSoldUnits where d.Id == Convert.ToInt32(UpdateTrnSoldUnit.Id) select d;
+                var TrnSoldUniData = from d in db.TrnSoldUnits where d.Id == Convert.ToInt32(soldUnit.Id) select d;
+                
                 if (TrnSoldUniData.Any())
                 {
+
                     var currentUser = from d in db.MstUsers
                                       where d.AspNetId == User.Identity.GetUserId()
                                       select d;
+
                     if (currentUser.Any())
                     {
                         var UpdateTrnSoldUnitData = TrnSoldUniData.FirstOrDefault();
 
-                        UpdateTrnSoldUnitData.SoldUnitNumber = UpdateTrnSoldUnit.SoldUnitNumber;
-                        UpdateTrnSoldUnitData.SoldUnitDate = Convert.ToDateTime(UpdateTrnSoldUnit.SoldUnitDate);
-                        UpdateTrnSoldUnitData.ProjectId = UpdateTrnSoldUnit.ProjectId;
-                        UpdateTrnSoldUnitData.UnitId = UpdateTrnSoldUnit.UnitId;
-                        UpdateTrnSoldUnitData.CustomerId = UpdateTrnSoldUnit.CustomerId;
-                        UpdateTrnSoldUnitData.BrokerId = UpdateTrnSoldUnit.BrokerId;
-                        UpdateTrnSoldUnitData.CheckListId = UpdateTrnSoldUnit.CheckListId;
-                        UpdateTrnSoldUnitData.Price = UpdateTrnSoldUnit.Price;
-                        UpdateTrnSoldUnitData.TotalInvestment = UpdateTrnSoldUnit.TotalInvestment;
-                        UpdateTrnSoldUnitData.PaymentOptions = UpdateTrnSoldUnit.PaymentOptions;
-                        UpdateTrnSoldUnitData.Financing = UpdateTrnSoldUnit.Financing;
-                        UpdateTrnSoldUnitData.Remarks = UpdateTrnSoldUnit.Remarks;
-                        UpdateTrnSoldUnitData.PreparedBy = UpdateTrnSoldUnit.PreparedBy;
-                        UpdateTrnSoldUnitData.CheckedBy = UpdateTrnSoldUnit.CheckedBy;
-                        UpdateTrnSoldUnitData.ApprovedBy = UpdateTrnSoldUnit.ApprovedBy;
-                        UpdateTrnSoldUnitData.Status = UpdateTrnSoldUnit.Status;
+                        UpdateTrnSoldUnitData.SoldUnitDate = Convert.ToDateTime(soldUnit.SoldUnitDate);
+                        UpdateTrnSoldUnitData.ProjectId = soldUnit.ProjectId;
+                        UpdateTrnSoldUnitData.UnitId = soldUnit.UnitId;
+                        UpdateTrnSoldUnitData.CustomerId = soldUnit.CustomerId;
+                        UpdateTrnSoldUnitData.BrokerId = soldUnit.BrokerId;
+                        UpdateTrnSoldUnitData.CheckListId = soldUnit.ChecklistId;
+                        UpdateTrnSoldUnitData.Price = soldUnit.Price;
+                        UpdateTrnSoldUnitData.TotalInvestment = soldUnit.TotalInvestment;
+                        UpdateTrnSoldUnitData.PaymentOptions = soldUnit.PaymentOptions;
+                        UpdateTrnSoldUnitData.Financing = soldUnit.Financing;
+                        UpdateTrnSoldUnitData.Remarks = soldUnit.Remarks;
+                        UpdateTrnSoldUnitData.PreparedBy = soldUnit.PreparedBy;
+                        UpdateTrnSoldUnitData.CheckedBy = soldUnit.CheckedBy;
+                        UpdateTrnSoldUnitData.ApprovedBy = soldUnit.ApprovedBy;
+                        UpdateTrnSoldUnitData.Status = soldUnit.Status;
                         UpdateTrnSoldUnitData.IsLocked = true;
                         UpdateTrnSoldUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UpdateTrnSoldUnitData.UpdatedDateTime = DateTime.Now;
@@ -291,16 +363,18 @@ namespace priland_api.Controllers
 
         //Unlock
         [HttpPut, Route("UnLock")]
-        public HttpResponseMessage UnLock(TrnSoldUnit UnLockTrnSoldUnit)
+        public HttpResponseMessage UnLockSoldUnit(TrnSoldUnit soldUnit)
         {
             try
             {
-                var TrnSoldUnitData = from d in db.TrnSoldUnits where d.Id == Convert.ToInt32(UnLockTrnSoldUnit.Id) select d;
+                var TrnSoldUnitData = from d in db.TrnSoldUnits where d.Id == Convert.ToInt32(soldUnit.Id) select d;
+                
                 if (TrnSoldUnitData.Any())
                 {
                     var currentUser = from d in db.MstUsers
                                       where d.AspNetId == User.Identity.GetUserId()
                                       select d;
+                    
                     if (currentUser.Any())
                     {
                         var UnLockTrnSoldUnitData = TrnSoldUnitData.FirstOrDefault();

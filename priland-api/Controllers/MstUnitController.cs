@@ -31,9 +31,41 @@ namespace priland_api.Controllers
                                   ProjectId=d.ProjectId,
                                   Project=d.MstProject.Project,
                                   HouseModelId=d.HouseModelId,
+                                  HouseModel=d.MstHouseModel.HouseModel,
                                   TLA=d.TLA,
                                   TFA=d.TFA,
                                   Price=d.Price,
+                                  Status = d.Status,
+                                  IsLocked = d.IsLocked,
+                                  CreatedBy = d.CreatedBy,
+                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                  UpdatedBy = d.UpdatedBy,
+                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                              };
+            return MstUnitData.ToList();
+        }
+
+        //List per Project ID
+        [HttpGet, Route("ListPerProjectId/{id}")]
+        public List<MstUnit> GetMstUnitPerProjectId(string id)
+        {
+            var MstUnitData = from d in db.MstUnits
+                              where d.ProjectId == Convert.ToInt32(id)
+                              orderby d.UnitCode
+                              select new MstUnit
+                              {
+
+                                  Id = d.Id,
+                                  UnitCode = d.UnitCode,
+                                  Block = d.Block,
+                                  Lot = d.Lot,
+                                  ProjectId = d.ProjectId,
+                                  Project = d.MstProject.Project,
+                                  HouseModelId = d.HouseModelId,
+                                  HouseModel = d.MstHouseModel.HouseModel,
+                                  TLA = d.TLA,
+                                  TFA = d.TFA,
+                                  Price = d.Price,
                                   Status = d.Status,
                                   IsLocked = d.IsLocked,
                                   CreatedBy = d.CreatedBy,
@@ -57,7 +89,9 @@ namespace priland_api.Controllers
                                      Block = d.Block,
                                      Lot = d.Lot,
                                      ProjectId = d.ProjectId,
+                                     Project = d.MstProject.Project,
                                      HouseModelId = d.HouseModelId,
+                                     HouseModel = d.MstHouseModel.HouseModel,
                                      TLA = d.TLA,
                                      TFA = d.TFA,
                                      Price = d.Price,
@@ -71,39 +105,50 @@ namespace priland_api.Controllers
             return (MstUnit)MstUnitData.FirstOrDefault();
         }
 
-        //ADD
+        //Add
         [HttpPost, Route("Add")]
-        public Int32 PostMstUnit(MstUnit addMstUnit)
+        public Int32 PostMstUnit(MstUnit unit)
         {
             try
             {
                 var currentUser = from d in db.MstUsers
                                   where d.AspNetId == User.Identity.GetUserId()
                                   select d;
+
                 if (currentUser.Any())
                 {
-                    Data.MstUnit newMstUnit = new Data.MstUnit()
+                    var defaultHouseModel = from d in db.MstHouseModels where d.ProjectId == unit.ProjectId select d;
+
+                    if (defaultHouseModel.Any())
                     {
-                        UnitCode = addMstUnit.UnitCode,
-                        Block = addMstUnit.Block,
-                        Lot = addMstUnit.Lot,
-                        ProjectId = addMstUnit.ProjectId,
-                        HouseModelId = addMstUnit.HouseModelId,
-                        TLA = addMstUnit.TLA,
-                        TFA = addMstUnit.TFA,
-                        Price = addMstUnit.Price,
-                        Status = addMstUnit.Status,
-                        IsLocked = addMstUnit.IsLocked,
-                        CreatedBy = currentUser.FirstOrDefault().Id,
-                        CreatedDateTime = DateTime.Now,
-                        UpdatedBy = currentUser.FirstOrDefault().Id,
-                        UpdatedDateTime = DateTime.Now
-                    };
+                        Data.MstUnit newMstUnit = new Data.MstUnit()
+                        {
+                            UnitCode = unit.UnitCode,
+                            Block = unit.Block,
+                            Lot = unit.Lot,
+                            ProjectId = unit.ProjectId,
+                            HouseModelId = defaultHouseModel.FirstOrDefault().Id,
+                            TLA = unit.TLA,
+                            TFA = unit.TFA,
+                            Price = unit.Price,
+                            Status = unit.Status,
+                            IsLocked = unit.IsLocked,
+                            CreatedBy = currentUser.FirstOrDefault().Id,
+                            CreatedDateTime = DateTime.Now,
+                            UpdatedBy = currentUser.FirstOrDefault().Id,
+                            UpdatedDateTime = DateTime.Now
+                        };
 
-                    db.MstUnits.InsertOnSubmit(newMstUnit);
-                    db.SubmitChanges();
+                        db.MstUnits.InsertOnSubmit(newMstUnit);
+                        db.SubmitChanges();
 
-                    return newMstUnit.Id;
+                        return newMstUnit.Id;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+
                 }
                 else
                 {
@@ -126,7 +171,7 @@ namespace priland_api.Controllers
                 var MstUnitData = from d in db.MstUnits where d.Id == Convert.ToInt32(id) select d;
                 if (MstUnitData.Any())
                 {
-                    if (!MstUnitData.First().IsLocked)
+                    if (MstUnitData.First().IsLocked==false)
                     {
                         db.MstUnits.DeleteOnSubmit(MstUnitData.First());
                         db.SubmitChanges();
@@ -209,11 +254,12 @@ namespace priland_api.Controllers
 
         //Lock
         [HttpPut, Route("Lock")]
-        public HttpResponseMessage UpdateUnit(MstUnit UpdateMstUnit)
+        public HttpResponseMessage UpdateUnit(MstUnit unit)
         {
             try
             {
-                var MstUnitData = from d in db.MstUnits where d.Id == Convert.ToInt32(UpdateMstUnit.Id) select d;
+                var MstUnitData = from d in db.MstUnits where d.Id == Convert.ToInt32(unit.Id) select d;
+
                 if (MstUnitData.Any())
                 {
                     var currentUser = from d in db.MstUsers
@@ -223,15 +269,15 @@ namespace priland_api.Controllers
                     {
                         var UpdateMstUnitData = MstUnitData.FirstOrDefault();
 
-                        UpdateMstUnitData.UnitCode = UpdateMstUnit.UnitCode;
-                        UpdateMstUnitData.Block = UpdateMstUnit.Block;
-                        UpdateMstUnitData.Lot = UpdateMstUnit.Lot;
-                        UpdateMstUnitData.ProjectId = UpdateMstUnit.ProjectId;
-                        UpdateMstUnitData.HouseModelId = UpdateMstUnit.HouseModelId;
-                        UpdateMstUnitData.TLA = UpdateMstUnit.TLA;
-                        UpdateMstUnitData.TFA = UpdateMstUnit.TFA;
-                        UpdateMstUnitData.Price = UpdateMstUnit.Price;
-                        UpdateMstUnitData.Status = UpdateMstUnit.Status;
+                        UpdateMstUnitData.UnitCode = unit.UnitCode;
+                        UpdateMstUnitData.Block = unit.Block;
+                        UpdateMstUnitData.Lot = unit.Lot;
+                        UpdateMstUnitData.ProjectId = unit.ProjectId;
+                        UpdateMstUnitData.HouseModelId = unit.HouseModelId;
+                        UpdateMstUnitData.TLA = unit.TLA;
+                        UpdateMstUnitData.TFA = unit.TFA;
+                        UpdateMstUnitData.Price = unit.Price;
+                        UpdateMstUnitData.Status = unit.Status;
                         UpdateMstUnitData.IsLocked = true;
                         UpdateMstUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UpdateMstUnitData.UpdatedDateTime = DateTime.Now;
@@ -259,11 +305,11 @@ namespace priland_api.Controllers
 
         //Unlock
         [HttpPut, Route("UnLock")]
-        public HttpResponseMessage UnLock(MstUnit UnLockMstUnit)
+        public HttpResponseMessage UnLock(MstUnit unit)
         {
             try
             {
-                var MstUnitData = from d in db.MstUnits where d.Id == Convert.ToInt32(UnLockMstUnit.Id) select d;
+                var MstUnitData = from d in db.MstUnits where d.Id == Convert.ToInt32(unit.Id) select d;
                 if (MstUnitData.Any())
                 {
                     var currentUser = from d in db.MstUsers

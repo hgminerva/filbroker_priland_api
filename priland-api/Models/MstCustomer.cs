@@ -12,6 +12,7 @@ namespace priland_api.Models
         public String LastName { get; set; }
         public String FirstName { get; set; }
         public String MiddleName { get; set; }
+        public String FullName { get; set; }
         public String CivilStatus { get; set; }
         public String Gender { get; set; }
         public String BirthDate { get; set; }

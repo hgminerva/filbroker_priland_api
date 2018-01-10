@@ -16,9 +16,9 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
          
-        //List
+        // List
         [HttpGet,Route("List")]
-        public List<Models.MstUser> GetMstUser()
+        public List<MstUser> GetMstUsers()
         {
             var MstUserData = from d in db.MstUsers 
                                  select new Models.MstUser
@@ -35,51 +35,41 @@ namespace priland_api.Controllers
         }
 
         [HttpGet, Route("Detail/{id}")]
-        public Models.MstUser GetMstUserId(string id)
+        public Models.MstUser GetMstUser(string id)
         {
             var MstUserData = from d in db.MstUsers 
-                                 where d.Id == Convert.ToInt32(id)
-                                 select new Models.MstUser
-                                 {
-                                     Id = d.Id,
-                                     Username = d.Username,
-                                     FullName = d.FullName,
-                                     Password = d.Password,
-                                     Status = d.Status,
-                                     AspNetId = d.AspNetId
-                                 };
-            return (Models.MstUser)MstUserData.FirstOrDefault();
+                              where d.Id == Convert.ToInt32(id)
+                              select new Models.MstUser
+                              {
+                                    Id = d.Id,
+                                    Username = d.Username,
+                                    FullName = d.FullName,
+                                    Password = d.Password,
+                                    Status = d.Status,
+                                    AspNetId = d.AspNetId
+                              };
+            return MstUserData.FirstOrDefault();
         }
 
-        //ADD
+        // Add
         [HttpPost,Route("Add")]
-        public Int32 PostMstUser(MstUser addMstUser)
+        public Int32 PostMstUser(MstUser user)
         {
             try
             {
-                var currentUser = from d in db.MstUsers
-                                  where d.AspNetId == User.Identity.GetUserId()
-                                  select d;
-                if (currentUser.Any())
+                Data.MstUser newMstUser = new Data.MstUser()
                 {
-                    Data.MstUser newMstUser = new Data.MstUser()
-                    {
-                        Username = addMstUser.Username,
-                        FullName = addMstUser.FullName,
-                        Password = addMstUser.Password,
-                        Status = addMstUser.Status,
-                        AspNetId = addMstUser.AspNetId
-                    };
+                    Username = user.Username,
+                    FullName = user.FullName,
+                    Password = user.Password,
+                    Status = user.Status,
+                    AspNetId = user.AspNetId
+                };
 
-                    db.MstUsers.InsertOnSubmit(newMstUser);
-                    db.SubmitChanges();
+                db.MstUsers.InsertOnSubmit(newMstUser);
+                db.SubmitChanges();
 
-                    return newMstUser.Id;
-                }
-                else
-                {
-                    return 0;
-                }
+                return newMstUser.Id;
             }
             catch (Exception e)
             {
@@ -88,13 +78,15 @@ namespace priland_api.Controllers
             }
         }
 
-        //Delete
+        // Delete
         [HttpDelete, Route("Delete/{id}")]
-        public HttpResponseMessage DeleteMstUsers(string id)
+        public HttpResponseMessage DeleteMstUser(string id)
         {
             try
             {
-                var MstUserData = from d in db.MstUsers  where d.Id == Convert.ToInt32(id) select d;
+                var MstUserData = from d in db.MstUsers  
+                                  where d.Id == Convert.ToInt32(id) select d;
+
                 if (MstUserData.Any())
                 {
                     db.MstUsers.DeleteOnSubmit(MstUserData.First());
@@ -114,22 +106,22 @@ namespace priland_api.Controllers
             }
         }
 
-        //List
-        [HttpPut, Route("Update")]
-        public HttpResponseMessage UpdateUser(MstUser UpdateMstUser)
+        // Save
+        [HttpPut, Route("Save")]
+        public HttpResponseMessage UpdateMstUser(MstUser user)
         {
             try
             {
-                var MstUserData = from d in db.MstUsers where d.Id == Convert.ToInt32(UpdateMstUser.Id) select d;
+                var MstUserData = from d in db.MstUsers
+                                  where d.Id == Convert.ToInt32(user.Id)
+                                  select d;
+
                 if (MstUserData.Any())
                 {
                     var UpdateUserData = MstUserData.FirstOrDefault();
 
-                    UpdateUserData.Username = UpdateMstUser.Username;
-                    UpdateUserData.FullName = UpdateMstUser.FullName;
-                    UpdateUserData.Password = UpdateMstUser.Password;
-                    UpdateUserData.Status = UpdateMstUser.Status;
-                    UpdateUserData.AspNetId = UpdateMstUser.AspNetId;
+                    UpdateUserData.FullName = user.FullName;
+                    UpdateUserData.Status = user.Status;
 
                     db.SubmitChanges();
 

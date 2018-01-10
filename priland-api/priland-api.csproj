@@ -202,6 +202,7 @@
     <Compile Include="Controllers\MstUserRightController.cs" />
     <Compile Include="Controllers\SysDropDownController.cs" />
     <Compile Include="Controllers\SysPageController.cs" />
+    <Compile Include="Controllers\SysSettingsController.cs" />
     <Compile Include="Controllers\TrnCommissionRequestController.cs" />
     <Compile Include="Controllers\TrnSoldUnitController.cs" />
     <Compile Include="Controllers\TrnSoldUnitRequirementActivityController.cs" />
@@ -219,7 +220,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\MstBroker.cs" />
     <Compile Include="Models\MstCheckListRequirement.cs" />
-    <Compile Include="Models\MstChecList.cs" />
+    <Compile Include="Models\MstCheckList.cs" />
     <Compile Include="Models\MstCustomer.cs" />
     <Compile Include="Models\MstHouseModel.cs" />
     <Compile Include="Models\MstProject.cs" />
@@ -228,7 +229,7 @@
     <Compile Include="Models\MstUserRight.cs" />
     <Compile Include="Models\SysDropDown.cs" />
     <Compile Include="Models\SysPage.cs" />
-    <Compile Include="Models\SysSetting.cs" />
+    <Compile Include="Models\SysSettings.cs" />
     <Compile Include="Models\TrnCommissionRequest.cs" />
     <Compile Include="Models\TrnSoldUnit.cs" />
     <Compile Include="Models\TrnSoldUnitRequirement.cs" />

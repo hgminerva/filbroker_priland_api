@@ -9,8 +9,12 @@ namespace priland_api.Models
     {
         public Int32 Id { get; set; }
         public Int32 SoldUnitId { get; set; }
-        public Int32 CheckListRequirementId { get; set; }
-        public String CheckListRequirement { get; set; }
+        public Int32 ChecklistRequirementId { get; set; }
+        public String ChecklistRequirement { get; set; }
+        public Int32 ChecklistRequirementNo { get; set; }
+        public String ChecklistCategory { get; set; }
+        public String ChecklistType { get; set; }
+        public Boolean ChecklistWithAttachments { get; set; }
         public String Attachment1 { get; set; }
         public String Attachment2 { get; set; }
         public String Attachment3 { get; set; }

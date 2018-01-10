@@ -13,5 +13,6 @@ namespace priland_api.Models
         public String Activity { get; set; }
         public String Remarks { get; set; }
         public Int32 UserId { get; set; }
+        public String User { get; set; }
     }
 }

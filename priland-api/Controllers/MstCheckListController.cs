@@ -16,20 +16,33 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
+        private String padNumWithZero(Int32 number, Int32 length)
+        {
+            var result = number.ToString();
+            var pad = length - result.Length;
+            while (pad > 0)
+            {
+                result = '0' + result;
+                pad--;
+            }
+
+            return result;
+        }
+
         //List
         [HttpGet, Route("List")]
-        public List<Models.MstChecList> GetMstCheckList()
+        public List<MstCheckList> GetMstCheckList()
         {
             var MstCheckListData = from d in db.MstCheckLists
-                                 select new Models.MstChecList
+                                 select new Models.MstCheckList
                                  {
                                      Id = d.Id,
-                                     CheckListCode=d.CheckListCode,
-                                     CheckList=d.CheckList,
-                                     CheckListDate=d.CheckListDate.ToShortDateString(),
-                                     ProjectId=d.ProjectId,
-                                     Project=d.MstProject.Project,
-                                     Remarks=d.Remarks,
+                                     ChecklistCode = d.CheckListCode,
+                                     Checklist = d.CheckList,
+                                     ChecklistDate = d.CheckListDate.ToShortDateString(),
+                                     ProjectId = d.ProjectId,
+                                     Project = d.MstProject.Project,
+                                     Remarks = d.Remarks,
                                      Status = d.Status,
                                      IsLocked = d.IsLocked,
                                      CreatedBy = d.CreatedBy,
@@ -40,19 +53,46 @@ namespace priland_api.Controllers
             return MstCheckListData.ToList();
         }
 
+        //List per Project ID
+        [HttpGet, Route("ListPerProjectId/{id}")]
+        public List<MstCheckList> GetMstCheckListPerProjectId(string id)
+        {
+            var MstChecklistData = from d in db.MstCheckLists
+                                   where d.ProjectId == Convert.ToInt32(id)
+                                   orderby d.CheckListCode
+                                   select new MstCheckList
+                                   {
+                                        Id = d.Id,
+                                        ChecklistCode = d.CheckListCode,
+                                        Checklist = d.CheckList,
+                                        ChecklistDate = d.CheckListDate.ToShortDateString(),
+                                        ProjectId = d.ProjectId,
+                                        Project = d.MstProject.Project,
+                                        Remarks = d.Remarks,
+                                        Status = d.Status,
+                                        IsLocked = d.IsLocked,
+                                        CreatedBy = d.CreatedBy,
+                                        CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                        UpdatedBy = d.UpdatedBy,
+                                        UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                   };
+            return MstChecklistData.ToList();
+        }
+
         //Detail
         [HttpGet, Route("Detail/{id}")]
-        public Models.MstChecList GetMstChecList(string id)
+        public MstCheckList GetMstCheckList(string id)
         {
             var MstChecListData = from d in db.MstCheckLists
                                  where d.Id == Convert.ToInt32(id)
-                                 select new Models.MstChecList
+                                 select new Models.MstCheckList
                                  {
                                      Id = d.Id,
-                                     CheckListCode = d.CheckListCode,
-                                     CheckList = d.CheckList,
-                                     CheckListDate = d.CheckListDate.ToShortDateString(),
+                                     ChecklistCode = d.CheckListCode,
+                                     Checklist = d.CheckList,
+                                     ChecklistDate = d.CheckListDate.ToShortDateString(),
                                      ProjectId = d.ProjectId,
+                                     Project = d.MstProject.Project,
                                      Remarks = d.Remarks,
                                      Status = d.Status,
                                      IsLocked = d.IsLocked,
@@ -61,29 +101,38 @@ namespace priland_api.Controllers
                                      UpdatedBy = d.UpdatedBy,
                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                  };
-            return (Models.MstChecList)MstChecListData.FirstOrDefault();
+            return (Models.MstCheckList)MstChecListData.FirstOrDefault();
         }
 
-        //ADD
+        //Add
         [HttpPost, Route("Add")]
-        public Int32 PostMstCheckList(MstChecList addMstChecList)
+        public Int32 PostMstCheckList(MstCheckList checklist)
         {
             try
             {
                 var currentUser = from d in db.MstUsers
                                   where d.AspNetId == User.Identity.GetUserId()
                                   select d;
+
                 if (currentUser.Any())
                 {
+                    string checklistCode = "0001";
+                    var checklists = from d in db.MstCheckLists.OrderByDescending(d => d.Id) select d;
+                    if (checklists.Any())
+                    {
+                        Int32 nextChecklistCode = Convert.ToInt32(checklists.FirstOrDefault().CheckListCode) + 1;
+                        checklistCode = padNumWithZero(nextChecklistCode, 4);
+                    }
+
                     Data.MstCheckList newMstChecList = new Data.MstCheckList()
                     {
-                        CheckListCode = addMstChecList.CheckListCode,
-                        CheckList = addMstChecList.CheckList,
-                        CheckListDate = Convert.ToDateTime(addMstChecList.CheckListDate),
-                        ProjectId = addMstChecList.ProjectId,
-                        Remarks = addMstChecList.Remarks,
-                        Status = addMstChecList.Status,
-                        IsLocked = addMstChecList.IsLocked,
+                        CheckListCode = checklistCode,
+                        CheckList = checklist.Checklist,
+                        CheckListDate = Convert.ToDateTime(checklist.ChecklistDate),
+                        ProjectId = checklist.ProjectId,
+                        Remarks = checklist.Remarks,
+                        Status = checklist.Status,
+                        IsLocked = checklist.IsLocked,
                         CreatedBy = currentUser.FirstOrDefault().Id,
                         CreatedDateTime = DateTime.Now,
                         UpdatedBy = currentUser.FirstOrDefault().Id,
@@ -116,7 +165,7 @@ namespace priland_api.Controllers
                 var MstCheckListData = from d in db.MstCheckLists where d.Id == Convert.ToInt32(id) select d;
                 if (MstCheckListData.Any())
                 {
-                    if (!MstCheckListData.First().IsLocked)
+                    if (MstCheckListData.First().IsLocked == false)
                     {
                         db.MstCheckLists.DeleteOnSubmit(MstCheckListData.First());
                         db.SubmitChanges();
@@ -142,7 +191,7 @@ namespace priland_api.Controllers
 
         //Save
         [HttpPut, Route("Save")]
-        public HttpResponseMessage SaveMstChecList(MstChecList checklist)
+        public HttpResponseMessage SaveMstChecList(MstCheckList checklist)
         {
             try
             {
@@ -159,9 +208,9 @@ namespace priland_api.Controllers
                         {
                             var UpdateMstChecListData = MstChecListData.FirstOrDefault();
 
-                            UpdateMstChecListData.CheckListCode = checklist.CheckListCode;
-                            UpdateMstChecListData.CheckList = checklist.CheckList;
-                            UpdateMstChecListData.CheckListDate = Convert.ToDateTime(checklist.CheckListDate);
+                            UpdateMstChecListData.CheckListCode = checklist.ChecklistCode;
+                            UpdateMstChecListData.CheckList = checklist.Checklist;
+                            UpdateMstChecListData.CheckListDate = Convert.ToDateTime(checklist.ChecklistDate);
                             UpdateMstChecListData.ProjectId = checklist.ProjectId;
                             UpdateMstChecListData.Remarks = checklist.Remarks;
                             UpdateMstChecListData.Status = checklist.Status;
@@ -196,26 +245,28 @@ namespace priland_api.Controllers
 
         //Lock
         [HttpPut, Route("Lock")]
-        public HttpResponseMessage UpdateCheckList(MstChecList UpdateMstCheckList)
+        public HttpResponseMessage UpdateCheckList(MstCheckList checklist)
         {
             try
             {
-                var MstCheckListData = from d in db.MstCheckLists where d.Id == Convert.ToInt32(UpdateMstCheckList.Id) select d;
+                var MstCheckListData = from d in db.MstCheckLists where d.Id == Convert.ToInt32(checklist.Id) select d;
+
                 if (MstCheckListData.Any())
                 {
                     var currentUser = from d in db.MstUsers
                                       where d.AspNetId == User.Identity.GetUserId()
                                       select d;
+
                     if (currentUser.Any())
                     {
                         var UpdateCheckListData = MstCheckListData.FirstOrDefault();
 
-                        UpdateCheckListData.CheckListCode = UpdateMstCheckList.CheckListCode;
-                        UpdateCheckListData.CheckList = UpdateMstCheckList.CheckList;
-                        UpdateCheckListData.CheckListDate = Convert.ToDateTime(UpdateMstCheckList.CheckListDate);
-                        UpdateCheckListData.ProjectId = UpdateMstCheckList.ProjectId;
-                        UpdateCheckListData.Remarks = UpdateMstCheckList.Remarks;
-                        UpdateCheckListData.Status = UpdateMstCheckList.Status;
+                        UpdateCheckListData.CheckListCode = checklist.ChecklistCode;
+                        UpdateCheckListData.CheckList = checklist.Checklist;
+                        UpdateCheckListData.CheckListDate = Convert.ToDateTime(checklist.ChecklistDate);
+                        UpdateCheckListData.ProjectId = checklist.ProjectId;
+                        UpdateCheckListData.Remarks = checklist.Remarks;
+                        UpdateCheckListData.Status = checklist.Status;
                         UpdateCheckListData.IsLocked = true;
                         UpdateCheckListData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UpdateCheckListData.UpdatedDateTime = DateTime.Now;
@@ -242,17 +293,19 @@ namespace priland_api.Controllers
         }
 
         //Unlock
-        [HttpPut, Route("UnLock/{id}")]
-        public HttpResponseMessage UnLock(string id, Models.MstChecList UnLockMstChecList)
+        [HttpPut, Route("UnLock")]
+        public HttpResponseMessage UnLock(MstCheckList checklist)
         {
             try
             {
-                var MstChecListData = from d in db.MstCheckLists where d.Id == Convert.ToInt32(id) select d;
+                var MstChecListData = from d in db.MstCheckLists where d.Id == Convert.ToInt32(checklist.Id) select d;
+
                 if (MstChecListData.Any())
                 {
                     var currentUser = from d in db.MstUsers
                                       where d.AspNetId == User.Identity.GetUserId()
                                       select d;
+
                     if (currentUser.Any())
                     {
                         var UnLockMstChecListData = MstChecListData.FirstOrDefault();
@@ -282,4 +335,5 @@ namespace priland_api.Controllers
             }
         }
     }
+
 }

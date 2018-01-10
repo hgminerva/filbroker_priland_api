@@ -8,8 +8,8 @@ namespace priland_api.Models
     public class MstCheckListRequirement
     {
         public Int32 Id { get; set; }
-        public Int32 CheckListId { get; set; }
-        public String CheckList { get; set; }
+        public Int32 ChecklistId { get; set; }
+        public String Checklist { get; set; }
         public Int32 RequirementNo { get; set; }
         public String Requirement { get; set; }
         public String Category { get; set; }

@@ -16,9 +16,22 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
-        //List
+        public String padNumWithZero(Int32 number, Int32 length)
+        {
+            var result = number.ToString();
+            var pad = length - result.Length;
+            while (pad > 0)
+            {
+                result = '0' + result;
+                pad--;
+            }
+
+            return result;
+        }
+
+        // List
         [HttpGet, Route("List")]
-        public List<TrnCommissionRequest> GetMstProject()
+        public List<TrnCommissionRequest> GetTrnCommissionRequest()
         {
             var TrnCommissionRequestData = from d in db.TrnCommissionRequests
                                            select new Models.TrnCommissionRequest
@@ -29,12 +42,16 @@ namespace priland_api.Controllers
                                                BrokerId = d.BrokerId,
                                                Broker = d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
                                                SoldUnitId = d.SoldUnitId,
+                                               SoldUnit = d.TrnSoldUnit.SoldUnitNumber,
                                                CommissionNumber = d.CommissionRequestNumber,
                                                Amount = d.Amount,
                                                Remarks = d.Remarks,
                                                PreparedBy = d.PreparedBy,
+                                               PrepearedByUser = d.MstUser2.Username,
                                                CheckedBy = d.CheckedBy,
+                                               CheckedByUser = d.MstUser3.Username,
                                                ApprovedBy = d.ApprovedBy,
+                                               ApprovedByUser = d.MstUser4.Username,
                                                Status = d.Status,
                                                IsLocked = d.IsLocked,
                                                CreatedBy = d.CreatedBy,
@@ -45,9 +62,45 @@ namespace priland_api.Controllers
             return TrnCommissionRequestData.ToList();
         }
 
-        //Detail
+        // List per date range
+        [HttpGet, Route("ListPerDates/{dateStart}/{dateEnd}")]
+        public List<TrnCommissionRequest> GetTrnCommissionRequestPerDates(string dateStart, string dateEnd)
+        {
+            var TrnCommissionRequestData = from d in db.TrnCommissionRequests
+                                           where d.CommissionRequestDate >= Convert.ToDateTime(dateStart) &&
+                                                 d.CommissionRequestDate <= Convert.ToDateTime(dateEnd)
+                                           orderby d.CommissionNumber descending
+                                           select new Models.TrnCommissionRequest
+                                           {
+                                               Id = d.Id,
+                                               CommissionRequestNumber = d.CommissionRequestNumber,
+                                               CommissionRequestDate = d.CommissionRequestDate.ToShortDateString(),
+                                               BrokerId = d.BrokerId,
+                                               Broker = d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
+                                               SoldUnitId = d.SoldUnitId,
+                                               SoldUnit = d.TrnSoldUnit.SoldUnitNumber,
+                                               CommissionNumber = d.CommissionRequestNumber,
+                                               Amount = d.Amount,
+                                               Remarks = d.Remarks,
+                                               PreparedBy = d.PreparedBy,
+                                               PrepearedByUser = d.MstUser2.Username,
+                                               CheckedBy = d.CheckedBy,
+                                               CheckedByUser = d.MstUser3.Username,
+                                               ApprovedBy = d.ApprovedBy,
+                                               ApprovedByUser = d.MstUser4.Username,
+                                               Status = d.Status,
+                                               IsLocked = d.IsLocked,
+                                               CreatedBy = d.CreatedBy,
+                                               CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                               UpdatedBy = d.UpdatedBy,
+                                               UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                           };
+            return TrnCommissionRequestData.ToList();
+        }
+
+        // Detail
         [HttpGet, Route("Detail/{id}")]
-        public TrnCommissionRequest GetTrnCommissionRequestId(string id)
+        public TrnCommissionRequest GetTrnCommissionRequestDetail(string id)
         {
             var TrnCommissionRequestData = from d in db.TrnCommissionRequests
                                            where d.Id == Convert.ToInt32(id)
@@ -57,13 +110,18 @@ namespace priland_api.Controllers
                                                CommissionRequestNumber = d.CommissionRequestNumber,
                                                CommissionRequestDate = d.CommissionRequestDate.ToShortDateString(),
                                                BrokerId = d.BrokerId,
+                                               Broker = d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
                                                SoldUnitId = d.SoldUnitId,
+                                               SoldUnit = d.TrnSoldUnit.SoldUnitNumber,
                                                CommissionNumber = d.CommissionRequestNumber,
                                                Amount = d.Amount,
                                                Remarks = d.Remarks,
                                                PreparedBy = d.PreparedBy,
+                                               PrepearedByUser = d.MstUser2.Username,
                                                CheckedBy = d.CheckedBy,
+                                               CheckedByUser = d.MstUser3.Username,
                                                ApprovedBy = d.ApprovedBy,
+                                               ApprovedByUser = d.MstUser4.Username,
                                                Status = d.Status,
                                                IsLocked = d.IsLocked,
                                                CreatedBy = d.CreatedBy,
@@ -71,34 +129,43 @@ namespace priland_api.Controllers
                                                UpdatedBy = d.UpdatedBy,
                                                UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                            };
-            return (TrnCommissionRequest)TrnCommissionRequestData.FirstOrDefault();
+            return TrnCommissionRequestData.FirstOrDefault();
         }
 
-        //ADD
+        // Add
         [HttpPost, Route("Add")]
-        public Int32 PostTrnCommissionRequest(TrnCommissionRequest addTrnCommissionRequest)
+        public Int32 PostTrnCommissionRequest(TrnCommissionRequest commissionRequest)
         {
             try
             {
                 var currentUser = from d in db.MstUsers
                                   where d.AspNetId == User.Identity.GetUserId()
                                   select d;
+
                 if (currentUser.Any())
                 {
+                    string commissionRequestNumber = "0000000001";
+                    var commissionRequests = from d in db.TrnCommissionRequests.OrderByDescending(d => d.Id) select d;
+                    if (commissionRequests.Any())
+                    {
+                        Int32 nextCommissionRequestNumber = Convert.ToInt32(commissionRequests.FirstOrDefault().CommissionNumber) + 1;
+                        commissionRequestNumber = padNumWithZero(nextCommissionRequestNumber, 10);
+                    }
+
                     Data.TrnCommissionRequest newTrnCommissionRequest = new Data.TrnCommissionRequest()
                     {
-                        CommissionRequestNumber = addTrnCommissionRequest.CommissionRequestNumber,
-                        CommissionRequestDate = Convert.ToDateTime(addTrnCommissionRequest.CommissionRequestDate),
-                        BrokerId = addTrnCommissionRequest.BrokerId,
-                        SoldUnitId = addTrnCommissionRequest.SoldUnitId,
-                        CommissionNumber = addTrnCommissionRequest.CommissionRequestNumber,
-                        Amount = addTrnCommissionRequest.Amount,
-                        Remarks = addTrnCommissionRequest.Remarks,
-                        PreparedBy = addTrnCommissionRequest.PreparedBy,
-                        CheckedBy = addTrnCommissionRequest.CheckedBy,
-                        ApprovedBy = addTrnCommissionRequest.ApprovedBy,
-                        Status = addTrnCommissionRequest.Status,
-                        IsLocked = addTrnCommissionRequest.IsLocked,
+                        CommissionRequestNumber = commissionRequestNumber,
+                        CommissionRequestDate = Convert.ToDateTime(commissionRequest.CommissionRequestDate),
+                        BrokerId = commissionRequest.BrokerId,
+                        SoldUnitId = commissionRequest.SoldUnitId,
+                        CommissionNumber = commissionRequest.CommissionRequestNumber,
+                        Amount = commissionRequest.Amount,
+                        Remarks = commissionRequest.Remarks,
+                        PreparedBy = commissionRequest.PreparedBy,
+                        CheckedBy = commissionRequest.CheckedBy,
+                        ApprovedBy = commissionRequest.ApprovedBy,
+                        Status = commissionRequest.Status,
+                        IsLocked = commissionRequest.IsLocked,
                         CreatedBy = currentUser.FirstOrDefault().Id,
                         CreatedDateTime = DateTime.Now,
                         UpdatedBy = currentUser.FirstOrDefault().Id,
@@ -122,16 +189,17 @@ namespace priland_api.Controllers
             }
         }
 
-        //Delete
+        // Delete
         [HttpDelete, Route("Delete/{id}")]
         public HttpResponseMessage DeleteTrnCommissionRequest(string id)
         {
             try
             {
                 var TrnCommissionRequestData = from d in db.TrnCommissionRequests where d.Id == Convert.ToInt32(id) select d;
+
                 if (TrnCommissionRequestData.Any())
                 {
-                    if (!TrnCommissionRequestData.First().IsLocked)
+                    if (TrnCommissionRequestData.First().IsLocked == false)
                     {
                         db.TrnCommissionRequests.DeleteOnSubmit(TrnCommissionRequestData.First());
                         db.SubmitChanges();
@@ -155,15 +223,18 @@ namespace priland_api.Controllers
             }
         }
 
-        //Save
+        // Save
         [HttpPut, Route("Save")]
         public HttpResponseMessage SaveTrnCommissionRequest(TrnCommissionRequest commisionrequest)
         {
             try
             {
-                var TrnCommissionRequestData = from d in db.TrnCommissionRequests where d.Id == Convert.ToInt32(commisionrequest.Id) select d;
+                var TrnCommissionRequestData = from d in db.TrnCommissionRequests 
+                                               where d.Id == Convert.ToInt32(commisionrequest.Id) select d;
+               
                 if (TrnCommissionRequestData.Any())
                 {
+
                     if (TrnCommissionRequestData.FirstOrDefault().IsLocked == false)
                     {
                         var currentUser = from d in db.MstUsers
@@ -214,34 +285,37 @@ namespace priland_api.Controllers
             }
         }
 
-
-        //Lock
+        // Lock
         [HttpPut, Route("Lock")]
-        public HttpResponseMessage UpdateCommissionRequestId(TrnCommissionRequest UpdateTrnCommissionRequest)
+        public HttpResponseMessage LockTrnCommissionRequest(TrnCommissionRequest commissionRequest)
         {
             try
             {
-                var TrnCommissionRequestData = from d in db.TrnCommissionRequests where d.Id == Convert.ToInt32(UpdateTrnCommissionRequest.Id) select d;
+                var TrnCommissionRequestData = from d in db.TrnCommissionRequests
+                                               where d.Id == Convert.ToInt32(commissionRequest.Id)
+                                               select d;
+                
                 if (TrnCommissionRequestData.Any())
                 {
+
                     var currentUser = from d in db.MstUsers
                                       where d.AspNetId == User.Identity.GetUserId()
                                       select d;
+
                     if (currentUser.Any())
                     {
                         var UpdateCommissionRequestData = TrnCommissionRequestData.FirstOrDefault();
 
-                        UpdateCommissionRequestData.CommissionRequestNumber = UpdateTrnCommissionRequest.CommissionRequestNumber;
-                        UpdateCommissionRequestData.CommissionRequestDate = Convert.ToDateTime(UpdateTrnCommissionRequest.CommissionRequestDate);
-                        UpdateCommissionRequestData.BrokerId = UpdateTrnCommissionRequest.BrokerId;
-                        UpdateCommissionRequestData.SoldUnitId = UpdateTrnCommissionRequest.SoldUnitId;
-                        UpdateCommissionRequestData.CommissionNumber = UpdateTrnCommissionRequest.CommissionRequestNumber;
-                        UpdateCommissionRequestData.Amount = UpdateTrnCommissionRequest.Amount;
-                        UpdateCommissionRequestData.Remarks = UpdateTrnCommissionRequest.Remarks;
-                        UpdateCommissionRequestData.PreparedBy = UpdateTrnCommissionRequest.PreparedBy;
-                        UpdateCommissionRequestData.CheckedBy = UpdateTrnCommissionRequest.CheckedBy;
-                        UpdateCommissionRequestData.ApprovedBy = UpdateTrnCommissionRequest.ApprovedBy;
-                        UpdateCommissionRequestData.Status = UpdateTrnCommissionRequest.Status;
+                        UpdateCommissionRequestData.CommissionRequestDate = Convert.ToDateTime(commissionRequest.CommissionRequestDate);
+                        UpdateCommissionRequestData.BrokerId = commissionRequest.BrokerId;
+                        UpdateCommissionRequestData.SoldUnitId = commissionRequest.SoldUnitId;
+                        UpdateCommissionRequestData.CommissionNumber = commissionRequest.CommissionRequestNumber;
+                        UpdateCommissionRequestData.Amount = commissionRequest.Amount;
+                        UpdateCommissionRequestData.Remarks = commissionRequest.Remarks;
+                        UpdateCommissionRequestData.PreparedBy = commissionRequest.PreparedBy;
+                        UpdateCommissionRequestData.CheckedBy = commissionRequest.CheckedBy;
+                        UpdateCommissionRequestData.ApprovedBy = commissionRequest.ApprovedBy;
+                        UpdateCommissionRequestData.Status = commissionRequest.Status;
                         UpdateCommissionRequestData.IsLocked = true;
                         UpdateCommissionRequestData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UpdateCommissionRequestData.UpdatedDateTime = DateTime.Now;
@@ -268,18 +342,23 @@ namespace priland_api.Controllers
 
         }
 
-        //Unlock
+        // Unlock
         [HttpPut, Route("UnLock")]
-        public HttpResponseMessage UnLock(TrnCommissionRequest UnLockTrnCommissionRequest)
+        public HttpResponseMessage UnlockTrnCommissionRequest(TrnCommissionRequest commissionRequest)
         {
             try
             {
-                var TrnCommissionRequestData = from d in db.TrnCommissionRequests where d.Id == Convert.ToInt32(UnLockTrnCommissionRequest.Id) select d;
+                var TrnCommissionRequestData = from d in db.TrnCommissionRequests
+                                               where d.Id == Convert.ToInt32(commissionRequest.Id)
+                                               select d;
+                
                 if (TrnCommissionRequestData.Any())
                 {
+
                     var currentUser = from d in db.MstUsers
                                       where d.AspNetId == User.Identity.GetUserId()
                                       select d;
+
                     if (currentUser.Any())
                     {
                         var UnLockCommissionRequesData = TrnCommissionRequestData.FirstOrDefault();
@@ -309,4 +388,5 @@ namespace priland_api.Controllers
             }
         }
     }
+
 }

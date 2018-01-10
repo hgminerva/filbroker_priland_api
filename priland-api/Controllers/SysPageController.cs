@@ -16,7 +16,7 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
-        //List
+        // List
         [HttpGet, Route("List")]
         public List<SysPage> GetSysPage()
         {
@@ -30,7 +30,7 @@ namespace priland_api.Controllers
             return SysPageData.ToList();
         }
 
-        //Detail
+        // Detail
         [HttpGet, Route("Detail/{id}")]
         public SysPage GetSysPageId(string id)
         {
@@ -45,7 +45,7 @@ namespace priland_api.Controllers
             return (SysPage)SysPageData.FirstOrDefault();
         }
 
-        //ADD
+        // Add
         [HttpPost, Route("Add")]
         public Int32 PostSysPage(SysPage addSysPage)
         {
@@ -69,7 +69,7 @@ namespace priland_api.Controllers
             }
         }
 
-        //Delete
+        // Delete
         [HttpDelete, Route("Delete/{id}")]
         public HttpResponseMessage DeleteSysPage(string id)
         {
@@ -96,19 +96,19 @@ namespace priland_api.Controllers
             }
         }
 
-        //Update
-        [HttpPut, Route("Lock/{id}")]
-        public HttpResponseMessage UpdatePage(string id, SysPage UpdateSysPage)
+        // Save
+        [HttpPut, Route("Save/{id}")]
+        public HttpResponseMessage SaveSysPage(SysPage sysPage)
         {
             try
             {
-                var SysPageData = from d in db.SysPages where d.Id == Convert.ToInt32(id) select d;
+                var SysPageData = from d in db.SysPages where d.Id == Convert.ToInt32(sysPage.Id) select d;
                 if (SysPageData.Any())
                 {
                     var UpdateSysPageData = SysPageData.FirstOrDefault();
 
-                    UpdateSysPageData.Page = UpdateSysPage.Page;
-                    UpdateSysPageData.Url = UpdateSysPage.Url;
+                    UpdateSysPageData.Page = sysPage.Page;
+                    UpdateSysPageData.Url = sysPage.Url;
 
                     db.SubmitChanges();
 

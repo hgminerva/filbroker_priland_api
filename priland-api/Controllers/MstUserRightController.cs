@@ -16,28 +16,51 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
-        //List 
+        // List 
         [HttpGet, Route("List")]
-        public List<MstUserRight> GetMstUserRight(string id)
+        public List<MstUserRight> GetMstUserRights()
         {
             var MstUserRightData = from d in db.MstUserRights
-                                   where d.UserId == Convert.ToInt32(id)
                                    select new Models.MstUserRight
                                    {
 
                                        Id = d.Id,
                                        UserId = d.UserId,
                                        PageId = d.PageId,
+                                       Page = d.SysPage.Page,
                                        CanEdit = d.CanEdit,
                                        CanSave = d.CanSave,
                                        CanLock = d.CanLock,
                                        CanUnLock = d.CanUnlock,
-                                       CanPrint = d.CanPrint
+                                       CanPrint = d.CanPrint,
+                                       CanDelete = d.CanDelete
+                                   };
+
+            return MstUserRightData.ToList();
+        }
+
+        [HttpGet, Route("ListPerUser/{id}")]
+        public List<MstUserRight> GetMstUserRightsPerUser(string id)
+        {
+            var MstUserRightData = from d in db.MstUserRights
+                                   where d.UserId == Convert.ToInt32(id)
+                                   select new Models.MstUserRight
+                                   {
+                                       Id = d.Id,
+                                       UserId = d.UserId,
+                                       PageId = d.PageId,
+                                       Page = d.SysPage.Page,
+                                       CanEdit = d.CanEdit,
+                                       CanSave = d.CanSave,
+                                       CanLock = d.CanLock,
+                                       CanUnLock = d.CanUnlock,
+                                       CanPrint = d.CanPrint,
+                                       CanDelete = d.CanDelete
                                    };
             return MstUserRightData.ToList();
         }
 
-        //Detail
+        // Detail
         [HttpGet, Route("Detail/{id}")]
         public MstUserRight GetMstUserRightId(string id)
         {
@@ -48,30 +71,33 @@ namespace priland_api.Controllers
                                        Id = d.Id,
                                        UserId = d.UserId,
                                        PageId = d.PageId,
+                                       Page = d.SysPage.Page,
                                        CanEdit = d.CanEdit,
                                        CanSave = d.CanSave,
                                        CanLock = d.CanLock,
                                        CanUnLock = d.CanUnlock,
-                                       CanPrint = d.CanPrint
+                                       CanPrint = d.CanPrint,
+                                       CanDelete = d.CanDelete
                                    };
-            return (MstUserRight)MstUserRightData.FirstOrDefault();
+            return MstUserRightData.FirstOrDefault();
         }
 
-        //ADD
+        // Add
         [HttpPost, Route("Add")]
-        public Int32 PostMstUserRight(MstUserRight addMstUserRight)
+        public Int32 PostMstUserRight(MstUserRight userRight)
         {
             try
             {
                 Data.MstUserRight newMstUserRight = new Data.MstUserRight()
                 {
-                    UserId = addMstUserRight.UserId,
-                    PageId = addMstUserRight.PageId,
-                    CanEdit = addMstUserRight.CanEdit,
-                    CanSave = addMstUserRight.CanSave,
-                    CanLock = addMstUserRight.CanLock,
-                    CanUnlock = addMstUserRight.CanLock,
-                    CanPrint = addMstUserRight.CanPrint
+                    UserId = userRight.UserId,
+                    PageId = userRight.PageId,
+                    CanEdit = userRight.CanEdit,
+                    CanSave = userRight.CanSave,
+                    CanLock = userRight.CanLock,
+                    CanUnlock = userRight.CanLock,
+                    CanPrint = userRight.CanPrint,
+                    CanDelete = userRight.CanDelete
                 };
 
                 db.MstUserRights.InsertOnSubmit(newMstUserRight);
@@ -86,13 +112,52 @@ namespace priland_api.Controllers
             }
         }
 
+        // Save
+        [HttpPut, Route("Save")]
+        public HttpResponseMessage SaveMstUserRight(MstUserRight userRight)
+        {
+            try
+            {
+                var MstUserRightData = from d in db.MstUserRights
+                                       where d.Id == Convert.ToInt32(userRight.Id)
+                                       select d;
+
+                if (MstUserRightData.Any())
+                {
+                    var UpdateMstUserRightData = MstUserRightData.FirstOrDefault();
+
+                    UpdateMstUserRightData.CanEdit = userRight.CanEdit;
+                    UpdateMstUserRightData.CanSave = userRight.CanSave;
+                    UpdateMstUserRightData.CanLock = userRight.CanLock;
+                    UpdateMstUserRightData.CanUnlock = userRight.CanUnLock;
+                    UpdateMstUserRightData.CanPrint = userRight.CanPrint;
+                    UpdateMstUserRightData.CanDelete = userRight.CanDelete;
+
+                    db.SubmitChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
         //Delete
         [HttpDelete, Route("Delete/{id}")]
         public HttpResponseMessage DeleteMstUserRight(string id)
         {
             try
             {
-                var MstUserRightData = from d in db.MstUserRights where d.Id == Convert.ToInt32(id) select d;
+                var MstUserRightData = from d in db.MstUserRights 
+                                       where d.Id == Convert.ToInt32(id) select d;
+
                 if (MstUserRightData.Any())
                 {
                     db.MstUserRights.DeleteOnSubmit(MstUserRightData.First());
@@ -111,41 +176,5 @@ namespace priland_api.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
-
-        //Lock
-        [HttpPut, Route("Update/{id}")]
-        public HttpResponseMessage UpdateUserRight(string id, MstUserRight UpdateMstUserRight)
-        {
-            try
-            {
-                var MstUserRightData = from d in db.MstUserRights where d.Id == Convert.ToInt32(id) select d;
-                if (MstUserRightData.Any())
-                {
-                    var UpdateMstUserRightData = MstUserRightData.FirstOrDefault();
-
-                    UpdateMstUserRightData.UserId = UpdateMstUserRight.UserId;
-                    UpdateMstUserRightData.PageId = UpdateMstUserRight.PageId;
-                    UpdateMstUserRightData.CanEdit = UpdateMstUserRight.CanEdit;
-                    UpdateMstUserRightData.CanSave = UpdateMstUserRight.CanSave;
-                    UpdateMstUserRightData.CanLock = UpdateMstUserRight.CanLock;
-                    UpdateMstUserRightData.CanUnlock = UpdateMstUserRight.CanUnLock;
-                    UpdateMstUserRightData.CanPrint = UpdateMstUserRight.CanPrint;
-
-                    db.SubmitChanges();
-
-                    return Request.CreateResponse(HttpStatusCode.OK);
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-        }
-        
     }
 }

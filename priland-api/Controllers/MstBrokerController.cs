@@ -16,18 +16,19 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
-        //List
+        // List
         [HttpGet, Route("List")]
-        public List<Models.MstBroker> GetMstBroker()
+        public List<MstBroker> GetMstBrokers()
         {
             var MstBrokerData = from d in db.MstBrokers
-                                select new Models.MstBroker
+                                select new MstBroker
                                 {
                                     Id = d.Id,
                                     BrokerCode = d.BrokerCode,
                                     LastName = d.LastName,
                                     FirstName = d.FirstName,
                                     MiddleName = d.MiddleName,
+                                    FullName = d.LastName + ", " + d.FirstName + " " + d.MiddleName,
                                     LicenseNumber = d.LicenseNumber,
                                     BirthDate = d.BirthDate.ToShortDateString(),
                                     CivilStatus = d.CivilStatus,
@@ -60,19 +61,20 @@ namespace priland_api.Controllers
             return MstBrokerData.ToList();
         }
 
-        //Detail
+        // Detail
         [HttpGet, Route("Detail/{id}")]
-        public Models.MstBroker GetMstBrokerId(string id)
+        public MstBroker GetMstBroker(string id)
         {
             var MstBrokerData = from d in db.MstBrokers
                                 where d.Id == Convert.ToInt32(id)
-                                select new Models.MstBroker
+                                select new MstBroker
                                 {
                                     Id = d.Id,
                                     BrokerCode = d.BrokerCode,
                                     LastName = d.LastName,
                                     FirstName = d.FirstName,
                                     MiddleName = d.MiddleName,
+                                    FullName = d.LastName + ", " + d.FirstName + " " + d.MiddleName,
                                     LicenseNumber = d.LicenseNumber,
                                     BirthDate = d.BirthDate.ToShortDateString(),
                                     CivilStatus = d.CivilStatus,
@@ -105,47 +107,48 @@ namespace priland_api.Controllers
             return (Models.MstBroker)MstBrokerData.FirstOrDefault();
         }
 
-        //ADD
+        // Add
         [HttpPost, Route("Add")]
-        public Int32 PostMstBroker(MstBroker addMstBroker)
+        public Int32 PostMstBroker(MstBroker broker)
         {
             try
             {
                 var  currentUser = from d in db.MstUsers
                                       where d.AspNetId == User.Identity.GetUserId()
                                       select d;
+
                 if (currentUser.Any())
                 {
                     Data.MstBroker newMstBroker = new Data.MstBroker()
                     {
-                        BrokerCode = addMstBroker.BrokerCode,
-                        LastName = addMstBroker.LastName,
-                        FirstName = addMstBroker.FirstName,
-                        MiddleName = addMstBroker.MiddleName,
-                        LicenseNumber = addMstBroker.LicenseNumber,
-                        BirthDate = Convert.ToDateTime(addMstBroker.BirthDate),
-                        CivilStatus = addMstBroker.CivilStatus,
-                        Gender = addMstBroker.Gender,
-                        Address = addMstBroker.Address,
-                        TelephoneNumber = addMstBroker.TelephoneNumber,
-                        MobileNumber = addMstBroker.MobileNumber,
-                        Religion = addMstBroker.Religion,
-                        EmailAddress = addMstBroker.EmailAddress,
-                        Facebook = addMstBroker.Facebook,
-                        TIN = addMstBroker.TIN,
-                        RealtyFirm = addMstBroker.RealtyFirm,
-                        RealtyFirmAddress = addMstBroker.RealtyFirmAddress,
-                        RealtyFirmTelephoneNumber = addMstBroker.RealtyFirmTelephoneNumber,
-                        RealtyFirmMobileNumber = addMstBroker.RealtyFirmMobileNumber,
-                        RealtyFirmFaxNumber = addMstBroker.RealtyFirmFaxNumber,
-                        RealtyFirmEmailAddress = addMstBroker.RealtyFirmEmailAddress,
-                        RealtyFirmWebsite = addMstBroker.RealtyFirmWebsite,
-                        RealtyFirmTIN = addMstBroker.RealtyFirmTIN,
-                        Organization = addMstBroker.Organization,
-                        Remarks = addMstBroker.Remarks,
-                        Picture = addMstBroker.Picture,
-                        Status = addMstBroker.Status,
-                        IsLocked = addMstBroker.IsLocked,
+                        BrokerCode = broker.BrokerCode,
+                        LastName = broker.LastName,
+                        FirstName = broker.FirstName,
+                        MiddleName = broker.MiddleName,
+                        LicenseNumber = broker.LicenseNumber,
+                        BirthDate = Convert.ToDateTime(broker.BirthDate),
+                        CivilStatus = broker.CivilStatus,
+                        Gender = broker.Gender,
+                        Address = broker.Address,
+                        TelephoneNumber = broker.TelephoneNumber,
+                        MobileNumber = broker.MobileNumber,
+                        Religion = broker.Religion,
+                        EmailAddress = broker.EmailAddress,
+                        Facebook = broker.Facebook,
+                        TIN = broker.TIN,
+                        RealtyFirm = broker.RealtyFirm,
+                        RealtyFirmAddress = broker.RealtyFirmAddress,
+                        RealtyFirmTelephoneNumber = broker.RealtyFirmTelephoneNumber,
+                        RealtyFirmMobileNumber = broker.RealtyFirmMobileNumber,
+                        RealtyFirmFaxNumber = broker.RealtyFirmFaxNumber,
+                        RealtyFirmEmailAddress = broker.RealtyFirmEmailAddress,
+                        RealtyFirmWebsite = broker.RealtyFirmWebsite,
+                        RealtyFirmTIN = broker.RealtyFirmTIN,
+                        Organization = broker.Organization,
+                        Remarks = broker.Remarks,
+                        Picture = broker.Picture,
+                        Status = broker.Status,
+                        IsLocked = broker.IsLocked,
                         CreatedBy = currentUser.FirstOrDefault().Id,
                         CreatedDateTime = DateTime.Now,
                         UpdatedBy = currentUser.FirstOrDefault().Id,
@@ -169,16 +172,18 @@ namespace priland_api.Controllers
             }
         }
 
-        //Delete
+        // Delete
         [HttpDelete, Route("Delete/{id}")]
         public HttpResponseMessage DeleteMstBroker(string id)
         {
             try
             {
-                var MstBrokerData = from d in db.MstBrokers where d.Id == Convert.ToInt32(id) select d;
+                var MstBrokerData = from d in db.MstBrokers 
+                                    where d.Id == Convert.ToInt32(id) select d;
+
                 if (MstBrokerData.Any())
                 {
-                    if (!MstBrokerData.First().IsLocked)
+                    if (MstBrokerData.First().IsLocked == false)
                     {
                         db.MstBrokers.DeleteOnSubmit(MstBrokerData.First());
                         db.SubmitChanges();
@@ -202,13 +207,15 @@ namespace priland_api.Controllers
             }
         }
 
-        //Save
+        // Save
         [HttpPut, Route("Save")]
-        public HttpResponseMessage SaveBroker(MstBroker broker)
+        public HttpResponseMessage SaveMstBroker(MstBroker broker)
         {
             try
             {
-                var MstBrokerData = from d in db.MstBrokers where d.Id == Convert.ToInt32(broker.Id) select d;
+                var MstBrokerData = from d in db.MstBrokers 
+                                    where d.Id == Convert.ToInt32(broker.Id) select d;
+
                 if (MstBrokerData.Any())
                 {
                     if (MstBrokerData.First().IsLocked == false)
@@ -277,50 +284,52 @@ namespace priland_api.Controllers
             }
         }
 
-        //Lock
+        // Lock
         [HttpPut, Route("Lock")]
-        public HttpResponseMessage UpdateBroker(MstBroker UpdateMstBroker)
+        public HttpResponseMessage LockMstBroker(MstBroker broker)
         {
             try
             {
-                var MstBrokerData = from d in db.MstBrokers where d.Id == Convert.ToInt32(UpdateMstBroker.Id) select d;
+                var MstBrokerData = from d in db.MstBrokers 
+                                    where d.Id == Convert.ToInt32(broker.Id) select d;
+
                 if (MstBrokerData.Any())
                 {
                     var currentUser = from d in db.MstUsers
                                       where d.AspNetId == User.Identity.GetUserId()
                                       select d;
+
                     if (currentUser.Any())
                     {
                         var UpdateProjectData = MstBrokerData.FirstOrDefault();
 
-
-                        UpdateProjectData.BrokerCode = UpdateMstBroker.BrokerCode;
-                        UpdateProjectData.LastName = UpdateMstBroker.LastName;
-                        UpdateProjectData.FirstName = UpdateMstBroker.FirstName;
-                        UpdateProjectData.MiddleName = UpdateMstBroker.MiddleName;
-                        UpdateProjectData.LicenseNumber = UpdateMstBroker.LicenseNumber;
-                        UpdateProjectData.BirthDate = Convert.ToDateTime(UpdateMstBroker.BirthDate);
-                        UpdateProjectData.CivilStatus = UpdateMstBroker.CivilStatus;
-                        UpdateProjectData.Gender = UpdateMstBroker.Gender;
-                        UpdateProjectData.Address = UpdateMstBroker.Address;
-                        UpdateProjectData.TelephoneNumber = UpdateMstBroker.TelephoneNumber;
-                        UpdateProjectData.MobileNumber = UpdateMstBroker.MobileNumber;
-                        UpdateProjectData.Religion = UpdateMstBroker.Religion;
-                        UpdateProjectData.EmailAddress = UpdateMstBroker.EmailAddress;
-                        UpdateProjectData.Facebook = UpdateMstBroker.Facebook;
-                        UpdateProjectData.TIN = UpdateMstBroker.TIN;
-                        UpdateProjectData.RealtyFirm = UpdateMstBroker.RealtyFirm;
-                        UpdateProjectData.RealtyFirmAddress = UpdateMstBroker.RealtyFirmAddress;
-                        UpdateProjectData.RealtyFirmTelephoneNumber = UpdateMstBroker.RealtyFirmTelephoneNumber;
-                        UpdateProjectData.RealtyFirmMobileNumber = UpdateMstBroker.RealtyFirmMobileNumber;
-                        UpdateProjectData.RealtyFirmFaxNumber = UpdateMstBroker.RealtyFirmFaxNumber;
-                        UpdateProjectData.RealtyFirmEmailAddress = UpdateMstBroker.RealtyFirmEmailAddress;
-                        UpdateProjectData.RealtyFirmWebsite = UpdateMstBroker.RealtyFirmWebsite;
-                        UpdateProjectData.RealtyFirmTIN = UpdateMstBroker.RealtyFirmTIN;
-                        UpdateProjectData.Organization = UpdateMstBroker.Organization;
-                        UpdateProjectData.Remarks = UpdateMstBroker.Remarks;
-                        UpdateProjectData.Picture = UpdateMstBroker.Picture;
-                        UpdateProjectData.Status = UpdateMstBroker.Status;
+                        UpdateProjectData.BrokerCode = broker.BrokerCode;
+                        UpdateProjectData.LastName = broker.LastName;
+                        UpdateProjectData.FirstName = broker.FirstName;
+                        UpdateProjectData.MiddleName = broker.MiddleName;
+                        UpdateProjectData.LicenseNumber = broker.LicenseNumber;
+                        UpdateProjectData.BirthDate = Convert.ToDateTime(broker.BirthDate);
+                        UpdateProjectData.CivilStatus = broker.CivilStatus;
+                        UpdateProjectData.Gender = broker.Gender;
+                        UpdateProjectData.Address = broker.Address;
+                        UpdateProjectData.TelephoneNumber = broker.TelephoneNumber;
+                        UpdateProjectData.MobileNumber = broker.MobileNumber;
+                        UpdateProjectData.Religion = broker.Religion;
+                        UpdateProjectData.EmailAddress = broker.EmailAddress;
+                        UpdateProjectData.Facebook = broker.Facebook;
+                        UpdateProjectData.TIN = broker.TIN;
+                        UpdateProjectData.RealtyFirm = broker.RealtyFirm;
+                        UpdateProjectData.RealtyFirmAddress = broker.RealtyFirmAddress;
+                        UpdateProjectData.RealtyFirmTelephoneNumber = broker.RealtyFirmTelephoneNumber;
+                        UpdateProjectData.RealtyFirmMobileNumber = broker.RealtyFirmMobileNumber;
+                        UpdateProjectData.RealtyFirmFaxNumber = broker.RealtyFirmFaxNumber;
+                        UpdateProjectData.RealtyFirmEmailAddress = broker.RealtyFirmEmailAddress;
+                        UpdateProjectData.RealtyFirmWebsite = broker.RealtyFirmWebsite;
+                        UpdateProjectData.RealtyFirmTIN = broker.RealtyFirmTIN;
+                        UpdateProjectData.Organization = broker.Organization;
+                        UpdateProjectData.Remarks = broker.Remarks;
+                        UpdateProjectData.Picture = broker.Picture;
+                        UpdateProjectData.Status = broker.Status;
                         UpdateProjectData.IsLocked = true;
                         UpdateProjectData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UpdateProjectData.UpdatedDateTime = DateTime.Now;
@@ -347,13 +356,15 @@ namespace priland_api.Controllers
             }
         }
 
-        //Unlock
+        // Unlock
         [HttpPut, Route("UnLock")]
-        public HttpResponseMessage UnLock(MstBroker UnLockMstBroker)
+        public HttpResponseMessage UnLockMstBroker(MstBroker broker)
         {
             try
             {
-                var MstBrokerData = from d in db.MstBrokers where d.Id == Convert.ToInt32(UnLockMstBroker.Id) select d;
+                var MstBrokerData = from d in db.MstBrokers 
+                                    where d.Id == Convert.ToInt32(broker.Id) select d;
+
                 if (MstBrokerData.Any())
                 {
                     var currentUser = from d in db.MstUsers

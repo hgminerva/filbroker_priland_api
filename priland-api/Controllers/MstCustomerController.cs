@@ -16,9 +16,9 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
-        //List
+        // List
         [HttpGet, Route("List")]
-        public List<MstCustomer> GetMstCustomer()
+        public List<MstCustomer> GetMstCustomers()
         { 
             var MstCustomerData = from d in db.MstCustomers
                                   select new Models.MstCustomer
@@ -28,6 +28,7 @@ namespace priland_api.Controllers
                                       LastName = d.LastName,
                                       FirstName = d.FirstName,
                                       MiddleName = d.MiddleName,
+                                      FullName = d.LastName + ", " + d.FirstName + " " + d.MiddleName,
                                       CivilStatus = d.CivilStatus,
                                       Gender = d.Gender,
                                       BirthDate = d.BirthDate.ToShortDateString(),
@@ -66,9 +67,9 @@ namespace priland_api.Controllers
             return MstCustomerData.ToList();
         }
 
-        //Detail
+        // Detail
         [HttpGet, Route("Detail/{id}")]
-        public Models.MstCustomer GetMstCustomerId(string id)
+        public Models.MstCustomer GetMstCustomer(string id)
         {
             var MstCustomerData = from d in db.MstCustomers
                                   where d.Id == Convert.ToInt32(id)
@@ -79,6 +80,7 @@ namespace priland_api.Controllers
                                       LastName = d.LastName,
                                       FirstName = d.FirstName,
                                       MiddleName = d.MiddleName,
+                                      FullName = d.LastName + ", " + d.FirstName + " " + d.MiddleName,
                                       CivilStatus = d.CivilStatus,
                                       Gender = d.Gender,
                                       BirthDate = d.BirthDate.ToShortDateString(),
@@ -114,56 +116,57 @@ namespace priland_api.Controllers
                                       UpdatedBy = d.UpdatedBy,
                                       UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                   };
-            return (Models.MstCustomer)MstCustomerData.FirstOrDefault();
+            return MstCustomerData.FirstOrDefault();
         }
 
-        //ADD
+        // Add
         [HttpPost, Route("Add")]
-        public Int32 PostMstCustomer(MstCustomer addMstCustomer)
+        public Int32 PostMstCustomer(MstCustomer customer)
         {
             try
             {
                 var currentUser = from d in db.MstUsers
                                   where d.AspNetId == User.Identity.GetUserId()
                                   select d;
+
                 if (currentUser.Any())
                 {
                     Data.MstCustomer newMstCustomer = new Data.MstCustomer()
                     {
-                        CustomerCode = addMstCustomer.CustomerCode,
-                        LastName = addMstCustomer.LastName,
-                        FirstName = addMstCustomer.FirstName,
-                        MiddleName = addMstCustomer.MiddleName,
-                        CivilStatus = addMstCustomer.CivilStatus,
-                        Gender = addMstCustomer.Gender,
-                        BirthDate = Convert.ToDateTime(addMstCustomer.BirthDate),
-                        TIN = addMstCustomer.TIN,
-                        IdType = addMstCustomer.IdType,
-                        IdNumber = addMstCustomer.IdNumber,
-                        Address = addMstCustomer.Address,
-                        City = addMstCustomer.City,
-                        Province = addMstCustomer.Province,
-                        Country = addMstCustomer.Country,
-                        ZipCode = addMstCustomer.ZipCode,
-                        EmailAddress = addMstCustomer.EmailAddress,
-                        TelephoneNumber = addMstCustomer.TelephoneNumber,
-                        MobileNumber = addMstCustomer.MobileNumber,
-                        Employer = addMstCustomer.Employer,
-                        EmployerIndustry = addMstCustomer.EmployerIndustry,
-                        NoOfYearsEmployed = addMstCustomer.NoOfYearsEmployed,
-                        Position = addMstCustomer.Position,
-                        EmploymentStatus = addMstCustomer.EmploymentStatus,
-                        EmployerAddress = addMstCustomer.EmployerAddress,
-                        EmployerCity = addMstCustomer.EmployerCity,
-                        EmployerProvince = addMstCustomer.EmployerProvince,
-                        EmployerCountry = addMstCustomer.EmployerCountry,
-                        EmployerZipCode = addMstCustomer.EmployerZipCode,
-                        EmployerTelephoneNumber = addMstCustomer.EmployerTelephoneNumber,
-                        EmployerMobileNumber = addMstCustomer.EmployerMobileNumber,
-                        Remarks = addMstCustomer.Remarks,
-                        Status = addMstCustomer.Status,
-                        Picture = addMstCustomer.Picture,
-                        IsLocked = addMstCustomer.IsLocked,
+                        CustomerCode = customer.CustomerCode,
+                        LastName = customer.LastName,
+                        FirstName = customer.FirstName,
+                        MiddleName = customer.MiddleName,
+                        CivilStatus = customer.CivilStatus,
+                        Gender = customer.Gender,
+                        BirthDate = Convert.ToDateTime(customer.BirthDate),
+                        TIN = customer.TIN,
+                        IdType = customer.IdType,
+                        IdNumber = customer.IdNumber,
+                        Address = customer.Address,
+                        City = customer.City,
+                        Province = customer.Province,
+                        Country = customer.Country,
+                        ZipCode = customer.ZipCode,
+                        EmailAddress = customer.EmailAddress,
+                        TelephoneNumber = customer.TelephoneNumber,
+                        MobileNumber = customer.MobileNumber,
+                        Employer = customer.Employer,
+                        EmployerIndustry = customer.EmployerIndustry,
+                        NoOfYearsEmployed = customer.NoOfYearsEmployed,
+                        Position = customer.Position,
+                        EmploymentStatus = customer.EmploymentStatus,
+                        EmployerAddress = customer.EmployerAddress,
+                        EmployerCity = customer.EmployerCity,
+                        EmployerProvince = customer.EmployerProvince,
+                        EmployerCountry = customer.EmployerCountry,
+                        EmployerZipCode = customer.EmployerZipCode,
+                        EmployerTelephoneNumber = customer.EmployerTelephoneNumber,
+                        EmployerMobileNumber = customer.EmployerMobileNumber,
+                        Remarks = customer.Remarks,
+                        Status = customer.Status,
+                        Picture = customer.Picture,
+                        IsLocked = customer.IsLocked,
                         CreatedBy = currentUser.FirstOrDefault().Id,
                         CreatedDateTime = DateTime.Now,
                         UpdatedBy = currentUser.FirstOrDefault().Id,
@@ -187,16 +190,19 @@ namespace priland_api.Controllers
             }
         }
 
-        //Delete
+        // Delete
         [HttpDelete, Route("Delete/{id}")]
         public HttpResponseMessage DeleteMstCustomer(string id)
         {
             try
             {
-                var MstCustomerData = from d in db.MstCustomers where d.Id == Convert.ToInt32(id) select d;
+                var MstCustomerData = from d in db.MstCustomers 
+                                      where d.Id == Convert.ToInt32(id) select d;
+
                 if (MstCustomerData.Any())
                 {
-                    if (!MstCustomerData.First().IsLocked)
+
+                    if (MstCustomerData.First().IsLocked == false)
                     {
                         db.MstCustomers.DeleteOnSubmit(MstCustomerData.First());
                         db.SubmitChanges();
@@ -220,13 +226,15 @@ namespace priland_api.Controllers
             }
         }
 
-        //Save
+        // Save
         [HttpPut, Route("Save")]
         public HttpResponseMessage SaveMstCustomer(MstCustomer customer)
         {
             try
             {
-                var MstCustomerData = from d in db.MstCustomers where d.Id == Convert.ToInt32(customer.Id) select d;
+                var MstCustomerData = from d in db.MstCustomers 
+                                      where d.Id == Convert.ToInt32(customer.Id) select d;
+
                 if (MstCustomerData.Any())
                 {
                     if (MstCustomerData.First().IsLocked == false)
@@ -270,7 +278,6 @@ namespace priland_api.Controllers
                             UpdateMstCustomerData.EmployerMobileNumber = customer.EmployerMobileNumber;
                             UpdateMstCustomerData.Remarks = customer.Remarks;
                             UpdateMstCustomerData.Status = customer.Status;
-                            UpdateMstCustomerData.Status = customer.Status;
                             UpdateMstCustomerData.UpdatedBy = currentUser.FirstOrDefault().Id;
                             UpdateMstCustomerData.UpdatedDateTime = DateTime.Now;
 
@@ -300,54 +307,59 @@ namespace priland_api.Controllers
             }
         }
 
-        //Lock
+        // Lock
         [HttpPut, Route("Lock")]
-        public HttpResponseMessage UpdateCustomer(MstCustomer UpdateMstCustomer)
+        public HttpResponseMessage LockMstCustomer(MstCustomer customer)
         {
             try
             {
-                var MstCustomerData = from d in db.MstCustomers where d.Id == Convert.ToInt32(UpdateMstCustomer.Id) select d;
+                var MstCustomerData = from d in db.MstCustomers
+                                      where d.Id == Convert.ToInt32(customer.Id)
+                                      select d;
+
                 if (MstCustomerData.Any())
                 {
+
                     var currentUser = from d in db.MstUsers
                                       where d.AspNetId == User.Identity.GetUserId()
                                       select d;
+
                     if (currentUser.Any())
                     {
                         var UpdateCustomerData = MstCustomerData.FirstOrDefault();
 
-                        UpdateCustomerData.CustomerCode = UpdateMstCustomer.CustomerCode;
-                        UpdateCustomerData.LastName = UpdateMstCustomer.LastName;
-                        UpdateCustomerData.FirstName = UpdateMstCustomer.FirstName;
-                        UpdateCustomerData.MiddleName = UpdateMstCustomer.MiddleName;
-                        UpdateCustomerData.CivilStatus = UpdateMstCustomer.CivilStatus;
-                        UpdateCustomerData.Gender = UpdateMstCustomer.Gender;
-                        UpdateCustomerData.BirthDate = Convert.ToDateTime(UpdateMstCustomer.BirthDate);
-                        UpdateCustomerData.TIN = UpdateMstCustomer.TIN;
-                        UpdateCustomerData.IdType = UpdateMstCustomer.IdType;
-                        UpdateCustomerData.IdNumber = UpdateMstCustomer.IdNumber;
-                        UpdateCustomerData.Address = UpdateMstCustomer.Address;
-                        UpdateCustomerData.City = UpdateMstCustomer.City;
-                        UpdateCustomerData.Province = UpdateMstCustomer.Province;
-                        UpdateCustomerData.Country = UpdateMstCustomer.Country;
-                        UpdateCustomerData.ZipCode = UpdateMstCustomer.ZipCode;
-                        UpdateCustomerData.EmailAddress = UpdateMstCustomer.EmailAddress;
-                        UpdateCustomerData.TelephoneNumber = UpdateMstCustomer.TelephoneNumber;
-                        UpdateCustomerData.MobileNumber = UpdateMstCustomer.MobileNumber;
-                        UpdateCustomerData.Employer = UpdateMstCustomer.Employer;
-                        UpdateCustomerData.EmployerIndustry = UpdateMstCustomer.EmployerIndustry;
-                        UpdateCustomerData.NoOfYearsEmployed = UpdateMstCustomer.NoOfYearsEmployed;
-                        UpdateCustomerData.Position = UpdateMstCustomer.Position;
-                        UpdateCustomerData.EmploymentStatus = UpdateMstCustomer.EmploymentStatus;
-                        UpdateCustomerData.EmployerAddress = UpdateMstCustomer.EmployerAddress;
-                        UpdateCustomerData.EmployerCity = UpdateMstCustomer.EmployerCity;
-                        UpdateCustomerData.EmployerProvince = UpdateMstCustomer.EmployerProvince;
-                        UpdateCustomerData.EmployerCountry = UpdateMstCustomer.EmployerCountry;
-                        UpdateCustomerData.EmployerZipCode = UpdateMstCustomer.EmployerZipCode;
-                        UpdateCustomerData.EmployerTelephoneNumber = UpdateMstCustomer.EmployerTelephoneNumber;
-                        UpdateCustomerData.EmployerMobileNumber = UpdateMstCustomer.EmployerMobileNumber;
-                        UpdateCustomerData.Remarks = UpdateMstCustomer.Remarks;
-                        UpdateCustomerData.Status = UpdateMstCustomer.Status;
+                        UpdateCustomerData.CustomerCode = customer.CustomerCode;
+                        UpdateCustomerData.LastName = customer.LastName;
+                        UpdateCustomerData.FirstName = customer.FirstName;
+                        UpdateCustomerData.MiddleName = customer.MiddleName;
+                        UpdateCustomerData.CivilStatus = customer.CivilStatus;
+                        UpdateCustomerData.Gender = customer.Gender;
+                        UpdateCustomerData.BirthDate = Convert.ToDateTime(customer.BirthDate);
+                        UpdateCustomerData.TIN = customer.TIN;
+                        UpdateCustomerData.IdType = customer.IdType;
+                        UpdateCustomerData.IdNumber = customer.IdNumber;
+                        UpdateCustomerData.Address = customer.Address;
+                        UpdateCustomerData.City = customer.City;
+                        UpdateCustomerData.Province = customer.Province;
+                        UpdateCustomerData.Country = customer.Country;
+                        UpdateCustomerData.ZipCode = customer.ZipCode;
+                        UpdateCustomerData.EmailAddress = customer.EmailAddress;
+                        UpdateCustomerData.TelephoneNumber = customer.TelephoneNumber;
+                        UpdateCustomerData.MobileNumber = customer.MobileNumber;
+                        UpdateCustomerData.Employer = customer.Employer;
+                        UpdateCustomerData.EmployerIndustry = customer.EmployerIndustry;
+                        UpdateCustomerData.NoOfYearsEmployed = customer.NoOfYearsEmployed;
+                        UpdateCustomerData.Position = customer.Position;
+                        UpdateCustomerData.EmploymentStatus = customer.EmploymentStatus;
+                        UpdateCustomerData.EmployerAddress = customer.EmployerAddress;
+                        UpdateCustomerData.EmployerCity = customer.EmployerCity;
+                        UpdateCustomerData.EmployerProvince = customer.EmployerProvince;
+                        UpdateCustomerData.EmployerCountry = customer.EmployerCountry;
+                        UpdateCustomerData.EmployerZipCode = customer.EmployerZipCode;
+                        UpdateCustomerData.EmployerTelephoneNumber = customer.EmployerTelephoneNumber;
+                        UpdateCustomerData.EmployerMobileNumber = customer.EmployerMobileNumber;
+                        UpdateCustomerData.Remarks = customer.Remarks;
+                        UpdateCustomerData.Status = customer.Status;
                         UpdateCustomerData.IsLocked = true;
                         UpdateCustomerData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UpdateCustomerData.UpdatedDateTime = DateTime.Now;
@@ -373,18 +385,22 @@ namespace priland_api.Controllers
             }
         }
 
-        //Unlock
+        // Unlock
         [HttpPut, Route("UnLock")]
-        public HttpResponseMessage UnLock(MstCustomer UnLockMstCustomer)
+        public HttpResponseMessage UnLockMstCustomer(MstCustomer customer)
         {
             try
             {
-                var MstCustomerData = from d in db.MstCustomers where d.Id == Convert.ToInt32(UnLockMstCustomer.Id) select d;
+                var MstCustomerData = from d in db.MstCustomers
+                                      where d.Id == Convert.ToInt32(customer.Id)
+                                      select d;
+
                 if (MstCustomerData.Any())
                 {
                     var currentUser = from d in db.MstUsers
                                       where d.AspNetId == User.Identity.GetUserId()
                                       select d;
+
                     if (currentUser.Any())
                     {
                         var UnLockCustomerData = MstCustomerData.FirstOrDefault();

@@ -5,12 +5,12 @@ using System.Web;
 
 namespace priland_api.Models
 {
-    public class MstChecList
+    public class MstCheckList
     {
         public Int32 Id { get; set; }
-        public String CheckListCode { get; set; }
-        public String CheckList { get; set; }
-        public String CheckListDate { get; set; }
+        public String ChecklistCode { get; set; }
+        public String Checklist { get; set; }
+        public String ChecklistDate { get; set; }
         public Int32 ProjectId { get; set; }
         public String Project { get; set; }
         public String Remarks { get; set; }

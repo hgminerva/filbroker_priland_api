@@ -16,5 +16,6 @@ namespace priland_api.Models
         public Boolean CanLock { get; set; }
         public Boolean CanUnLock { get; set; }
         public Boolean CanPrint { get; set; }
+        public Boolean CanDelete { get; set; }
     }
 }

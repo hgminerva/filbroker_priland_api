@@ -16,16 +16,21 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
-        //List
+        // List
         [HttpGet, Route("List")]
-        public List<TrnSoldUnitRequirement> GetTrnSoldUnitRequirement()
+        public List<TrnSoldUnitRequirement> GetTrnSoldUnitRequirements()
         {
             var TrnSoldUnitRequirementData = from d in db.TrnSoldUnitRequirements
                                              select new TrnSoldUnitRequirement
                                              {
                                                  Id = d.Id,
                                                  SoldUnitId = d.SoldUnitId,
-                                                 CheckListRequirementId = d.CheckListRequirementId,
+                                                 ChecklistRequirementId = d.CheckListRequirementId,
+                                                 ChecklistRequirement = d.MstCheckListRequirement.Requirement,
+                                                 ChecklistRequirementNo = d.MstCheckListRequirement.RequirementNo,
+                                                 ChecklistCategory = d.MstCheckListRequirement.Category,
+                                                 ChecklistType = d.MstCheckListRequirement.Type,
+                                                 ChecklistWithAttachments = d.MstCheckListRequirement.WithAttachments,
                                                  Attachment1 = d.Attachment1,
                                                  Attachment2 = d.Attachment2,
                                                  Attachment3 = d.Attachment3,
@@ -33,12 +38,41 @@ namespace priland_api.Controllers
                                                  Attachment5 = d.Attachment5,
                                                  Remarks = d.Remarks,
                                                  Status = d.Status,
-                                                 StatusDate = d.StatusDate.ToLongDateString()
+                                                 StatusDate = d.StatusDate.ToShortDateString()
                                              };
             return TrnSoldUnitRequirementData.ToList();
         }
 
-        //Detail
+        // List
+        [HttpGet, Route("ListPerUnitSold/{id}")]
+        public List<TrnSoldUnitRequirement> GetTrnSoldUnitRequirementsPerUnitSold(string id)
+        {
+            var TrnSoldUnitRequirementData = from d in db.TrnSoldUnitRequirements
+                                             where d.SoldUnitId ==  Convert.ToInt32(id)
+                                             orderby d.MstCheckListRequirement.RequirementNo
+                                             select new TrnSoldUnitRequirement
+                                             {
+                                                 Id = d.Id,
+                                                 SoldUnitId = d.SoldUnitId,
+                                                 ChecklistRequirementId = d.CheckListRequirementId,
+                                                 ChecklistRequirement = d.MstCheckListRequirement.Requirement,
+                                                 ChecklistRequirementNo = d.MstCheckListRequirement.RequirementNo,
+                                                 ChecklistCategory = d.MstCheckListRequirement.Category,
+                                                 ChecklistType = d.MstCheckListRequirement.Type,
+                                                 ChecklistWithAttachments = d.MstCheckListRequirement.WithAttachments,
+                                                 Attachment1 = d.Attachment1,
+                                                 Attachment2 = d.Attachment2,
+                                                 Attachment3 = d.Attachment3,
+                                                 Attachment4 = d.Attachment4,
+                                                 Attachment5 = d.Attachment5,
+                                                 Remarks = d.Remarks,
+                                                 Status = d.Status,
+                                                 StatusDate = d.StatusDate.ToShortDateString()
+                                             };
+            return TrnSoldUnitRequirementData.ToList();
+        }
+
+        // Detail
         [HttpGet, Route("Detail/{id}")]
         public TrnSoldUnitRequirement GetTrnSoldUnitRequirementId(string id)
         {
@@ -48,7 +82,12 @@ namespace priland_api.Controllers
                                              {
                                                  Id = d.Id,
                                                  SoldUnitId = d.SoldUnitId,
-                                                 CheckListRequirementId = d.CheckListRequirementId,
+                                                 ChecklistRequirementId = d.CheckListRequirementId,
+                                                 ChecklistRequirement = d.MstCheckListRequirement.Requirement,
+                                                 ChecklistRequirementNo = d.MstCheckListRequirement.RequirementNo,
+                                                 ChecklistCategory = d.MstCheckListRequirement.Category,
+                                                 ChecklistType = d.MstCheckListRequirement.Type,
+                                                 ChecklistWithAttachments = d.MstCheckListRequirement.WithAttachments,
                                                  Attachment1 = d.Attachment1,
                                                  Attachment2 = d.Attachment2,
                                                  Attachment3 = d.Attachment3,
@@ -56,114 +95,107 @@ namespace priland_api.Controllers
                                                  Attachment5 = d.Attachment5,
                                                  Remarks = d.Remarks,
                                                  Status = d.Status,
-                                                 StatusDate = d.StatusDate.ToLongDateString()
+                                                 StatusDate = d.StatusDate.ToShortDateString()
                                              };
             return (TrnSoldUnitRequirement)TrnSoldUnitRequirementData.FirstOrDefault();
         }
 
-        //ADD
-        [HttpPost, Route("Add")]
-        public Int32 PostTrnSoldUnitRequirement(TrnSoldUnitRequirement addTrnSoldUnitRequirement)
+        // New Sold Unit requirements
+        [HttpGet, Route("ListNewTrnSoldUnitRequirements/{soldUnitId}/{checklistId}")]
+        public List<TrnSoldUnitRequirement> GetNewTrnSoldUnitRequirements(string soldUnitId, string checklistId)
         {
-            try
+            // Remove existing requirements
+            var deleteRequirements = from d in db.TrnSoldUnitRequirements 
+                                     where d.SoldUnitId == Convert.ToInt32(soldUnitId) select d;
+
+            if (deleteRequirements.Any())
             {
-                var currentUser = from d in db.MstUsers
-                                  where d.AspNetId == User.Identity.GetUserId()
-                                  select d;
-                if (currentUser.Any())
+                foreach (var deleteRequirement in deleteRequirements)
                 {
-                    Data.TrnSoldUnitRequirement newTrnSoldUnitRequirement = new Data.TrnSoldUnitRequirement()
+                    db.TrnSoldUnitRequirements.DeleteOnSubmit(deleteRequirement);
+                }
+                db.SubmitChanges();
+            }
+
+            // Insert new requirements
+            var checklistRequirements = from d in db.MstCheckListRequirements
+                                        where d.CheckListId == Convert.ToInt32(checklistId)
+                                        select d;
+
+            if (checklistRequirements.Any())
+            {
+                foreach (var checklistRequirement in checklistRequirements)
+                {
+                    Data.TrnSoldUnitRequirement insertRequirement = new Data.TrnSoldUnitRequirement()
                     {
-                        SoldUnitId = addTrnSoldUnitRequirement.SoldUnitId,
-                        CheckListRequirementId = addTrnSoldUnitRequirement.CheckListRequirementId,
-                        Attachment1 = addTrnSoldUnitRequirement.Attachment1,
-                        Attachment2 = addTrnSoldUnitRequirement.Attachment2,
-                        Attachment3 = addTrnSoldUnitRequirement.Attachment3,
-                        Attachment4 = addTrnSoldUnitRequirement.Attachment4,
-                        Attachment5 = addTrnSoldUnitRequirement.Attachment5,
-                        Remarks = addTrnSoldUnitRequirement.Remarks,
-                        Status = addTrnSoldUnitRequirement.Status,
-                        StatusDate = Convert.ToDateTime(addTrnSoldUnitRequirement.StatusDate)
+                        SoldUnitId = Convert.ToInt32(soldUnitId),
+                        CheckListRequirementId = checklistRequirement.Id,
+                        Remarks = "",
+                        Status = "NOT OK",
+                        StatusDate = DateTime.Now
                     };
 
-                    db.TrnSoldUnitRequirements.InsertOnSubmit(newTrnSoldUnitRequirement);
-                    db.SubmitChanges();
+                    db.TrnSoldUnitRequirements.InsertOnSubmit(insertRequirement);
+                }
+                db.SubmitChanges();
+            }
 
-                    return newTrnSoldUnitRequirement.Id;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                return 0;
-            }
+            // Return new requirements
+            var newRequirements = from d in db.TrnSoldUnitRequirements
+                                  where d.SoldUnitId == Convert.ToInt32(soldUnitId)
+                                  select new TrnSoldUnitRequirement
+                                  {
+                                        Id = d.Id,
+                                        SoldUnitId = d.SoldUnitId,
+                                        ChecklistRequirementId = d.CheckListRequirementId,
+                                        ChecklistRequirement = d.MstCheckListRequirement.Requirement,
+                                        ChecklistRequirementNo = d.MstCheckListRequirement.RequirementNo,
+                                        ChecklistCategory = d.MstCheckListRequirement.Category,
+                                        ChecklistType = d.MstCheckListRequirement.Type,
+                                        ChecklistWithAttachments = d.MstCheckListRequirement.WithAttachments,
+                                        Attachment1 = d.Attachment1,
+                                        Attachment2 = d.Attachment2,
+                                        Attachment3 = d.Attachment3,
+                                        Attachment4 = d.Attachment4,
+                                        Attachment5 = d.Attachment5,
+                                        Remarks = d.Remarks,
+                                        Status = d.Status,
+                                        StatusDate = d.StatusDate.ToShortDateString()
+                                  };
+
+            return newRequirements.ToList();
         }
 
-        //Delete
-        [HttpDelete, Route("Delete/{id}")]
-        public HttpResponseMessage DeleteTrnSoldUnitRequirement(string id)
+        // Save
+        [HttpPut, Route("Save")]
+        public HttpResponseMessage SaveTrnSoldUnitRequirement(TrnSoldUnitRequirement soldUnitRequirement)
         {
             try
             {
-                var TrnSoldUnitRequirementData = from d in db.TrnSoldUnitRequirements where d.Id == Convert.ToInt32(id) select d;
-                if (TrnSoldUnitRequirementData.Any())
+                var soldUnitRequirements = from d in db.TrnSoldUnitRequirements
+                                           where d.Id == Convert.ToInt32(soldUnitRequirement.Id)
+                                           select d;
+
+                if (soldUnitRequirements.Any())
                 {
-                    db.TrnSoldUnitRequirements.DeleteOnSubmit(TrnSoldUnitRequirementData.First());
+                    var updateSoldUnitRequirement = soldUnitRequirements.FirstOrDefault();
+
+                    updateSoldUnitRequirement.Attachment1 = soldUnitRequirement.Attachment1;
+                    updateSoldUnitRequirement.Attachment2 = soldUnitRequirement.Attachment2;
+                    updateSoldUnitRequirement.Attachment3 = soldUnitRequirement.Attachment3;
+                    updateSoldUnitRequirement.Attachment4 = soldUnitRequirement.Attachment4;
+                    updateSoldUnitRequirement.Attachment5 = soldUnitRequirement.Attachment5;
+                    updateSoldUnitRequirement.Remarks = soldUnitRequirement.Remarks;
+
+                    if (updateSoldUnitRequirement.Status != soldUnitRequirement.Status)
+                    {
+                        updateSoldUnitRequirement.Status = soldUnitRequirement.Status;
+                        updateSoldUnitRequirement.StatusDate = DateTime.Now;
+                    }
+
                     db.SubmitChanges();
 
                     return Request.CreateResponse(HttpStatusCode.OK);
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-        }
-
-        //Lock
-        [HttpPut, Route("Update")]
-        public HttpResponseMessage UpdateSoldUnitRequirement(TrnSoldUnitRequirement UpdateTrnSoldUnitRequirement)
-        {
-            try
-            {
-                var TrnSoldUnitRequirementData = from d in db.TrnSoldUnitRequirements where d.Id == Convert.ToInt32(UpdateTrnSoldUnitRequirement.Id) select d;
-                if (TrnSoldUnitRequirementData.Any())
-                {
-                    var currentUser = from d in db.MstUsers
-                                      where d.AspNetId == User.Identity.GetUserId()
-                                      select d;
-                    if (currentUser.Any())
-                    {
-                        var UpdateTrnSoldUnitRequirementData = TrnSoldUnitRequirementData.FirstOrDefault();
-
-                        UpdateTrnSoldUnitRequirementData.SoldUnitId = UpdateTrnSoldUnitRequirement.SoldUnitId;
-                        UpdateTrnSoldUnitRequirementData.CheckListRequirementId = UpdateTrnSoldUnitRequirement.CheckListRequirementId;
-                        UpdateTrnSoldUnitRequirementData.Attachment1 = UpdateTrnSoldUnitRequirement.Attachment1;
-                        UpdateTrnSoldUnitRequirementData.Attachment2 = UpdateTrnSoldUnitRequirement.Attachment2;
-                        UpdateTrnSoldUnitRequirementData.Attachment3 = UpdateTrnSoldUnitRequirement.Attachment3;
-                        UpdateTrnSoldUnitRequirementData.Attachment4 = UpdateTrnSoldUnitRequirement.Attachment4;
-                        UpdateTrnSoldUnitRequirementData.Attachment5 = UpdateTrnSoldUnitRequirement.Attachment5;
-                        UpdateTrnSoldUnitRequirementData.Remarks = UpdateTrnSoldUnitRequirement.Remarks;
-                        UpdateTrnSoldUnitRequirementData.Status = UpdateTrnSoldUnitRequirement.Status;
-                        UpdateTrnSoldUnitRequirementData.StatusDate = Convert.ToDateTime(UpdateTrnSoldUnitRequirement.StatusDate);
-
-                        db.SubmitChanges();
-
-                        return Request.CreateResponse(HttpStatusCode.OK);
-                    }
-                    else
-                    {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest);
-                    }
                 }
                 else
                 {

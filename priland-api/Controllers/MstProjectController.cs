@@ -15,7 +15,20 @@ namespace priland_api.Controllers
     public class MstProjectController : ApiController
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
-         
+
+        private String padNumWithZero(Int32 number, Int32 length)
+        {
+            var result = number.ToString();
+            var pad = length - result.Length;
+            while (pad > 0)
+            {
+                result = '0' + result;
+                pad--;
+            }
+
+            return result;
+        }
+
         //List
         [HttpGet, Route("List")]
         public List<Models.MstProject> GetMstProject()
@@ -72,9 +85,17 @@ namespace priland_api.Controllers
 
                 if (currentUser.Any())
                 {
+                    string projectCode = "0001";
+                    var projects = from d in db.MstProjects.OrderByDescending(d => d.Id) select d;
+                    if (projects.Any())
+                    {
+                        Int32 nextProjectCode = Convert.ToInt32(projects.FirstOrDefault().ProjectCode) + 1;
+                        projectCode = padNumWithZero(nextProjectCode, 4);
+                    }
+
                     Data.MstProject newMstProject = new Data.MstProject()
                     {
-                        ProjectCode = project.ProjectCode,
+                        ProjectCode = projectCode,
                         Project = project.Project,
                         Address = project.Address,
                         Status = project.Status,

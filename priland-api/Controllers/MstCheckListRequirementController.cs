@@ -16,15 +16,17 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
-        //List 
-        [HttpGet, Route("List")]
-        public List<Models.MstCheckListRequirement> GetMstCheckListRequirement(string id)
+        // list 
+        [HttpGet, Route("ListPerChecklist/{id}")]
+        public List<MstCheckListRequirement> GetMstChecklistRequirementsPerChecklist(string id)
         {
             var MstCheckListRequirementData = from d in db.MstCheckListRequirements
                                               where d.CheckListId == Convert.ToInt32(id)
-                                              select new Models.MstCheckListRequirement
+                                              select new MstCheckListRequirement
                                               {
                                                   Id = d.Id,
+                                                  ChecklistId = d.CheckListId,
+                                                  Checklist = d.MstCheckList.CheckList,
                                                   RequirementNo = d.RequirementNo,
                                                   Requirement = d.Requirement,
                                                   Category = d.Category,
@@ -34,40 +36,40 @@ namespace priland_api.Controllers
             return MstCheckListRequirementData.ToList();
         }
 
-        //Detail
+        // detail
         [HttpGet, Route("Detail/{id}")]
-        public Models.MstCheckListRequirement GetMstCheckListRequirementId(string id)
+        public MstCheckListRequirement GetMstCheckListRequirement(string id)
         {
             var MstCheckListRequirementData = from d in db.MstCheckListRequirements
                                               where d.Id == Convert.ToInt32(id)
-                                              select new Models.MstCheckListRequirement
+                                              select new MstCheckListRequirement
                                               {
                                                   Id = d.Id,
-                                                  CheckListId = d.CheckListId,
+                                                  ChecklistId = d.CheckListId,
+                                                  Checklist = d.MstCheckList.CheckList,
                                                   RequirementNo = d.RequirementNo,
                                                   Requirement = d.Requirement,
                                                   Category = d.Category,
                                                   Type = d.Type,
                                                   WithAttachments = d.WithAttachments
                                               };
-            return (Models.MstCheckListRequirement)MstCheckListRequirementData.FirstOrDefault();
+            return MstCheckListRequirementData.FirstOrDefault();
         }
 
-        //ADD
+        // add
         [HttpPost, Route("Add")]
-        public Int32 PostMstCheckListRequirement(MstCheckListRequirement addPostMstCheckListRequirement)
+        public Int32 PostMstCheckListRequirement(MstCheckListRequirement checklistRequirement)
         {
             try
             {
                 Data.MstCheckListRequirement newMstCheckListRequirement = new Data.MstCheckListRequirement()
                 {
-                    Id = addPostMstCheckListRequirement.Id,
-                    CheckListId = addPostMstCheckListRequirement.CheckListId,
-                    RequirementNo = addPostMstCheckListRequirement.RequirementNo,
-                    Requirement = addPostMstCheckListRequirement.Requirement,
-                    Category = addPostMstCheckListRequirement.Category,
-                    Type = addPostMstCheckListRequirement.Type,
-                    WithAttachments = addPostMstCheckListRequirement.WithAttachments
+                    CheckListId = checklistRequirement.ChecklistId,
+                    RequirementNo = checklistRequirement.RequirementNo,
+                    Requirement = checklistRequirement.Requirement,
+                    Category = checklistRequirement.Category,
+                    Type = checklistRequirement.Type,
+                    WithAttachments = checklistRequirement.WithAttachments
                 };
 
                 db.MstCheckListRequirements.InsertOnSubmit(newMstCheckListRequirement);
@@ -83,13 +85,15 @@ namespace priland_api.Controllers
 
         }
 
-        //Delete
+        // delete
         [HttpDelete, Route("Delete/{id}")]
         public HttpResponseMessage DeleteMstCheckListRequirement(string id)
         {
             try
             {
-                var MstCheckListRequirementData = from d in db.MstCheckListRequirements where d.Id == Convert.ToInt32(id) select d;
+                var MstCheckListRequirementData = from d in db.MstCheckListRequirements 
+                                                  where d.Id == Convert.ToInt32(id) select d;
+
                 if (MstCheckListRequirementData.Any())
                 {
                     db.MstCheckListRequirements.DeleteOnSubmit(MstCheckListRequirementData.First());
@@ -109,24 +113,26 @@ namespace priland_api.Controllers
             }
         }
 
-        //UPDATE
-        [HttpPut, Route("Update")]
-        public HttpResponseMessage UpdateCheckListRequirements(MstCheckListRequirement UpdateMstCheckListRequirements)
+        // save
+        [HttpPut, Route("Save")]
+        public HttpResponseMessage UpdateCheckListRequirements(MstCheckListRequirement checklistRequirement)
         {
             try
             {
-                var MstCheckListRequirementsData = from d in db.MstCheckListRequirements where d.Id == Convert.ToInt32(UpdateMstCheckListRequirements.Id) select d;
+                var MstCheckListRequirementsData = from d in db.MstCheckListRequirements
+                                                   where d.Id == Convert.ToInt32(checklistRequirement.Id)
+                                                   select d;
+
                 if (MstCheckListRequirementsData.Any())
                 {
 
                     var UpdateCheckListRequirementsData = MstCheckListRequirementsData.FirstOrDefault();
 
-                    UpdateCheckListRequirementsData.CheckListId = UpdateMstCheckListRequirements.CheckListId;
-                    UpdateCheckListRequirementsData.RequirementNo = UpdateMstCheckListRequirements.RequirementNo;
-                    UpdateCheckListRequirementsData.Requirement = UpdateMstCheckListRequirements.Requirement;
-                    UpdateCheckListRequirementsData.Category = UpdateMstCheckListRequirements.Category;
-                    UpdateCheckListRequirementsData.Type = UpdateMstCheckListRequirements.Type;
-                    UpdateCheckListRequirementsData.WithAttachments = UpdateMstCheckListRequirements.WithAttachments;
+                    UpdateCheckListRequirementsData.RequirementNo = checklistRequirement.RequirementNo;
+                    UpdateCheckListRequirementsData.Requirement = checklistRequirement.Requirement;
+                    UpdateCheckListRequirementsData.Category = checklistRequirement.Category;
+                    UpdateCheckListRequirementsData.Type = checklistRequirement.Type;
+                    UpdateCheckListRequirementsData.WithAttachments = checklistRequirement.WithAttachments;
 
                     db.SubmitChanges();
 
