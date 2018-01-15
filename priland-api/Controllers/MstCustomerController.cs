@@ -16,6 +16,19 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
+        private String padNumWithZero(Int32 number, Int32 length)
+        {
+            var result = number.ToString();
+            var pad = length - result.Length;
+            while (pad > 0)
+            {
+                result = '0' + result;
+                pad--;
+            }
+
+            return result;
+        }
+
         // List
         [HttpGet, Route("List")]
         public List<MstCustomer> GetMstCustomers()
@@ -131,9 +144,18 @@ namespace priland_api.Controllers
 
                 if (currentUser.Any())
                 {
+
+                    string customerCode = "0001";
+                    var customers = from d in db.MstCustomers.OrderByDescending(d => d.Id) select d;
+                    if (customers.Any())
+                    {
+                        Int32 nextProjectCode = Convert.ToInt32(customers.FirstOrDefault().CustomerCode) + 1;
+                        customerCode = padNumWithZero(nextProjectCode, 4);
+                    }
+
                     Data.MstCustomer newMstCustomer = new Data.MstCustomer()
                     {
-                        CustomerCode = customer.CustomerCode,
+                        CustomerCode = customerCode,
                         LastName = customer.LastName,
                         FirstName = customer.FirstName,
                         MiddleName = customer.MiddleName,

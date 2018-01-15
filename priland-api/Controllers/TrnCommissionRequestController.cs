@@ -152,30 +152,49 @@ namespace priland_api.Controllers
                         commissionRequestNumber = padNumWithZero(nextCommissionRequestNumber, 10);
                     }
 
-                    Data.TrnCommissionRequest newTrnCommissionRequest = new Data.TrnCommissionRequest()
+                    Int32 soldUnitId = 0;
+                    Int32 brokerId = 0;
+
+                    var soldUnits = from d in db.TrnSoldUnits where d.IsLocked == true select d;
+                    if (soldUnits.Any())
                     {
-                        CommissionRequestNumber = commissionRequestNumber,
-                        CommissionRequestDate = Convert.ToDateTime(commissionRequest.CommissionRequestDate),
-                        BrokerId = commissionRequest.BrokerId,
-                        SoldUnitId = commissionRequest.SoldUnitId,
-                        CommissionNumber = commissionRequest.CommissionRequestNumber,
-                        Amount = commissionRequest.Amount,
-                        Remarks = commissionRequest.Remarks,
-                        PreparedBy = commissionRequest.PreparedBy,
-                        CheckedBy = commissionRequest.CheckedBy,
-                        ApprovedBy = commissionRequest.ApprovedBy,
-                        Status = commissionRequest.Status,
-                        IsLocked = commissionRequest.IsLocked,
-                        CreatedBy = currentUser.FirstOrDefault().Id,
-                        CreatedDateTime = DateTime.Now,
-                        UpdatedBy = currentUser.FirstOrDefault().Id,
-                        UpdatedDateTime = DateTime.Now
-                    };
+                        var soldUnit = soldUnits.FirstOrDefault();
 
-                    db.TrnCommissionRequests.InsertOnSubmit(newTrnCommissionRequest);
-                    db.SubmitChanges();
+                        soldUnitId = soldUnit.Id;
+                        brokerId = soldUnit.BrokerId;
+                    }
 
-                    return newTrnCommissionRequest.Id;
+                    if (soldUnitId > 0 && brokerId > 0)
+                    {
+                        Data.TrnCommissionRequest newTrnCommissionRequest = new Data.TrnCommissionRequest()
+                        {
+                            CommissionRequestNumber = commissionRequestNumber,
+                            CommissionRequestDate = Convert.ToDateTime(commissionRequest.CommissionRequestDate),
+                            BrokerId = brokerId,
+                            SoldUnitId = soldUnitId,
+                            CommissionNumber = commissionRequest.CommissionRequestNumber,
+                            Amount = commissionRequest.Amount,
+                            Remarks = commissionRequest.Remarks,
+                            PreparedBy = currentUser.FirstOrDefault().Id,
+                            CheckedBy = currentUser.FirstOrDefault().Id,
+                            ApprovedBy = currentUser.FirstOrDefault().Id,
+                            Status = commissionRequest.Status,
+                            IsLocked = commissionRequest.IsLocked,
+                            CreatedBy = currentUser.FirstOrDefault().Id,
+                            CreatedDateTime = DateTime.Now,
+                            UpdatedBy = currentUser.FirstOrDefault().Id,
+                            UpdatedDateTime = DateTime.Now
+                        };
+
+                        db.TrnCommissionRequests.InsertOnSubmit(newTrnCommissionRequest);
+                        db.SubmitChanges();
+
+                        return newTrnCommissionRequest.Id;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 }
                 else
                 {
