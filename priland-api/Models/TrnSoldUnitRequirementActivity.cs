@@ -14,5 +14,12 @@ namespace priland_api.Models
         public String Remarks { get; set; }
         public Int32 UserId { get; set; }
         public String User { get; set; }
+
+        // user for report
+        public String ChecklistRequirement { get; set; }
+        public String SoldUnitNumber { get; set; }
+        public String Project { get; set; }
+        public String UnitCode { get; set; }
+        public String Customer { get; set; }
     }
 }

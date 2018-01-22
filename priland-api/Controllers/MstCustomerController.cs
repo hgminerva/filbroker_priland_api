@@ -149,8 +149,8 @@ namespace priland_api.Controllers
                     var customers = from d in db.MstCustomers.OrderByDescending(d => d.Id) select d;
                     if (customers.Any())
                     {
-                        Int32 nextProjectCode = Convert.ToInt32(customers.FirstOrDefault().CustomerCode) + 1;
-                        customerCode = padNumWithZero(nextProjectCode, 4);
+                        Int32 nextCustomerCode = Convert.ToInt32(customers.FirstOrDefault().CustomerCode) + 1;
+                        customerCode = padNumWithZero(nextCustomerCode, 4);
                     }
 
                     Data.MstCustomer newMstCustomer = new Data.MstCustomer()

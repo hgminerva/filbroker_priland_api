@@ -16,7 +16,7 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
-        //List
+        // list
         [Route("List")]
         public List<SysDropDown> GetSysDropDown()
         {
@@ -31,7 +31,7 @@ namespace priland_api.Controllers
             return SysDropDownData.ToList();
         }
 
-        //Detail
+        // detail
         [Route("Detail/{id}")]
         public SysDropDown GetSysDropDownId(string id)
         {
@@ -44,20 +44,20 @@ namespace priland_api.Controllers
                                       Description = d.Description,
                                       Value = d.Value
                                   };
-            return (SysDropDown)SysDropDownData.FirstOrDefault();
+            return SysDropDownData.FirstOrDefault();
         }
 
-        //ADD
+        // add
         [HttpPost, Route("Add")]
-        public Int32 PostSysDropDown(SysDropDown addSysDropDown)
+        public Int32 PostSysDropDown(SysDropDown dropDown)
         {
             try
             {
                 Data.SysDropDown newSysDropDown = new Data.SysDropDown()
                 {
-                    Category = addSysDropDown.Category,
-                    Description = addSysDropDown.Description,
-                    Value = addSysDropDown.Value
+                    Category = dropDown.Category,
+                    Description = dropDown.Description,
+                    Value = dropDown.Value
                 };
 
                 db.SysDropDowns.InsertOnSubmit(newSysDropDown);
@@ -72,7 +72,41 @@ namespace priland_api.Controllers
             }
         }
 
-        //Delete
+        // save
+        [HttpPut, Route("Save")]
+        public HttpResponseMessage SaveSysDropDown(SysDropDown dropDown)
+        {
+            try
+            {
+                var SysDropDowns = from d in db.SysDropDowns
+                                   where d.Id == Convert.ToInt32(dropDown.Id)
+                                   select d;
+
+                if (SysDropDowns.Any())
+                {
+                    var updateSysDropDowns = SysDropDowns.FirstOrDefault();
+
+                    updateSysDropDowns.Category = dropDown.Category;
+                    updateSysDropDowns.Description = dropDown.Description;
+                    updateSysDropDowns.Value = dropDown.Value;
+
+                    db.SubmitChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        // delete
         [HttpDelete, Route("Delete/{id}")]
         public HttpResponseMessage DeleteSysDropDown(string id)
         {
@@ -98,36 +132,5 @@ namespace priland_api.Controllers
             }
         }
 
-        //Lock
-        [HttpPut, Route("Update/{id}")]
-        public HttpResponseMessage UpdateDropDown(string id, SysDropDown UpdateSysDropDown)
-        {
-            try
-            {
-                var SysDropDownData = from d in db.SysDropDowns where d.Id == Convert.ToInt32(id) select d;
-                if (SysDropDownData.Any())
-                {
-                    var UpdateSysDropDownData = SysDropDownData.FirstOrDefault();
-
-                    UpdateSysDropDownData.Category = UpdateSysDropDown.Category;
-                    UpdateSysDropDownData.Description = UpdateSysDropDown.Description;
-                    UpdateSysDropDownData.Value = UpdateSysDropDown.Value;
-                    db.SubmitChanges();
-
-                    return Request.CreateResponse(HttpStatusCode.OK);
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-        }
-
-        
     }
 }

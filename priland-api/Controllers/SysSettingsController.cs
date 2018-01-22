@@ -14,7 +14,7 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
-        //Detail
+        // detail
         [HttpGet, Route("Detail")]
         public SysSettings GetSysSettings()
         {
@@ -33,10 +33,10 @@ namespace priland_api.Controllers
                                         BrokerFootNote = d.BrokerFootNote
                                   };
 
-            return (SysSettings)SysSettingsData.FirstOrDefault();
+            return SysSettingsData.FirstOrDefault();
         }
 
-        //Save
+        // save
         [HttpPut, Route("Save")]
         public HttpResponseMessage SaveSysSettings(SysSettings settings)
         {

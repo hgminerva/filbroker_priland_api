@@ -15,6 +15,18 @@ namespace priland_api.Controllers
     public class MstBrokerController : ApiController
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
+        private String padNumWithZero(Int32 number, Int32 length)
+        {
+            var result = number.ToString();
+            var pad = length - result.Length;
+            while (pad > 0)
+            {
+                result = '0' + result;
+                pad--;
+            }
+
+            return result;
+        }
 
         // List
         [HttpGet, Route("List")]
@@ -119,9 +131,18 @@ namespace priland_api.Controllers
 
                 if (currentUser.Any())
                 {
+
+                    string brokerCode = "0001";
+                    var brokers = from d in db.MstBrokers.OrderByDescending(d => d.Id) select d;
+                    if (brokers.Any())
+                    {
+                        Int32 nextBrokerCode = Convert.ToInt32(brokers.FirstOrDefault().BrokerCode) + 1;
+                        brokerCode = padNumWithZero(nextBrokerCode, 4);
+                    }
+
                     Data.MstBroker newMstBroker = new Data.MstBroker()
                     {
-                        BrokerCode = broker.BrokerCode,
+                        BrokerCode = brokerCode,
                         LastName = broker.LastName,
                         FirstName = broker.FirstName,
                         MiddleName = broker.MiddleName,
