@@ -1,27 +1,28 @@
-﻿using iTextSharp.text;
-using iTextSharp.text.pdf;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
+using System.Net.Http.Headers;
+using System.Web.Http.Results;
+using System.Globalization;
 
 namespace priland_api.Controllers
 {
-    public class RepPdfController : Controller
+    //[Authorize]
+    [RoutePrefix("api/PDF")]
+    public class RepPdfController : ApiController
     {
-        // ================
-        // Global Variables
-        // ================
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
+        private MemoryStream workStream = new MemoryStream();
+        private Rectangle rectangle = new Rectangle(PageSize.A3);
 
-        public MemoryStream workStream = new MemoryStream();
-        public Rectangle rectangle = new Rectangle(PageSize.A3);
-
-        // GET: RepPdf/PdfCustomer?id={id}
-        public ActionResult PdfCustomer(int id)
+        [HttpGet, Route("Customer/{id}")]
+        public HttpResponseMessage PdfCustomer(string id)
         {
             // ==============================
             // PDF Settings and Customization
@@ -132,10 +133,10 @@ namespace priland_api.Controllers
 
 
                 //Image
-                string imagepath = Server.MapPath("~/Data/innosofticon.png");
-                Image logo = Image.GetInstance(imagepath);
-                logo.ScalePercent(50f);
-                PdfPCell imageCell = new PdfPCell(logo);
+                //string imagepath = Server.MapPath("~/Data/innosofticon.png");
+                //Image logo = Image.GetInstance(imagepath);
+                //logo.ScalePercent(50f);
+                //PdfPCell imageCell = new PdfPCell(logo);
                 //tableCustomer.AddCell(new PdfPCell(new Phrase("   ", fontArial11Bold)) { Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f, HorizontalAlignment = 2 });
                 //tableCustomer.AddCell(new PdfPCell(new Phrase(Picture, fontArial11Bold)) { Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f, HorizontalAlignment = 2 });
                 //tableCustomer.AddCell(new PdfPCell(new Phrase("   ", fontArial11Bold)) { Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f, HorizontalAlignment = 2 });
@@ -143,7 +144,7 @@ namespace priland_api.Controllers
                 tableCustomer.AddCell(new PdfPCell(new Phrase("   ", fontArial17Bold)) { Colspan = 2, Border = 0 });
                 tableCustomer.AddCell(new PdfPCell(new Phrase("   ", fontArial17Bold)) { Colspan = 2, Border = 0 });
                 tableCustomer.AddCell(new PdfPCell(new Phrase("   ", fontArial17Bold)) { Colspan = 1, Border = 0 });
-                tableCustomer.AddCell(new PdfPCell(imageCell) { HorizontalAlignment = 2, Colspan = 1, Border = 0 });
+                //tableCustomer.AddCell(new PdfPCell(imageCell) { HorizontalAlignment = 2, Colspan = 1, Border = 0 });
 
                 tableCustomer.AddCell(new PdfPCell(new Phrase("   ", fontArial17Bold)) { Colspan = 6, Border = 0 });
 
@@ -234,15 +235,34 @@ namespace priland_api.Controllers
 
             document.Close();
 
+            //byte[] byteInfo = workStream.ToArray();
+            //workStream.Write(byteInfo, 0, byteInfo.Length);
+            //workStream.Position = 0;
+
+            //return new FileStreamResult(workStream, "application/pdf");
+
             byte[] byteInfo = workStream.ToArray();
+
             workStream.Write(byteInfo, 0, byteInfo.Length);
             workStream.Position = 0;
 
-            return new FileStreamResult(workStream, "application/pdf");
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
+            response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StreamContent(workStream);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            response.Content.Headers.ContentLength = byteInfo.Length;
+
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
+            {
+                response.Content.Headers.ContentDisposition = contentDisposition;
+            }
+
+            return response;
         }
 
-        // GET: RepPdf/PdfBroker?id={id}
-        public ActionResult PdfBroker(int id)
+        [HttpGet, Route("Broker/{id}")]
+        public HttpResponseMessage PdfBroker(string id)
         {
             // ==============================
             // PDF Settings and Customization
@@ -346,16 +366,16 @@ namespace priland_api.Controllers
 
 
                 //Image
-                string imagepath = Server.MapPath("~/Data/innosofticon.png");
-                Image logo = Image.GetInstance(imagepath);
-                logo.ScalePercent(50f);
-                PdfPCell imageCell = new PdfPCell(logo);
+                //string imagepath = Server.MapPath("~/Data/innosofticon.png");
+                //Image logo = Image.GetInstance(imagepath);
+                //logo.ScalePercent(50f);
+                //PdfPCell imageCell = new PdfPCell(logo);
 
 
                 tableBroker.AddCell(new PdfPCell(new Phrase("   ", fontArial17Bold)) { Colspan = 2, Border = 0 });
                 tableBroker.AddCell(new PdfPCell(new Phrase("   ", fontArial17Bold)) { Colspan = 2, Border = 0 });
                 tableBroker.AddCell(new PdfPCell(new Phrase("   ", fontArial17Bold)) { Colspan = 1, Border = 0 });
-                tableBroker.AddCell(new PdfPCell(imageCell) { HorizontalAlignment = 2, Colspan = 1, Border = 0 });
+                //tableBroker.AddCell(new PdfPCell(imageCell) { HorizontalAlignment = 2, Colspan = 1, Border = 0 });
 
 
                 tableBroker.AddCell(new PdfPCell(new Phrase("Last Name ", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
@@ -437,14 +457,27 @@ namespace priland_api.Controllers
             document.Close();
 
             byte[] byteInfo = workStream.ToArray();
+
             workStream.Write(byteInfo, 0, byteInfo.Length);
             workStream.Position = 0;
 
-            return new FileStreamResult(workStream, "application/pdf");
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
+            response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StreamContent(workStream);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            response.Content.Headers.ContentLength = byteInfo.Length;
+
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
+            {
+                response.Content.Headers.ContentDisposition = contentDisposition;
+            }
+
+            return response;
         }
 
-        // GET: RepPdf/PdfChecklist?id={id}
-        public ActionResult PdfChecklist(int id)
+        [HttpGet, Route("Checklist/{id}")]
+        public HttpResponseMessage PdfChecklist(string id)
         {
             // ==============================
             // PDF Settings and Customization
@@ -621,20 +654,69 @@ namespace priland_api.Controllers
             document.Close();
 
             byte[] byteInfo = workStream.ToArray();
+
             workStream.Write(byteInfo, 0, byteInfo.Length);
             workStream.Position = 0;
 
-            return new FileStreamResult(workStream, "application/pdf");
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
+            response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StreamContent(workStream);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            response.Content.Headers.ContentLength = byteInfo.Length;
+
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
+            {
+                response.Content.Headers.ContentDisposition = contentDisposition;
+            }
+
+            return response;
         }
 
-        // GET: RepPdf/PdfSoldUnitProposal?id={id}
-        public ActionResult PdfSoldUnitProposal(int id)
+        [HttpGet, Route("SoldUnitProposal/{id}")]
+        public HttpResponseMessage PdfSoldUnitProposal(int id)
         {
-            return View();
+            Document document = new Document(rectangle, 72, 72, 72, 72);
+            document.SetMargins(30f, 30f, 30f, 30f);
+            PdfWriter.GetInstance(document, workStream).CloseStream = false;
+
+            Font fontArial17Bold = FontFactory.GetFont("Arial", 17, Font.BOLD);
+            Font fontArial11 = FontFactory.GetFont("Arial", 11);
+            Font fontArial10Bold = FontFactory.GetFont("Arial", 10, Font.BOLD);
+            Font fontArial10 = FontFactory.GetFont("Arial", 10);
+            Font fontArial11Bold = FontFactory.GetFont("Arial", 11, Font.BOLD);
+            Font fontArial12Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
+            Font fontArial14Bold = FontFactory.GetFont("Arial", 14, Font.BOLD);
+            Font linebreak = FontFactory.GetFont("Arial", 2);
+
+            document.Open();
+
+            // IMPLEMENT HERE
+
+            document.Close();
+
+            byte[] byteInfo = workStream.ToArray();
+
+            workStream.Write(byteInfo, 0, byteInfo.Length);
+            workStream.Position = 0;
+
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
+            response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StreamContent(workStream);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            response.Content.Headers.ContentLength = byteInfo.Length;
+
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
+            {
+                response.Content.Headers.ContentDisposition = contentDisposition;
+            }
+
+            return response;
         }
 
-        // GET: RepPdf/PdfSoldUnitContract?id={id}
-        public ActionResult PdfSoldUnitContract(int id)
+        [HttpGet, Route("SoldUnitContract/{id}")]
+        public HttpResponseMessage PdfSoldUnitContract(int id)
         {
             Document document = new Document(rectangle, 72, 72, 72, 72);
             document.SetMargins(30f, 30f, 30f, 30f);
@@ -1266,12 +1348,26 @@ namespace priland_api.Controllers
 
 
             document.Close();
+
             byte[] byteInfo = workStream.ToArray();
+
             workStream.Write(byteInfo, 0, byteInfo.Length);
             workStream.Position = 0;
 
-            return new FileStreamResult(workStream, "application/pdf");
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
+            response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StreamContent(workStream);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            response.Content.Headers.ContentLength = byteInfo.Length;
 
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
+            {
+                response.Content.Headers.ContentDisposition = contentDisposition;
+            }
+
+            return response;
         }
+
     }
 }
