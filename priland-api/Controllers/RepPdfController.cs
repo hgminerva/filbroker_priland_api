@@ -29,6 +29,8 @@ namespace priland_api.Controllers
         // ====================
         // PDF Customized Fonts
         // ====================
+        private Font fontArial5Bold = FontFactory.GetFont("Arial", 5, Font.BOLD);
+        private Font fontArial5 = FontFactory.GetFont("Arial", 5);
         private Font fontArial9Bold = FontFactory.GetFont("Arial", 9, Font.BOLD);
         private Font fontArial9 = FontFactory.GetFont("Arial", 9);
         private Font fontArial10Bold = FontFactory.GetFont("Arial", 10, Font.BOLD);
@@ -825,63 +827,59 @@ namespace priland_api.Controllers
             return response;
         }
 
+        // =============
+        // PDF Checklist
+        // =============
         [HttpGet, Route("Checklist/{id}")]
         public HttpResponseMessage PdfChecklist(string id)
         {
-            // ==============================
-            // PDF Settings and Customization
-            // ==============================
-            document.SetMargins(30f, 30f, 30f, 30f);
+            // ===============
+            // Open PDF Stream
+            // ===============
             PdfWriter.GetInstance(document, workStream).CloseStream = false;
+            document.SetMargins(30f, 30f, 30f, 30f);
 
-            // =====
-            // Fonts
-            // =====
-            Font fontArial17Bold = FontFactory.GetFont("Arial", 17, Font.BOLD);
-            Font fontArial11 = FontFactory.GetFont("Arial", 11);
-            Font fontArial10Bold = FontFactory.GetFont("Arial", 10, Font.BOLD);
-            Font fontArial10 = FontFactory.GetFont("Arial", 10);
-            Font fontArial11Bold = FontFactory.GetFont("Arial", 11, Font.BOLD);
-            Font fontArial12Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
-
+            // =============
+            // Open Document
+            // =============
             document.Open();
 
-            Paragraph line = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 4.5F)));
-
-            // ======
-            // Header
-            // ======
-            var SysSettingsData = from d in db.SysSettings
-                                  select d;
-
-            if (SysSettingsData.Any())
-            {
-                // ===========
-                // Header Page
-                // ===========
-                PdfPTable headerPage = new PdfPTable(2);
-                float[] widthsCellsHeaderPage = new float[] { 100f, 75f };
-                headerPage.SetWidths(widthsCellsHeaderPage);
-                headerPage.WidthPercentage = 100;
-                headerPage.AddCell(new PdfPCell(new Phrase(SysSettingsData.FirstOrDefault().Company, fontArial17Bold)) { Border = 0 });
-                headerPage.AddCell(new PdfPCell(new Phrase("Checklist Report", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
-                //headerPage.AddCell(new PdfPCell(new Phrase(SysSettingsData.FirstOrDefault().SoftwareVersion, fontArial11)) { Border = 0, PaddingTop = 5f });
-                //headerPage.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2 });
-                //headerPage.AddCell(new PdfPCell(new Phrase(SysSettingsData.FirstOrDefault().SoftwareDeveloper, fontArial11)) { Border = 0, PaddingTop = 5f });
-                //headerPage.AddCell(new PdfPCell(new Phrase("Printed " + DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToString("hh:mm:ss tt"), fontArial11)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2 });
-                document.Add(headerPage);
-                document.Add(line);
-            }
-
-            // spaces
+            // ===========
+            // Space Table
+            // ===========
             PdfPTable spaceTable = new PdfPTable(1);
             float[] widthCellsSpaceTable = new float[] { 100f };
             spaceTable.SetWidths(widthCellsSpaceTable);
             spaceTable.WidthPercentage = 100;
-            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { Border = 0, PaddingTop = 5f });
+            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 5f, Border = 0 });
 
+            // ===============
+            // Settings (Data)
+            // ===============
+            var sysSettings = from d in db.SysSettings
+                              select d;
+
+            if (sysSettings.Any())
+            {
+                // ===============
+                // Company Details
+                // ===============
+                PdfPTable pdfTableCompanyDetail = new PdfPTable(2);
+                pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
+                pdfTableCompanyDetail.WidthPercentage = 100;
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase(sysSettings.FirstOrDefault().Company, fontArial17Bold)) { Border = 0 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Checklist of Requirements", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
+                document.Add(pdfTableCompanyDetail);
+                document.Add(line);
+
+                document.Add(spaceTable);
+            }
+
+            // =============
+            // Get Checklist
+            // =============
             var checklist = from d in db.MstCheckLists
-                            where d.Id >= Convert.ToInt32(id)
+                            where d.Id == Convert.ToInt32(id)
                             select new
                             {
                                 Id = d.Id,
@@ -901,6 +899,9 @@ namespace priland_api.Controllers
 
             if (checklist.Any())
             {
+                // ==============
+                // Checklist Data
+                // ==============
                 String ChecklistCode = checklist.FirstOrDefault().ChecklistCode;
                 String Checklist = checklist.FirstOrDefault().Checklist;
                 String ChecklistDate = checklist.FirstOrDefault().ChecklistDate;
@@ -908,12 +909,14 @@ namespace priland_api.Controllers
                 String Remarks = checklist.FirstOrDefault().Remarks;
                 String Status = checklist.FirstOrDefault().Status;
 
+                // ======================
+                // Table Header Checklist
+                // ======================
                 PdfPTable tableChecklist = new PdfPTable(2);
-                float[] widthscellsTablePurchaseOrder = new float[] { 40f, 150f };
-                tableChecklist.SetWidths(widthscellsTablePurchaseOrder);
+                tableChecklist.SetWidths(new float[] { 10f, 90f });
                 tableChecklist.WidthPercentage = 100;
-                tableChecklist.AddCell(new PdfPCell(new Phrase("Code ", fontArial11Bold)) { Border = 0, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableChecklist.AddCell(new PdfPCell(new Phrase(ChecklistCode, fontArial11)) { Border = 0, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
+                tableChecklist.AddCell(new PdfPCell(new Phrase("Code ", fontArial11Bold)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
+                tableChecklist.AddCell(new PdfPCell(new Phrase(ChecklistCode, fontArial11)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
                 tableChecklist.AddCell(new PdfPCell(new Phrase("Checklist", fontArial11Bold)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
                 tableChecklist.AddCell(new PdfPCell(new Phrase(Checklist, fontArial11)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
                 tableChecklist.AddCell(new PdfPCell(new Phrase("Project", fontArial11Bold)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
@@ -925,15 +928,17 @@ namespace priland_api.Controllers
                 document.Add(tableChecklist);
 
                 PdfPTable checklistRequirementsItems = new PdfPTable(4);
-                float[] widthsCellsSalesInvoiceItems = new float[] { 50f, 140f, 100f, 50f };
-                checklistRequirementsItems.SetWidths(widthsCellsSalesInvoiceItems);
+                checklistRequirementsItems.SetWidths(new float[] { 30f, 150f, 100f, 50f });
                 checklistRequirementsItems.WidthPercentage = 100;
                 checklistRequirementsItems.AddCell(new PdfPCell(new Phrase("No", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 7f });
                 checklistRequirementsItems.AddCell(new PdfPCell(new Phrase("Requirement", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 7f });
                 checklistRequirementsItems.AddCell(new PdfPCell(new Phrase("Type", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 7f });
                 checklistRequirementsItems.AddCell(new PdfPCell(new Phrase("With Attachments", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f });
-                checklistRequirementsItems.AddCell(new PdfPCell(new Phrase(" ", fontArial11Bold)) { Colspan = 4, Border = 0, PaddingTop = .1f });
+                checklistRequirementsItems.AddCell(new PdfPCell(new Phrase(" ", fontArial5)) { Colspan = 4, Border = 0 });
 
+                // ==========================
+                // Get Checklist Requirements
+                // ==========================
                 var checklistRequirementData = from d in db.MstCheckListRequirements
                                                where d.CheckListId == checklist.FirstOrDefault().Id
                                                select new
@@ -949,6 +954,9 @@ namespace priland_api.Controllers
 
                 if (checklistRequirementData.Any())
                 {
+                    // ========================
+                    // Get Checklist Categories
+                    // ========================
                     var checklistRequirementsByCategories = from d in checklistRequirementData
                                                             group d by new
                                                             {
@@ -965,6 +973,9 @@ namespace priland_api.Controllers
                         {
                             checklistRequirementsItems.AddCell(new PdfPCell(new Phrase(checklistRequirementsByCategory.Category, fontArial10Bold)) { Border = 0, Colspan = 4, HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 7f });
 
+                            // =================================
+                            // Get Checklist Requirements (Data)
+                            // =================================
                             var checklistRequirements = from d in checklistRequirementData.OrderBy(d => d.RequirementNo)
                                                         where d.Category.Equals(checklistRequirementsByCategory.Category)
                                                         select new
@@ -999,8 +1010,14 @@ namespace priland_api.Controllers
                 document.Add(checklistRequirementsItems);
             }
 
+            // ==============
+            // Close Document
+            // ==============
             document.Close();
 
+            // ===============
+            // Response Stream
+            // ===============
             byte[] byteInfo = workStream.ToArray();
 
             workStream.Write(byteInfo, 0, byteInfo.Length);
@@ -1012,8 +1029,7 @@ namespace priland_api.Controllers
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
             response.Content.Headers.ContentLength = byteInfo.Length;
 
-            ContentDispositionHeaderValue contentDisposition = null;
-            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out ContentDispositionHeaderValue contentDisposition))
             {
                 response.Content.Headers.ContentDisposition = contentDisposition;
             }
