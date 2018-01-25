@@ -153,9 +153,6 @@ namespace priland_api.Controllers
 
                 pdfTableCustomerBuyer.AddCell(new PdfPCell(new Phrase("BUYER", fontArial10BoldItalic)) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, BackgroundColor = BaseColor.BLACK });
 
-                // ============================================
-                // Chunk, Phrase & Paragraph (For Cell Spacing)
-                // ============================================
                 Phrase lastNamePhraseLabel = new Phrase("Last Name \n\n", fontArial10Bold);
                 Phrase lastNamePhraseData = new Phrase(LastName, fontArial13);
                 Paragraph lastNameParagraph = new Paragraph
@@ -493,200 +490,322 @@ namespace priland_api.Controllers
             return response;
         }
 
+        // ===========
+        // PDF Brooker
+        // ===========
         [HttpGet, Route("Broker/{id}")]
         public HttpResponseMessage PdfBroker(string id)
         {
-            // ==============================
-            // PDF Settings and Customization
-            // ==============================
-            document.SetMargins(30f, 30f, 30f, 30f);
+            // ===============
+            // Open PDF Stream
+            // ===============
             PdfWriter.GetInstance(document, workStream).CloseStream = false;
+            document.SetMargins(30f, 30f, 30f, 30f);
 
+            // =============
+            // Open Document
+            // =============
             document.Open();
 
-            // =====
-            // Fonts
-            // =====
-            Font fontArial17Bold = FontFactory.GetFont("Arial", 17, Font.BOLD);
-            Font fontArial11 = FontFactory.GetFont("Arial", 11);
-            Font fontArial9Bold = FontFactory.GetFont("Arial", 9, Font.BOLD);
-            Font fontArial9 = FontFactory.GetFont("Arial", 9);
-            Font fontArial10Bold = FontFactory.GetFont("Arial", 10, Font.BOLD);
-            Font fontArial10 = FontFactory.GetFont("Arial", 10);
-            Font fontArial11Bold = FontFactory.GetFont("Arial", 11, Font.BOLD);
-            Font fontArial12Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
-            Font fontArial13Bold = FontFactory.GetFont("Arial", 13, Font.BOLD);
+            // ===========
+            // Space Table
+            // ===========
+            PdfPTable spaceTable = new PdfPTable(1);
+            float[] widthCellsSpaceTable = new float[] { 100f };
+            spaceTable.SetWidths(widthCellsSpaceTable);
+            spaceTable.WidthPercentage = 100;
+            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 5f, Border = 0 });
 
-            // line
-            Paragraph line = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1)));
-            //Paragraph line = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 4.5F)));
+            // ===============
+            // Settings (Data)
+            // ===============
+            var sysSettings = from d in db.SysSettings
+                              select d;
 
-            var SysSettingsData = from d in db.SysSettings
-                                  select d;
-
-            if (SysSettingsData.Any())
+            if (sysSettings.Any())
             {
-                // ===========
-                // Header Page
-                // ===========
-                PdfPTable headerPage = new PdfPTable(2);
-                float[] widthsCellsHeaderPage = new float[] { 100f, 75f };
-                headerPage.SetWidths(widthsCellsHeaderPage);
-                headerPage.WidthPercentage = 100;
-                headerPage.AddCell(new PdfPCell(new Phrase(SysSettingsData.FirstOrDefault().Company, fontArial17Bold)) { Border = 0 });
-                headerPage.AddCell(new PdfPCell(new Phrase("BROKER ACCREDITATION FORM", fontArial17Bold)) { Border = 0 });
-
-                headerPage.AddCell(new PdfPCell(new Phrase(SysSettingsData.FirstOrDefault().SoftwareVersion, fontArial11)) { PaddingTop = 5f, Border = 0 });
-                headerPage.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { PaddingTop = 5f, Border = 0 });
-
-                headerPage.AddCell(new PdfPCell(new Phrase(SysSettingsData.FirstOrDefault().SoftwareDeveloper, fontArial11)) { PaddingTop = 5f, Border = 0 });
-                headerPage.AddCell(new PdfPCell(new Phrase("Printed " + DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToString("hh:mm:ss tt"), fontArial11)) { PaddingTop = 5f, Border = 0 });
-                document.Add(headerPage);
-
+                // ===============
+                // Company Details
+                // ===============
+                PdfPTable pdfTableCompanyDetail = new PdfPTable(2);
+                pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
+                pdfTableCompanyDetail.WidthPercentage = 100;
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase(sysSettings.FirstOrDefault().Company, fontArial17Bold)) { Border = 0 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Broker Accreditation Form", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
+                document.Add(pdfTableCompanyDetail);
                 document.Add(line);
 
-
-                // =====
-                // Space
-                // =====
-                PdfPTable spaceTable = new PdfPTable(1);
-                float[] widthCellsSpaceTable = new float[] { 100f };
-                spaceTable.SetWidths(widthCellsSpaceTable);
-                spaceTable.WidthPercentage = 100;
-                spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 5f });
-
+                document.Add(spaceTable);
             }
 
-            var Broker = from d in db.MstBrokers
+            // ===========
+            // Get Brooker
+            // ===========
+            var broker = from d in db.MstBrokers
                          where d.Id == Convert.ToInt32(id)
                          && d.IsLocked == true
                          select d;
-            if (Broker.Any())
+
+            if (broker.Any())
             {
-                String BrokerCode = Broker.FirstOrDefault().BrokerCode;
-                String LastName = Broker.FirstOrDefault().LastName;
-                String FirstName = Broker.FirstOrDefault().FirstName;
-                String MiddleName = Broker.FirstOrDefault().MiddleName;
-                String LicenseNumber = Broker.FirstOrDefault().LicenseNumber;
-                DateTime BirthDate = Broker.FirstOrDefault().BirthDate;/*.ToString("MM-dd-yyyy", CultureInfo.InvariantCulture);*/
-                String CivilStatus = Broker.FirstOrDefault().CivilStatus;
-                String Gender = Broker.FirstOrDefault().Gender;
-                String Address = Broker.FirstOrDefault().Address;
-                String TelephoneNumber = Broker.FirstOrDefault().TelephoneNumber;
-                String MobileNumber = Broker.FirstOrDefault().MobileNumber;
-                String Religion = Broker.FirstOrDefault().Religion;
-                String EmailAddress = Broker.FirstOrDefault().EmailAddress;
-                String Facebook = Broker.FirstOrDefault().Facebook;
-                String TIN = Broker.FirstOrDefault().TIN;
-                String RealtyFirm = Broker.FirstOrDefault().RealtyFirm;
-                String RealtyFirmAddress = Broker.FirstOrDefault().RealtyFirmAddress;
-                String RealtyFirmTelephoneNumber = Broker.FirstOrDefault().RealtyFirmTelephoneNumber;
-                String RealtyFirmMobileNumber = Broker.FirstOrDefault().RealtyFirmMobileNumber;
-                String RealtyFirmFaxNumber = Broker.FirstOrDefault().RealtyFirmFaxNumber;
-                String RealtyFirmEmailAddress = Broker.FirstOrDefault().RealtyFirmEmailAddress;
-                String RealtyFirmWebsite = Broker.FirstOrDefault().RealtyFirmWebsite;
-                String RealtyFirmTIN = Broker.FirstOrDefault().RealtyFirmTIN;
-                String Organization = Broker.FirstOrDefault().Organization;
-                String Remarks = Broker.FirstOrDefault().Remarks;
-                String Status = Broker.FirstOrDefault().Status;
+                // ============
+                // Brooker Data
+                // ============
+                String BrokerCode = broker.FirstOrDefault().BrokerCode;
+                String LastName = broker.FirstOrDefault().LastName;
+                String FirstName = broker.FirstOrDefault().FirstName;
+                String MiddleName = broker.FirstOrDefault().MiddleName;
+                String LicenseNumber = broker.FirstOrDefault().LicenseNumber;
+                String BirthDate = broker.FirstOrDefault().BirthDate.ToString("MM-dd-yyyy", CultureInfo.InvariantCulture);
+                String CivilStatus = broker.FirstOrDefault().CivilStatus;
+                String Gender = broker.FirstOrDefault().Gender;
+                String Address = broker.FirstOrDefault().Address;
+                String TelephoneNumber = broker.FirstOrDefault().TelephoneNumber;
+                String MobileNumber = broker.FirstOrDefault().MobileNumber;
+                String Religion = broker.FirstOrDefault().Religion;
+                String EmailAddress = broker.FirstOrDefault().EmailAddress;
+                String Facebook = broker.FirstOrDefault().Facebook;
+                String TIN = broker.FirstOrDefault().TIN;
+                String RealtyFirm = broker.FirstOrDefault().RealtyFirm;
+                String RealtyFirmAddress = broker.FirstOrDefault().RealtyFirmAddress;
+                String RealtyFirmTelephoneNumber = broker.FirstOrDefault().RealtyFirmTelephoneNumber;
+                String RealtyFirmMobileNumber = broker.FirstOrDefault().RealtyFirmMobileNumber;
+                String RealtyFirmFaxNumber = broker.FirstOrDefault().RealtyFirmFaxNumber;
+                String RealtyFirmEmailAddress = broker.FirstOrDefault().RealtyFirmEmailAddress;
+                String RealtyFirmWebsite = broker.FirstOrDefault().RealtyFirmWebsite;
+                String RealtyFirmTIN = broker.FirstOrDefault().RealtyFirmTIN;
+                String Organization = broker.FirstOrDefault().Organization;
+                String Remarks = broker.FirstOrDefault().Remarks;
+                String Status = broker.FirstOrDefault().Status;
 
-                PdfPTable tableBroker = new PdfPTable(6);
-                float[] widthscellsTablePurchaseOrder = new float[] { 50f, 50f, 50f, 50f, 50f, 50f };
-                tableBroker.SetWidths(widthscellsTablePurchaseOrder);
-                tableBroker.WidthPercentage = 100;
+                // =============
+                // Table Brooker
+                // =============
+                PdfPTable pdfTableBroker = new PdfPTable(5);
+                pdfTableBroker.SetWidths(new float[] { 100f, 50f, 50f, 50f, 50f });
+                pdfTableBroker.WidthPercentage = 100;
 
+                pdfTableBroker.AddCell(new PdfPCell(new Phrase("")) { Colspan = 5, Border = 1, BorderWidthTop = 5f });
 
-                //Image
-                //string imagepath = Server.MapPath("~/Data/innosofticon.png");
-                //Image logo = Image.GetInstance(imagepath);
-                //logo.ScalePercent(50f);
-                //PdfPCell imageCell = new PdfPCell(logo);
+                Phrase lastNamePhraseLabel = new Phrase("Last Name \n\n", fontArial10Bold);
+                Phrase lastNamePhraseData = new Phrase(LastName, fontArial13);
+                Paragraph lastNameParagraph = new Paragraph
+                {
+                    lastNamePhraseLabel, lastNamePhraseData
+                };
 
+                Phrase firstNamePhraseLabel = new Phrase("First Name \n\n", fontArial10Bold);
+                Phrase firstNamePhraseData = new Phrase(FirstName, fontArial13);
+                Paragraph firstNameParagraph = new Paragraph
+                {
+                    firstNamePhraseLabel, firstNamePhraseData
+                };
 
-                tableBroker.AddCell(new PdfPCell(new Phrase("   ", fontArial17Bold)) { Colspan = 2, Border = 0 });
-                tableBroker.AddCell(new PdfPCell(new Phrase("   ", fontArial17Bold)) { Colspan = 2, Border = 0 });
-                tableBroker.AddCell(new PdfPCell(new Phrase("   ", fontArial17Bold)) { Colspan = 1, Border = 0 });
-                //tableBroker.AddCell(new PdfPCell(imageCell) { HorizontalAlignment = 2, Colspan = 1, Border = 0 });
+                Phrase middleNamePhraseLabel = new Phrase("Middle Name \n\n", fontArial10Bold);
+                Phrase middleNamePhraseData = new Phrase(MiddleName, fontArial13);
+                Paragraph middleNameParagraph = new Paragraph
+                {
+                    middleNamePhraseLabel, middleNamePhraseData
+                };
 
+                pdfTableBroker.AddCell(new PdfPCell(lastNameParagraph) { PaddingTop = 6f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(firstNameParagraph) { Colspan = 2, PaddingTop = 6f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(middleNameParagraph) { Colspan = 2, PaddingTop = 6f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
-                tableBroker.AddCell(new PdfPCell(new Phrase("Last Name ", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("First Name", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("Midle Name", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(LastName, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(FirstName, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(MiddleName, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                Phrase lincenseNoPhraseLabel = new Phrase("License No. \n\n", fontArial10Bold);
+                Phrase lincenseNoPhraseData = new Phrase(LicenseNumber, fontArial13);
+                Paragraph lincenseNoParagraph = new Paragraph
+                {
+                    lincenseNoPhraseLabel, lincenseNoPhraseData
+                };
 
+                Int32 currentYear = DateTime.Today.Year;
+                Int32 birthYear = broker.FirstOrDefault().BirthDate.Year;
 
-                DateTime now = DateTime.Today;
-                int age = now.Year - BirthDate.Year;
-                if (now < BirthDate.AddYears(age)) age--;
+                Int32 getAge = currentYear - birthYear;
 
-                tableBroker.AddCell(new PdfPCell(new Phrase("License No.", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("Age", fontArial9Bold)) { Border = 0, Colspan = 1, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("Gender", fontArial9Bold)) { Border = 0, Colspan = 1, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("Civil Status", fontArial9Bold)) { Border = 0, Colspan = 1, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("Birth Date", fontArial9Bold)) { Border = 0, Colspan = 1, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(LicenseNumber, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(age.ToString(), fontArial11)) { Border = 0, Colspan = 1, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(Gender, fontArial11)) { Border = 0, Colspan = 1, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(CivilStatus, fontArial11)) { Border = 0, Colspan = 1, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(BirthDate.ToString("MM-dd-yyyy", CultureInfo.InvariantCulture), fontArial11)) { Border = 0, Colspan = 1, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                Phrase agePhraseLabel = new Phrase("Age \n\n", fontArial10Bold);
+                Phrase agePhraseData = new Phrase(getAge.ToString(), fontArial13);
+                Paragraph ageParagraph = new Paragraph
+                {
+                    agePhraseLabel, agePhraseData
+                };
 
+                Phrase sexPhraseLabel = new Phrase("Sex \n\n", fontArial10Bold);
+                Phrase sexPhraseData = new Phrase(Gender, fontArial13);
+                Paragraph sexParagraph = new Paragraph
+                {
+                    sexPhraseLabel, sexPhraseData
+                };
 
-                tableBroker.AddCell(new PdfPCell(new Phrase("Home Phone No.", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("Mobile Phone No.", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("Religion", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(TelephoneNumber, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(MobileNumber, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(Religion, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                Phrase civilStatusPhraseLabel = new Phrase("Civil Status \n\n", fontArial10Bold);
+                Phrase civilStatusPhraseData = new Phrase(CivilStatus, fontArial13);
+                Paragraph civilStatusParagraph = new Paragraph
+                {
+                    civilStatusPhraseLabel, civilStatusPhraseData
+                };
 
+                Phrase birthDatePhraseLabel = new Phrase("Birth date \n\n", fontArial10Bold);
+                Phrase birthDatePhraseData = new Phrase(BirthDate, fontArial13);
+                Paragraph birthDateParagraph = new Paragraph
+                {
+                    birthDatePhraseLabel, birthDatePhraseData
+                };
 
-                tableBroker.AddCell(new PdfPCell(new Phrase("Email Address", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("Facebook", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("TIN No.", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(EmailAddress, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(Facebook, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(TIN, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableBroker.AddCell(new PdfPCell(lincenseNoParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(ageParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(sexParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(civilStatusParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(birthDateParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
+                Phrase residencePostalAddressPhraseLabel = new Phrase("Residence & Postal Address \n\n", fontArial10Bold);
+                Phrase residencePostalAddressPhraseData = new Phrase(Address, fontArial13);
+                Paragraph residencePostalAddressParagraph = new Paragraph
+                {
+                    residencePostalAddressPhraseLabel, residencePostalAddressPhraseData
+                };
 
-                tableBroker.AddCell(new PdfPCell(new Phrase("   ", fontArial17Bold)) { Colspan = 6, Border = 0 });
-                tableBroker.AddCell(new PdfPCell(new Phrase("Employement Information", fontArial13Bold)) { Colspan = 6, Border = 0 });
-                tableBroker.AddCell(new PdfPCell(new Phrase("   ", fontArial17Bold)) { Colspan = 6, Border = 0 });
+                pdfTableBroker.AddCell(new PdfPCell(residencePostalAddressParagraph) { Colspan = 5, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
+                Phrase homePhoneNoPhraseLabel = new Phrase("Home Phone No. \n\n", fontArial10Bold);
+                Phrase homePhoneNoPhraseData = new Phrase(TelephoneNumber, fontArial13);
+                Paragraph homePhoneNoParagraph = new Paragraph
+                {
+                    homePhoneNoPhraseLabel, homePhoneNoPhraseData
+                };
 
-                tableBroker.AddCell(new PdfPCell(new Phrase("Name of Realty Firm", fontArial9Bold)) { Colspan = 6, Border = 0 });
-                tableBroker.AddCell(new PdfPCell(new Phrase(RealtyFirm, fontArial11)) { Colspan = 6, Border = 0 });
+                Phrase mobilePhoneNoPhraseLabel = new Phrase("Mobile Phone No. \n\n", fontArial10Bold);
+                Phrase mobilePhoneNoPhraseData = new Phrase(MobileNumber, fontArial13);
+                Paragraph mobilePhoneNoParagraph = new Paragraph
+                {
+                    mobilePhoneNoPhraseLabel, mobilePhoneNoPhraseData
+                };
 
+                Phrase religionPhraseLabel = new Phrase("Religion \n\n", fontArial10Bold);
+                Phrase religionPhraseData = new Phrase(Religion, fontArial13);
+                Paragraph religionParagraph = new Paragraph
+                {
+                    religionPhraseLabel, religionPhraseData
+                };
 
-                tableBroker.AddCell(new PdfPCell(new Phrase("Office Address", fontArial9Bold)) { Colspan = 6, Border = 0 });
-                tableBroker.AddCell(new PdfPCell(new Phrase(RealtyFirmAddress, fontArial11)) { Colspan = 6, Border = 0 });
+                pdfTableBroker.AddCell(new PdfPCell(homePhoneNoParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(mobilePhoneNoParagraph) { Colspan = 2, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(religionParagraph) { Colspan = 2, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
-                tableBroker.AddCell(new PdfPCell(new Phrase("Office No.", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("Mobile Phone No.", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("Fax No.", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(RealtyFirmTelephoneNumber, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(RealtyFirmMobileNumber, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(RealtyFirmFaxNumber, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                Phrase emailAddressPhraseLabel = new Phrase("Email Address \n\n", fontArial10Bold);
+                Phrase emailAddressPhraseData = new Phrase(EmailAddress, fontArial13);
+                Paragraph emailAddressParagraph = new Paragraph
+                {
+                    emailAddressPhraseLabel, emailAddressPhraseData
+                };
 
+                Phrase facebookPhraseLabel = new Phrase("Facebook \n\n", fontArial10Bold);
+                Phrase facebookPhraseData = new Phrase(Facebook, fontArial13);
+                Paragraph facebookParagraph = new Paragraph
+                {
+                    facebookPhraseLabel, facebookPhraseData
+                };
 
-                tableBroker.AddCell(new PdfPCell(new Phrase("Office Email", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("Website ", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase("TIN No.", fontArial9Bold)) { Border = 0, Colspan = 2, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(RealtyFirmEmailAddress, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(RealtyFirmWebsite, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableBroker.AddCell(new PdfPCell(new Phrase(RealtyFirmTIN, fontArial11)) { Border = 0, Colspan = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                Phrase TINNoPhraseLabel = new Phrase("TIN No. \n\n", fontArial10Bold);
+                Phrase TINNoPhraseData = new Phrase(TIN, fontArial13);
+                Paragraph TINNoParagraph = new Paragraph
+                {
+                    TINNoPhraseLabel, TINNoPhraseData
+                };
 
+                pdfTableBroker.AddCell(new PdfPCell(emailAddressParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(facebookParagraph) { Colspan = 2, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(TINNoParagraph) { Colspan = 2, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
-                tableBroker.AddCell(new PdfPCell(new Phrase("Real State Organization", fontArial9Bold)) { Colspan = 6, Border = 0 });
-                tableBroker.AddCell(new PdfPCell(new Phrase(Organization, fontArial11)) { Colspan = 6, Border = 0 });
+                pdfTableBroker.AddCell(new PdfPCell(new Phrase("")) { Colspan = 5, Border = 1, BorderWidthTop = 5f });
 
+                Phrase realtyFirmPhraseLabel = new Phrase("Name of Realty Firm \n\n", fontArial10Bold);
+                Phrase realtyFirmPhraseData = new Phrase(RealtyFirm, fontArial13);
+                Paragraph realtyFirmParagraph = new Paragraph
+                {
+                    realtyFirmPhraseLabel, realtyFirmPhraseData
+                };
 
-                document.Add(tableBroker);
+                Phrase officeAddressPhraseLabel = new Phrase("Office Address \n\n", fontArial10Bold);
+                Phrase officeAddressPhraseData = new Phrase(RealtyFirmAddress, fontArial13);
+                Paragraph officeAddressParagraph = new Paragraph
+                {
+                    officeAddressPhraseLabel, officeAddressPhraseData
+                };
+
+                pdfTableBroker.AddCell(new PdfPCell(realtyFirmParagraph) { Colspan = 5, PaddingTop = 6f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(officeAddressParagraph) { Colspan = 5, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+
+                Phrase officePhoneNumberPhraseLabel = new Phrase("Office Phone No. \n\n", fontArial10Bold);
+                Phrase officePhoneNumberPhraseData = new Phrase(RealtyFirmTelephoneNumber, fontArial13);
+                Paragraph officePhoneNumberParagraph = new Paragraph
+                {
+                    officePhoneNumberPhraseLabel, officePhoneNumberPhraseData
+                };
+
+                Phrase officeMobileNumberPhraseLabel = new Phrase("Mobile Phone No. \n\n", fontArial10Bold);
+                Phrase officeMobileNumberPhraseData = new Phrase(RealtyFirmMobileNumber, fontArial13);
+                Paragraph officeMobileNumberParagraph = new Paragraph
+                {
+                    officeMobileNumberPhraseLabel, officeMobileNumberPhraseData
+                };
+
+                Phrase faxNoPhraseLabel = new Phrase("Fax No. \n\n", fontArial10Bold);
+                Phrase faxNoPhraseData = new Phrase(RealtyFirmFaxNumber, fontArial13);
+                Paragraph faxNoParagraph = new Paragraph
+                {
+                    faxNoPhraseLabel, faxNoPhraseData
+                };
+
+                pdfTableBroker.AddCell(new PdfPCell(officePhoneNumberParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(officeMobileNumberParagraph) { Colspan = 2, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(faxNoParagraph) { Colspan = 2, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+
+                Phrase officeEmailAddressPhraseLabel = new Phrase("Office Email Address \n\n", fontArial10Bold);
+                Phrase officeEmailAddressPhraseData = new Phrase(RealtyFirmEmailAddress, fontArial13);
+                Paragraph officeEmailAddressParagraph = new Paragraph
+                {
+                    officeEmailAddressPhraseLabel, officeEmailAddressPhraseData
+                };
+
+                Phrase websitePhraseLabel = new Phrase("Website \n\n", fontArial10Bold);
+                Phrase websitePhraseData = new Phrase(RealtyFirmWebsite, fontArial13);
+                Paragraph websiteParagraph = new Paragraph
+                {
+                    websitePhraseLabel, websitePhraseData
+                };
+
+                Phrase officeTINNoPhraseLabel = new Phrase("TIN No. \n\n", fontArial10Bold);
+                Phrase officeTINNoPhraseData = new Phrase(RealtyFirmTIN, fontArial13);
+                Paragraph officeTINNoParagraph = new Paragraph
+                {
+                    officeTINNoPhraseLabel, officeTINNoPhraseData
+                };
+
+                pdfTableBroker.AddCell(new PdfPCell(officeEmailAddressParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(websiteParagraph) { Colspan = 2, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableBroker.AddCell(new PdfPCell(officeTINNoParagraph) { Colspan = 2, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+
+                Phrase realEstateOrganizationPhraseLabel = new Phrase("Real State Organization \n\n", fontArial10Bold);
+                Phrase realEstateOrganizationPhraseData = new Phrase(Organization, fontArial13);
+                Paragraph realEstateOrganizationParagraph = new Paragraph
+                {
+                    realEstateOrganizationPhraseLabel, realEstateOrganizationPhraseData
+                };
+
+                pdfTableBroker.AddCell(new PdfPCell(realEstateOrganizationParagraph) { Colspan = 5, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+
+                document.Add(pdfTableBroker);
             }
 
-
+            // ==============
+            // Close Document
+            // ==============
             document.Close();
 
+            // ===============
+            // Response Stream
+            // ===============
             byte[] byteInfo = workStream.ToArray();
 
             workStream.Write(byteInfo, 0, byteInfo.Length);
@@ -698,8 +817,7 @@ namespace priland_api.Controllers
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
             response.Content.Headers.ContentLength = byteInfo.Length;
 
-            ContentDispositionHeaderValue contentDisposition = null;
-            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out ContentDispositionHeaderValue contentDisposition))
             {
                 response.Content.Headers.ContentDisposition = contentDisposition;
             }
