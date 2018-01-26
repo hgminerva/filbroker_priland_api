@@ -220,13 +220,7 @@ namespace priland_api.Controllers
                     taxIdentificationNoPhraseLabel, taxIdentificationNoPhraseData
                 };
 
-                Phrase governmentIssuedIdPhraseLabel = new Phrase("Government-Issued ID \n\n", fontArial10Bold);
-                Phrase governmentIssuedIdPhraseData = new Phrase(" ", fontArial13);
-                Paragraph governmentIssuedIdParagraph = new Paragraph
-                {
-                    governmentIssuedIdPhraseLabel, governmentIssuedIdPhraseData
-                };
-
+                
                 Phrase idTypePhraseLabel = new Phrase("ID Type \n\n", fontArial10Bold);
                 Phrase idTypePhraseData = new Phrase(IdType, fontArial13);
                 Paragraph idTypeParagraph = new Paragraph
@@ -242,8 +236,7 @@ namespace priland_api.Controllers
                 };
 
                 pdfTableCustomerBuyer.AddCell(new PdfPCell(taxIdentificationNoParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
-                pdfTableCustomerBuyer.AddCell(new PdfPCell(governmentIssuedIdParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
-                pdfTableCustomerBuyer.AddCell(new PdfPCell(idTypeParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerBuyer.AddCell(new PdfPCell(idTypeParagraph) { PaddingTop = 3f,Colspan=2, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
                 pdfTableCustomerBuyer.AddCell(new PdfPCell(idNumberParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
                 document.Add(pdfTableCustomerBuyer);
@@ -1222,8 +1215,80 @@ namespace priland_api.Controllers
                 document.Add(p);
                 // document.Add(p2);
                 document.Add(line);
-                p3.Add(new Chunk("For the Flexible Payment Options", fontArial14Bold));
-                document.Add(p3);
+                PdfPTable SoldUnitProposal = new PdfPTable(4);
+                SoldUnitProposal.SetWidths(new float[] { 30F, 80f, 80F, 150f });
+                SoldUnitProposal.WidthPercentage = 100;
+                SoldUnitProposal.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                SoldUnitProposal.AddCell(new PdfPCell(new Phrase("Financing Scheme", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingBottom = 7f });
+                SoldUnitProposal.AddCell(new PdfPCell(new Phrase("Bank Financing")) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                SoldUnitProposal.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                document.Add(SoldUnitProposal);
+
+                //PdfPTable SoldUnitProposal1 = new PdfPTable(4);
+                //SoldUnitProposal1.SetWidths(new float[] { 30F, 215f, 20F, 0f });
+                //SoldUnitProposal1.WidthPercentage = 100;
+                //SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                //SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("20% Spread over 36 months")) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingBottom = 7f });
+                //SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("")) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                //SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                //document.Add(SoldUnitProposal1);
+
+                //PdfPTable SoldUnitProposal2 = new PdfPTable(4);
+                //SoldUnitProposal2.SetWidths(new float[] { 30F, 200f, 12F, 2f });
+                //SoldUnitProposal2.WidthPercentage = 100;
+                //SoldUnitProposal2.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                //SoldUnitProposal2.AddCell(new PdfPCell(new Phrase("80% Bank Financing or Pag-IBIG")) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingBottom = 7f });
+                //SoldUnitProposal2.AddCell(new PdfPCell(new Phrase("")) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                //SoldUnitProposal2.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                //document.Add(SoldUnitProposal2);
+
+
+                //PdfPTable SoldUnitProposal3 = new PdfPTable(4);
+                //SoldUnitProposal.SetWidths(new float[] { 30F, 180f, 80F, 150f });
+                //SoldUnitProposal3.WidthPercentage = 100;
+                //SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                //SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("Initial Investment", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingBottom = 7f });
+                //SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("")) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                //SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("20%" +" \t"+" Php"+"\t" +" Amount", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                //document.Add(SoldUnitProposal3);
+
+
+                PdfPTable SoldUnitProposal1 = new PdfPTable(2);
+                SoldUnitProposal1.SetWidths(new float[] { 20f, 50f });
+                SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("20% Spread over 36 months")) { HorizontalAlignment = 1, PaddingRight = 250, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("80% Bank Financing or Pag-Ibig")) { HorizontalAlignment = 1, PaddingRight = 230, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                document.Add(SoldUnitProposal1);
+
+                PdfPTable SoldUnitProposal3 = new PdfPTable(2);
+                SoldUnitProposal3.SetWidths(new float[] { 20f, 50f });
+                SoldUnitProposal3.WidthPercentage = 100;
+                SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("Initial Investment:", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("   20%" + "       Php " + "  The Amount", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 200f, PaddingTop = 3f, PaddingBottom = 7f });
+                SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("")) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingRight = 450f, PaddingBottom = 7f });
+                document.Add(SoldUnitProposal3);
+
+                PdfPTable SoldUnitProposal6 = new PdfPTable(3);
+                SoldUnitProposal6.SetWidths(new float[] { 100f, 100f, 100f });
+                SoldUnitProposal6.WidthPercentage = 100;
+                SoldUnitProposal6.WidthPercentage = 100;
+                SoldUnitProposal6.AddCell(new PdfPCell(new Phrase("LESS: Reservation Deposit")) { HorizontalAlignment = 1, PaddingLeft = 30f, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                SoldUnitProposal6.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                SoldUnitProposal6.AddCell(new PdfPCell(new Phrase("     " + "       " + "  " + "The Amount", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingRight = 80f, PaddingTop = 3f, PaddingBottom = 7f });
+                document.Add(SoldUnitProposal6);
+
+                PdfPTable SoldUnitProposal7 = new PdfPTable(2);
+                SoldUnitProposal7.SetWidths(new float[] { 20f, 50f });
+                SoldUnitProposal7.WidthPercentage = 100;
+                SoldUnitProposal7.AddCell(new PdfPCell(new Phrase("   Net Initial Investment:", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
+                SoldUnitProposal7.AddCell(new PdfPCell(new Phrase("     " + "           " + "     The Amount", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 200f, PaddingTop = 3f, PaddingBottom = 7f });
+                SoldUnitProposal7.AddCell(new PdfPCell(new Phrase("")) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingRight = 450f, PaddingBottom = 7f });
+                document.Add(SoldUnitProposal7);
+
+
+
+
                 document.Add(line);
                 //document.Add(chunk);
 
