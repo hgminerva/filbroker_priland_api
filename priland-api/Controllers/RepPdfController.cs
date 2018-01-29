@@ -220,7 +220,7 @@ namespace priland_api.Controllers
                     taxIdentificationNoPhraseLabel, taxIdentificationNoPhraseData
                 };
 
-                
+
                 Phrase idTypePhraseLabel = new Phrase("ID Type \n\n", fontArial10Bold);
                 Phrase idTypePhraseData = new Phrase(IdType, fontArial13);
                 Paragraph idTypeParagraph = new Paragraph
@@ -236,7 +236,7 @@ namespace priland_api.Controllers
                 };
 
                 pdfTableCustomerBuyer.AddCell(new PdfPCell(taxIdentificationNoParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
-                pdfTableCustomerBuyer.AddCell(new PdfPCell(idTypeParagraph) { PaddingTop = 3f,Colspan=2, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerBuyer.AddCell(new PdfPCell(idTypeParagraph) { PaddingTop = 3f, Colspan = 2, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
                 pdfTableCustomerBuyer.AddCell(new PdfPCell(idNumberParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
                 document.Add(pdfTableCustomerBuyer);
@@ -910,16 +910,16 @@ namespace priland_api.Controllers
                 PdfPTable tableChecklist = new PdfPTable(2);
                 tableChecklist.SetWidths(new float[] { 10f, 90f });
                 tableChecklist.WidthPercentage = 100;
-                tableChecklist.AddCell(new PdfPCell(new Phrase("Code ", fontArial11Bold)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableChecklist.AddCell(new PdfPCell(new Phrase(ChecklistCode, fontArial11)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableChecklist.AddCell(new PdfPCell(new Phrase("Checklist", fontArial11Bold)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableChecklist.AddCell(new PdfPCell(new Phrase(Checklist, fontArial11)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableChecklist.AddCell(new PdfPCell(new Phrase("Project", fontArial11Bold)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableChecklist.AddCell(new PdfPCell(new Phrase(Project, fontArial11)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableChecklist.AddCell(new PdfPCell(new Phrase("Remarks", fontArial11Bold)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableChecklist.AddCell(new PdfPCell(new Phrase(Remarks, fontArial11)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableChecklist.AddCell(new PdfPCell(new Phrase("Status", fontArial11Bold)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableChecklist.AddCell(new PdfPCell(new Phrase(Status, fontArial11)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
+                tableChecklist.AddCell(new PdfPCell(new Phrase("Code ", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                tableChecklist.AddCell(new PdfPCell(new Phrase(ChecklistCode, fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                tableChecklist.AddCell(new PdfPCell(new Phrase("Checklist", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                tableChecklist.AddCell(new PdfPCell(new Phrase(Checklist, fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                tableChecklist.AddCell(new PdfPCell(new Phrase("Project", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                tableChecklist.AddCell(new PdfPCell(new Phrase(Project, fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                tableChecklist.AddCell(new PdfPCell(new Phrase("Remarks", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                tableChecklist.AddCell(new PdfPCell(new Phrase(Remarks, fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                tableChecklist.AddCell(new PdfPCell(new Phrase("Status", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                tableChecklist.AddCell(new PdfPCell(new Phrase(Status, fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 document.Add(tableChecklist);
 
                 PdfPTable checklistRequirementsItems = new PdfPTable(4);
@@ -1033,326 +1033,223 @@ namespace priland_api.Controllers
             return response;
         }
 
+        // ======================
+        // PDF Sold Unit Proposal
+        // ======================
         [HttpGet, Route("SoldUnitProposal/{id}")]
         public HttpResponseMessage PdfSoldUnitProposal(int id)
         {
-            document.SetMargins(30f, 30f, 30f, 30f);
+            // ===============
+            // Open PDF Stream
+            // ===============
             PdfWriter.GetInstance(document, workStream).CloseStream = false;
+            document.SetMargins(30f, 30f, 30f, 30f);
 
-            Font fontArial17Bold = FontFactory.GetFont("Arial", 17, Font.BOLD);
-            Font fontArial11 = FontFactory.GetFont("Arial", 11);
-            Font fontArial10Bold = FontFactory.GetFont("Arial", 10, Font.BOLD);
-            Font fontArial10 = FontFactory.GetFont("Arial", 10);
-            Font fontArial11Bold = FontFactory.GetFont("Arial", 11, Font.BOLD);
-            Font fontArial12Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
-            Font fontArial14Bold = FontFactory.GetFont("Arial", 14, Font.BOLD);
-            Font linebreak = FontFactory.GetFont("Arial", 2);
-
+            // =============
+            // Open Document
+            // =============
             document.Open();
-            Paragraph line = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 4.5F)));
-            // IMPLEMENT HERE
 
-
-            var SysSettingsData = from d in db.SysSettings
-                                  select d;
-
-            if (SysSettingsData.Any())
-            {
-                // ===========
-                // Header Page
-                // ===========
-                PdfPTable headerPage = new PdfPTable(2);
-                float[] widthsCellsHeaderPage = new float[] { 100f, 75f };
-                headerPage.SetWidths(widthsCellsHeaderPage);
-                headerPage.WidthPercentage = 100;
-                headerPage.AddCell(new PdfPCell(new Phrase(SysSettingsData.FirstOrDefault().Company, fontArial17Bold)) { Border = 0 });
-                headerPage.AddCell(new PdfPCell(new Phrase("Investment Proposal Summary", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
-                //headerPage.AddCell(new PdfPCell(new Phrase(SysSettingsData.FirstOrDefault().SoftwareVersion, fontArial11)) { Border = 0, PaddingTop = 5f });
-                //headerPage.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2 });
-                //headerPage.AddCell(new PdfPCell(new Phrase(SysSettingsData.FirstOrDefault().SoftwareDeveloper, fontArial11)) { Border = 0, PaddingTop = 5f });
-                //headerPage.AddCell(new PdfPCell(new Phrase("Printed " + DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToString("hh:mm:ss tt"), fontArial11)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2 });
-                document.Add(headerPage);
-                document.Add(line);
-            }
-
+            // ===========
+            // Space Table
+            // ===========
             PdfPTable spaceTable = new PdfPTable(1);
             float[] widthCellsSpaceTable = new float[] { 100f };
             spaceTable.SetWidths(widthCellsSpaceTable);
             spaceTable.WidthPercentage = 100;
-            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { Border = 0, PaddingTop = 5f });
+            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 5f, Border = 0 });
 
-            var TrnSoldUnitData = from d in db.TrnSoldUnits
-                                  where d.Id >= Convert.ToInt32(id)
-                                  select new
-                                  {
-                                      Id = d.Id,
-                                      SoldUnitNumber = d.SoldUnitNumber,
-                                      SoldUnitDate = d.SoldUnitDate.ToShortDateString(),
-                                      ProjectId = d.ProjectId,
-                                      Project = d.MstProject.Project,
-                                      UnitId = d.UnitId,
-                                      Unit = d.MstUnit.Block + " " + d.MstUnit.Lot,
-                                      Lot = d.MstUnit.Lot,
-                                      CustomerId = d.CustomerId,
-                                      Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
-                                      BrokerId = d.BrokerId,
-                                      Broker = d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
-                                      ChecklistId = d.CheckListId,
-                                      Checklist = d.MstCheckList.CheckList,
-                                      Price = d.Price,
-                                      TotalInvestment = d.TotalInvestment,
-                                      PaymentOptions = d.PaymentOptions,
-                                      Financing = d.Financing,
-                                      Remarks = d.Remarks,
-                                      PreparedBy = d.PreparedBy,
-                                      PreparedByUser = d.MstUser2.Username,
-                                      PreparedByName = d.MstUser2.FullName,
-                                      CheckedByName = d.MstUser3.FullName,
-                                      CheckedBy = d.CheckedBy,
-                                      CheckedByUser = d.MstUser3.Username,
-                                      ApprovedBy = d.ApprovedBy,
-                                      ApprovedByUser = d.MstUser4.Username,
-                                      Status = d.Status,
-                                      IsLocked = d.IsLocked,
-                                      CreatedBy = d.CreatedBy,
-                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                      UpdatedBy = d.UpdatedBy,
-                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                                  };
+            // ===============
+            // Settings (Data)
+            // ===============
+            var sysSettings = from d in db.SysSettings
+                              select d;
 
-
-            var MstUnit = from d in db.MstUnits
-                          where d.Id >= Convert.ToInt32(id)
-                          select new
-                          {
-                              UnitCode = d.UnitCode,
-                              Block = d.Block,
-                              Lot = d.Lot,
-                              ProjectId = d.ProjectId,
-                              TLA = d.TLA,
-                              TFA = d.TFA,
-                              Price = d.Price,
-                              Status = d.Status,
-                              IsLocked = d.IsLocked,
-                              //   UpdatedDateTime = DateTime.Now
-                          };
-
-
-
-            if (TrnSoldUnitData.Any())
+            if (sysSettings.Any())
             {
+                // ===============
+                // Company Details
+                // ===============
+                PdfPTable pdfTableCompanyDetail = new PdfPTable(2);
+                pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
+                pdfTableCompanyDetail.WidthPercentage = 100;
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase(sysSettings.FirstOrDefault().Company, fontArial17Bold)) { Border = 0 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Investment Proposal Summary", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
+                document.Add(pdfTableCompanyDetail);
+                document.Add(line);
 
-                String Customer = TrnSoldUnitData.FirstOrDefault().Customer;
-                String Unit = TrnSoldUnitData.FirstOrDefault().Unit;
-                Decimal Lot = MstUnit.FirstOrDefault().TLA;
-                String Project = TrnSoldUnitData.FirstOrDefault().Project;
-                Decimal Price = TrnSoldUnitData.FirstOrDefault().Price;
-                Decimal TFA = MstUnit.FirstOrDefault().TFA;
-                String totalInvestment = TrnSoldUnitData.FirstOrDefault().TotalInvestment;
-                String PreparedByName = TrnSoldUnitData.FirstOrDefault().PreparedByName;
-                String CheckByName = TrnSoldUnitData.FirstOrDefault().CheckedByName;
-                PdfPTable tableSoldUnitProposal = new PdfPTable(2);
-                float[] widthscellsTablePurchaseOrder = new float[] { 40f, 150f };
-                tableSoldUnitProposal.SetWidths(widthscellsTablePurchaseOrder);
-                tableSoldUnitProposal.WidthPercentage = 100;
-                tableSoldUnitProposal.AddCell(new PdfPCell(new Phrase("Investors Name ", fontArial11Bold)) { Border = 0, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableSoldUnitProposal.AddCell(new PdfPCell(new Phrase(Customer, fontArial11)) { Border = 0, PaddingTop = 10f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableSoldUnitProposal.AddCell(new PdfPCell(new Phrase("Unit", fontArial11Bold)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableSoldUnitProposal.AddCell(new PdfPCell(new Phrase(Unit, fontArial11)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableSoldUnitProposal.AddCell(new PdfPCell(new Phrase("Lot Area", fontArial11Bold)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableSoldUnitProposal.AddCell(new PdfPCell(new Phrase(Lot.ToString(), fontArial11)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableSoldUnitProposal.AddCell(new PdfPCell(new Phrase("Floor Area", fontArial11Bold)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableSoldUnitProposal.AddCell(new PdfPCell(new Phrase(TFA.ToString(), fontArial11)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
+                document.Add(spaceTable);
+            }
 
-                tableSoldUnitProposal.AddCell(new PdfPCell(new Phrase("Project", fontArial11Bold)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableSoldUnitProposal.AddCell(new PdfPCell(new Phrase(Project, fontArial11)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableSoldUnitProposal.AddCell(new PdfPCell(new Phrase("Reservation Fee", fontArial11Bold)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                tableSoldUnitProposal.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                document.Add(tableSoldUnitProposal);
+            // =============
+            // Get Sold Unit
+            // =============
+            var soldUnit = from d in db.TrnSoldUnits
+                           where d.Id == Convert.ToInt32(id)
+                           select d;
 
-                //instances...Uses at the bottom
-                Paragraph p = new Paragraph();
-                Paragraph p2 = new Paragraph();
-                Paragraph p3 = new Paragraph();
-                Paragraph p4 = new Paragraph();
-                Phrase p1 = new Phrase();
+            if (soldUnit.Any())
+            {
+                // ==============
+                // Sold Unit Data
+                // ==============
+                String Customer = soldUnit.FirstOrDefault().MstCustomer.FirstName + " " + soldUnit.FirstOrDefault().MstCustomer.MiddleName + " " + soldUnit.FirstOrDefault().MstCustomer.LastName;
+                String Unit = soldUnit.FirstOrDefault().MstUnit.Block + " " + soldUnit.FirstOrDefault().MstUnit.Lot;
+                String Project = soldUnit.FirstOrDefault().MstProject.Project;
+                String TotalInvestment = soldUnit.FirstOrDefault().TotalInvestment;
+                String PaymentOptions = soldUnit.FirstOrDefault().PaymentOptions;
+                String Financing = soldUnit.FirstOrDefault().Financing;
+                String PreparedByName = soldUnit.FirstOrDefault().MstUser2.FullName;
+                String CheckByName = soldUnit.FirstOrDefault().MstUser3.FullName;
+                Decimal Price = soldUnit.FirstOrDefault().Price;
+                Decimal TLA = soldUnit.FirstOrDefault().MstUnit.TLA;
+                Decimal TFA = soldUnit.FirstOrDefault().MstUnit.TFA;
 
-                //instances for last page DECLARE HERE FOR NEATNESS
-                Paragraph p6 = new Paragraph();
-                Paragraph p7 = new Paragraph();
-                Paragraph p8 = new Paragraph();
-                Paragraph p9 = new Paragraph();
-                Paragraph p10 = new Paragraph();
-                Paragraph p11 = new Paragraph();
-                Paragraph p12 = new Paragraph();
-                Paragraph p13 = new Paragraph();
-                Paragraph p14 = new Paragraph();
-                Paragraph newline = new Paragraph();
-
-                // make a new line 
-                // p.Add(Chunk.NEWLINE);
-                p3.Alignment = Element.ALIGN_CENTER;
-
-                p.Alignment = Element.ALIGN_LEFT;
-                //   p2.Alignment = Element.ALIGN_RIGHT;
-
-
+                // ================
+                // Sold Unit Header
+                // ================
+                PdfPTable pdfTableSoldUnitHeaderProposal = new PdfPTable(2);
+                pdfTableSoldUnitHeaderProposal.SetWidths(new float[] { 20f, 80f });
+                pdfTableSoldUnitHeaderProposal.WidthPercentage = 100;
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Investors Name ", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase(Customer, fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Unit", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase(Unit, fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Lot Area", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase(TLA.ToString("#,##0.00"), fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Floor Area", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase(TFA.ToString("#,##0.00"), fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Project", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase(Project, fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Reservation Fee", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Php ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                document.Add(pdfTableSoldUnitHeaderProposal);
 
                 document.Add(line);
 
-                Document pdfDoc = new Document();
-                //  pdfDoc.Add(new Paragraph("Some Text added"));
+                // ================
+                // Total Investment
+                // ================
+                Paragraph totalInvestmentParagraph = new Paragraph
+                {
+                    TotalInvestment
+                };
 
-                p.Add(new Chunk("Total Contract Price(TCP)", fontArial10Bold));
-                p.Add(Chunk.NEWLINE);
-                p.Add(new Chunk("\t \t \t  \t \t Include: Transfer Charges and Miscellaneous"));
-                p.Add(new Chunk("\t \t \t                                                                                " + "Php \t \t \t \t \t \t " + totalInvestment));
-
-                p.Add(Chunk.NEWLINE);
-                p.Add(Chunk.NEWLINE);
-                //p.Add(Chunk.NEWLINE);
-                p.Add(new Chunk("Other Charges:"));
-                p.Add(Chunk.NEWLINE);
-                p.Add(new Chunk("\t \t \t  \t \t * Move-in Fee(to be pain upon signing of Certificate of Turnover)"));
-
-                document.Add(p);
-                // document.Add(p2);
+                document.Add(totalInvestmentParagraph);
                 document.Add(line);
-                PdfPTable SoldUnitProposal = new PdfPTable(4);
-                SoldUnitProposal.SetWidths(new float[] { 30F, 80f, 80F, 150f });
-                SoldUnitProposal.WidthPercentage = 100;
-                SoldUnitProposal.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                SoldUnitProposal.AddCell(new PdfPCell(new Phrase("Financing Scheme", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingBottom = 7f });
-                SoldUnitProposal.AddCell(new PdfPCell(new Phrase("Bank Financing")) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                SoldUnitProposal.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                document.Add(SoldUnitProposal);
 
-                //PdfPTable SoldUnitProposal1 = new PdfPTable(4);
-                //SoldUnitProposal1.SetWidths(new float[] { 30F, 215f, 20F, 0f });
-                //SoldUnitProposal1.WidthPercentage = 100;
-                //SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                //SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("20% Spread over 36 months")) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingBottom = 7f });
-                //SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("")) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                //SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                //document.Add(SoldUnitProposal1);
+                // ========================
+                // Flexible Payment Options
+                // ========================
+                Paragraph flexiblePaymentOptionsParagraph = new Paragraph
+                {
+                    PaymentOptions
+                };
 
-                //PdfPTable SoldUnitProposal2 = new PdfPTable(4);
-                //SoldUnitProposal2.SetWidths(new float[] { 30F, 200f, 12F, 2f });
-                //SoldUnitProposal2.WidthPercentage = 100;
-                //SoldUnitProposal2.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                //SoldUnitProposal2.AddCell(new PdfPCell(new Phrase("80% Bank Financing or Pag-IBIG")) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingBottom = 7f });
-                //SoldUnitProposal2.AddCell(new PdfPCell(new Phrase("")) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                //SoldUnitProposal2.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                //document.Add(SoldUnitProposal2);
-
-
-                //PdfPTable SoldUnitProposal3 = new PdfPTable(4);
-                //SoldUnitProposal.SetWidths(new float[] { 30F, 180f, 80F, 150f });
-                //SoldUnitProposal3.WidthPercentage = 100;
-                //SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                //SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("Initial Investment", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingBottom = 7f });
-                //SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("")) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                //SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("20%" +" \t"+" Php"+"\t" +" Amount", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                //document.Add(SoldUnitProposal3);
-
-
-                PdfPTable SoldUnitProposal1 = new PdfPTable(2);
-                SoldUnitProposal1.SetWidths(new float[] { 20f, 50f });
-                SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("20% Spread over 36 months")) { HorizontalAlignment = 1, PaddingRight = 250, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                SoldUnitProposal1.AddCell(new PdfPCell(new Phrase("80% Bank Financing or Pag-Ibig")) { HorizontalAlignment = 1, PaddingRight = 230, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                document.Add(SoldUnitProposal1);
-
-                PdfPTable SoldUnitProposal3 = new PdfPTable(2);
-                SoldUnitProposal3.SetWidths(new float[] { 20f, 50f });
-                SoldUnitProposal3.WidthPercentage = 100;
-                SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("Initial Investment:", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("   20%" + "       Php " + "  The Amount", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 200f, PaddingTop = 3f, PaddingBottom = 7f });
-                SoldUnitProposal3.AddCell(new PdfPCell(new Phrase("")) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingRight = 450f, PaddingBottom = 7f });
-                document.Add(SoldUnitProposal3);
-
-                PdfPTable SoldUnitProposal6 = new PdfPTable(3);
-                SoldUnitProposal6.SetWidths(new float[] { 100f, 100f, 100f });
-                SoldUnitProposal6.WidthPercentage = 100;
-                SoldUnitProposal6.WidthPercentage = 100;
-                SoldUnitProposal6.AddCell(new PdfPCell(new Phrase("LESS: Reservation Deposit")) { HorizontalAlignment = 1, PaddingLeft = 30f, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                SoldUnitProposal6.AddCell(new PdfPCell(new Phrase("", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                SoldUnitProposal6.AddCell(new PdfPCell(new Phrase("     " + "       " + "  " + "The Amount", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingRight = 80f, PaddingTop = 3f, PaddingBottom = 7f });
-                document.Add(SoldUnitProposal6);
-
-                PdfPTable SoldUnitProposal7 = new PdfPTable(2);
-                SoldUnitProposal7.SetWidths(new float[] { 20f, 50f });
-                SoldUnitProposal7.WidthPercentage = 100;
-                SoldUnitProposal7.AddCell(new PdfPCell(new Phrase("   Net Initial Investment:", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                SoldUnitProposal7.AddCell(new PdfPCell(new Phrase("     " + "           " + "     The Amount", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 200f, PaddingTop = 3f, PaddingBottom = 7f });
-                SoldUnitProposal7.AddCell(new PdfPCell(new Phrase("")) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingRight = 450f, PaddingBottom = 7f });
-                document.Add(SoldUnitProposal7);
-
-
-
-
+                document.Add(flexiblePaymentOptionsParagraph);
                 document.Add(line);
-                //document.Add(chunk);
 
-                PdfPTable easyFinancingScheme = new PdfPTable(4);
-                float[] widthsCellsSalesInvoiceItems = new float[] { 150f, 40f, 100f, 50f };
-                easyFinancingScheme.SetWidths(widthsCellsSalesInvoiceItems);
-                easyFinancingScheme.WidthPercentage = 100;
-                easyFinancingScheme.AddCell(new PdfPCell(new Phrase("Remaining Balance thru Bank Financing", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                easyFinancingScheme.AddCell(new PdfPCell(new Phrase("80%", fontArial11Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 7f });
-                easyFinancingScheme.AddCell(new PdfPCell(new Phrase("Php", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingBottom = 7f });
-                easyFinancingScheme.AddCell(new PdfPCell(new Phrase("the Amount", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, Border = 0, PaddingBottom = 5f });
-                easyFinancingScheme.AddCell(new PdfPCell(new Phrase(" ", fontArial11Bold)) { Colspan = 4, Border = 0, PaddingTop = .1f });
-                document.Add(easyFinancingScheme);
+                // =====================
+                // Easy Financing Scheme
+                // =====================
+                Paragraph easyFinancingSchemeParagraph = new Paragraph
+                {
+                    Financing
+                };
+
+                document.Add(easyFinancingSchemeParagraph);
                 document.Add(line);
-                p4.Add(new Chunk("Note"));
-                document.Add(p4);
 
+                // ================
+                // Note Footer List
+                // ================
                 List list = new List(List.ORDERED, 20f);
-
                 list.SetListSymbol("\u2022");
 
                 list.IndentationLeft = 20f;
+                list.IndentationRight = 20f;
 
-                list.Add("The developer reserves the right to verify and correct above figures if necessary.");
-                list.Add("Installment payments must be covered with POST-DATED checks.");
-                list.Add("For all installment terms, buyers are required to submit an approve Bank Pre-Qualification in favor of " + SysSettingsData.FirstOrDefault().Company + " during the start of the amortization. House will be not constructed without the Pre-Qualification.");
-                list.Add("Please make check payable to " + SysSettingsData.FirstOrDefault().Company + ".");
-                list.Add("Registration Fees, Doc Stamp Tax, Transfer Tax and EVAT are inclusive on the Total Contract Price and subject to change base on the law mandated rates upon registration of the documents covering the purchase.");
-                list.Add("Bedroom cabinets and landscaping (except bermuda) are not included.");
-                list.Add("Prices are subject to change without prior notice unless PDCs and Contract to");
-                list.Add("House construction will commence after the payment of required equity & submission of the approved Bank Pre-Qualification in favor of " + SysSettingsData.FirstOrDefault().Company + ".");
+                if (sysSettings.Any())
+                {
+                    list.Add("The developer reserves the right to verify and correct above figures if necessary.");
+                    list.Add("Installment payments must be covered with POST-DATED checks.");
+                    list.Add("For all installment terms, buyers are required to submit an approve Bank Pre-Qualification in favor of " + sysSettings.FirstOrDefault().Company + " during the start of the amortization. House will be not constructed without the Pre-Qualification.");
+                    list.Add("Please make check payable to " + sysSettings.FirstOrDefault().Company + ".");
+                    list.Add("Registration Fees, Doc Stamp Tax, Transfer Tax and EVAT are inclusive on the Total Contract Price and subject to change base on the law mandated rates upon registration of the documents covering the purchase.");
+                    list.Add("Bedroom cabinets and landscaping (except bermuda) are not included.");
+                    list.Add("Prices are subject to change without prior notice unless PDCs and Contract to");
+                    list.Add("House construction will commence after the payment of required equity & submission of the approved Bank Pre-Qualification in favor of " + sysSettings.FirstOrDefault().Company + ".");
+                }
+
+                // =====
+                // Lists
+                // =====
+                var notePhrase = new Phrase("NOTE:", fontArial11Bold);
+                Paragraph noteParagraph = new Paragraph
+                {
+                    notePhrase
+                };
+
+                document.Add(noteParagraph);
                 document.Add(list);
-                document.Add(Chunk.NEWLINE);
 
+                // ======
+                // Spaces
+                // ======
+                document.Add(spaceTable);
+                document.Add(spaceTable);
+                document.Add(spaceTable);
 
+                // ===============
+                // User Signatures
+                // ===============
+                PdfPTable pdfTableUserSignatures = new PdfPTable(5);
+                pdfTableUserSignatures.SetWidths(new float[] { 80f, 150f, 80f, 80f, 150f });
+                pdfTableUserSignatures.WidthPercentage = 100;
 
-                document.Add(Chunk.NEWLINE);
-                p4.Add(new Chunk("Prepared by: ", fontArial10Bold));
-                document.Add(Chunk.NEWLINE);
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase("Prepared by: ", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(PreparedByName, fontArial11)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase("Broker / Agent: ", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
-                document.Add(p4);
-                Chunk underline = new Chunk("\t \t \t \t  " + PreparedByName + " \t \t \t \t");
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase("Broker & Coordinator", fontArial11)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
 
-                underline.SetUnderline(2, -3);
-                document.Add(underline);
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ")) { Colspan = 5, Border = 0, PaddingTop = 20f });
 
-                p4.Add(new Chunk("Checked by: ", fontArial10Bold));
-                document.Add(Chunk.NEWLINE);
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase("Verified by: ", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(CheckByName, fontArial11)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase("Conforme: ", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
-                document.Add(p4);
-                Chunk underlineCheck = new Chunk("\t \t \t \t  " + CheckByName + " \t \t \t \t");
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase("Sales Manager", fontArial11)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase("SIGNATURE OVER PRINTED NAME", fontArial11)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
 
-                underline.SetUnderline(2, -3);
-                document.Add(underline);
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase("Investor", fontArial11)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
 
+                document.Add(pdfTableUserSignatures);
             }
 
-
-
+            // ==============
+            // Close Document
+            // ==============
             document.Close();
 
+            // ===============
+            // Response Stream
+            // ===============
             byte[] byteInfo = workStream.ToArray();
 
             workStream.Write(byteInfo, 0, byteInfo.Length);
@@ -2025,6 +1922,5 @@ namespace priland_api.Controllers
 
             return response;
         }
-
     }
 }
