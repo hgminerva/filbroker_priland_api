@@ -477,7 +477,8 @@ namespace priland_api.Controllers
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
             response.Content.Headers.ContentLength = byteInfo.Length;
 
-            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out ContentDispositionHeaderValue contentDisposition))
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
             {
                 response.Content.Headers.ContentDisposition = contentDisposition;
             }
@@ -812,7 +813,8 @@ namespace priland_api.Controllers
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
             response.Content.Headers.ContentLength = byteInfo.Length;
 
-            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out ContentDispositionHeaderValue contentDisposition))
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
             {
                 response.Content.Headers.ContentDisposition = contentDisposition;
             }
@@ -1022,7 +1024,8 @@ namespace priland_api.Controllers
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
             response.Content.Headers.ContentLength = byteInfo.Length;
 
-            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out ContentDispositionHeaderValue contentDisposition))
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
             {
                 response.Content.Headers.ContentDisposition = contentDisposition;
             }
