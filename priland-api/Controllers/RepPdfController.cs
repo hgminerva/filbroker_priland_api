@@ -1094,13 +1094,14 @@ namespace priland_api.Controllers
                 // Sold Unit Data
                 // ==============
                 String Customer = soldUnit.FirstOrDefault().MstCustomer.FirstName + " " + soldUnit.FirstOrDefault().MstCustomer.MiddleName + " " + soldUnit.FirstOrDefault().MstCustomer.LastName;
-                String Unit = soldUnit.FirstOrDefault().MstUnit.Block + " " + soldUnit.FirstOrDefault().MstUnit.Lot;
+                String Unit = "Block " + soldUnit.FirstOrDefault().MstUnit.Block + " Lot " + soldUnit.FirstOrDefault().MstUnit.Lot;
                 String Project = soldUnit.FirstOrDefault().MstProject.Project;
                 String TotalInvestment = soldUnit.FirstOrDefault().TotalInvestment;
                 String PaymentOptions = soldUnit.FirstOrDefault().PaymentOptions;
                 String Financing = soldUnit.FirstOrDefault().Financing;
                 String PreparedByName = soldUnit.FirstOrDefault().MstUser2.FullName;
                 String CheckByName = soldUnit.FirstOrDefault().MstUser3.FullName;
+                String Broker = soldUnit.FirstOrDefault().MstBroker.FirstName + " " + soldUnit.FirstOrDefault().MstBroker.MiddleName + " " + soldUnit.FirstOrDefault().MstBroker.LastName;
                 Decimal Price = soldUnit.FirstOrDefault().Price;
                 Decimal TLA = soldUnit.FirstOrDefault().MstUnit.TLA;
                 Decimal TFA = soldUnit.FirstOrDefault().MstUnit.TFA;
@@ -1116,13 +1117,13 @@ namespace priland_api.Controllers
                 pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Unit", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase(Unit, fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Lot Area", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase(TLA.ToString("#,##0.00"), fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase(TLA.ToString("#,##0.00") + " sq. m.", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Floor Area", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase(TFA.ToString("#,##0.00"), fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase(TFA.ToString("#,##0.00") + " sq. m.", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Project", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase(Project, fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Reservation Fee", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Php ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSoldUnitHeaderProposal.AddCell(new PdfPCell(new Phrase("Php 0.00", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 document.Add(pdfTableSoldUnitHeaderProposal);
 
                 document.Add(line);
@@ -1130,33 +1131,66 @@ namespace priland_api.Controllers
                 // ================
                 // Total Investment
                 // ================
+                var totalInvestmentPhrase = new Phrase("TOTAL INVESTMENT", fontArial11Bold);
+                Paragraph totalInvestmentHeaderParagraph = new Paragraph
+                {
+                    totalInvestmentPhrase
+                };
+
                 Paragraph totalInvestmentParagraph = new Paragraph
                 {
                     TotalInvestment
                 };
 
+                totalInvestmentHeaderParagraph.IndentationLeft = 5f;
+                totalInvestmentHeaderParagraph.IndentationRight = 5f;
+                document.Add(totalInvestmentHeaderParagraph);
+                totalInvestmentParagraph.IndentationLeft = 20f;
+                totalInvestmentParagraph.IndentationRight = 20f;
                 document.Add(totalInvestmentParagraph);
                 document.Add(line);
 
                 // ========================
                 // Flexible Payment Options
                 // ========================
+                var flexiblePaymentOptionsPhrase = new Phrase("FLEXIBLE PAYMENT OPTIONS", fontArial11Bold);
+                Paragraph totalInvestmentHeaderHeaderParagraph = new Paragraph
+                {
+                    flexiblePaymentOptionsPhrase
+                };
+
                 Paragraph flexiblePaymentOptionsParagraph = new Paragraph
                 {
                     PaymentOptions
                 };
 
+                totalInvestmentHeaderHeaderParagraph.IndentationLeft = 5f;
+                totalInvestmentHeaderHeaderParagraph.IndentationRight = 5f;
+                document.Add(totalInvestmentHeaderHeaderParagraph);
+                flexiblePaymentOptionsParagraph.IndentationLeft = 20f;
+                flexiblePaymentOptionsParagraph.IndentationRight = 20f;
                 document.Add(flexiblePaymentOptionsParagraph);
                 document.Add(line);
 
                 // =====================
                 // Easy Financing Scheme
                 // =====================
+                var easyFinancingSchemePhrase = new Phrase("EASY FINANCING SCHEME", fontArial11Bold);
+                Paragraph easyFinancingSchemeHeaderParagraph = new Paragraph
+                {
+                    easyFinancingSchemePhrase
+                };
+
                 Paragraph easyFinancingSchemeParagraph = new Paragraph
                 {
                     Financing
                 };
 
+                easyFinancingSchemeHeaderParagraph.IndentationLeft = 5f;
+                easyFinancingSchemeHeaderParagraph.IndentationRight = 5f;
+                document.Add(easyFinancingSchemeHeaderParagraph);
+                easyFinancingSchemeParagraph.IndentationLeft = 20f;
+                easyFinancingSchemeParagraph.IndentationRight = 20f;
                 document.Add(easyFinancingSchemeParagraph);
                 document.Add(line);
 
@@ -1190,6 +1224,8 @@ namespace priland_api.Controllers
                     notePhrase
                 };
 
+                noteParagraph.IndentationLeft = 5f;
+                noteParagraph.IndentationRight = 5f;
                 document.Add(noteParagraph);
                 document.Add(list);
 
@@ -1211,7 +1247,7 @@ namespace priland_api.Controllers
                 pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(PreparedByName, fontArial11)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase("Broker / Agent: ", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(Broker, fontArial11)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
                 pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase("Broker & Coordinator", fontArial11)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
@@ -1219,7 +1255,7 @@ namespace priland_api.Controllers
                 pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 0, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
 
-                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ")) { Colspan = 5, Border = 0, PaddingTop = 20f });
+                pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(" ")) { Colspan = 5, Border = 0, PaddingTop = 30f });
 
                 pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase("Verified by: ", fontArial11Bold)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableUserSignatures.AddCell(new PdfPCell(new Phrase(CheckByName, fontArial11)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
