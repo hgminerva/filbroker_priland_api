@@ -1404,12 +1404,19 @@ namespace priland_api.Controllers
             Paragraph p12 = new Paragraph();
             Paragraph p13 = new Paragraph();
             Paragraph p14 = new Paragraph();
+            Paragraph p15 = new Paragraph();
+            Paragraph p16 = new Paragraph();
+            Paragraph p17 = new Paragraph();
 
             if (contract.Any())
             {
                 // make a new line 
                 p.Add(Chunk.NEWLINE);
                 p.Add(Chunk.NEWLINE);
+
+                PdfPTable pdfTableCustomerBuyer = new PdfPTable(3);
+                pdfTableCustomerBuyer.SetWidths(new float[] { 100f, 100f, 100f });
+                pdfTableCustomerBuyer.WidthPercentage = 100;
 
                 String Project = contract.FirstOrDefault().Project;
                 String Date = contract.FirstOrDefault().SoldUnitDate;
@@ -1922,6 +1929,60 @@ namespace priland_api.Controllers
                 p14.Add(Chunk.NEWLINE);
                 p14.Add(Chunk.NEWLINE);
                 p14.Add(new Chunk("BEFORE ME a Notary Public for and in the above jurisdiction, this______ day of __________________, personally appeared the following:", fontArial11));
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(Chunk.NEWLINE);
+
+                p14.Add(new Chunk("                                 NAME        "));
+                p14.Add(new Chunk("                                             IDENTIFICATION      "));
+                p14.Add(new Chunk("                                                     ISSUED BY       "));
+                p14.Add(Chunk.NEWLINE);
+
+                p14.Add(new Chunk("                 ____________________________"));
+                p14.Add(new Chunk("                 ____________________________"));
+                p14.Add(new Chunk("                 ____________________________"));
+                p14.Add(Chunk.NEWLINE);
+
+                p14.Add(new Chunk("                 ____________________________"));
+                p14.Add(new Chunk("                 ____________________________"));
+                p14.Add(new Chunk("                 ____________________________"));
+                p14.Add(Chunk.NEWLINE);
+
+                p14.Add(new Chunk("                 ____________________________"));
+                p14.Add(new Chunk("                 ____________________________"));
+                p14.Add(new Chunk("                 ____________________________"));
+                p14.Add(Chunk.NEWLINE);
+                               
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(new Chunk("All own to me and idetified through the competent evidence of identity hereinabove describe to be the same persons who executed"+
+                                "thr foregoing deed and acknowledge that the same is their own and free and voluntary act, deed, their authority and that of the corporation herein represented.",fontArial11));
+
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(new Chunk("This instrument refers to a Contract to Sell consisting of five (5) pages, and Annex “A”, signed by the parties and their instrumental"+
+                                "witnesses at the end of the body of the documents and on the left hand margin of the reserve side hereof and the Annex, each and every page"+
+                                "of which is saled with my notarial seal."));
+
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(new Chunk("WITNESS MY HAND AND NOTARIAL SEAL on the date and at the place first hereinabove written."));
+
+
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(new Chunk("Doc. No.     _______________  ;"));
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(new Chunk("Page No.    _______________  ;"));
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(new Chunk("Book No.    _______________  ;"));
+                p14.Add(Chunk.NEWLINE);
+                p14.Add(new Chunk("Series No.  _______________  ."));
+
+
+
 
 
             }
