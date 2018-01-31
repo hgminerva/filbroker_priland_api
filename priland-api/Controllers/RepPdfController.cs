@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -8,7 +7,6 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using System.Net.Http.Headers;
-using System.Web.Http.Results;
 using System.Globalization;
 
 namespace priland_api.Controllers
@@ -1419,7 +1417,7 @@ namespace priland_api.Controllers
                 document.Add(spaceTable);
 
                 String Customer = soldUnit.FirstOrDefault().MstCustomer.FirstName + " " + soldUnit.FirstOrDefault().MstCustomer.MiddleName + " " + soldUnit.FirstOrDefault().MstCustomer.LastName;
-                String Spouse = "______________________________"; // Spouse's Name
+                String Spouse = "Spouse Name"; // Spouse's Name
                 String Address = soldUnit.FirstOrDefault().MstCustomer.Address;
 
                 Phrase p5Phrase = new Phrase(Customer, fontArial12Bold);
@@ -2217,10 +2215,10 @@ namespace priland_api.Controllers
                 document.Add(p64);
                 document.Add(spaceTable);
 
-                Phrase p65Phrase = new Phrase("The possession of the Unit shall be delivered by the SELLER to the BUYER within reasonable period of time from the" 
-                    + " date of completion of construction of such UNIT and its related facilities. It is understood, however, that physical possession of the PROPERTY shall not" 
-                    + " be delivered by the SELLER to the BUYER unless the later shall have complied with all conditions and requirements prescribed for this purpose by the" 
-                    + " SELLER to the BUYER unless the latter shall have complied with all conditions and requirements prescribed for this purpose by the SELLER under its" 
+                Phrase p65Phrase = new Phrase("The possession of the Unit shall be delivered by the SELLER to the BUYER within reasonable period of time from the"
+                    + " date of completion of construction of such UNIT and its related facilities. It is understood, however, that physical possession of the PROPERTY shall not"
+                    + " be delivered by the SELLER to the BUYER unless the later shall have complied with all conditions and requirements prescribed for this purpose by the"
+                    + " SELLER to the BUYER unless the latter shall have complied with all conditions and requirements prescribed for this purpose by the SELLER under its"
                     + " policies prevailing at the time.", fontArial12);
 
                 Paragraph p65 = new Paragraph
@@ -2233,10 +2231,10 @@ namespace priland_api.Controllers
                 document.Add(p65);
                 document.Add(spaceTable);
 
-                Phrase p66Phrase = new Phrase("Upon completion of the UNIT, the SELLER shall serve in the BUYER a written notice of turn over stating the date on which the UNIT shall be ready" 
-                    + " for delivery or occupancy by the BUYER. If the BUYER is not in default, the possession of the UNIT shall be delivered to them. The BUYER shall be given a" 
-                    + " reasonable opportunity to inspect and examine the UNIT before acceptance of the same. Provided however, that if no inspection is made on or before the date or" 
-                    + " within the period stated in the notice, the UNIT shall be deemed to have already been inspected by the BUYER and the same shall be considered as to have been" 
+                Phrase p66Phrase = new Phrase("Upon completion of the UNIT, the SELLER shall serve in the BUYER a written notice of turn over stating the date on which the UNIT shall be ready"
+                    + " for delivery or occupancy by the BUYER. If the BUYER is not in default, the possession of the UNIT shall be delivered to them. The BUYER shall be given a"
+                    + " reasonable opportunity to inspect and examine the UNIT before acceptance of the same. Provided however, that if no inspection is made on or before the date or"
+                    + " within the period stated in the notice, the UNIT shall be deemed to have already been inspected by the BUYER and the same shall be considered as to have been"
                     + " completed and delivered in the date specified in the Notice.", fontArial12);
 
                 Paragraph p66 = new Paragraph
@@ -2249,8 +2247,8 @@ namespace priland_api.Controllers
                 document.Add(p66);
                 document.Add(spaceTable);
 
-                Phrase p67Phrase = new Phrase("Within the prescribed period for inspection prior to the turnover of the UNIT to the BUYER, the BUYER shall register with the SELLER their written" 
-                    + " complaint on any defect. Failure to so register such complaint shall be deemed an unqualified and unconditional acceptance of the UNIT by the BUYER and shall constitute" 
+                Phrase p67Phrase = new Phrase("Within the prescribed period for inspection prior to the turnover of the UNIT to the BUYER, the BUYER shall register with the SELLER their written"
+                    + " complaint on any defect. Failure to so register such complaint shall be deemed an unqualified and unconditional acceptance of the UNIT by the BUYER and shall constitute"
                     + " a bar for future complaint or action on the same.", fontArial12);
 
                 Paragraph p67 = new Paragraph
@@ -2263,10 +2261,10 @@ namespace priland_api.Controllers
                 document.Add(p67);
                 document.Add(spaceTable);
 
-                Phrase p68Phrase = new Phrase("The BUYER shall be deemed to have taken possession of the UNIT in any of the following or analogous circumstances:" 
-                    + " (1) on the date specified in the SELLER’s notice of turnover  and upon the BUYER’s actual or constructive receipt thereof irrespective of their" 
+                Phrase p68Phrase = new Phrase("The BUYER shall be deemed to have taken possession of the UNIT in any of the following or analogous circumstances:"
+                    + " (1) on the date specified in the SELLER’s notice of turnover  and upon the BUYER’s actual or constructive receipt thereof irrespective of their"
                     + " non-occupancy of the UNIT for any reason whatsoever; (2) when the BUYER actually occupies the UNIT; (3) when the BUYER commences to introduce"
-                    + " improvements, alterations, furnishing, etc. on the UNIT; (4) when the BUYER takes or receives the keys to the UNIT;" 
+                    + " improvements, alterations, furnishing, etc. on the UNIT; (4) when the BUYER takes or receives the keys to the UNIT;"
                     + " (5) when the BUYER accepts the UNIT or when the UNIT is deemed accepted as provided herein,", fontArial12);
 
                 Paragraph p68 = new Paragraph
@@ -2279,9 +2277,9 @@ namespace priland_api.Controllers
                 document.Add(p68);
                 document.Add(spaceTable);
 
-                Phrase p69Phrase = new Phrase("From and after the date specified in notice of turnover, or when the BUYER takes possession of the UNIT in accordance with the immediately" 
-                    + " preceding paragraph, notwithstanding title to the UNIT had not been transferred to the BUYER, the BUYER shall, in place of the SELLER, observe all the" 
-                    + " conditions and restrictions on the UNIT and shall henceforth be liable for all risk of loss or damage to the UNIT, charges and fees for utilities and service," 
+                Phrase p69Phrase = new Phrase("From and after the date specified in notice of turnover, or when the BUYER takes possession of the UNIT in accordance with the immediately"
+                    + " preceding paragraph, notwithstanding title to the UNIT had not been transferred to the BUYER, the BUYER shall, in place of the SELLER, observe all the"
+                    + " conditions and restrictions on the UNIT and shall henceforth be liable for all risk of loss or damage to the UNIT, charges and fees for utilities and service,"
                     + " taxes and homeowners’ association dues, and other related obligations and assessments pertaining to the UNIT.", fontArial12);
 
                 Paragraph p69 = new Paragraph
@@ -2294,7 +2292,7 @@ namespace priland_api.Controllers
                 document.Add(p69);
                 document.Add(spaceTable);
 
-                Phrase p70Phrase = new Phrase("The BUYER shall, before moving into the UNIT. Pay membership and other dues assessed on the UNIT by the Homeowners’" 
+                Phrase p70Phrase = new Phrase("The BUYER shall, before moving into the UNIT. Pay membership and other dues assessed on the UNIT by the Homeowners’"
                     + " Association to be established in the subdivision project.", fontArial12);
 
                 Paragraph p70 = new Paragraph
@@ -2307,7 +2305,7 @@ namespace priland_api.Controllers
                 document.Add(p70);
                 document.Add(spaceTable);
 
-                Phrase p71Phrase = new Phrase("Upon moving in, the BUYER shall pay move-in fees covering the determined cost incurred by the SELLER for pedestal," 
+                Phrase p71Phrase = new Phrase("Upon moving in, the BUYER shall pay move-in fees covering the determined cost incurred by the SELLER for pedestal,"
                     + " electrical connection and water connection of the HOUSE and LOT.", fontArial12);
 
                 Paragraph p71 = new Paragraph
@@ -2329,7 +2327,7 @@ namespace priland_api.Controllers
                 document.Add(p72);
                 document.Add(spaceTable);
 
-                Phrase p73Phrase = new Phrase("The BUYER shall obtain and maintain the following insurance until the BUYER has fully paid the Contrast Price and its related" 
+                Phrase p73Phrase = new Phrase("The BUYER shall obtain and maintain the following insurance until the BUYER has fully paid the Contrast Price and its related"
                     + " charges to the SELLER, with the SELLER or its assignee as the designated beneficiary:", fontArial12);
 
                 Paragraph p73 = new Paragraph
@@ -2342,7 +2340,7 @@ namespace priland_api.Controllers
                 document.Add(p73);
                 document.Add(spaceTable);
 
-                Phrase p74Phrase = new Phrase("(a) Redemption Insurance – This Insurance, which cover risk in case of death of the BUYER, is subject to the Schedule of Insurance" 
+                Phrase p74Phrase = new Phrase("(a) Redemption Insurance – This Insurance, which cover risk in case of death of the BUYER, is subject to the Schedule of Insurance"
                     + " in the SELLER’s Master Policy.", fontArial12);
 
                 Paragraph p74 = new Paragraph
@@ -2356,7 +2354,7 @@ namespace priland_api.Controllers
                 document.Add(p74);
                 document.Add(spaceTable);
 
-                Phrase p75Phrase = new Phrase("(b) Fire Insurance – The buyer shall obtain fire as well as allied peril insurance/s on the UNIT for an amount equivalent to at least" 
+                Phrase p75Phrase = new Phrase("(b) Fire Insurance – The buyer shall obtain fire as well as allied peril insurance/s on the UNIT for an amount equivalent to at least"
                     + " the contract value of the residential unit and/or its improvements. The premiums for this coverage shall be prepared annually by the BUYER."
                     + " The initial year’s prepayment shall, be deducted from, the Contrast proceeds, while the repayments for the succeeding years shall be collected"
                     + " together with the BUYER’s monthly installment payments.", fontArial12);
@@ -2394,7 +2392,7 @@ namespace priland_api.Controllers
                 document.Add(p77);
                 document.Add(spaceTable);
 
-                Phrase p78Phrase = new Phrase("(a) The BUYER warrants in full the truth of the representations made in the applications for the purchase of the UNIT subject of this Contract," 
+                Phrase p78Phrase = new Phrase("(a) The BUYER warrants in full the truth of the representations made in the applications for the purchase of the UNIT subject of this Contract,"
                     + " and any falsehood or misrepresentation stated therein shall be sufficient ground for the cancellation or rescission of this Contract.", fontArial12);
 
                 Paragraph p78 = new Paragraph
@@ -2455,8 +2453,8 @@ namespace priland_api.Controllers
                 document.Add(p82);
                 document.Add(spaceTable);
 
-                Phrase p83Phrase = new Phrase("(e) In the event that the subdivision project and UNIT becomes not economically feasible such that there are adverse conditions, changes and its structure," 
-                    + " or other similar factors or reasons, the SELLER may, upon written notice to the BUYER, change or alter the designe, specifications and/or the price of the UNIT or replace" 
+                Phrase p83Phrase = new Phrase("(e) In the event that the subdivision project and UNIT becomes not economically feasible such that there are adverse conditions, changes and its structure,"
+                    + " or other similar factors or reasons, the SELLER may, upon written notice to the BUYER, change or alter the designe, specifications and/or the price of the UNIT or replace"
                     + " the same with a similar lot, or cancel this Contract and return in full, without interest, all payments received from the BUYER.", fontArial12);
 
                 Paragraph p83 = new Paragraph
@@ -2468,9 +2466,9 @@ namespace priland_api.Controllers
                 p83.IndentationLeft = 80f;
                 document.Add(p83);
                 document.Add(spaceTable);
-                
-                Phrase p84Phrase = new Phrase("(f) If the sale of the UNIT hereunder constitutes “bulk buying” subject to the provisions of HLURB Administrative Order NO. 09, Series" 
-                    + " of 1994, or the HLURB Rules and Regulations on Bulk Buying, the BUYER hereby agrees and undertakes to comply  with the provisions of the aforesaid" 
+
+                Phrase p84Phrase = new Phrase("(f) If the sale of the UNIT hereunder constitutes “bulk buying” subject to the provisions of HLURB Administrative Order NO. 09, Series"
+                    + " of 1994, or the HLURB Rules and Regulations on Bulk Buying, the BUYER hereby agrees and undertakes to comply  with the provisions of the aforesaid"
                     + " Administrative Order.", fontArial12);
 
                 Paragraph p84 = new Paragraph
@@ -2483,8 +2481,8 @@ namespace priland_api.Controllers
                 document.Add(p84);
                 document.Add(spaceTable);
 
-                Phrase p85Phrase = new Phrase("(g) The BUYER agrees to be bound by all terms and conditions on the Declaration of Restrictions for the Subdivision Project and the Articles of" 
-                    + " Incorporation and By Laws of the homeowners association, copies of which shall be duly finished upon request of the BUYER. The BUYER further confirms that his obligations" 
+                Phrase p85Phrase = new Phrase("(g) The BUYER agrees to be bound by all terms and conditions on the Declaration of Restrictions for the Subdivision Project and the Articles of"
+                    + " Incorporation and By Laws of the homeowners association, copies of which shall be duly finished upon request of the BUYER. The BUYER further confirms that his obligations"
                     + " under this Contract will survive upon payment of the CONTRACT PRICE and the execution of the Deed of Absolute Sale.", fontArial12);
 
                 Paragraph p85 = new Paragraph
@@ -2518,11 +2516,11 @@ namespace priland_api.Controllers
                 document.Add(p87);
                 document.Add(spaceTable);
 
-                Phrase p88Phrase = new Phrase("Should the SELLER be constrained to resort to courts to project its rights or to seek redress for its grievances under this Contract," 
-                    + " or to defend itself against any action or proceeding instituted by the BUYER or any other party arising from this Contract or any related document," 
-                    + " the BUYER shall further pay the SELLER, as and by way of attorney’s fees, a sum equivalent to at least twenty percent (20%) of the total amount" 
-                    + " due or involved , or the amount of fifty thousand pesos (P50,000.00) whichever is higher, in addition to the cost and expenses of litigation, and" 
-                    + " to the actual and other damages provided hereinabove to which the SELLER shall be entitled  by law and under this Contract. Any actions or" 
+                Phrase p88Phrase = new Phrase("Should the SELLER be constrained to resort to courts to project its rights or to seek redress for its grievances under this Contract,"
+                    + " or to defend itself against any action or proceeding instituted by the BUYER or any other party arising from this Contract or any related document,"
+                    + " the BUYER shall further pay the SELLER, as and by way of attorney’s fees, a sum equivalent to at least twenty percent (20%) of the total amount"
+                    + " due or involved , or the amount of fifty thousand pesos (P50,000.00) whichever is higher, in addition to the cost and expenses of litigation, and"
+                    + " to the actual and other damages provided hereinabove to which the SELLER shall be entitled  by law and under this Contract. Any actions or"
                     + " proceedings related to this Contract shall be brought before proper courts of Cebu City, all other venues being expressly waived.", fontArial12);
 
                 Paragraph p88 = new Paragraph
@@ -2544,8 +2542,8 @@ namespace priland_api.Controllers
                 document.Add(p89);
                 document.Add(spaceTable);
 
-                Phrase p90Phrase = new Phrase("In case one or more of the provisions contained in this Contract to Sell shall be declared invalid, illegal or unenforceable in any" 
-                    + " respect by a competent authority, the validity, legality, and enforceability of the remaining provisions contained herein shall not in any way be" 
+                Phrase p90Phrase = new Phrase("In case one or more of the provisions contained in this Contract to Sell shall be declared invalid, illegal or unenforceable in any"
+                    + " respect by a competent authority, the validity, legality, and enforceability of the remaining provisions contained herein shall not in any way be"
                     + " affected or impaired thereby.", fontArial12);
 
                 Paragraph p90 = new Paragraph
@@ -2567,8 +2565,8 @@ namespace priland_api.Controllers
                 document.Add(p91);
                 document.Add(spaceTable);
 
-                Phrase p92Phrase = new Phrase("This Contract cancels and supersedes all previous  Contracts between tha parties herein and this Contract shall not be considered as changed, modified," 
-                    + " altered or in any manner amended by acts of tolerance of the SELLER unless such changes, modifications, alterations or amendments are made in writing and signed by" 
+                Phrase p92Phrase = new Phrase("This Contract cancels and supersedes all previous  Contracts between tha parties herein and this Contract shall not be considered as changed, modified,"
+                    + " altered or in any manner amended by acts of tolerance of the SELLER unless such changes, modifications, alterations or amendments are made in writing and signed by"
                     + " both parties to this contract.", fontArial12);
 
                 Paragraph p92 = new Paragraph
@@ -2583,8 +2581,8 @@ namespace priland_api.Controllers
 
                 Phrase p93Phrase = new Phrase("21. ", fontArial12BoldItalic);
 
-                Phrase p93Phrase2 = new Phrase("The BUYER hereby represent/s that (i) this Contract has been read, understood and accepted by them; (ii) the obligations of the BUYER hereunder and" 
-                    + " under the Deed of Absolute Sale, including their compliance with the Declaration of Covenants, Conditions and Restrictions constitutes legal, valid and binding obligations," 
+                Phrase p93Phrase2 = new Phrase("The BUYER hereby represent/s that (i) this Contract has been read, understood and accepted by them; (ii) the obligations of the BUYER hereunder and"
+                    + " under the Deed of Absolute Sale, including their compliance with the Declaration of Covenants, Conditions and Restrictions constitutes legal, valid and binding obligations,"
                     + " fully enforceable against them; and (iii) the BUYER has full power, authority and legal right to execute, deliver and perform this Contract and the Deed of Sale.", fontArial12);
 
                 Paragraph p93 = new Paragraph
@@ -2598,7 +2596,7 @@ namespace priland_api.Controllers
 
                 Phrase p94Phrase = new Phrase("IN WITNESS WHEREOF, The parties hereto signed this instrument on the date and the place hereinbefore mentioned.", fontArial12);
 
-                Paragraph p94= new Paragraph
+                Paragraph p94 = new Paragraph
                 {
                     p94Phrase
                 };
@@ -2621,112 +2619,199 @@ namespace priland_api.Controllers
                     document.Add(p95);
                     document.Add(spaceTable);
                 }
+
+                PdfPTable pdfTableSignatureSignatures = new PdfPTable(4);
+                pdfTableSignatureSignatures.SetWidths(new float[] { 100f, 50f, 100f, 50f });
+                pdfTableSignatureSignatures.WidthPercentage = 100;
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("Seller", fontArial12)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("Buyer/s", fontArial12)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("Represented by:", fontArial12)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("RAMON CARLO T. YAP", fontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 30f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(Customer, fontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 30f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("President", fontArial12)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 1 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0, PaddingTop = 30f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(Spouse, fontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 30f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 1 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                document.Add(pdfTableSignatureSignatures);
+
+                document.Add(spaceTable);
+                document.Add(spaceTable);
+
+                Phrase p96Phrase = new Phrase("Signed in the presence of: ", fontArial12);
+
+                Paragraph p96 = new Paragraph
+                {
+                    p96Phrase
+                };
+
+                p96.Alignment = Element.ALIGN_CENTER;
+                document.Add(p96);
+                document.Add(spaceTable);
+
+                PdfPTable pdfTableWitnessesSignatures = new PdfPTable(3);
+                pdfTableWitnessesSignatures.SetWidths(new float[] { 100f, 50f, 100f });
+                pdfTableWitnessesSignatures.WidthPercentage = 100;
+                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase("Witness", fontArial12)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase("Witness", fontArial12)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                document.Add(pdfTableWitnessesSignatures);
+
+                document.Add(spaceTable);
+                document.Add(spaceTable);
+
+                Phrase p97Phrase = new Phrase("ACKNOWLEDGEMENT", fontArial12Bold);
+
+                Paragraph p97 = new Paragraph
+                {
+                    p97Phrase
+                };
+
+                p97.Alignment = Element.ALIGN_CENTER;
+                document.Add(p97);
+                document.Add(spaceTable);
+
+                Phrase p98Phrase = new Phrase("REPUBLIC OF THE PHILIPPINES \nCITY OF CEBU", fontArial12);
+
+                Paragraph p98 = new Paragraph
+                {
+                    p98Phrase
+                };
+
+                p98.Alignment = Element.ALIGN_JUSTIFIED;
+                document.Add(p98);
+                document.Add(spaceTable);
+
+                Phrase p99Phrase = new Phrase("BEFORE ME a Notary Public for and in the above jurisdiction, this ________ day of __________________, personally appeared the following:", fontArial12);
+
+                Paragraph p99 = new Paragraph
+                {
+                    p99Phrase
+                };
+
+                p99.Alignment = Element.ALIGN_JUSTIFIED;
+                p99.FirstLineIndent = 80f;
+                document.Add(p99);
+                document.Add(spaceTable);
+
+                PdfPTable pdfTableIdentification = new PdfPTable(5);
+                pdfTableIdentification.SetWidths(new float[] { 100f, 20f, 100f, 20f, 100f });
+                pdfTableIdentification.WidthPercentage = 100;
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("NAME", fontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("IDENTIFICATION", fontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("ISSUED BY", fontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+
+                if (sysSettings.Any())
+                {
+                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase(sysSettings.FirstOrDefault().Company, fontArial12)) { Border = 0, PaddingTop = 10f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase("TIN: ", fontArial12)) { Border = 0, PaddingTop = 10f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase("Bureau of Internal Revenue", fontArial12)) { Border = 0, PaddingTop = 10f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                }
+
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(Customer, fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("TIN: " + soldUnit.FirstOrDefault().MstCustomer.TIN, fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("Bureau of Internal Revenue", fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(Spouse, fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("TIN: " + soldUnit.FirstOrDefault().MstCustomer.TIN, fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("Bureau of Internal Revenue", fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                document.Add(pdfTableIdentification);
+
+                document.Add(spaceTable);
+
+                Phrase p100Phrase = new Phrase("All own to me and idetified through the competent evidence of identity hereinabove describe to be the same persons who executed"
+                    + " the foregoing deed and acknowledge that the same is their own and free and voluntary act, deed, their authority and that of the corporation herein represented.", fontArial12);
+
+                Paragraph p100 = new Paragraph
+                {
+                    p100Phrase
+                };
+
+                p100.Alignment = Element.ALIGN_JUSTIFIED;
+                p100.FirstLineIndent = 80f;
+                document.Add(p100);
+                document.Add(spaceTable);
+
+                Phrase p101Phrase = new Phrase("This instrument refers to a Contract to Sell consisting of five (5) pages, and Annex “A”, signed by the parties and their instrumental"
+                    + " witnesses at the end of the body of the documents and on the left hand margin of the reserve side hereof and the Annex, each and every page"
+                    + " of which is saled with my notarial seal.", fontArial12);
+
+                Paragraph p101 = new Paragraph
+                {
+                    p101Phrase
+                };
+
+                p101.Alignment = Element.ALIGN_JUSTIFIED;
+                p101.FirstLineIndent = 80f;
+                document.Add(p101);
+                document.Add(spaceTable);
+
+                Phrase p102Phrase = new Phrase("WITNESS MY HAND AND NOTARIAL SEAL on the date and at the place first hereinabove written.", fontArial12);
+
+                Paragraph p102 = new Paragraph
+                {
+                    p102Phrase
+                };
+
+                p102.Alignment = Element.ALIGN_JUSTIFIED;
+                p102.IndentationLeft = 80f;
+                document.Add(p102);
+                document.Add(spaceTable);
+
+                Phrase p103Phrase = new Phrase(
+                    "Doc.No.      \t _______________  ; \n" +
+                    "Page No.    \t _______________  ; \n" +
+                    "Book No.    \t _______________  ; \n" +
+                    "Series No.  \t _______________  ; \n", fontArial12);
+
+                Paragraph p103 = new Paragraph
+                {
+                    p103Phrase
+                };
+
+                p103.Alignment = Element.ALIGN_JUSTIFIED;
+                p103.IndentationLeft = 80f;
+                document.Add(p103);
+                document.Add(spaceTable);
             }
 
-            //    p5.Add(new Chunk("PRILAND DEVELOPMENT CORPORATION", fontArial11Bold));
-            //    p5.Add(Chunk.NEWLINE);
-            //    p5.Add(Chunk.NEWLINE);
-
-
-            //    //WRITE TO PDF
-            //    document.Add(p5);
-
-            //    //LAST PAGE
-            //    p6.Add(new Chunk("SELLER", fontArial10));
-            //    p7.Add(new Chunk("REPRESENTED BY", fontArial10));
-            //    p7.Add(Chunk.NEWLINE);
-            //    p7.Add(Chunk.NEWLINE);
-
-            //    p8.Add(new Chunk("RAMON CARLO T. YAP", fontArial12Bold));
-            //    p8.IndentationLeft = 75f;
-
-            //    p8.Add(Chunk.NEWLINE);
-            //    p9.Add(new Chunk("President", fontArial10));
-            //    p9.IndentationLeft = 98f;
-
-            //    p9.Add(Chunk.NEWLINE);
-            //    p9.Add(Chunk.NEWLINE);
-            //    p10.Add(new Chunk("Buyer/s", fontArial10));
-            //    p10.Add(Chunk.NEWLINE);
-            //    p10.Add(Chunk.NEWLINE);
-
-            //    p11.Add(new Chunk(Customer, fontArial12Bold));
-            //    p11.IndentationLeft = 78f;
-            //    p12.Add(Chunk.NEWLINE);
-            //    p12.Add(Chunk.NEWLINE);
-            //    p12.Alignment = Element.ALIGN_CENTER;
-            //    p12.Add(new Chunk("Signed in the presence of:", fontArial11));
-            //    p12.Add(Chunk.NEWLINE);
-            //    p12.Add(Chunk.NEWLINE);
-            //    p12.Add(Chunk.NEWLINE);
-            //    p12.Add(Chunk.NEWLINE);
-            //    p13.Alignment = Element.ALIGN_CENTER;
-            //    p13.Add(new Chunk("ACKNOWLEDGEMENT", fontArial14Bold));
-            //    p13.Add(Chunk.NEWLINE);
-            //    p13.Add(Chunk.NEWLINE);
-            //    p14.Add(new Chunk("REPUBLIC OF THE PHILIPPINES", fontArial11));
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(new Chunk("CITY OF CEBU", fontArial11));
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(new Chunk("BEFORE ME a Notary Public for and in the above jurisdiction, this______ day of __________________, personally appeared the following:", fontArial11));
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(Chunk.NEWLINE);
-
-            //    p14.Add(new Chunk("                                 NAME        "));
-            //    p14.Add(new Chunk("                                             IDENTIFICATION      "));
-            //    p14.Add(new Chunk("                                                     ISSUED BY       "));
-            //    p14.Add(Chunk.NEWLINE);
-
-            //    p14.Add(new Chunk("                 ____________________________"));
-            //    p14.Add(new Chunk("                 ____________________________"));
-            //    p14.Add(new Chunk("                 ____________________________"));
-            //    p14.Add(Chunk.NEWLINE);
-
-            //    p14.Add(new Chunk("                 ____________________________"));
-            //    p14.Add(new Chunk("                 ____________________________"));
-            //    p14.Add(new Chunk("                 ____________________________"));
-            //    p14.Add(Chunk.NEWLINE);
-
-            //    p14.Add(new Chunk("                 ____________________________"));
-            //    p14.Add(new Chunk("                 ____________________________"));
-            //    p14.Add(new Chunk("                 ____________________________"));
-            //    p14.Add(Chunk.NEWLINE);
-
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(new Chunk("All own to me and idetified through the competent evidence of identity hereinabove describe to be the same persons who executed" +
-            //                    "thr foregoing deed and acknowledge that the same is their own and free and voluntary act, deed, their authority and that of the corporation herein represented.", fontArial11));
-
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(new Chunk("This instrument refers to a Contract to Sell consisting of five (5) pages, and Annex “A”, signed by the parties and their instrumental" +
-            //                    "witnesses at the end of the body of the documents and on the left hand margin of the reserve side hereof and the Annex, each and every page" +
-            //                    "of which is saled with my notarial seal."));
-
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(new Chunk("WITNESS MY HAND AND NOTARIAL SEAL on the date and at the place first hereinabove written."));
-
-
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(new Chunk("Doc. No.     _______________  ;"));
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(new Chunk("Page No.    _______________  ;"));
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(new Chunk("Book No.    _______________  ;"));
-            //    p14.Add(Chunk.NEWLINE);
-            //    p14.Add(new Chunk("Series No.  _______________  ."));
-
-            //}
-            //WRITE TO PDF
-
+            // ==============
+            // Close Document
+            // ==============
             document.Close();
 
+            // ==============
+            // Reponse Stream
+            // ==============
             byte[] byteInfo = workStream.ToArray();
 
             workStream.Write(byteInfo, 0, byteInfo.Length);
