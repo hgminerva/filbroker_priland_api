@@ -16,6 +16,7 @@ using Microsoft.Owin.Security.OAuth;
 using priland_api.Models;
 using priland_api.Providers;
 using priland_api.Results;
+using System.Diagnostics;
 
 namespace priland_api.Controllers
 {
@@ -333,6 +334,31 @@ namespace priland_api.Controllers
             {
                 return errorResult;
             }
+
+            // ===============
+            // DB Data Context
+            // ===============
+            Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
+
+            // ==============================
+            // Get the registered ASP User Id
+            // ==============================
+            string registeredAspUserId = user.Id;
+
+            // ===============
+            // Insert New User
+            // ===============
+            Data.MstUser newUser = new Data.MstUser()
+            {
+                Username = model.UserName,
+                FullName = model.FullName,
+                Password = model.Password,
+                Status = "ACTIVE",
+                AspNetId = registeredAspUserId
+            };
+
+            db.MstUsers.InsertOnSubmit(newUser);
+            db.SubmitChanges();
 
             return Ok();
         }

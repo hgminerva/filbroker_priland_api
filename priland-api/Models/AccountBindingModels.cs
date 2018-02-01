@@ -35,6 +35,10 @@ namespace priland_api.Models
     public class RegisterBindingModel
     {
         [Required]
+        [Display(Name = "Full name")]
+        public string FullName { get; set; }
+
+        [Required]
         [Display(Name = "User name")]
         public string UserName { get; set; }
 
