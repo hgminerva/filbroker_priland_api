@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="filbroker_priland" Class="FilbrokerDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=innosoftserver2.eastasia.cloudapp.azure.com;Initial Catalog=filbroker_priland;User ID=sa;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="DefaultConnection" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.[__MigrationHistory]" Member="__MigrationHistories">
-    <Type Name="__MigrationHistory">
-      <Column Name="MigrationId" Type="System.String" DbType="NVarChar(150) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="ContextKey" Type="System.String" DbType="NVarChar(300) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Model" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="ProductVersion" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
+  <Table Name="dbo.AspNetRoles" Member="AspNetRoles">
+    <Type Name="AspNetRole">
+      <Column Name="Id" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="AspNetRole_AspNetUserRole" Member="AspNetUserRoles" ThisKey="Id" OtherKey="RoleId" Type="AspNetUserRole" />
     </Type>
   </Table>
   <Table Name="dbo.TrnSoldUnitRequirementActivity" Member="TrnSoldUnitRequirementActivities">
@@ -18,13 +17,6 @@
       <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="MstUser_TrnSoldUnitRequirementActivity" Member="MstUser" ThisKey="UserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
       <Association Name="TrnSoldUnitRequirement_TrnSoldUnitRequirementActivity" Member="TrnSoldUnitRequirement" ThisKey="SoldUnitRequirementId" OtherKey="Id" Type="TrnSoldUnitRequirement" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.AspNetRoles" Member="AspNetRoles">
-    <Type Name="AspNetRole">
-      <Column Name="Id" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Association Name="AspNetRole_AspNetUserRole" Member="AspNetUserRoles" ThisKey="Id" OtherKey="RoleId" Type="AspNetUserRole" />
     </Type>
   </Table>
   <Table Name="dbo.AspNetUserClaims" Member="AspNetUserClaims">
@@ -61,6 +53,7 @@
       <Association Name="AspNetUser_AspNetUserClaim" Member="AspNetUserClaims" ThisKey="Id" OtherKey="User_Id" Type="AspNetUserClaim" />
       <Association Name="AspNetUser_AspNetUserLogin" Member="AspNetUserLogins" ThisKey="Id" OtherKey="UserId" Type="AspNetUserLogin" />
       <Association Name="AspNetUser_AspNetUserRole" Member="AspNetUserRoles" ThisKey="Id" OtherKey="UserId" Type="AspNetUserRole" />
+      <Association Name="AspNetUser_MstUser" Member="MstUsers" ThisKey="Id" OtherKey="AspNetId" Type="MstUser" />
     </Type>
   </Table>
   <Table Name="dbo.MstBroker" Member="MstBrokers">
@@ -254,7 +247,7 @@
       <Column Name="FullName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="Password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="AspNetId" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="AspNetId" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
       <Association Name="MstUser_TrnSoldUnitRequirementActivity" Member="TrnSoldUnitRequirementActivities" ThisKey="Id" OtherKey="UserId" Type="TrnSoldUnitRequirementActivity" />
       <Association Name="MstUser_MstBroker" Member="MstBrokers" ThisKey="Id" OtherKey="CreatedBy" Type="MstBroker" />
       <Association Name="MstUser_MstBroker1" Member="MstBrokers1" ThisKey="Id" OtherKey="UpdatedBy" Type="MstBroker" />
@@ -279,6 +272,7 @@
       <Association Name="MstUser_TrnSoldUnit2" Member="TrnSoldUnits2" ThisKey="Id" OtherKey="CreatedBy" Type="TrnSoldUnit" />
       <Association Name="MstUser_TrnSoldUnit3" Member="TrnSoldUnits3" ThisKey="Id" OtherKey="PreparedBy" Type="TrnSoldUnit" />
       <Association Name="MstUser_TrnSoldUnit4" Member="TrnSoldUnits4" ThisKey="Id" OtherKey="UpdatedBy" Type="TrnSoldUnit" />
+      <Association Name="AspNetUser_MstUser" Member="AspNetUser" ThisKey="AspNetId" OtherKey="Id" Type="AspNetUser" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.MstUserRight" Member="MstUserRights">

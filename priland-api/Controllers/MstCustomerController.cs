@@ -298,6 +298,7 @@ namespace priland_api.Controllers
                             UpdateMstCustomerData.EmployerZipCode = customer.EmployerZipCode;
                             UpdateMstCustomerData.EmployerTelephoneNumber = customer.EmployerTelephoneNumber;
                             UpdateMstCustomerData.EmployerMobileNumber = customer.EmployerMobileNumber;
+                            UpdateMstCustomerData.Picture = customer.Picture;
                             UpdateMstCustomerData.Remarks = customer.Remarks;
                             UpdateMstCustomerData.Status = customer.Status;
                             UpdateMstCustomerData.UpdatedBy = currentUser.FirstOrDefault().Id;
@@ -380,6 +381,7 @@ namespace priland_api.Controllers
                         UpdateCustomerData.EmployerZipCode = customer.EmployerZipCode;
                         UpdateCustomerData.EmployerTelephoneNumber = customer.EmployerTelephoneNumber;
                         UpdateCustomerData.EmployerMobileNumber = customer.EmployerMobileNumber;
+                        UpdateCustomerData.Picture = customer.Picture;
                         UpdateCustomerData.Remarks = customer.Remarks;
                         UpdateCustomerData.Status = customer.Status;
                         UpdateCustomerData.IsLocked = true;
