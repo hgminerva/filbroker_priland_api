@@ -28,6 +28,7 @@ namespace priland_api.Controllers
                                        UserId = d.UserId,
                                        PageId = d.PageId,
                                        Page = d.SysPage.Page,
+                                       PageURL = d.SysPage.Url,
                                        CanEdit = d.CanEdit,
                                        CanSave = d.CanSave,
                                        CanLock = d.CanLock,
@@ -50,6 +51,29 @@ namespace priland_api.Controllers
                                        UserId = d.UserId,
                                        PageId = d.PageId,
                                        Page = d.SysPage.Page,
+                                       PageURL = d.SysPage.Url,
+                                       CanEdit = d.CanEdit,
+                                       CanSave = d.CanSave,
+                                       CanLock = d.CanLock,
+                                       CanUnLock = d.CanUnlock,
+                                       CanPrint = d.CanPrint,
+                                       CanDelete = d.CanDelete
+                                   };
+            return MstUserRightData.ToList();
+        }
+
+        [HttpGet, Route("ListPerUserByUsername/{username}")]
+        public List<MstUserRight> GetMstUserRightsPerUserByUsername(string username)
+        {
+            var MstUserRightData = from d in db.MstUserRights
+                                   where d.MstUser.Username == username
+                                   select new Models.MstUserRight
+                                   {
+                                       Id = d.Id,
+                                       UserId = d.UserId,
+                                       PageId = d.PageId,
+                                       Page = d.SysPage.Page,
+                                       PageURL = d.SysPage.Url,
                                        CanEdit = d.CanEdit,
                                        CanSave = d.CanSave,
                                        CanLock = d.CanLock,

@@ -46,6 +46,7 @@ namespace priland_api.Controllers
         private Font fontArial14 = FontFactory.GetFont("Arial", 14);
         private Font fontArial17Bold = FontFactory.GetFont("Arial", 17, Font.BOLD);
         private Font fontArial17 = FontFactory.GetFont("Arial", 17);
+        private Font CourierNew11 = FontFactory.GetFont("Courier", 11);
 
         // ========
         // PDF Line
@@ -1132,6 +1133,8 @@ namespace priland_api.Controllers
                 // Total Investment
                 // ================
                 var totalInvestmentPhrase = new Phrase("TOTAL INVESTMENT", fontArial11Bold);
+                var totalInvestmentDataPhrase = new Phrase(TotalInvestment, CourierNew11);
+                
                 Paragraph totalInvestmentHeaderParagraph = new Paragraph
                 {
                     totalInvestmentPhrase
@@ -1139,7 +1142,7 @@ namespace priland_api.Controllers
 
                 Paragraph totalInvestmentParagraph = new Paragraph
                 {
-                    TotalInvestment
+                    totalInvestmentDataPhrase
                 };
 
                 totalInvestmentHeaderParagraph.IndentationLeft = 5f;
@@ -1154,6 +1157,8 @@ namespace priland_api.Controllers
                 // Flexible Payment Options
                 // ========================
                 var flexiblePaymentOptionsPhrase = new Phrase("FLEXIBLE PAYMENT OPTIONS", fontArial11Bold);
+                var PaymentOptionsDataPhrase = new Phrase(PaymentOptions, CourierNew11);
+
                 Paragraph totalInvestmentHeaderHeaderParagraph = new Paragraph
                 {
                     flexiblePaymentOptionsPhrase
@@ -1161,7 +1166,7 @@ namespace priland_api.Controllers
 
                 Paragraph flexiblePaymentOptionsParagraph = new Paragraph
                 {
-                    PaymentOptions
+                    PaymentOptionsDataPhrase
                 };
 
                 totalInvestmentHeaderHeaderParagraph.IndentationLeft = 5f;
@@ -1176,6 +1181,8 @@ namespace priland_api.Controllers
                 // Easy Financing Scheme
                 // =====================
                 var easyFinancingSchemePhrase = new Phrase("EASY FINANCING SCHEME", fontArial11Bold);
+                var financingDataPhrase = new Phrase(Financing, CourierNew11);
+
                 Paragraph easyFinancingSchemeHeaderParagraph = new Paragraph
                 {
                     easyFinancingSchemePhrase
@@ -1183,7 +1190,7 @@ namespace priland_api.Controllers
 
                 Paragraph easyFinancingSchemeParagraph = new Paragraph
                 {
-                    Financing
+                    financingDataPhrase
                 };
 
                 easyFinancingSchemeHeaderParagraph.IndentationLeft = 5f;

@@ -47,9 +47,23 @@ namespace priland_api.Controllers
                                       Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                       BrokerId = d.BrokerId,
                                       Broker= d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
+                                      Agent = d.Agent,
+                                      BrokerCoordinator = d.BrokerCoordinator,
                                       ChecklistId = d.CheckListId,
                                       Checklist=d.MstCheckList.CheckList,
                                       Price = d.Price,
+                                      EquityValue = d.EquityValue,
+                                      EquityPercent = d.EquityPercent,
+                                      Discount = d.Discount,
+                                      Reservation = d.Reservation,
+                                      NetEquity = d.NetEquity,
+                                      NetEquityInterest = d.NetEquityInterest,
+                                      NetEquityNoOfPayments = d.NetEquityNoOfPayments,
+                                      NetEquityAmortization = d.NetEquityAmortization,
+                                      Balance = d.Balance,
+                                      BalanceInterest = d.BalanceInterest,
+                                      BalanceNoOfPayments = d.BalanceNoOfPayments,
+                                      BalanceAmortization = d.BalanceAmortization,
                                       TotalInvestment = d.TotalInvestment,
                                       PaymentOptions = d.PaymentOptions,
                                       Financing = d.Financing,
@@ -91,9 +105,23 @@ namespace priland_api.Controllers
                                       Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                       BrokerId = d.BrokerId,
                                       Broker = d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
+                                      Agent = d.Agent,
+                                      BrokerCoordinator = d.BrokerCoordinator,
                                       ChecklistId = d.CheckListId,
                                       Checklist = d.MstCheckList.CheckList,
                                       Price = d.Price,
+                                      EquityValue = d.EquityValue,
+                                      EquityPercent = d.EquityPercent,
+                                      Discount = d.Discount,
+                                      Reservation = d.Reservation,
+                                      NetEquity = d.NetEquity,
+                                      NetEquityInterest = d.NetEquityInterest,
+                                      NetEquityNoOfPayments = d.NetEquityNoOfPayments,
+                                      NetEquityAmortization = d.NetEquityAmortization,
+                                      Balance = d.Balance,
+                                      BalanceInterest = d.BalanceInterest,
+                                      BalanceNoOfPayments = d.BalanceNoOfPayments,
+                                      BalanceAmortization = d.BalanceAmortization,
                                       TotalInvestment = d.TotalInvestment,
                                       PaymentOptions = d.PaymentOptions,
                                       Financing = d.Financing,
@@ -126,11 +154,27 @@ namespace priland_api.Controllers
                                       SoldUnitNumber = d.SoldUnitNumber,
                                       SoldUnitDate = d.SoldUnitDate.ToShortDateString(),
                                       ProjectId = d.ProjectId,
+                                      Project = d.MstProject.Project,
                                       UnitId = d.UnitId,
+                                      Unit = d.MstUnit.UnitCode,
                                       CustomerId = d.CustomerId,
                                       BrokerId = d.BrokerId,
+                                      Agent = d.Agent,
+                                      BrokerCoordinator = d.BrokerCoordinator,
                                       ChecklistId = d.CheckListId,
                                       Price = d.Price,
+                                      EquityValue = d.EquityValue,
+                                      EquityPercent = d.EquityPercent,
+                                      Discount = d.Discount,
+                                      Reservation = d.Reservation,
+                                      NetEquity = d.NetEquity,
+                                      NetEquityInterest = d.NetEquityInterest,
+                                      NetEquityNoOfPayments = d.NetEquityNoOfPayments,
+                                      NetEquityAmortization = d.NetEquityAmortization,
+                                      Balance = d.Balance,
+                                      BalanceInterest = d.BalanceInterest,
+                                      BalanceNoOfPayments = d.BalanceNoOfPayments,
+                                      BalanceAmortization = d.BalanceAmortization,
                                       TotalInvestment = d.TotalInvestment,
                                       PaymentOptions = d.PaymentOptions,
                                       Financing = d.Financing,
@@ -205,6 +249,19 @@ namespace priland_api.Controllers
                         brokerId = db.MstBrokers.Where(d => d.Status == "ACTIVE" && d.IsLocked == true).FirstOrDefault().Id;
                     }
 
+                    String totalInvestment = "";
+                    String paymentOptions  = "";
+                    String financing = "";
+
+                    var settings = from d in db.SysSettings select d;
+                    if (settings.Any())
+                    {
+                        totalInvestment = settings.FirstOrDefault().TotalInvestment;
+                        paymentOptions = settings.FirstOrDefault().PaymentOptions;
+                        financing = settings.FirstOrDefault().Financing;
+                    }
+
+
                     if (projectId > 0 && unitId > 0 && checklistId > 0 && customerId > 0 && brokerId > 0)
                     {
                         Data.TrnSoldUnit newTrnSoldUnit = new Data.TrnSoldUnit()
@@ -216,12 +273,29 @@ namespace priland_api.Controllers
                             UnitId = unitId,
                             CustomerId = customerId,
                             BrokerId = brokerId,
+                            Agent = soldUnit.Agent,
+                            BrokerCoordinator = soldUnit.BrokerCoordinator,
                             CheckListId = checklistId,
 
                             Price = price,
-                            TotalInvestment = soldUnit.TotalInvestment,
-                            PaymentOptions = soldUnit.PaymentOptions,
-                            Financing = soldUnit.Financing,
+
+                            EquityValue = 0,
+                            EquityPercent = 0,
+                            Discount = 0,
+                            Reservation = 0,
+                            NetEquity = 0,
+                            NetEquityInterest = 0,
+                            NetEquityNoOfPayments = 0,
+                            NetEquityAmortization = 0,
+                            Balance = 0,
+                            BalanceInterest = 0,
+                            BalanceNoOfPayments = 0,
+                            BalanceAmortization = 0,
+
+                            TotalInvestment = totalInvestment,
+                            PaymentOptions = paymentOptions,
+                            Financing = financing,
+
                             Remarks = soldUnit.Remarks,
 
                             PreparedBy = currentUser.FirstOrDefault().Id,
@@ -312,8 +386,22 @@ namespace priland_api.Controllers
                         UpdateTrnSoldUnitData.UnitId = soldUnit.UnitId;
                         UpdateTrnSoldUnitData.CustomerId = soldUnit.CustomerId;
                         UpdateTrnSoldUnitData.BrokerId = soldUnit.BrokerId;
+                        UpdateTrnSoldUnitData.Agent = soldUnit.Agent;
+                        UpdateTrnSoldUnitData.BrokerCoordinator = soldUnit.BrokerCoordinator;
                         UpdateTrnSoldUnitData.CheckListId = soldUnit.ChecklistId;
                         UpdateTrnSoldUnitData.Price = soldUnit.Price;
+                        UpdateTrnSoldUnitData.EquityValue = soldUnit.EquityValue;
+                        UpdateTrnSoldUnitData.EquityPercent = soldUnit.EquityPercent;
+                        UpdateTrnSoldUnitData.Discount = soldUnit.Discount;
+                        UpdateTrnSoldUnitData.Reservation = soldUnit.Reservation;
+                        UpdateTrnSoldUnitData.NetEquity = soldUnit.NetEquity;
+                        UpdateTrnSoldUnitData.NetEquityInterest = soldUnit.NetEquityInterest;
+                        UpdateTrnSoldUnitData.NetEquityNoOfPayments = soldUnit.NetEquityNoOfPayments;
+                        UpdateTrnSoldUnitData.NetEquityAmortization = soldUnit.NetEquityAmortization;
+                        UpdateTrnSoldUnitData.Balance = soldUnit.Balance;
+                        UpdateTrnSoldUnitData.BalanceInterest = soldUnit.BalanceInterest;
+                        UpdateTrnSoldUnitData.BalanceNoOfPayments = soldUnit.BalanceNoOfPayments;
+                        UpdateTrnSoldUnitData.BalanceAmortization = soldUnit.BalanceAmortization;
                         UpdateTrnSoldUnitData.TotalInvestment = soldUnit.TotalInvestment;
                         UpdateTrnSoldUnitData.PaymentOptions = soldUnit.PaymentOptions;
                         UpdateTrnSoldUnitData.Financing = soldUnit.Financing;
@@ -370,8 +458,22 @@ namespace priland_api.Controllers
                         UpdateTrnSoldUnitData.UnitId = soldUnit.UnitId;
                         UpdateTrnSoldUnitData.CustomerId = soldUnit.CustomerId;
                         UpdateTrnSoldUnitData.BrokerId = soldUnit.BrokerId;
+                        UpdateTrnSoldUnitData.Agent = soldUnit.Agent;
+                        UpdateTrnSoldUnitData.BrokerCoordinator = soldUnit.BrokerCoordinator;
                         UpdateTrnSoldUnitData.CheckListId = soldUnit.ChecklistId;
                         UpdateTrnSoldUnitData.Price = soldUnit.Price;
+                        UpdateTrnSoldUnitData.EquityValue = soldUnit.EquityValue;
+                        UpdateTrnSoldUnitData.EquityPercent = soldUnit.EquityPercent;
+                        UpdateTrnSoldUnitData.Discount = soldUnit.Discount;
+                        UpdateTrnSoldUnitData.Reservation = soldUnit.Reservation;
+                        UpdateTrnSoldUnitData.NetEquity = soldUnit.NetEquity;
+                        UpdateTrnSoldUnitData.NetEquityInterest = soldUnit.NetEquityInterest;
+                        UpdateTrnSoldUnitData.NetEquityNoOfPayments = soldUnit.NetEquityNoOfPayments;
+                        UpdateTrnSoldUnitData.NetEquityAmortization = soldUnit.NetEquityAmortization;
+                        UpdateTrnSoldUnitData.Balance = soldUnit.Balance;
+                        UpdateTrnSoldUnitData.BalanceInterest = soldUnit.BalanceInterest;
+                        UpdateTrnSoldUnitData.BalanceNoOfPayments = soldUnit.BalanceNoOfPayments;
+                        UpdateTrnSoldUnitData.BalanceAmortization = soldUnit.BalanceAmortization;
                         UpdateTrnSoldUnitData.TotalInvestment = soldUnit.TotalInvestment;
                         UpdateTrnSoldUnitData.PaymentOptions = soldUnit.PaymentOptions;
                         UpdateTrnSoldUnitData.Financing = soldUnit.Financing;
@@ -383,6 +485,10 @@ namespace priland_api.Controllers
                         UpdateTrnSoldUnitData.IsLocked = true;
                         UpdateTrnSoldUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UpdateTrnSoldUnitData.UpdatedDateTime = DateTime.Now;
+
+                        // update unit status
+                        var currentUnit = from d in db.MstUnits where d.Id == soldUnit.UnitId select d;
+                        currentUnit.FirstOrDefault().Status = "CLOSE";
 
                         db.SubmitChanges();
 
@@ -427,6 +533,10 @@ namespace priland_api.Controllers
                         UnLockTrnSoldUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UnLockTrnSoldUnitData.UpdatedDateTime = DateTime.Now;
 
+                        // update unit status
+                        var currentUnit = from d in db.MstUnits where d.Id == UnLockTrnSoldUnitData.UnitId select d;
+                        currentUnit.FirstOrDefault().Status = "OPEN";
+
                         db.SubmitChanges();
 
                         return Request.CreateResponse(HttpStatusCode.OK);
@@ -447,5 +557,116 @@ namespace priland_api.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+
+        //Cancelled
+        [HttpPut, Route("Cancel")]
+        public HttpResponseMessage CancelSoldUnit(TrnSoldUnit soldUnit)
+        {
+            try
+            {
+                var TrnSoldUnitData = from d in db.TrnSoldUnits where d.Id == Convert.ToInt32(soldUnit.Id) select d;
+
+                if (TrnSoldUnitData.Any())
+                {
+                    if (TrnSoldUnitData.FirstOrDefault().IsLocked == true)
+                    {
+                        var currentUser = from d in db.MstUsers
+                                          where d.AspNetId == User.Identity.GetUserId()
+                                          select d;
+
+                        if (currentUser.Any())
+                        {
+                            var UnLockTrnSoldUnitData = TrnSoldUnitData.FirstOrDefault();
+
+                            UnLockTrnSoldUnitData.Remarks = soldUnit.Remarks;
+                            UnLockTrnSoldUnitData.Status = "CANCELLED";
+                            UnLockTrnSoldUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
+                            UnLockTrnSoldUnitData.UpdatedDateTime = DateTime.Now;
+
+                            // update unit status
+                            var currentUnit = from d in db.MstUnits where d.Id == UnLockTrnSoldUnitData.UnitId select d;
+                            currentUnit.FirstOrDefault().Status = "OPEN";
+
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        //Transferred
+        [HttpPut, Route("Transfer")]
+        public HttpResponseMessage TransferSoldUnit(TrnSoldUnit soldUnit)
+        {
+            try
+            {
+                var TrnSoldUnitData = from d in db.TrnSoldUnits where d.Id == Convert.ToInt32(soldUnit.Id) select d;
+
+                if (TrnSoldUnitData.Any())
+                {
+                    if (TrnSoldUnitData.FirstOrDefault().IsLocked == true)
+                    {
+                        var currentUser = from d in db.MstUsers
+                                          where d.AspNetId == User.Identity.GetUserId()
+                                          select d;
+
+                        if (currentUser.Any())
+                        {
+                            var UnLockTrnSoldUnitData = TrnSoldUnitData.FirstOrDefault();
+
+                            UnLockTrnSoldUnitData.Remarks = soldUnit.Remarks;
+                            UnLockTrnSoldUnitData.Status = "TRANSFERRED";
+                            UnLockTrnSoldUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
+                            UnLockTrnSoldUnitData.UpdatedDateTime = DateTime.Now;
+
+                            // update unit status
+                            var currentUnit = from d in db.MstUnits where d.Id == UnLockTrnSoldUnitData.UnitId select d;
+                            currentUnit.FirstOrDefault().Status = "OPEN";
+
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
     }
 }

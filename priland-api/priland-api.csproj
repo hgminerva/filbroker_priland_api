@@ -242,6 +242,7 @@
     <Compile Include="Controllers\SysSettingsController.cs" />
     <Compile Include="Controllers\TrnCommissionRequestController.cs" />
     <Compile Include="Controllers\TrnSoldUnitController.cs" />
+    <Compile Include="Controllers\TrnSoldUnitEquityScheduleController.cs" />
     <Compile Include="Controllers\TrnSoldUnitRequirementActivityController.cs" />
     <Compile Include="Controllers\TrnSoldUnitRequirementController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="Models\SysSettings.cs" />
     <Compile Include="Models\TrnCommissionRequest.cs" />
     <Compile Include="Models\TrnSoldUnit.cs" />
+    <Compile Include="Models\TrnSoldUnitEquitySchedule.cs" />
     <Compile Include="Models\TrnSoldUnitRequirement.cs" />
     <Compile Include="Models\TrnSoldUnitRequirementActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

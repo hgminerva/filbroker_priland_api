@@ -35,6 +35,11 @@ namespace priland_api.Models
         public String Organization { get; set; }
         public String Remarks { get; set; }
         public String Picture { get; set; }
+        public String Attachment1 { get; set; }
+        public String Attachment2 { get; set; }
+        public String Attachment3 { get; set; }
+        public String Attachment4 { get; set; }
+        public String Attachment5 { get; set; }
         public String Status { get; set; }
         public Boolean IsLocked { get; set; }
         public Int32 CreatedBy { get; set; }

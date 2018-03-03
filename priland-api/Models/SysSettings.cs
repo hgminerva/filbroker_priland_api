@@ -17,5 +17,9 @@ namespace priland_api.Models
         public Int32 CommissionRequestApprovedBy { get; set; }
         public String ProposalFootNote { get; set; }
         public String BrokerFootNote { get; set; }
+        public String TotalInvestment { get; set; }
+        public String PaymentOptions { get; set; }
+        public String Financing { get; set; }
+
     }
 }

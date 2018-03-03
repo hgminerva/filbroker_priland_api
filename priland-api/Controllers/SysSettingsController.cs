@@ -30,7 +30,10 @@ namespace priland_api.Controllers
                                         CommissionRequestCheckedBy = d.CommissionRequestCheckedBy,
                                         CommissionRequestApprovedBy = d.CommissionRequestApprovedBy,
                                         ProposalFootNote = d.ProposalFootNote,
-                                        BrokerFootNote = d.BrokerFootNote
+                                        BrokerFootNote = d.BrokerFootNote,
+                                        TotalInvestment = d.TotalInvestment,
+                                        PaymentOptions = d.PaymentOptions,
+                                        Financing = d.Financing
                                   };
 
             return SysSettingsData.FirstOrDefault();
@@ -57,6 +60,9 @@ namespace priland_api.Controllers
                     UpdateSysSettingsData.CommissionRequestApprovedBy = settings.CommissionRequestApprovedBy;
                     UpdateSysSettingsData.ProposalFootNote = settings.ProposalFootNote;
                     UpdateSysSettingsData.BrokerFootNote = settings.BrokerFootNote;
+                    UpdateSysSettingsData.TotalInvestment = settings.TotalInvestment;
+                    UpdateSysSettingsData.PaymentOptions = settings.PaymentOptions;
+                    UpdateSysSettingsData.Financing = settings.Financing;
 
                     db.SubmitChanges();
 

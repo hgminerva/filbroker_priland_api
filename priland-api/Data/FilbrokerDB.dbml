@@ -85,6 +85,11 @@
       <Column Name="Organization" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Remarks" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="Picture" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment1" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment2" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment3" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment4" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment5" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -318,6 +323,9 @@
       <Column Name="CommissionRequestApprovedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ProposalFootNote" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="BrokerFootNote" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="TotalInvestment" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PaymentOptions" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Financing" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.TrnCommissionRequest" Member="TrnCommissionRequests">
@@ -357,8 +365,22 @@
       <Column Name="UnitId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="BrokerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Agent" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="BrokerCoordinator" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="CheckListId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="EquityValue" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="EquityPercent" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="Discount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="Reservation" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="NetEquity" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="NetEquityInterest" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="NetEquityNoOfPayments" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="NetEquityAmortization" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="Balance" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="BalanceInterest" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="BalanceNoOfPayments" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="BalanceAmortization" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="TotalInvestment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="PaymentOptions" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Financing" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
@@ -373,6 +395,7 @@
       <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="TrnSoldUnit_TrnCommissionRequest" Member="TrnCommissionRequests" ThisKey="Id" OtherKey="SoldUnitId" Type="TrnCommissionRequest" />
+      <Association Name="TrnSoldUnit_TrnSoldUnitEquitySchedule" Member="TrnSoldUnitEquitySchedules" ThisKey="Id" OtherKey="SoldUnitId" Type="TrnSoldUnitEquitySchedule" />
       <Association Name="TrnSoldUnit_TrnSoldUnitRequirement" Member="TrnSoldUnitRequirements" ThisKey="Id" OtherKey="SoldUnitId" Type="TrnSoldUnitRequirement" />
       <Association Name="MstBroker_TrnSoldUnit" Member="MstBroker" ThisKey="BrokerId" OtherKey="Id" Type="MstBroker" IsForeignKey="true" />
       <Association Name="MstCheckList_TrnSoldUnit" Member="MstCheckList" ThisKey="CheckListId" OtherKey="Id" Type="MstCheckList" IsForeignKey="true" />
@@ -384,6 +407,19 @@
       <Association Name="MstUser_TrnSoldUnit2" Member="MstUser2" ThisKey="CreatedBy" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
       <Association Name="MstUser_TrnSoldUnit3" Member="MstUser3" ThisKey="PreparedBy" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
       <Association Name="MstUser_TrnSoldUnit4" Member="MstUser4" ThisKey="UpdatedBy" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrnSoldUnitEquitySchedule" Member="TrnSoldUnitEquitySchedules">
+    <Type Name="TrnSoldUnitEquitySchedule">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SoldUnitId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Amortization" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="CheckNumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CheckDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CheckBank" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="TrnSoldUnit_TrnSoldUnitEquitySchedule" Member="TrnSoldUnit" ThisKey="SoldUnitId" OtherKey="Id" Type="TrnSoldUnit" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.TrnSoldUnitRequirement" Member="TrnSoldUnitRequirements">

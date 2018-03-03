@@ -90,6 +90,9 @@ namespace priland_api.Data
     partial void InsertTrnSoldUnit(TrnSoldUnit instance);
     partial void UpdateTrnSoldUnit(TrnSoldUnit instance);
     partial void DeleteTrnSoldUnit(TrnSoldUnit instance);
+    partial void InsertTrnSoldUnitEquitySchedule(TrnSoldUnitEquitySchedule instance);
+    partial void UpdateTrnSoldUnitEquitySchedule(TrnSoldUnitEquitySchedule instance);
+    partial void DeleteTrnSoldUnitEquitySchedule(TrnSoldUnitEquitySchedule instance);
     partial void InsertTrnSoldUnitRequirement(TrnSoldUnitRequirement instance);
     partial void UpdateTrnSoldUnitRequirement(TrnSoldUnitRequirement instance);
     partial void DeleteTrnSoldUnitRequirement(TrnSoldUnitRequirement instance);
@@ -282,6 +285,14 @@ namespace priland_api.Data
 			get
 			{
 				return this.GetTable<TrnSoldUnit>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TrnSoldUnitEquitySchedule> TrnSoldUnitEquitySchedules
+		{
+			get
+			{
+				return this.GetTable<TrnSoldUnitEquitySchedule>();
 			}
 		}
 		
@@ -1472,6 +1483,16 @@ namespace priland_api.Data
 		
 		private string _Picture;
 		
+		private string _Attachment1;
+		
+		private string _Attachment2;
+		
+		private string _Attachment3;
+		
+		private string _Attachment4;
+		
+		private string _Attachment5;
+		
 		private string _Status;
 		
 		private bool _IsLocked;
@@ -1550,6 +1571,16 @@ namespace priland_api.Data
     partial void OnRemarksChanged();
     partial void OnPictureChanging(string value);
     partial void OnPictureChanged();
+    partial void OnAttachment1Changing(string value);
+    partial void OnAttachment1Changed();
+    partial void OnAttachment2Changing(string value);
+    partial void OnAttachment2Changed();
+    partial void OnAttachment3Changing(string value);
+    partial void OnAttachment3Changed();
+    partial void OnAttachment4Changing(string value);
+    partial void OnAttachment4Changed();
+    partial void OnAttachment5Changing(string value);
+    partial void OnAttachment5Changed();
     partial void OnStatusChanging(string value);
     partial void OnStatusChanged();
     partial void OnIsLockedChanging(bool value);
@@ -2109,6 +2140,106 @@ namespace priland_api.Data
 					this._Picture = value;
 					this.SendPropertyChanged("Picture");
 					this.OnPictureChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment1", DbType="NVarChar(255)")]
+		public string Attachment1
+		{
+			get
+			{
+				return this._Attachment1;
+			}
+			set
+			{
+				if ((this._Attachment1 != value))
+				{
+					this.OnAttachment1Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment1 = value;
+					this.SendPropertyChanged("Attachment1");
+					this.OnAttachment1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment2", DbType="NVarChar(255)")]
+		public string Attachment2
+		{
+			get
+			{
+				return this._Attachment2;
+			}
+			set
+			{
+				if ((this._Attachment2 != value))
+				{
+					this.OnAttachment2Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment2 = value;
+					this.SendPropertyChanged("Attachment2");
+					this.OnAttachment2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment3", DbType="NVarChar(255)")]
+		public string Attachment3
+		{
+			get
+			{
+				return this._Attachment3;
+			}
+			set
+			{
+				if ((this._Attachment3 != value))
+				{
+					this.OnAttachment3Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment3 = value;
+					this.SendPropertyChanged("Attachment3");
+					this.OnAttachment3Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment4", DbType="NVarChar(255)")]
+		public string Attachment4
+		{
+			get
+			{
+				return this._Attachment4;
+			}
+			set
+			{
+				if ((this._Attachment4 != value))
+				{
+					this.OnAttachment4Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment4 = value;
+					this.SendPropertyChanged("Attachment4");
+					this.OnAttachment4Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment5", DbType="NVarChar(255)")]
+		public string Attachment5
+		{
+			get
+			{
+				return this._Attachment5;
+			}
+			set
+			{
+				if ((this._Attachment5 != value))
+				{
+					this.OnAttachment5Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment5 = value;
+					this.SendPropertyChanged("Attachment5");
+					this.OnAttachment5Changed();
 				}
 			}
 		}
@@ -7288,6 +7419,12 @@ namespace priland_api.Data
 		
 		private string _BrokerFootNote;
 		
+		private string _TotalInvestment;
+		
+		private string _PaymentOptions;
+		
+		private string _Financing;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -7312,6 +7449,12 @@ namespace priland_api.Data
     partial void OnProposalFootNoteChanged();
     partial void OnBrokerFootNoteChanging(string value);
     partial void OnBrokerFootNoteChanged();
+    partial void OnTotalInvestmentChanging(string value);
+    partial void OnTotalInvestmentChanged();
+    partial void OnPaymentOptionsChanging(string value);
+    partial void OnPaymentOptionsChanged();
+    partial void OnFinancingChanging(string value);
+    partial void OnFinancingChanged();
     #endregion
 		
 		public SysSetting()
@@ -7515,6 +7658,66 @@ namespace priland_api.Data
 					this._BrokerFootNote = value;
 					this.SendPropertyChanged("BrokerFootNote");
 					this.OnBrokerFootNoteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalInvestment", DbType="NVarChar(MAX)")]
+		public string TotalInvestment
+		{
+			get
+			{
+				return this._TotalInvestment;
+			}
+			set
+			{
+				if ((this._TotalInvestment != value))
+				{
+					this.OnTotalInvestmentChanging(value);
+					this.SendPropertyChanging();
+					this._TotalInvestment = value;
+					this.SendPropertyChanged("TotalInvestment");
+					this.OnTotalInvestmentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentOptions", DbType="NVarChar(MAX)")]
+		public string PaymentOptions
+		{
+			get
+			{
+				return this._PaymentOptions;
+			}
+			set
+			{
+				if ((this._PaymentOptions != value))
+				{
+					this.OnPaymentOptionsChanging(value);
+					this.SendPropertyChanging();
+					this._PaymentOptions = value;
+					this.SendPropertyChanged("PaymentOptions");
+					this.OnPaymentOptionsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Financing", DbType="NVarChar(MAX)")]
+		public string Financing
+		{
+			get
+			{
+				return this._Financing;
+			}
+			set
+			{
+				if ((this._Financing != value))
+				{
+					this.OnFinancingChanging(value);
+					this.SendPropertyChanging();
+					this._Financing = value;
+					this.SendPropertyChanged("Financing");
+					this.OnFinancingChanged();
 				}
 			}
 		}
@@ -8293,9 +8496,37 @@ namespace priland_api.Data
 		
 		private int _BrokerId;
 		
+		private string _Agent;
+		
+		private string _BrokerCoordinator;
+		
 		private int _CheckListId;
 		
 		private decimal _Price;
+		
+		private decimal _EquityValue;
+		
+		private decimal _EquityPercent;
+		
+		private decimal _Discount;
+		
+		private decimal _Reservation;
+		
+		private decimal _NetEquity;
+		
+		private decimal _NetEquityInterest;
+		
+		private decimal _NetEquityNoOfPayments;
+		
+		private decimal _NetEquityAmortization;
+		
+		private decimal _Balance;
+		
+		private decimal _BalanceInterest;
+		
+		private decimal _BalanceNoOfPayments;
+		
+		private decimal _BalanceAmortization;
 		
 		private string _TotalInvestment;
 		
@@ -8324,6 +8555,8 @@ namespace priland_api.Data
 		private System.DateTime _UpdatedDateTime;
 		
 		private EntitySet<TrnCommissionRequest> _TrnCommissionRequests;
+		
+		private EntitySet<TrnSoldUnitEquitySchedule> _TrnSoldUnitEquitySchedules;
 		
 		private EntitySet<TrnSoldUnitRequirement> _TrnSoldUnitRequirements;
 		
@@ -8365,10 +8598,38 @@ namespace priland_api.Data
     partial void OnCustomerIdChanged();
     partial void OnBrokerIdChanging(int value);
     partial void OnBrokerIdChanged();
+    partial void OnAgentChanging(string value);
+    partial void OnAgentChanged();
+    partial void OnBrokerCoordinatorChanging(string value);
+    partial void OnBrokerCoordinatorChanged();
     partial void OnCheckListIdChanging(int value);
     partial void OnCheckListIdChanged();
     partial void OnPriceChanging(decimal value);
     partial void OnPriceChanged();
+    partial void OnEquityValueChanging(decimal value);
+    partial void OnEquityValueChanged();
+    partial void OnEquityPercentChanging(decimal value);
+    partial void OnEquityPercentChanged();
+    partial void OnDiscountChanging(decimal value);
+    partial void OnDiscountChanged();
+    partial void OnReservationChanging(decimal value);
+    partial void OnReservationChanged();
+    partial void OnNetEquityChanging(decimal value);
+    partial void OnNetEquityChanged();
+    partial void OnNetEquityInterestChanging(decimal value);
+    partial void OnNetEquityInterestChanged();
+    partial void OnNetEquityNoOfPaymentsChanging(decimal value);
+    partial void OnNetEquityNoOfPaymentsChanged();
+    partial void OnNetEquityAmortizationChanging(decimal value);
+    partial void OnNetEquityAmortizationChanged();
+    partial void OnBalanceChanging(decimal value);
+    partial void OnBalanceChanged();
+    partial void OnBalanceInterestChanging(decimal value);
+    partial void OnBalanceInterestChanged();
+    partial void OnBalanceNoOfPaymentsChanging(decimal value);
+    partial void OnBalanceNoOfPaymentsChanged();
+    partial void OnBalanceAmortizationChanging(decimal value);
+    partial void OnBalanceAmortizationChanged();
     partial void OnTotalInvestmentChanging(string value);
     partial void OnTotalInvestmentChanged();
     partial void OnPaymentOptionsChanging(string value);
@@ -8400,6 +8661,7 @@ namespace priland_api.Data
 		public TrnSoldUnit()
 		{
 			this._TrnCommissionRequests = new EntitySet<TrnCommissionRequest>(new Action<TrnCommissionRequest>(this.attach_TrnCommissionRequests), new Action<TrnCommissionRequest>(this.detach_TrnCommissionRequests));
+			this._TrnSoldUnitEquitySchedules = new EntitySet<TrnSoldUnitEquitySchedule>(new Action<TrnSoldUnitEquitySchedule>(this.attach_TrnSoldUnitEquitySchedules), new Action<TrnSoldUnitEquitySchedule>(this.detach_TrnSoldUnitEquitySchedules));
 			this._TrnSoldUnitRequirements = new EntitySet<TrnSoldUnitRequirement>(new Action<TrnSoldUnitRequirement>(this.attach_TrnSoldUnitRequirements), new Action<TrnSoldUnitRequirement>(this.detach_TrnSoldUnitRequirements));
 			this._MstBroker = default(EntityRef<MstBroker>);
 			this._MstCheckList = default(EntityRef<MstCheckList>);
@@ -8570,6 +8832,46 @@ namespace priland_api.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Agent", DbType="NVarChar(255)")]
+		public string Agent
+		{
+			get
+			{
+				return this._Agent;
+			}
+			set
+			{
+				if ((this._Agent != value))
+				{
+					this.OnAgentChanging(value);
+					this.SendPropertyChanging();
+					this._Agent = value;
+					this.SendPropertyChanged("Agent");
+					this.OnAgentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BrokerCoordinator", DbType="NVarChar(255)")]
+		public string BrokerCoordinator
+		{
+			get
+			{
+				return this._BrokerCoordinator;
+			}
+			set
+			{
+				if ((this._BrokerCoordinator != value))
+				{
+					this.OnBrokerCoordinatorChanging(value);
+					this.SendPropertyChanging();
+					this._BrokerCoordinator = value;
+					this.SendPropertyChanged("BrokerCoordinator");
+					this.OnBrokerCoordinatorChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckListId", DbType="Int NOT NULL")]
 		public int CheckListId
 		{
@@ -8610,6 +8912,246 @@ namespace priland_api.Data
 					this._Price = value;
 					this.SendPropertyChanged("Price");
 					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EquityValue", DbType="Decimal(18,5) NOT NULL")]
+		public decimal EquityValue
+		{
+			get
+			{
+				return this._EquityValue;
+			}
+			set
+			{
+				if ((this._EquityValue != value))
+				{
+					this.OnEquityValueChanging(value);
+					this.SendPropertyChanging();
+					this._EquityValue = value;
+					this.SendPropertyChanged("EquityValue");
+					this.OnEquityValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EquityPercent", DbType="Decimal(18,5) NOT NULL")]
+		public decimal EquityPercent
+		{
+			get
+			{
+				return this._EquityPercent;
+			}
+			set
+			{
+				if ((this._EquityPercent != value))
+				{
+					this.OnEquityPercentChanging(value);
+					this.SendPropertyChanging();
+					this._EquityPercent = value;
+					this.SendPropertyChanged("EquityPercent");
+					this.OnEquityPercentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Discount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal Discount
+		{
+			get
+			{
+				return this._Discount;
+			}
+			set
+			{
+				if ((this._Discount != value))
+				{
+					this.OnDiscountChanging(value);
+					this.SendPropertyChanging();
+					this._Discount = value;
+					this.SendPropertyChanged("Discount");
+					this.OnDiscountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Reservation", DbType="Decimal(18,5) NOT NULL")]
+		public decimal Reservation
+		{
+			get
+			{
+				return this._Reservation;
+			}
+			set
+			{
+				if ((this._Reservation != value))
+				{
+					this.OnReservationChanging(value);
+					this.SendPropertyChanging();
+					this._Reservation = value;
+					this.SendPropertyChanged("Reservation");
+					this.OnReservationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NetEquity", DbType="Decimal(18,5) NOT NULL")]
+		public decimal NetEquity
+		{
+			get
+			{
+				return this._NetEquity;
+			}
+			set
+			{
+				if ((this._NetEquity != value))
+				{
+					this.OnNetEquityChanging(value);
+					this.SendPropertyChanging();
+					this._NetEquity = value;
+					this.SendPropertyChanged("NetEquity");
+					this.OnNetEquityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NetEquityInterest", DbType="Decimal(18,5) NOT NULL")]
+		public decimal NetEquityInterest
+		{
+			get
+			{
+				return this._NetEquityInterest;
+			}
+			set
+			{
+				if ((this._NetEquityInterest != value))
+				{
+					this.OnNetEquityInterestChanging(value);
+					this.SendPropertyChanging();
+					this._NetEquityInterest = value;
+					this.SendPropertyChanged("NetEquityInterest");
+					this.OnNetEquityInterestChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NetEquityNoOfPayments", DbType="Decimal(18,5) NOT NULL")]
+		public decimal NetEquityNoOfPayments
+		{
+			get
+			{
+				return this._NetEquityNoOfPayments;
+			}
+			set
+			{
+				if ((this._NetEquityNoOfPayments != value))
+				{
+					this.OnNetEquityNoOfPaymentsChanging(value);
+					this.SendPropertyChanging();
+					this._NetEquityNoOfPayments = value;
+					this.SendPropertyChanged("NetEquityNoOfPayments");
+					this.OnNetEquityNoOfPaymentsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NetEquityAmortization", DbType="Decimal(18,5) NOT NULL")]
+		public decimal NetEquityAmortization
+		{
+			get
+			{
+				return this._NetEquityAmortization;
+			}
+			set
+			{
+				if ((this._NetEquityAmortization != value))
+				{
+					this.OnNetEquityAmortizationChanging(value);
+					this.SendPropertyChanging();
+					this._NetEquityAmortization = value;
+					this.SendPropertyChanged("NetEquityAmortization");
+					this.OnNetEquityAmortizationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Balance", DbType="Decimal(18,5) NOT NULL")]
+		public decimal Balance
+		{
+			get
+			{
+				return this._Balance;
+			}
+			set
+			{
+				if ((this._Balance != value))
+				{
+					this.OnBalanceChanging(value);
+					this.SendPropertyChanging();
+					this._Balance = value;
+					this.SendPropertyChanged("Balance");
+					this.OnBalanceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BalanceInterest", DbType="Decimal(18,5) NOT NULL")]
+		public decimal BalanceInterest
+		{
+			get
+			{
+				return this._BalanceInterest;
+			}
+			set
+			{
+				if ((this._BalanceInterest != value))
+				{
+					this.OnBalanceInterestChanging(value);
+					this.SendPropertyChanging();
+					this._BalanceInterest = value;
+					this.SendPropertyChanged("BalanceInterest");
+					this.OnBalanceInterestChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BalanceNoOfPayments", DbType="Decimal(18,5) NOT NULL")]
+		public decimal BalanceNoOfPayments
+		{
+			get
+			{
+				return this._BalanceNoOfPayments;
+			}
+			set
+			{
+				if ((this._BalanceNoOfPayments != value))
+				{
+					this.OnBalanceNoOfPaymentsChanging(value);
+					this.SendPropertyChanging();
+					this._BalanceNoOfPayments = value;
+					this.SendPropertyChanged("BalanceNoOfPayments");
+					this.OnBalanceNoOfPaymentsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BalanceAmortization", DbType="Decimal(18,5) NOT NULL")]
+		public decimal BalanceAmortization
+		{
+			get
+			{
+				return this._BalanceAmortization;
+			}
+			set
+			{
+				if ((this._BalanceAmortization != value))
+				{
+					this.OnBalanceAmortizationChanging(value);
+					this.SendPropertyChanging();
+					this._BalanceAmortization = value;
+					this.SendPropertyChanged("BalanceAmortization");
+					this.OnBalanceAmortizationChanged();
 				}
 			}
 		}
@@ -8904,6 +9446,19 @@ namespace priland_api.Data
 			set
 			{
 				this._TrnCommissionRequests.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrnSoldUnit_TrnSoldUnitEquitySchedule", Storage="_TrnSoldUnitEquitySchedules", ThisKey="Id", OtherKey="SoldUnitId")]
+		public EntitySet<TrnSoldUnitEquitySchedule> TrnSoldUnitEquitySchedules
+		{
+			get
+			{
+				return this._TrnSoldUnitEquitySchedules;
+			}
+			set
+			{
+				this._TrnSoldUnitEquitySchedules.Assign(value);
 			}
 		}
 		
@@ -9292,6 +9847,18 @@ namespace priland_api.Data
 			entity.TrnSoldUnit = null;
 		}
 		
+		private void attach_TrnSoldUnitEquitySchedules(TrnSoldUnitEquitySchedule entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrnSoldUnit = this;
+		}
+		
+		private void detach_TrnSoldUnitEquitySchedules(TrnSoldUnitEquitySchedule entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrnSoldUnit = null;
+		}
+		
 		private void attach_TrnSoldUnitRequirements(TrnSoldUnitRequirement entity)
 		{
 			this.SendPropertyChanging();
@@ -9302,6 +9869,277 @@ namespace priland_api.Data
 		{
 			this.SendPropertyChanging();
 			entity.TrnSoldUnit = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrnSoldUnitEquitySchedule")]
+	public partial class TrnSoldUnitEquitySchedule : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _SoldUnitId;
+		
+		private System.DateTime _PaymentDate;
+		
+		private decimal _Amortization;
+		
+		private string _CheckNumber;
+		
+		private System.Nullable<System.DateTime> _CheckDate;
+		
+		private string _CheckBank;
+		
+		private string _Remarks;
+		
+		private EntityRef<TrnSoldUnit> _TrnSoldUnit;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnSoldUnitIdChanging(int value);
+    partial void OnSoldUnitIdChanged();
+    partial void OnPaymentDateChanging(System.DateTime value);
+    partial void OnPaymentDateChanged();
+    partial void OnAmortizationChanging(decimal value);
+    partial void OnAmortizationChanged();
+    partial void OnCheckNumberChanging(string value);
+    partial void OnCheckNumberChanged();
+    partial void OnCheckDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnCheckDateChanged();
+    partial void OnCheckBankChanging(string value);
+    partial void OnCheckBankChanged();
+    partial void OnRemarksChanging(string value);
+    partial void OnRemarksChanged();
+    #endregion
+		
+		public TrnSoldUnitEquitySchedule()
+		{
+			this._TrnSoldUnit = default(EntityRef<TrnSoldUnit>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SoldUnitId", DbType="Int NOT NULL")]
+		public int SoldUnitId
+		{
+			get
+			{
+				return this._SoldUnitId;
+			}
+			set
+			{
+				if ((this._SoldUnitId != value))
+				{
+					if (this._TrnSoldUnit.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSoldUnitIdChanging(value);
+					this.SendPropertyChanging();
+					this._SoldUnitId = value;
+					this.SendPropertyChanged("SoldUnitId");
+					this.OnSoldUnitIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentDate", DbType="DateTime NOT NULL")]
+		public System.DateTime PaymentDate
+		{
+			get
+			{
+				return this._PaymentDate;
+			}
+			set
+			{
+				if ((this._PaymentDate != value))
+				{
+					this.OnPaymentDateChanging(value);
+					this.SendPropertyChanging();
+					this._PaymentDate = value;
+					this.SendPropertyChanged("PaymentDate");
+					this.OnPaymentDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amortization", DbType="Decimal(18,5) NOT NULL")]
+		public decimal Amortization
+		{
+			get
+			{
+				return this._Amortization;
+			}
+			set
+			{
+				if ((this._Amortization != value))
+				{
+					this.OnAmortizationChanging(value);
+					this.SendPropertyChanging();
+					this._Amortization = value;
+					this.SendPropertyChanged("Amortization");
+					this.OnAmortizationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckNumber", DbType="NVarChar(50)")]
+		public string CheckNumber
+		{
+			get
+			{
+				return this._CheckNumber;
+			}
+			set
+			{
+				if ((this._CheckNumber != value))
+				{
+					this.OnCheckNumberChanging(value);
+					this.SendPropertyChanging();
+					this._CheckNumber = value;
+					this.SendPropertyChanged("CheckNumber");
+					this.OnCheckNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CheckDate
+		{
+			get
+			{
+				return this._CheckDate;
+			}
+			set
+			{
+				if ((this._CheckDate != value))
+				{
+					this.OnCheckDateChanging(value);
+					this.SendPropertyChanging();
+					this._CheckDate = value;
+					this.SendPropertyChanged("CheckDate");
+					this.OnCheckDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckBank", DbType="NVarChar(100)")]
+		public string CheckBank
+		{
+			get
+			{
+				return this._CheckBank;
+			}
+			set
+			{
+				if ((this._CheckBank != value))
+				{
+					this.OnCheckBankChanging(value);
+					this.SendPropertyChanging();
+					this._CheckBank = value;
+					this.SendPropertyChanged("CheckBank");
+					this.OnCheckBankChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Remarks", DbType="NVarChar(MAX)")]
+		public string Remarks
+		{
+			get
+			{
+				return this._Remarks;
+			}
+			set
+			{
+				if ((this._Remarks != value))
+				{
+					this.OnRemarksChanging(value);
+					this.SendPropertyChanging();
+					this._Remarks = value;
+					this.SendPropertyChanged("Remarks");
+					this.OnRemarksChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrnSoldUnit_TrnSoldUnitEquitySchedule", Storage="_TrnSoldUnit", ThisKey="SoldUnitId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public TrnSoldUnit TrnSoldUnit
+		{
+			get
+			{
+				return this._TrnSoldUnit.Entity;
+			}
+			set
+			{
+				TrnSoldUnit previousValue = this._TrnSoldUnit.Entity;
+				if (((previousValue != value) 
+							|| (this._TrnSoldUnit.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TrnSoldUnit.Entity = null;
+						previousValue.TrnSoldUnitEquitySchedules.Remove(this);
+					}
+					this._TrnSoldUnit.Entity = value;
+					if ((value != null))
+					{
+						value.TrnSoldUnitEquitySchedules.Add(this);
+						this._SoldUnitId = value.Id;
+					}
+					else
+					{
+						this._SoldUnitId = default(int);
+					}
+					this.SendPropertyChanged("TrnSoldUnit");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	

@@ -18,9 +18,23 @@ namespace priland_api.Models
         public String Customer { get; set; }
         public Int32 BrokerId { get; set; }
         public String Broker { get; set; }
+        public String Agent { get; set; }
+        public String BrokerCoordinator { get; set; }
         public Int32 ChecklistId { get; set; }
         public String Checklist { get; set; }
         public Decimal Price { get; set; }
+        public Decimal EquityValue { get; set; }
+        public Decimal EquityPercent { get; set; }
+        public Decimal Discount { get; set; }
+        public Decimal Reservation { get; set; }
+        public Decimal NetEquity { get; set; }
+        public Decimal NetEquityInterest { get; set; }
+        public Decimal NetEquityNoOfPayments { get; set; }
+        public Decimal NetEquityAmortization { get; set; }
+        public Decimal Balance { get; set; }
+        public Decimal BalanceInterest { get; set; }
+        public Decimal BalanceNoOfPayments { get; set; }
+        public Decimal BalanceAmortization { get; set; }
         public String TotalInvestment { get; set; }
         public String PaymentOptions { get; set; }
         public String Financing { get; set; }
