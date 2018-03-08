@@ -238,11 +238,21 @@
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MstUnit_MstUnitPrice" Member="MstUnitPrices" ThisKey="Id" OtherKey="UnitId" Type="MstUnitPrice" />
       <Association Name="MstUnit_TrnSoldUnit" Member="TrnSoldUnits" ThisKey="Id" OtherKey="UnitId" Type="TrnSoldUnit" />
       <Association Name="MstHouseModel_MstUnit" Member="MstHouseModel" ThisKey="HouseModelId" OtherKey="Id" Type="MstHouseModel" IsForeignKey="true" />
       <Association Name="MstProject_MstUnit" Member="MstProject" ThisKey="ProjectId" OtherKey="Id" Type="MstProject" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="MstUser_MstUnit" Member="MstUser" ThisKey="CreatedBy" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
       <Association Name="MstUser_MstUnit1" Member="MstUser1" ThisKey="UpdatedBy" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MstUnitPrice" Member="MstUnitPrices">
+    <Type Name="MstUnitPrice">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UnitId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PriceDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Association Name="MstUnit_MstUnitPrice" Member="MstUnit" ThisKey="UnitId" OtherKey="Id" Type="MstUnit" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.MstUser" Member="MstUsers">

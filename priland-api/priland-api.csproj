@@ -233,6 +233,7 @@
     <Compile Include="Controllers\MstHouseModelController.cs" />
     <Compile Include="Controllers\MstProjectController.cs" />
     <Compile Include="Controllers\MstUnitController.cs" />
+    <Compile Include="Controllers\MstUnitPriceController.cs" />
     <Compile Include="Controllers\MstUserController.cs" />
     <Compile Include="Controllers\MstUserRightController.cs" />
     <Compile Include="Controllers\RepPdfController.cs" />
@@ -265,6 +266,7 @@
     <Compile Include="Models\MstHouseModel.cs" />
     <Compile Include="Models\MstProject.cs" />
     <Compile Include="Models\MstUnit.cs" />
+    <Compile Include="Models\MstUnitPrice.cs" />
     <Compile Include="Models\MstUser.cs" />
     <Compile Include="Models\MstUserRight.cs" />
     <Compile Include="Models\SysDropDown.cs" />

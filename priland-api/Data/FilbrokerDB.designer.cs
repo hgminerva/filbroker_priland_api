@@ -69,6 +69,9 @@ namespace priland_api.Data
     partial void InsertMstUnit(MstUnit instance);
     partial void UpdateMstUnit(MstUnit instance);
     partial void DeleteMstUnit(MstUnit instance);
+    partial void InsertMstUnitPrice(MstUnitPrice instance);
+    partial void UpdateMstUnitPrice(MstUnitPrice instance);
+    partial void DeleteMstUnitPrice(MstUnitPrice instance);
     partial void InsertMstUser(MstUser instance);
     partial void UpdateMstUser(MstUser instance);
     partial void DeleteMstUser(MstUser instance);
@@ -229,6 +232,14 @@ namespace priland_api.Data
 			get
 			{
 				return this.GetTable<MstUnit>();
+			}
+		}
+		
+		public System.Data.Linq.Table<MstUnitPrice> MstUnitPrices
+		{
+			get
+			{
+				return this.GetTable<MstUnitPrice>();
 			}
 		}
 		
@@ -5336,6 +5347,8 @@ namespace priland_api.Data
 		
 		private System.DateTime _UpdatedDateTime;
 		
+		private EntitySet<MstUnitPrice> _MstUnitPrices;
+		
 		private EntitySet<TrnSoldUnit> _TrnSoldUnits;
 		
 		private EntityRef<MstHouseModel> _MstHouseModel;
@@ -5384,6 +5397,7 @@ namespace priland_api.Data
 		
 		public MstUnit()
 		{
+			this._MstUnitPrices = new EntitySet<MstUnitPrice>(new Action<MstUnitPrice>(this.attach_MstUnitPrices), new Action<MstUnitPrice>(this.detach_MstUnitPrices));
 			this._TrnSoldUnits = new EntitySet<TrnSoldUnit>(new Action<TrnSoldUnit>(this.attach_TrnSoldUnits), new Action<TrnSoldUnit>(this.detach_TrnSoldUnits));
 			this._MstHouseModel = default(EntityRef<MstHouseModel>);
 			this._MstProject = default(EntityRef<MstProject>);
@@ -5708,6 +5722,19 @@ namespace priland_api.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstUnit_MstUnitPrice", Storage="_MstUnitPrices", ThisKey="Id", OtherKey="UnitId")]
+		public EntitySet<MstUnitPrice> MstUnitPrices
+		{
+			get
+			{
+				return this._MstUnitPrices;
+			}
+			set
+			{
+				this._MstUnitPrices.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstUnit_TrnSoldUnit", Storage="_TrnSoldUnits", ThisKey="Id", OtherKey="UnitId")]
 		public EntitySet<TrnSoldUnit> TrnSoldUnits
 		{
@@ -5877,6 +5904,18 @@ namespace priland_api.Data
 			}
 		}
 		
+		private void attach_MstUnitPrices(MstUnitPrice entity)
+		{
+			this.SendPropertyChanging();
+			entity.MstUnit = this;
+		}
+		
+		private void detach_MstUnitPrices(MstUnitPrice entity)
+		{
+			this.SendPropertyChanging();
+			entity.MstUnit = null;
+		}
+		
 		private void attach_TrnSoldUnits(TrnSoldUnit entity)
 		{
 			this.SendPropertyChanging();
@@ -5887,6 +5926,181 @@ namespace priland_api.Data
 		{
 			this.SendPropertyChanging();
 			entity.MstUnit = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MstUnitPrice")]
+	public partial class MstUnitPrice : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _UnitId;
+		
+		private System.DateTime _PriceDate;
+		
+		private decimal _Price;
+		
+		private EntityRef<MstUnit> _MstUnit;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnUnitIdChanging(int value);
+    partial void OnUnitIdChanged();
+    partial void OnPriceDateChanging(System.DateTime value);
+    partial void OnPriceDateChanged();
+    partial void OnPriceChanging(decimal value);
+    partial void OnPriceChanged();
+    #endregion
+		
+		public MstUnitPrice()
+		{
+			this._MstUnit = default(EntityRef<MstUnit>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UnitId", DbType="Int NOT NULL")]
+		public int UnitId
+		{
+			get
+			{
+				return this._UnitId;
+			}
+			set
+			{
+				if ((this._UnitId != value))
+				{
+					if (this._MstUnit.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUnitIdChanging(value);
+					this.SendPropertyChanging();
+					this._UnitId = value;
+					this.SendPropertyChanged("UnitId");
+					this.OnUnitIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceDate", DbType="DateTime NOT NULL")]
+		public System.DateTime PriceDate
+		{
+			get
+			{
+				return this._PriceDate;
+			}
+			set
+			{
+				if ((this._PriceDate != value))
+				{
+					this.OnPriceDateChanging(value);
+					this.SendPropertyChanging();
+					this._PriceDate = value;
+					this.SendPropertyChanged("PriceDate");
+					this.OnPriceDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Decimal(18,5) NOT NULL")]
+		public decimal Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this.OnPriceChanging(value);
+					this.SendPropertyChanging();
+					this._Price = value;
+					this.SendPropertyChanged("Price");
+					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstUnit_MstUnitPrice", Storage="_MstUnit", ThisKey="UnitId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public MstUnit MstUnit
+		{
+			get
+			{
+				return this._MstUnit.Entity;
+			}
+			set
+			{
+				MstUnit previousValue = this._MstUnit.Entity;
+				if (((previousValue != value) 
+							|| (this._MstUnit.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MstUnit.Entity = null;
+						previousValue.MstUnitPrices.Remove(this);
+					}
+					this._MstUnit.Entity = value;
+					if ((value != null))
+					{
+						value.MstUnitPrices.Add(this);
+						this._UnitId = value.Id;
+					}
+					else
+					{
+						this._UnitId = default(int);
+					}
+					this.SendPropertyChanged("MstUnit");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	

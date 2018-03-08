@@ -40,7 +40,8 @@ namespace priland_api.Controllers
                                   CreatedBy = d.CreatedBy,
                                   CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                   UpdatedBy = d.UpdatedBy,
-                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                  Customer = d.Status == "CLOSE" ? d.TrnSoldUnits.Where(s => s.Status == "SOLD").FirstOrDefault().MstCustomer.LastName : ""
                               };
             return MstUnitData.ToList();
         }
@@ -71,7 +72,8 @@ namespace priland_api.Controllers
                                   CreatedBy = d.CreatedBy,
                                   CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                   UpdatedBy = d.UpdatedBy,
-                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                  Customer = d.Status == "CLOSE" ? d.TrnSoldUnits.Where(s => s.Status == "SOLD").FirstOrDefault().MstCustomer.LastName : ""
                               };
             return MstUnitData.ToList();
         }
@@ -100,7 +102,8 @@ namespace priland_api.Controllers
                                      CreatedBy = d.CreatedBy,
                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                      UpdatedBy = d.UpdatedBy,
-                                     UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                     UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                     Customer = d.Status == "CLOSE" ? d.TrnSoldUnits.Where(s => s.Status == "SOLD").FirstOrDefault().MstCustomer.LastName : ""
                                  };
             return (MstUnit)MstUnitData.FirstOrDefault();
         }
@@ -254,7 +257,7 @@ namespace priland_api.Controllers
 
         //Lock
         [HttpPut, Route("Lock")]
-        public HttpResponseMessage UpdateUnit(MstUnit unit)
+        public HttpResponseMessage Lock(MstUnit unit)
         {
             try
             {
@@ -323,6 +326,62 @@ namespace priland_api.Controllers
                         UnLockMstUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UnLockMstUnitData.UpdatedDateTime = DateTime.Now;
 
+                        db.SubmitChanges();
+
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        //Update price
+        [HttpPut, Route("UpdatePrice/{projectId}/{unitCode}/{price}")]
+        public HttpResponseMessage UpdatePrice(string projectId, string unitCode, string price)
+        {
+            try
+            {
+                var MstUnitData = from d in db.MstUnits
+                                  where d.ProjectId == Convert.ToInt32(projectId) &&
+                                        d.UnitCode == unitCode
+                                  select d;
+
+                if (MstUnitData.Any())
+                {
+                    var currentUser = from d in db.MstUsers
+                                      where d.AspNetId == User.Identity.GetUserId()
+                                      select d;
+                    if (currentUser.Any())
+                    {   
+                        // Update Price
+                        var UpdateMstUnitData = MstUnitData.FirstOrDefault();
+
+                        UpdateMstUnitData.Price = Convert.ToDecimal(price);
+                        UpdateMstUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
+                        UpdateMstUnitData.UpdatedDateTime = DateTime.Now;
+
+                        // Save price updates
+                        Data.MstUnitPrice newMstUnitPrice = new Data.MstUnitPrice()
+                        {
+                            UnitId = UpdateMstUnitData.Id,
+                            PriceDate = DateTime.Now,
+                            Price =  Convert.ToDecimal(price),
+
+                        };
+                        db.MstUnitPrices.InsertOnSubmit(newMstUnitPrice);
+ 
                         db.SubmitChanges();
 
                         return Request.CreateResponse(HttpStatusCode.OK);

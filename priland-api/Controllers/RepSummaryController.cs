@@ -34,10 +34,24 @@ namespace priland_api.Controllers
                                       CustomerId = d.CustomerId,
                                       Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                       BrokerId = d.BrokerId,
-                                      Broker = d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
+                                      Broker = d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName + " (" + d.MstBroker.RealtyFirm + ")",
+                                      Agent = d.Agent,
+                                      BrokerCoordinator = d.BrokerCoordinator,
                                       ChecklistId = d.CheckListId,
                                       Checklist = d.MstCheckList.CheckList,
                                       Price = d.Price,
+                                      EquityValue = d.EquityValue,
+                                      EquityPercent = d.EquityPercent,
+                                      Discount = d.Discount,
+                                      Reservation = d.Reservation,
+                                      NetEquity = d.NetEquity,
+                                      NetEquityInterest = d.NetEquityInterest,
+                                      NetEquityNoOfPayments = d.NetEquityNoOfPayments,
+                                      NetEquityAmortization = d.NetEquityAmortization,
+                                      Balance = d.Balance,
+                                      BalanceInterest = d.BalanceInterest,
+                                      BalanceNoOfPayments = d.BalanceNoOfPayments,
+                                      BalanceAmortization = d.BalanceAmortization,
                                       TotalInvestment = d.TotalInvestment,
                                       PaymentOptions = d.PaymentOptions,
                                       Financing = d.Financing,
@@ -56,6 +70,41 @@ namespace priland_api.Controllers
                                       UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                   };
             return TrnSoldUnitData.ToList();
+        }
+
+        // sold unit checklist requirements per date range
+        [HttpGet, Route("ListSoldUnitChecklistPerDates/{dateStart}/{dateEnd}")]
+        public List<TrnSoldUnitRequirement> GetTrnSoldUnitChecklistPerDates(string dateStart, string dateEnd)
+        {
+            var TrnSoldUnitRequirementData = from d in db.TrnSoldUnitRequirements
+                                             where d.TrnSoldUnit.SoldUnitDate >= Convert.ToDateTime(dateStart) &&
+                                                   d.TrnSoldUnit.SoldUnitDate <= Convert.ToDateTime(dateEnd)
+                                             orderby d.TrnSoldUnit.SoldUnitDate, d.TrnSoldUnit.SoldUnitNumber, d.MstCheckListRequirement.RequirementNo ascending
+                                             select new TrnSoldUnitRequirement
+                                              {
+                                                Id = d.Id,
+                                                SoldUnitId = d.SoldUnitId,
+                                                ChecklistRequirementId = d.MstCheckListRequirement.Id,
+                                                ChecklistRequirement = d.MstCheckListRequirement.Requirement,
+                                                ChecklistRequirementNo = d.MstCheckListRequirement.RequirementNo,
+                                                ChecklistCategory = d.MstCheckListRequirement.Category,
+                                                ChecklistType = d.MstCheckListRequirement.Type,
+                                                ChecklistWithAttachments = d.MstCheckListRequirement.WithAttachments,
+                                                Attachment1 = d.Attachment1,
+                                                Attachment2 = d.Attachment2,
+                                                Attachment3 = d.Attachment3,
+                                                Attachment4 = d.Attachment4,
+                                                Attachment5 = d.Attachment5,
+                                                Remarks = d.Remarks,
+                                                Status = d.Status,
+                                                StatusDate = d.StatusDate.ToShortDateString(),
+                                                SoldUnitNumber = d.TrnSoldUnit.SoldUnitNumber,
+                                                SoldUnitDate = d.TrnSoldUnit.SoldUnitDate.ToShortDateString(),
+                                                Project = d.TrnSoldUnit.MstProject.Project,
+                                                Unit = d.TrnSoldUnit.MstUnit.UnitCode,
+                                                Customer = d.TrnSoldUnit.MstCustomer.LastName + ", " + d.TrnSoldUnit.MstCustomer.FirstName + " " + d.TrnSoldUnit.MstCustomer.MiddleName
+                                              };
+            return TrnSoldUnitRequirementData.ToList();
         }
 
         // commission request per date range

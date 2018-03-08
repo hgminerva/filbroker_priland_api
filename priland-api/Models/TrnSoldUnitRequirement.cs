@@ -23,5 +23,12 @@ namespace priland_api.Models
         public String Remarks { get; set; }
         public String Status { get; set; }
         public String StatusDate { get; set; }
+
+        // Report purposes.
+        public String SoldUnitNumber { get; set; }
+        public String SoldUnitDate { get; set; }
+        public String Project { get; set; }
+        public String Unit { get; set; }
+        public String Customer { get; set; }
     }
 }
