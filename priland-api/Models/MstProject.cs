@@ -12,6 +12,7 @@ namespace priland_api.Models
         public String Project {get; set;}
         public String Address {get; set;}
         public String Status {get; set;}
+        public String ProjectLogo { get; set; }
         public Boolean IsLocked { get; set; }
         public Int32 CreatedBy {get; set;}
         public String  CreatedDateTime {get; set;}

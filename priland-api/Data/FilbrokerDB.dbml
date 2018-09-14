@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="filbroker_priland" Class="FilbrokerDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=innosoftserver2.eastasia.cloudapp.azure.com;Initial Catalog=filbroker_priland;User ID=sa;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="DefaultConnection" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=23.98.43.191;Initial Catalog=filbroker_priland;User ID=sa;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="DefaultConnection" Provider="System.Data.SqlClient" />
   <Table Name="dbo.AspNetRoles" Member="AspNetRoles">
     <Type Name="AspNetRole">
       <Column Name="Id" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -53,7 +53,6 @@
       <Association Name="AspNetUser_AspNetUserClaim" Member="AspNetUserClaims" ThisKey="Id" OtherKey="User_Id" Type="AspNetUserClaim" />
       <Association Name="AspNetUser_AspNetUserLogin" Member="AspNetUserLogins" ThisKey="Id" OtherKey="UserId" Type="AspNetUserLogin" />
       <Association Name="AspNetUser_AspNetUserRole" Member="AspNetUserRoles" ThisKey="Id" OtherKey="UserId" Type="AspNetUserRole" />
-      <Association Name="AspNetUser_MstUser" Member="MstUsers" ThisKey="Id" OtherKey="AspNetId" Type="MstUser" />
     </Type>
   </Table>
   <Table Name="dbo.MstBroker" Member="MstBrokers">
@@ -146,6 +145,7 @@
       <Column Name="CivilStatus" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Gender" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="BirthDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Citizen" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="TIN" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="IdType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="IdNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
@@ -169,6 +169,13 @@
       <Column Name="EmployerZipCode" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="EmployerTelephoneNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="EmployerMobileNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SpouseLastName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SpouseFirstName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SpouseMiddleName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SpouseBirthDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="SpouseCitizen" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SpouseTIN" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SpouseEmployer" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="Remarks" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Picture" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
@@ -208,6 +215,7 @@
       <Column Name="Project" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Address" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ProjectLogo" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -252,7 +260,7 @@
       <Column Name="UnitId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PriceDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Association Name="MstUnit_MstUnitPrice" Member="MstUnit" ThisKey="UnitId" OtherKey="Id" Type="MstUnit" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="MstUnit_MstUnitPrice" Member="MstUnit" ThisKey="UnitId" OtherKey="Id" Type="MstUnit" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.MstUser" Member="MstUsers">
@@ -262,7 +270,7 @@
       <Column Name="FullName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="Password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="AspNetId" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="AspNetId" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Association Name="MstUser_TrnSoldUnitRequirementActivity" Member="TrnSoldUnitRequirementActivities" ThisKey="Id" OtherKey="UserId" Type="TrnSoldUnitRequirementActivity" />
       <Association Name="MstUser_MstBroker" Member="MstBrokers" ThisKey="Id" OtherKey="CreatedBy" Type="MstBroker" />
       <Association Name="MstUser_MstBroker1" Member="MstBrokers1" ThisKey="Id" OtherKey="UpdatedBy" Type="MstBroker" />
@@ -287,7 +295,6 @@
       <Association Name="MstUser_TrnSoldUnit2" Member="TrnSoldUnits2" ThisKey="Id" OtherKey="CreatedBy" Type="TrnSoldUnit" />
       <Association Name="MstUser_TrnSoldUnit3" Member="TrnSoldUnits3" ThisKey="Id" OtherKey="PreparedBy" Type="TrnSoldUnit" />
       <Association Name="MstUser_TrnSoldUnit4" Member="TrnSoldUnits4" ThisKey="Id" OtherKey="UpdatedBy" Type="TrnSoldUnit" />
-      <Association Name="AspNetUser_MstUser" Member="AspNetUser" ThisKey="AspNetId" OtherKey="Id" Type="AspNetUser" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.MstUserRight" Member="MstUserRights">
@@ -425,9 +432,9 @@
       <Column Name="SoldUnitId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PaymentDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Amortization" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="CheckNumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CheckNumber" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="CheckDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="CheckBank" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="CheckBank" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="Remarks" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Association Name="TrnSoldUnit_TrnSoldUnitEquitySchedule" Member="TrnSoldUnit" ThisKey="SoldUnitId" OtherKey="Id" Type="TrnSoldUnit" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>

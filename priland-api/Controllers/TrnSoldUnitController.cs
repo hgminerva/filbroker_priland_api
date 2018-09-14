@@ -180,11 +180,11 @@ namespace priland_api.Controllers
                                       Financing = d.Financing,
                                       Remarks = d.Remarks,
                                       PreparedBy = d.PreparedBy,
-                                      PreparedByUser = d.MstUser2.Username,
+                                      PreparedByUser = d.MstUser3.Username,
                                       CheckedBy = d.CheckedBy,
-                                      CheckedByUser = d.MstUser3.Username,
+                                      CheckedByUser = d.MstUser1.Username,
                                       ApprovedBy = d.ApprovedBy,
-                                      ApprovedByUser = d.MstUser4.Username,
+                                      ApprovedByUser = d.MstUser.Username,
                                       Status = d.Status,
                                       IsLocked = d.IsLocked,
                                       CreatedBy = d.CreatedBy,
@@ -264,6 +264,16 @@ namespace priland_api.Controllers
 
                     if (projectId > 0 && unitId > 0 && checklistId > 0 && customerId > 0 && brokerId > 0)
                     {
+                        int checkedBy = currentUser.FirstOrDefault().Id;
+                        int approvedBy = currentUser.FirstOrDefault().Id;
+
+                        var systemSettings = from d in db.SysSettings select d;
+                        if (systemSettings.Any())
+                        {
+                            if(systemSettings.FirstOrDefault().SoldUnitCheckedBy>0) checkedBy = systemSettings.FirstOrDefault().SoldUnitCheckedBy;
+                            if(systemSettings.FirstOrDefault().SoldUnitApprovedBy>0) approvedBy = systemSettings.FirstOrDefault().SoldUnitApprovedBy;
+                        }
+
                         Data.TrnSoldUnit newTrnSoldUnit = new Data.TrnSoldUnit()
                         {
                             SoldUnitNumber = soldUnitNumber,
@@ -299,8 +309,8 @@ namespace priland_api.Controllers
                             Remarks = soldUnit.Remarks,
 
                             PreparedBy = currentUser.FirstOrDefault().Id,
-                            CheckedBy = currentUser.FirstOrDefault().Id,
-                            ApprovedBy = currentUser.FirstOrDefault().Id,
+                            CheckedBy = checkedBy,
+                            ApprovedBy = approvedBy,
                             Status = soldUnit.Status,
 
                             IsLocked = soldUnit.IsLocked,
@@ -615,7 +625,7 @@ namespace priland_api.Controllers
 
         //Transferred
         [HttpPut, Route("Transfer")]
-        public HttpResponseMessage TransferSoldUnit(TrnSoldUnit soldUnit)
+        public Int32 TransferSoldUnit(TrnSoldUnit soldUnit)
         {
             try
             {
@@ -631,6 +641,8 @@ namespace priland_api.Controllers
 
                         if (currentUser.Any())
                         {
+                            // change sold unit status
+                            // =======================
                             var UnLockTrnSoldUnitData = TrnSoldUnitData.FirstOrDefault();
 
                             UnLockTrnSoldUnitData.Remarks = soldUnit.Remarks;
@@ -639,32 +651,130 @@ namespace priland_api.Controllers
                             UnLockTrnSoldUnitData.UpdatedDateTime = DateTime.Now;
 
                             // update unit status
+                            // ==================
                             var currentUnit = from d in db.MstUnits where d.Id == UnLockTrnSoldUnitData.UnitId select d;
                             currentUnit.FirstOrDefault().Status = "OPEN";
 
                             db.SubmitChanges();
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                            // add new sold unit
+                            // =================
+                            string soldUnitNumber = "0000000001";
+                            var soldUnits = from d in db.TrnSoldUnits.OrderByDescending(d => d.Id) select d;
+                            if (soldUnits.Any())
+                            {
+                                Int32 nextSoldUnitNumber = Convert.ToInt32(soldUnits.FirstOrDefault().SoldUnitNumber) + 1;
+                                soldUnitNumber = padNumWithZero(nextSoldUnitNumber, 10);
+                            }
+
+                            Int32 projectId = soldUnit.ProjectId;
+                            Int32 unitId = soldUnit.UnitId;
+                            Int32 checklistId = 0;
+
+                            Int32 customerId = soldUnit.CustomerId;
+                            Int32 brokerId = soldUnit.BrokerId;
+
+                            decimal price = soldUnit.Price;
+
+                            var projects = from d in db.MstProjects where d.Id == projectId select d;
+                            if (projects.Any())
+                            {
+                                if (projects.FirstOrDefault().MstCheckLists.Where(d => d.Status == "ACTIVE" && d.IsLocked == true).Count() > 0)
+                                {
+                                    checklistId = projects.FirstOrDefault().MstCheckLists.Where(d => d.Status == "ACTIVE" && d.IsLocked == true).FirstOrDefault().Id;
+                                }
+                            }
+
+                            String totalInvestment = "";
+                            String paymentOptions = "";
+                            String financing = "";
+
+                            var settings = from d in db.SysSettings select d;
+                            if (settings.Any())
+                            {
+                                totalInvestment = settings.FirstOrDefault().TotalInvestment;
+                                paymentOptions = settings.FirstOrDefault().PaymentOptions;
+                                financing = settings.FirstOrDefault().Financing;
+                            }
+
+
+                            if (projectId > 0 && unitId > 0 && checklistId > 0 && customerId > 0 && brokerId > 0)
+                            {
+                                Data.TrnSoldUnit newTrnSoldUnit = new Data.TrnSoldUnit()
+                                {
+                                    SoldUnitNumber = soldUnitNumber,
+                                    SoldUnitDate = Convert.ToDateTime(soldUnit.SoldUnitDate),
+
+                                    ProjectId = projectId,
+                                    UnitId = unitId,
+                                    CustomerId = customerId,
+                                    BrokerId = brokerId,
+                                    Agent = soldUnit.Agent,
+                                    BrokerCoordinator = soldUnit.BrokerCoordinator,
+                                    CheckListId = checklistId,
+
+                                    Price = price,
+
+                                    EquityValue = 0,
+                                    EquityPercent = 0,
+                                    Discount = 0,
+                                    Reservation = 0,
+                                    NetEquity = 0,
+                                    NetEquityInterest = 0,
+                                    NetEquityNoOfPayments = 0,
+                                    NetEquityAmortization = 0,
+                                    Balance = 0,
+                                    BalanceInterest = 0,
+                                    BalanceNoOfPayments = 0,
+                                    BalanceAmortization = 0,
+
+                                    TotalInvestment = totalInvestment,
+                                    PaymentOptions = paymentOptions,
+                                    Financing = financing,
+
+                                    Remarks = soldUnit.Remarks,
+
+                                    PreparedBy = currentUser.FirstOrDefault().Id,
+                                    CheckedBy = currentUser.FirstOrDefault().Id,
+                                    ApprovedBy = currentUser.FirstOrDefault().Id,
+                                    Status = soldUnit.Status,
+
+                                    IsLocked = false,
+                                    CreatedBy = currentUser.FirstOrDefault().Id,
+                                    CreatedDateTime = DateTime.Now,
+                                    UpdatedBy = currentUser.FirstOrDefault().Id,
+                                    UpdatedDateTime = DateTime.Now
+                                };
+
+                                db.TrnSoldUnits.InsertOnSubmit(newTrnSoldUnit);
+                                db.SubmitChanges();
+
+                                return newTrnSoldUnit.Id;
+                            }
+                            else
+                            {
+                                return 0;
+                            }
+                         
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            return 0;
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        return 0;
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    return 0;
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return 0;
             }
         }
 

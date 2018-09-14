@@ -28,6 +28,17 @@ namespace priland_api.Controllers
 
             return result;
         }
+        private String formatNullableDate(DateTime? nullableDate)
+        {
+            if (nullableDate.HasValue)
+            {
+                return nullableDate.Value.ToShortDateString();
+            }
+            else
+            {
+                return "";
+            }
+        }
 
         // List
         [HttpGet, Route("List")]
@@ -44,6 +55,7 @@ namespace priland_api.Controllers
                                       FullName = d.LastName + ", " + d.FirstName + " " + d.MiddleName,
                                       CivilStatus = d.CivilStatus,
                                       Gender = d.Gender,
+                                      Citizen = d.Citizen,
                                       BirthDate = d.BirthDate.ToShortDateString(),
                                       TIN = d.TIN,
                                       IdType = d.IdType,
@@ -68,6 +80,13 @@ namespace priland_api.Controllers
                                       EmployerZipCode = d.EmployerZipCode,
                                       EmployerTelephoneNumber = d.EmployerTelephoneNumber,
                                       EmployerMobileNumber = d.EmployerMobileNumber,
+                                      SpouseLastName = d.SpouseLastName,
+                                      SpouseFirstName = d.SpouseFirstName,
+                                      SpouseMiddleName = d.SpouseMiddleName,
+                                      SpouseBirthDate = formatNullableDate(d.SpouseBirthDate),
+                                      SpouseCitizen = d.SpouseCitizen,
+                                      SpouseEmployer = d.SpouseEmployer,
+                                      SpouseTIN = d.SpouseTIN,
                                       Remarks = d.Remarks,
                                       Status = d.Status,
                                       Picture = d.Picture,
@@ -97,6 +116,7 @@ namespace priland_api.Controllers
                                       CivilStatus = d.CivilStatus,
                                       Gender = d.Gender,
                                       BirthDate = d.BirthDate.ToShortDateString(),
+                                      Citizen = d.Citizen,
                                       TIN = d.TIN,
                                       IdType = d.IdType,
                                       IdNumber = d.IdNumber,
@@ -120,6 +140,13 @@ namespace priland_api.Controllers
                                       EmployerZipCode = d.EmployerZipCode,
                                       EmployerTelephoneNumber = d.EmployerTelephoneNumber,
                                       EmployerMobileNumber = d.EmployerMobileNumber,
+                                      SpouseLastName = d.SpouseLastName,
+                                      SpouseFirstName = d.SpouseFirstName,
+                                      SpouseMiddleName = d.SpouseMiddleName,
+                                      SpouseBirthDate = formatNullableDate(d.SpouseBirthDate),
+                                      SpouseCitizen = d.SpouseCitizen,
+                                      SpouseEmployer = d.SpouseEmployer,
+                                      SpouseTIN = d.SpouseTIN,
                                       Remarks = d.Remarks,
                                       Status = d.Status,
                                       Picture = d.Picture,
@@ -162,6 +189,7 @@ namespace priland_api.Controllers
                         CivilStatus = customer.CivilStatus,
                         Gender = customer.Gender,
                         BirthDate = Convert.ToDateTime(customer.BirthDate),
+                        Citizen = customer.Citizen,
                         TIN = customer.TIN,
                         IdType = customer.IdType,
                         IdNumber = customer.IdNumber,
@@ -185,6 +213,13 @@ namespace priland_api.Controllers
                         EmployerZipCode = customer.EmployerZipCode,
                         EmployerTelephoneNumber = customer.EmployerTelephoneNumber,
                         EmployerMobileNumber = customer.EmployerMobileNumber,
+                        SpouseLastName = customer.SpouseLastName,
+                        SpouseFirstName = customer.SpouseFirstName,
+                        SpouseMiddleName = customer.SpouseMiddleName,
+                        SpouseBirthDate = Convert.ToDateTime(customer.SpouseBirthDate),
+                        SpouseCitizen = customer.SpouseCitizen,
+                        SpouseEmployer = customer.SpouseEmployer,
+                        SpouseTIN = customer.SpouseTIN,
                         Remarks = customer.Remarks,
                         Status = customer.Status,
                         Picture = customer.Picture,
@@ -275,6 +310,7 @@ namespace priland_api.Controllers
                             UpdateMstCustomerData.MiddleName = customer.MiddleName;
                             UpdateMstCustomerData.CivilStatus = customer.CivilStatus;
                             UpdateMstCustomerData.BirthDate = Convert.ToDateTime(customer.BirthDate);
+                            UpdateMstCustomerData.Citizen = customer.Citizen;
                             UpdateMstCustomerData.TIN = customer.TIN;
                             UpdateMstCustomerData.IdType = customer.IdType;
                             UpdateMstCustomerData.IdNumber = customer.IdNumber;
@@ -299,6 +335,13 @@ namespace priland_api.Controllers
                             UpdateMstCustomerData.EmployerTelephoneNumber = customer.EmployerTelephoneNumber;
                             UpdateMstCustomerData.EmployerMobileNumber = customer.EmployerMobileNumber;
                             UpdateMstCustomerData.Picture = customer.Picture;
+                            UpdateMstCustomerData.SpouseLastName = customer.SpouseLastName;
+                            UpdateMstCustomerData.SpouseFirstName = customer.SpouseFirstName;
+                            UpdateMstCustomerData.SpouseMiddleName = customer.SpouseMiddleName;
+                            UpdateMstCustomerData.SpouseBirthDate = Convert.ToDateTime(customer.SpouseBirthDate);
+                            UpdateMstCustomerData.SpouseCitizen = customer.SpouseCitizen;
+                            UpdateMstCustomerData.SpouseEmployer = customer.SpouseEmployer;
+                            UpdateMstCustomerData.SpouseTIN = customer.SpouseTIN;
                             UpdateMstCustomerData.Remarks = customer.Remarks;
                             UpdateMstCustomerData.Status = customer.Status;
                             UpdateMstCustomerData.UpdatedBy = currentUser.FirstOrDefault().Id;
@@ -358,6 +401,7 @@ namespace priland_api.Controllers
                         UpdateCustomerData.CivilStatus = customer.CivilStatus;
                         UpdateCustomerData.Gender = customer.Gender;
                         UpdateCustomerData.BirthDate = Convert.ToDateTime(customer.BirthDate);
+                        UpdateCustomerData.Citizen = customer.Citizen;
                         UpdateCustomerData.TIN = customer.TIN;
                         UpdateCustomerData.IdType = customer.IdType;
                         UpdateCustomerData.IdNumber = customer.IdNumber;
@@ -382,6 +426,13 @@ namespace priland_api.Controllers
                         UpdateCustomerData.EmployerTelephoneNumber = customer.EmployerTelephoneNumber;
                         UpdateCustomerData.EmployerMobileNumber = customer.EmployerMobileNumber;
                         UpdateCustomerData.Picture = customer.Picture;
+                        UpdateCustomerData.SpouseLastName = customer.SpouseLastName;
+                        UpdateCustomerData.SpouseFirstName = customer.SpouseFirstName;
+                        UpdateCustomerData.SpouseMiddleName = customer.SpouseMiddleName;
+                        UpdateCustomerData.SpouseBirthDate = Convert.ToDateTime(customer.SpouseBirthDate);
+                        UpdateCustomerData.SpouseCitizen = customer.SpouseCitizen;
+                        UpdateCustomerData.SpouseEmployer = customer.SpouseEmployer;
+                        UpdateCustomerData.SpouseTIN = customer.SpouseTIN;
                         UpdateCustomerData.Remarks = customer.Remarks;
                         UpdateCustomerData.Status = customer.Status;
                         UpdateCustomerData.IsLocked = true;

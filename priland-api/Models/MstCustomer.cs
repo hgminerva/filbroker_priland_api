@@ -16,6 +16,7 @@ namespace priland_api.Models
         public String CivilStatus { get; set; }
         public String Gender { get; set; }
         public String BirthDate { get; set; }
+        public String Citizen { get; set; }
         public String TIN { get; set; }
         public String IdType { get; set; }
         public String IdNumber { get; set; }
@@ -39,6 +40,13 @@ namespace priland_api.Models
         public String EmployerZipCode { get; set; }
         public String EmployerTelephoneNumber { get; set; }
         public String EmployerMobileNumber { get; set; }
+        public String SpouseLastName { get; set; }
+        public String SpouseFirstName { get; set; }
+        public String SpouseMiddleName { get; set; }
+        public String SpouseBirthDate { get; set; }
+        public String SpouseCitizen { get; set; }
+        public String SpouseTIN { get; set; }
+        public String SpouseEmployer { get; set; }
         public String Remarks { get; set; }
         public String Status { get; set; }
         public Boolean IsLocked { get; set; }

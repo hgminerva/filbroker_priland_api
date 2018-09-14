@@ -16,21 +16,34 @@ namespace priland_api.Controllers
     {
         private Data.FilbrokerDBDataContext db = new Data.FilbrokerDBDataContext();
 
+        private String formatNullableDate(DateTime? nullableDate)
+        {
+            if (nullableDate.HasValue)
+            {
+                return nullableDate.Value.ToShortDateString();
+            }
+            else
+            {
+                return "";
+            }
+        }
+
         // List
         [HttpGet, Route("List")]
         public List<TrnSoldUnitEquitySchedule> GetTrnSoldUnitEquitySchedule()
         {
             var TrnSoldUnitEquityScheduleData = from d in db.TrnSoldUnitEquitySchedules
-                                                orderby d.PaymentDate descending
+                                                orderby d.PaymentDate ascending
                                                 select new TrnSoldUnitEquitySchedule
                                                 {
                                                     Id = d.Id,
                                                     SoldUnitId = d.SoldUnitId,
-                                                    PaymentDate = d.PaymentDate.ToShortDateString(),
+                                                    PaymentDate = Convert.ToString(d.PaymentDate.Year) + "-" + Convert.ToString(d.PaymentDate.Month + 100).Substring(1, 2) + "-" + Convert.ToString(d.PaymentDate.Day + 100).Substring(1, 2),
                                                     Amortization = d.Amortization,
                                                     CheckNumber = d.CheckNumber,
-                                                    CheckDate = d.CheckDate == null ? "" : d.CheckDate.Value.ToShortDateString(),
-                                                    CheckBank = d.CheckBank
+                                                    CheckDate = formatNullableDate(d.CheckDate),
+                                                    CheckBank = d.CheckBank,
+                                                    Remarks = d.Remarks
                                                 };
             return TrnSoldUnitEquityScheduleData.ToList();
         }
@@ -41,16 +54,17 @@ namespace priland_api.Controllers
         {
             var TrnSoldUnitEquityScheduleData = from d in db.TrnSoldUnitEquitySchedules
                                                 where d.SoldUnitId == Convert.ToInt32(id)
-                                                orderby d.PaymentDate descending
+                                                orderby d.PaymentDate ascending
                                                 select new TrnSoldUnitEquitySchedule
                                                  {
                                                      Id = d.Id,
                                                      SoldUnitId = d.SoldUnitId,
-                                                     PaymentDate = d.PaymentDate.ToShortDateString(),
+                                                     PaymentDate = Convert.ToString(d.PaymentDate.Year) + "-" + Convert.ToString(d.PaymentDate.Month + 100).Substring(1, 2) + "-" + Convert.ToString(d.PaymentDate.Day + 100).Substring(1, 2),
                                                      Amortization = d.Amortization,
                                                      CheckNumber = d.CheckNumber,
-                                                     CheckDate = d.CheckDate == null ? "" : d.CheckDate.Value.ToShortDateString(),
-                                                     CheckBank = d.CheckBank
+                                                     CheckDate = formatNullableDate(d.CheckDate),
+                                                     CheckBank = d.CheckBank,
+                                                     Remarks = d.Remarks
                                                  };
             return TrnSoldUnitEquityScheduleData.ToList();
         }
@@ -101,16 +115,17 @@ namespace priland_api.Controllers
             // Return new requirements
             var TrnSoldUnitEquityScheduleData = from d in db.TrnSoldUnitEquitySchedules
                                                 where d.SoldUnitId == Convert.ToInt32(id)
-                                                orderby d.PaymentDate descending
+                                                orderby d.PaymentDate ascending
                                                 select new TrnSoldUnitEquitySchedule
                                                 {
                                                     Id = d.Id,
                                                     SoldUnitId = d.SoldUnitId,
-                                                    PaymentDate = d.PaymentDate.ToShortDateString(),
+                                                    PaymentDate = Convert.ToString(d.PaymentDate.Year) + "-" + Convert.ToString(d.PaymentDate.Month + 100).Substring(1, 2) + "-" + Convert.ToString(d.PaymentDate.Day + 100).Substring(1, 2),
                                                     Amortization = d.Amortization,
-                                                    CheckNumber = d.CheckNumber,
-                                                    CheckDate = d.CheckDate == null ? "" : d.CheckDate.Value.ToShortDateString(),
-                                                    CheckBank = d.CheckBank
+                                                    CheckNumber = d.CheckNumber == null ? "" : d.CheckNumber,
+                                                    CheckDate = formatNullableDate(d.CheckDate),
+                                                    CheckBank = d.CheckBank == null ? "" : d.CheckBank,
+                                                    Remarks = d.Remarks
                                                 };
             return TrnSoldUnitEquityScheduleData.ToList();
         }
@@ -134,6 +149,7 @@ namespace priland_api.Controllers
                     updateSoldUnitSchedule.CheckNumber = soldUnitEquitySchedule.CheckNumber;
                     updateSoldUnitSchedule.CheckDate =  Convert.ToDateTime(soldUnitEquitySchedule.CheckDate);
                     updateSoldUnitSchedule.CheckBank = soldUnitEquitySchedule.CheckBank;
+                    updateSoldUnitSchedule.Remarks = soldUnitEquitySchedule.Remarks;
 
                     db.SubmitChanges();
 

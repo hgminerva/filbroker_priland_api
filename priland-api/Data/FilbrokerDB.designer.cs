@@ -1208,8 +1208,6 @@ namespace priland_api.Data
 		
 		private EntitySet<AspNetUserRole> _AspNetUserRoles;
 		
-		private EntitySet<MstUser> _MstUsers;
-		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1229,7 +1227,6 @@ namespace priland_api.Data
 			this._AspNetUserClaims = new EntitySet<AspNetUserClaim>(new Action<AspNetUserClaim>(this.attach_AspNetUserClaims), new Action<AspNetUserClaim>(this.detach_AspNetUserClaims));
 			this._AspNetUserLogins = new EntitySet<AspNetUserLogin>(new Action<AspNetUserLogin>(this.attach_AspNetUserLogins), new Action<AspNetUserLogin>(this.detach_AspNetUserLogins));
 			this._AspNetUserRoles = new EntitySet<AspNetUserRole>(new Action<AspNetUserRole>(this.attach_AspNetUserRoles), new Action<AspNetUserRole>(this.detach_AspNetUserRoles));
-			this._MstUsers = new EntitySet<MstUser>(new Action<MstUser>(this.attach_MstUsers), new Action<MstUser>(this.detach_MstUsers));
 			OnCreated();
 		}
 		
@@ -1352,19 +1349,6 @@ namespace priland_api.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="AspNetUser_MstUser", Storage="_MstUsers", ThisKey="Id", OtherKey="AspNetId")]
-		public EntitySet<MstUser> MstUsers
-		{
-			get
-			{
-				return this._MstUsers;
-			}
-			set
-			{
-				this._MstUsers.Assign(value);
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1416,18 +1400,6 @@ namespace priland_api.Data
 		}
 		
 		private void detach_AspNetUserRoles(AspNetUserRole entity)
-		{
-			this.SendPropertyChanging();
-			entity.AspNetUser = null;
-		}
-		
-		private void attach_MstUsers(MstUser entity)
-		{
-			this.SendPropertyChanging();
-			entity.AspNetUser = this;
-		}
-		
-		private void detach_MstUsers(MstUser entity)
 		{
 			this.SendPropertyChanging();
 			entity.AspNetUser = null;
@@ -3324,6 +3296,8 @@ namespace priland_api.Data
 		
 		private System.DateTime _BirthDate;
 		
+		private string _Citizen;
+		
 		private string _TIN;
 		
 		private string _IdType;
@@ -3370,6 +3344,20 @@ namespace priland_api.Data
 		
 		private string _EmployerMobileNumber;
 		
+		private string _SpouseLastName;
+		
+		private string _SpouseFirstName;
+		
+		private string _SpouseMiddleName;
+		
+		private System.Nullable<System.DateTime> _SpouseBirthDate;
+		
+		private string _SpouseCitizen;
+		
+		private string _SpouseTIN;
+		
+		private string _SpouseEmployer;
+		
 		private string _Remarks;
 		
 		private string _Status;
@@ -3412,6 +3400,8 @@ namespace priland_api.Data
     partial void OnGenderChanged();
     partial void OnBirthDateChanging(System.DateTime value);
     partial void OnBirthDateChanged();
+    partial void OnCitizenChanging(string value);
+    partial void OnCitizenChanged();
     partial void OnTINChanging(string value);
     partial void OnTINChanged();
     partial void OnIdTypeChanging(string value);
@@ -3458,6 +3448,20 @@ namespace priland_api.Data
     partial void OnEmployerTelephoneNumberChanged();
     partial void OnEmployerMobileNumberChanging(string value);
     partial void OnEmployerMobileNumberChanged();
+    partial void OnSpouseLastNameChanging(string value);
+    partial void OnSpouseLastNameChanged();
+    partial void OnSpouseFirstNameChanging(string value);
+    partial void OnSpouseFirstNameChanged();
+    partial void OnSpouseMiddleNameChanging(string value);
+    partial void OnSpouseMiddleNameChanged();
+    partial void OnSpouseBirthDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnSpouseBirthDateChanged();
+    partial void OnSpouseCitizenChanging(string value);
+    partial void OnSpouseCitizenChanged();
+    partial void OnSpouseTINChanging(string value);
+    partial void OnSpouseTINChanged();
+    partial void OnSpouseEmployerChanging(string value);
+    partial void OnSpouseEmployerChanged();
     partial void OnRemarksChanging(string value);
     partial void OnRemarksChanged();
     partial void OnStatusChanging(string value);
@@ -3640,6 +3644,26 @@ namespace priland_api.Data
 					this._BirthDate = value;
 					this.SendPropertyChanged("BirthDate");
 					this.OnBirthDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Citizen", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string Citizen
+		{
+			get
+			{
+				return this._Citizen;
+			}
+			set
+			{
+				if ((this._Citizen != value))
+				{
+					this.OnCitizenChanging(value);
+					this.SendPropertyChanging();
+					this._Citizen = value;
+					this.SendPropertyChanged("Citizen");
+					this.OnCitizenChanged();
 				}
 			}
 		}
@@ -4100,6 +4124,146 @@ namespace priland_api.Data
 					this._EmployerMobileNumber = value;
 					this.SendPropertyChanged("EmployerMobileNumber");
 					this.OnEmployerMobileNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseLastName", DbType="NVarChar(255)")]
+		public string SpouseLastName
+		{
+			get
+			{
+				return this._SpouseLastName;
+			}
+			set
+			{
+				if ((this._SpouseLastName != value))
+				{
+					this.OnSpouseLastNameChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseLastName = value;
+					this.SendPropertyChanged("SpouseLastName");
+					this.OnSpouseLastNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseFirstName", DbType="NVarChar(255)")]
+		public string SpouseFirstName
+		{
+			get
+			{
+				return this._SpouseFirstName;
+			}
+			set
+			{
+				if ((this._SpouseFirstName != value))
+				{
+					this.OnSpouseFirstNameChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseFirstName = value;
+					this.SendPropertyChanged("SpouseFirstName");
+					this.OnSpouseFirstNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseMiddleName", DbType="NVarChar(255)")]
+		public string SpouseMiddleName
+		{
+			get
+			{
+				return this._SpouseMiddleName;
+			}
+			set
+			{
+				if ((this._SpouseMiddleName != value))
+				{
+					this.OnSpouseMiddleNameChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseMiddleName = value;
+					this.SendPropertyChanged("SpouseMiddleName");
+					this.OnSpouseMiddleNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseBirthDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> SpouseBirthDate
+		{
+			get
+			{
+				return this._SpouseBirthDate;
+			}
+			set
+			{
+				if ((this._SpouseBirthDate != value))
+				{
+					this.OnSpouseBirthDateChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseBirthDate = value;
+					this.SendPropertyChanged("SpouseBirthDate");
+					this.OnSpouseBirthDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseCitizen", DbType="NVarChar(255)")]
+		public string SpouseCitizen
+		{
+			get
+			{
+				return this._SpouseCitizen;
+			}
+			set
+			{
+				if ((this._SpouseCitizen != value))
+				{
+					this.OnSpouseCitizenChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseCitizen = value;
+					this.SendPropertyChanged("SpouseCitizen");
+					this.OnSpouseCitizenChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseTIN", DbType="NVarChar(255)")]
+		public string SpouseTIN
+		{
+			get
+			{
+				return this._SpouseTIN;
+			}
+			set
+			{
+				if ((this._SpouseTIN != value))
+				{
+					this.OnSpouseTINChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseTIN = value;
+					this.SendPropertyChanged("SpouseTIN");
+					this.OnSpouseTINChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseEmployer", DbType="NVarChar(255)")]
+		public string SpouseEmployer
+		{
+			get
+			{
+				return this._SpouseEmployer;
+			}
+			set
+			{
+				if ((this._SpouseEmployer != value))
+				{
+					this.OnSpouseEmployerChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseEmployer = value;
+					this.SendPropertyChanged("SpouseEmployer");
+					this.OnSpouseEmployerChanged();
 				}
 			}
 		}
@@ -4855,6 +5019,8 @@ namespace priland_api.Data
 		
 		private string _Status;
 		
+		private string _ProjectLogo;
+		
 		private bool _IsLocked;
 		
 		private int _CreatedBy;
@@ -4891,6 +5057,8 @@ namespace priland_api.Data
     partial void OnAddressChanged();
     partial void OnStatusChanging(string value);
     partial void OnStatusChanged();
+    partial void OnProjectLogoChanging(string value);
+    partial void OnProjectLogoChanged();
     partial void OnIsLockedChanging(bool value);
     partial void OnIsLockedChanged();
     partial void OnCreatedByChanging(int value);
@@ -5010,6 +5178,26 @@ namespace priland_api.Data
 					this._Status = value;
 					this.SendPropertyChanged("Status");
 					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProjectLogo", DbType="NVarChar(255)")]
+		public string ProjectLogo
+		{
+			get
+			{
+				return this._ProjectLogo;
+			}
+			set
+			{
+				if ((this._ProjectLogo != value))
+				{
+					this.OnProjectLogoChanging(value);
+					this.SendPropertyChanging();
+					this._ProjectLogo = value;
+					this.SendPropertyChanged("ProjectLogo");
+					this.OnProjectLogoChanged();
 				}
 			}
 		}
@@ -6049,7 +6237,7 @@ namespace priland_api.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstUnit_MstUnitPrice", Storage="_MstUnit", ThisKey="UnitId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstUnit_MstUnitPrice", Storage="_MstUnit", ThisKey="UnitId", OtherKey="Id", IsForeignKey=true)]
 		public MstUnit MstUnit
 		{
 			get
@@ -6170,8 +6358,6 @@ namespace priland_api.Data
 		
 		private EntitySet<TrnSoldUnit> _TrnSoldUnits4;
 		
-		private EntityRef<AspNetUser> _AspNetUser;
-		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -6216,7 +6402,6 @@ namespace priland_api.Data
 			this._TrnSoldUnits2 = new EntitySet<TrnSoldUnit>(new Action<TrnSoldUnit>(this.attach_TrnSoldUnits2), new Action<TrnSoldUnit>(this.detach_TrnSoldUnits2));
 			this._TrnSoldUnits3 = new EntitySet<TrnSoldUnit>(new Action<TrnSoldUnit>(this.attach_TrnSoldUnits3), new Action<TrnSoldUnit>(this.detach_TrnSoldUnits3));
 			this._TrnSoldUnits4 = new EntitySet<TrnSoldUnit>(new Action<TrnSoldUnit>(this.attach_TrnSoldUnits4), new Action<TrnSoldUnit>(this.detach_TrnSoldUnits4));
-			this._AspNetUser = default(EntityRef<AspNetUser>);
 			OnCreated();
 		}
 		
@@ -6320,7 +6505,7 @@ namespace priland_api.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AspNetId", DbType="NVarChar(128)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AspNetId", DbType="NVarChar(255)")]
 		public string AspNetId
 		{
 			get
@@ -6331,10 +6516,6 @@ namespace priland_api.Data
 			{
 				if ((this._AspNetId != value))
 				{
-					if (this._AspNetUser.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnAspNetIdChanging(value);
 					this.SendPropertyChanging();
 					this._AspNetId = value;
@@ -6653,40 +6834,6 @@ namespace priland_api.Data
 			set
 			{
 				this._TrnSoldUnits4.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="AspNetUser_MstUser", Storage="_AspNetUser", ThisKey="AspNetId", OtherKey="Id", IsForeignKey=true)]
-		public AspNetUser AspNetUser
-		{
-			get
-			{
-				return this._AspNetUser.Entity;
-			}
-			set
-			{
-				AspNetUser previousValue = this._AspNetUser.Entity;
-				if (((previousValue != value) 
-							|| (this._AspNetUser.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._AspNetUser.Entity = null;
-						previousValue.MstUsers.Remove(this);
-					}
-					this._AspNetUser.Entity = value;
-					if ((value != null))
-					{
-						value.MstUsers.Add(this);
-						this._AspNetId = value.Id;
-					}
-					else
-					{
-						this._AspNetId = default(string);
-					}
-					this.SendPropertyChanged("AspNetUser");
-				}
 			}
 		}
 		
@@ -10222,7 +10369,7 @@ namespace priland_api.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckNumber", DbType="NVarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckNumber", DbType="NVarChar(255)")]
 		public string CheckNumber
 		{
 			get
@@ -10262,7 +10409,7 @@ namespace priland_api.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckBank", DbType="NVarChar(100)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckBank", DbType="NVarChar(255)")]
 		public string CheckBank
 		{
 			get

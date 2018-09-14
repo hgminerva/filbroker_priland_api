@@ -42,6 +42,7 @@ namespace priland_api.Controllers
                                      Project = d.Project,
                                      Address = d.Address,
                                      Status = d.Status,
+                                     ProjectLogo = d.ProjectLogo,
                                      IsLocked = d.IsLocked,
                                      CreatedBy = d.CreatedBy,
                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -64,6 +65,7 @@ namespace priland_api.Controllers
                                      Project = d.Project,
                                      Address = d.Address,
                                      Status = d.Status,
+                                     ProjectLogo = d.ProjectLogo,
                                      IsLocked = d.IsLocked,
                                      CreatedBy = d.CreatedBy,
                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -99,6 +101,7 @@ namespace priland_api.Controllers
                         Project = project.Project,
                         Address = project.Address,
                         Status = project.Status,
+                        ProjectLogo = project.ProjectLogo,
                         IsLocked = project.IsLocked,
                         CreatedBy = currentUser.FirstOrDefault().Id,
                         CreatedDateTime = DateTime.Now,
@@ -179,6 +182,7 @@ namespace priland_api.Controllers
                             UpdateProjectData.Project = project.Project;
                             UpdateProjectData.Address = project.Address;
                             UpdateProjectData.Status = project.Status;
+                            UpdateProjectData.ProjectLogo = project.ProjectLogo;
                             UpdateProjectData.UpdatedBy = currentUser.FirstOrDefault().Id;
                             UpdateProjectData.UpdatedDateTime = DateTime.Now;
 
@@ -228,6 +232,7 @@ namespace priland_api.Controllers
                         UpdateProjectData.Project = project.Project;
                         UpdateProjectData.Address = project.Address;
                         UpdateProjectData.Status = project.Status;
+                        UpdateProjectData.ProjectLogo = project.ProjectLogo;
                         UpdateProjectData.IsLocked = true;
                         UpdateProjectData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UpdateProjectData.UpdatedDateTime = DateTime.Now;

@@ -78,6 +78,39 @@ namespace priland_api.Controllers
             return MstUnitData.ToList();
         }
 
+        //List open unit per Project ID
+        [HttpGet, Route("OpenListPerProjectId/{id}")]
+        public List<MstUnit> GetMstUnitOpenPerProjectId(string id)
+        {
+            var MstUnitData = from d in db.MstUnits
+                              where d.ProjectId == Convert.ToInt32(id) &&
+                                    d.TrnSoldUnits.Count() == 0
+                              orderby d.UnitCode
+                              select new MstUnit
+                              {
+
+                                  Id = d.Id,
+                                  UnitCode = d.UnitCode,
+                                  Block = d.Block,
+                                  Lot = d.Lot,
+                                  ProjectId = d.ProjectId,
+                                  Project = d.MstProject.Project,
+                                  HouseModelId = d.HouseModelId,
+                                  HouseModel = d.MstHouseModel.HouseModel,
+                                  TLA = d.TLA,
+                                  TFA = d.TFA,
+                                  Price = d.Price,
+                                  Status = d.Status,
+                                  IsLocked = d.IsLocked,
+                                  CreatedBy = d.CreatedBy,
+                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                  UpdatedBy = d.UpdatedBy,
+                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                  Customer = d.Status == "CLOSE" ? d.TrnSoldUnits.Where(s => s.Status == "SOLD").FirstOrDefault().MstCustomer.LastName : ""
+                              };
+            return MstUnitData.ToList();
+        }
+
         //Detail
         [HttpGet, Route("Detail/{id}")]
         public MstUnit GetMstUnitId(string id)
@@ -348,14 +381,14 @@ namespace priland_api.Controllers
         }
 
         //Update price
-        [HttpPut, Route("UpdatePrice/{projectId}/{unitCode}/{price}")]
-        public HttpResponseMessage UpdatePrice(string projectId, string unitCode, string price)
+        [HttpPut, Route("UpdatePrice")]
+        public HttpResponseMessage GetUpdatePrice(UnitPrice unitPrice)
         {
             try
             {
                 var MstUnitData = from d in db.MstUnits
-                                  where d.ProjectId == Convert.ToInt32(projectId) &&
-                                        d.UnitCode == unitCode
+                                  where d.ProjectId == unitPrice.ProjectId &&
+                                        d.UnitCode == unitPrice.UnitCode
                                   select d;
 
                 if (MstUnitData.Any())
@@ -364,24 +397,24 @@ namespace priland_api.Controllers
                                       where d.AspNetId == User.Identity.GetUserId()
                                       select d;
                     if (currentUser.Any())
-                    {   
-                        // Update Price
+                    {
                         var UpdateMstUnitData = MstUnitData.FirstOrDefault();
-
-                        UpdateMstUnitData.Price = Convert.ToDecimal(price);
-                        UpdateMstUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
-                        UpdateMstUnitData.UpdatedDateTime = DateTime.Now;
 
                         // Save price updates
                         Data.MstUnitPrice newMstUnitPrice = new Data.MstUnitPrice()
                         {
                             UnitId = UpdateMstUnitData.Id,
                             PriceDate = DateTime.Now,
-                            Price =  Convert.ToDecimal(price),
-
+                            Price = UpdateMstUnitData.Price,
                         };
                         db.MstUnitPrices.InsertOnSubmit(newMstUnitPrice);
- 
+                        db.SubmitChanges();
+
+                        // Update Price
+                        UpdateMstUnitData.Price = unitPrice.Price;
+                        UpdateMstUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
+                        UpdateMstUnitData.UpdatedDateTime = DateTime.Now;
+
                         db.SubmitChanges();
 
                         return Request.CreateResponse(HttpStatusCode.OK);
@@ -402,5 +435,12 @@ namespace priland_api.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+    }
+
+    public class UnitPrice
+    {
+        public Int32 ProjectId { get; set; }
+        public String UnitCode { get; set; }
+        public Decimal Price { get; set; }
     }
 }
