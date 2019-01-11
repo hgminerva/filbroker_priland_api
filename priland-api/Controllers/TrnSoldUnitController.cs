@@ -54,6 +54,12 @@ namespace priland_api.Controllers
                                       Price = d.Price,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
+                                      EquitySpotPayment1 = d.EquitySpotPayment1,
+                                      EquitySpotPayment2 = d.EquitySpotPayment2,
+                                      EquitySpotPayment3 = d.EquitySpotPayment3,
+                                      EquitySpotPayment1Pos = d.EquitySpotPayment1Pos,
+                                      EquitySpotPayment2Pos = d.EquitySpotPayment2Pos,
+                                      EquitySpotPayment3Pos = d.EquitySpotPayment3Pos,
                                       Discount = d.Discount,
                                       Reservation = d.Reservation,
                                       NetEquity = d.NetEquity,
@@ -112,6 +118,12 @@ namespace priland_api.Controllers
                                       Price = d.Price,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
+                                      EquitySpotPayment1 = d.EquitySpotPayment1,
+                                      EquitySpotPayment2 = d.EquitySpotPayment2,
+                                      EquitySpotPayment3 = d.EquitySpotPayment3,
+                                      EquitySpotPayment1Pos = d.EquitySpotPayment1Pos,
+                                      EquitySpotPayment2Pos = d.EquitySpotPayment2Pos,
+                                      EquitySpotPayment3Pos = d.EquitySpotPayment3Pos,
                                       Discount = d.Discount,
                                       Reservation = d.Reservation,
                                       NetEquity = d.NetEquity,
@@ -165,6 +177,12 @@ namespace priland_api.Controllers
                                       Price = d.Price,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
+                                      EquitySpotPayment1 = d.EquitySpotPayment1,
+                                      EquitySpotPayment2 = d.EquitySpotPayment2,
+                                      EquitySpotPayment3 = d.EquitySpotPayment3,
+                                      EquitySpotPayment1Pos = d.EquitySpotPayment1Pos,
+                                      EquitySpotPayment2Pos = d.EquitySpotPayment2Pos,
+                                      EquitySpotPayment3Pos = d.EquitySpotPayment3Pos,
                                       Discount = d.Discount,
                                       Reservation = d.Reservation,
                                       NetEquity = d.NetEquity,
@@ -291,6 +309,12 @@ namespace priland_api.Controllers
 
                             EquityValue = 0,
                             EquityPercent = 0,
+                            EquitySpotPayment1 = 0,
+                            EquitySpotPayment2 = 0,
+                            EquitySpotPayment3 = 0,
+                            EquitySpotPayment1Pos = 0,
+                            EquitySpotPayment2Pos = 0,
+                            EquitySpotPayment3Pos = 0,
                             Discount = 0,
                             Reservation = 0,
                             NetEquity = 0,
@@ -402,6 +426,12 @@ namespace priland_api.Controllers
                         UpdateTrnSoldUnitData.Price = soldUnit.Price;
                         UpdateTrnSoldUnitData.EquityValue = soldUnit.EquityValue;
                         UpdateTrnSoldUnitData.EquityPercent = soldUnit.EquityPercent;
+                        UpdateTrnSoldUnitData.EquitySpotPayment1 = soldUnit.EquitySpotPayment1;
+                        UpdateTrnSoldUnitData.EquitySpotPayment2 = soldUnit.EquitySpotPayment2;
+                        UpdateTrnSoldUnitData.EquitySpotPayment3 = soldUnit.EquitySpotPayment3;
+                        UpdateTrnSoldUnitData.EquitySpotPayment1Pos = soldUnit.EquitySpotPayment1Pos;
+                        UpdateTrnSoldUnitData.EquitySpotPayment2Pos = soldUnit.EquitySpotPayment2Pos;
+                        UpdateTrnSoldUnitData.EquitySpotPayment3Pos = soldUnit.EquitySpotPayment3Pos;
                         UpdateTrnSoldUnitData.Discount = soldUnit.Discount;
                         UpdateTrnSoldUnitData.Reservation = soldUnit.Reservation;
                         UpdateTrnSoldUnitData.NetEquity = soldUnit.NetEquity;
@@ -474,6 +504,12 @@ namespace priland_api.Controllers
                         UpdateTrnSoldUnitData.Price = soldUnit.Price;
                         UpdateTrnSoldUnitData.EquityValue = soldUnit.EquityValue;
                         UpdateTrnSoldUnitData.EquityPercent = soldUnit.EquityPercent;
+                        UpdateTrnSoldUnitData.EquitySpotPayment1 = soldUnit.EquitySpotPayment1;
+                        UpdateTrnSoldUnitData.EquitySpotPayment2 = soldUnit.EquitySpotPayment2;
+                        UpdateTrnSoldUnitData.EquitySpotPayment3 = soldUnit.EquitySpotPayment3;
+                        UpdateTrnSoldUnitData.EquitySpotPayment1Pos = soldUnit.EquitySpotPayment1Pos;
+                        UpdateTrnSoldUnitData.EquitySpotPayment2Pos = soldUnit.EquitySpotPayment2Pos;
+                        UpdateTrnSoldUnitData.EquitySpotPayment3Pos = soldUnit.EquitySpotPayment3Pos;
                         UpdateTrnSoldUnitData.Discount = soldUnit.Discount;
                         UpdateTrnSoldUnitData.Reservation = soldUnit.Reservation;
                         UpdateTrnSoldUnitData.NetEquity = soldUnit.NetEquity;
@@ -717,6 +753,12 @@ namespace priland_api.Controllers
 
                                     EquityValue = 0,
                                     EquityPercent = 0,
+                                    EquitySpotPayment1 = 0,
+                                    EquitySpotPayment2 = 0,
+                                    EquitySpotPayment3 = 0,
+                                    EquitySpotPayment1Pos = 0,
+                                    EquitySpotPayment2Pos = 0,
+                                    EquitySpotPayment3Pos = 0,
                                     Discount = 0,
                                     Reservation = 0,
                                     NetEquity = 0,

@@ -1514,6 +1514,8 @@ namespace priland_api.Controllers
             // Open PDF Stream
             // ===============
             PdfWriter.GetInstance(document, workStream).CloseStream = false;
+
+            document.SetPageSize(new Rectangle(612, 1728));
             document.SetMargins(30f, 30f, 30f, 30f);
 
             // =============
@@ -1776,6 +1778,18 @@ namespace priland_api.Controllers
                 decimal netEquityInterest = soldUnit.FirstOrDefault().NetEquityInterest;
                 decimal balance = soldUnit.FirstOrDefault().Balance;
 
+                decimal equitySpotPayment1 = soldUnit.FirstOrDefault().EquitySpotPayment1;
+                decimal equitySpotPayment2 = soldUnit.FirstOrDefault().EquitySpotPayment2;
+                decimal equitySpotPayment3 = soldUnit.FirstOrDefault().EquitySpotPayment3;
+
+                int payment1 = 1;
+                int payment2 = Convert.ToInt32(netEquityPayments / 2);
+                int payment3 = Convert.ToInt32(netEquityPayments);
+
+                int equitySpotPayment1Pos = soldUnit.FirstOrDefault().EquitySpotPayment1Pos == 0 ? payment1 : soldUnit.FirstOrDefault().EquitySpotPayment1Pos;
+                int equitySpotPayment2Pos = soldUnit.FirstOrDefault().EquitySpotPayment2Pos == 0 ? payment2 : soldUnit.FirstOrDefault().EquitySpotPayment2Pos;
+                int equitySpotPayment3Pos = soldUnit.FirstOrDefault().EquitySpotPayment3Pos == 0 ? payment3 : soldUnit.FirstOrDefault().EquitySpotPayment3Pos;
+
                 // Price
                 //Phrase p11Phrase1 = new Phrase("The Total Contract price of ", fontArial12);
                 //Phrase p11Phrase2 = new Phrase(GetMoneyWord(price.ToString()) + " (Php " + price.ToString("#,##0.00") + "), ", fontArial12Bold);
@@ -1791,38 +1805,103 @@ namespace priland_api.Controllers
                 // Equity
                 if (netEquity > 0)
                 {
-                    Phrase p11Phrase4 = new Phrase("EQUITY: Net of RESERVATION and DISCOUNT is ", fontArial12);
-                    Phrase p11Phrase4a = new Phrase(GetMoneyWord(netEquity.ToString()) + " (Php " + netEquity.ToString("#,##0.00") + ").  ", fontArial12Bold);
-
-                    if (netEquityPayments > 0)
+                    if (equitySpotPayment1 + equitySpotPayment2 + equitySpotPayment3 == 0)
                     {
-                        Phrase p11Phrase5 = new Phrase("Payable in " + netEquityPayments.ToString("0") + " months at ", fontArial12);
-                        Phrase p11Phrase6 = new Phrase(GetMoneyWord(netEquityAmortization.ToString()) + " (Php " + netEquityAmortization.ToString("#,##0.00") + ").  ", fontArial12);
+                        Phrase p11Phrase4 = new Phrase("EQUITY: Net of RESERVATION and DISCOUNT is ", fontArial12);
+                        Phrase p11Phrase4a = new Phrase(GetMoneyWord(netEquity.ToString()) + " (Php " + netEquity.ToString("#,##0.00") + ").  ", fontArial12Bold);
 
-                        if (netEquityInterest > 0)
+                        if (netEquityPayments > 0)
                         {
-                            Phrase p11Phrase7 = new Phrase("Having an interest of " + netEquityInterest.ToString("0") + "%. ", fontArial12);
+                            Phrase p11Phrase5 = new Phrase("Payable in " + netEquityPayments.ToString("0") + " months at ", fontArial12);
+                            Phrase p11Phrase6 = new Phrase(GetMoneyWord(netEquityAmortization.ToString()) + " (Php " + netEquityAmortization.ToString("#,##0.00") + ").  ", fontArial12);
 
-                            Paragraph p11c = new Paragraph { p11Phrase4, p11Phrase4a, p11Phrase5, p11Phrase6, p11Phrase7 };
+                            if (netEquityInterest > 0)
+                            {
+                                Phrase p11Phrase7 = new Phrase("Having an interest of " + netEquityInterest.ToString("0") + "%. ", fontArial12);
+
+                                Paragraph p11c = new Paragraph { p11Phrase4, p11Phrase4a, p11Phrase5, p11Phrase6, p11Phrase7 };
+                                p11c.Alignment = Element.ALIGN_JUSTIFIED;
+                                p11c.FirstLineIndent = 80f;
+                                document.Add(p11c);
+                            }
+                            else
+                            {
+                                Paragraph p11b = new Paragraph { p11Phrase4, p11Phrase4a, p11Phrase5, p11Phrase6 };
+                                p11b.Alignment = Element.ALIGN_JUSTIFIED;
+                                p11b.FirstLineIndent = 80f;
+                                document.Add(p11b);
+                            }
+                        }
+                        else
+                        {
+                            Paragraph p11a = new Paragraph { p11Phrase4, p11Phrase4a };
+                            p11a.Alignment = Element.ALIGN_JUSTIFIED;
+                            p11a.FirstLineIndent = 80f;
+                            document.Add(p11a);
+                        }
+                    }
+                    else
+                    {
+                        Phrase p11Phrase4 = new Phrase("EQUITY: Net of RESERVATION, DISCOUNT and all SPOT PAYMENTS is ", fontArial12);
+                        Phrase p11Phrase4a = new Phrase(GetMoneyWord(netEquity.ToString()) + " (Php " + netEquity.ToString("#,##0.00") + ").  ", fontArial12Bold);
+
+                        if (netEquityPayments > 0)
+                        {
+                            Phrase p11Phrase5 = new Phrase("Payable in " + netEquityPayments.ToString("0") + " months at ", fontArial12);
+                            Phrase p11Phrase6 = new Phrase(GetMoneyWord(netEquityAmortization.ToString()) + " (Php " + netEquityAmortization.ToString("#,##0.00") + ").  With ", fontArial12);
+                            Phrase p11Phrase7 = new Phrase("", fontArial12);
+                            Phrase p11Phrase8 = new Phrase("", fontArial12);
+                            Phrase p11Phrase9 = new Phrase("", fontArial12);
+                            Phrase p11Phrase10 = new Phrase("", fontArial12);
+                            Phrase p11Phrase11 = new Phrase("", fontArial12);
+                            Phrase p11Phrase12 = new Phrase("", fontArial12);
+
+                            if (equitySpotPayment1 > 0)
+                            {
+                                p11Phrase7 = new Phrase(GetMoneyWord(equitySpotPayment1.ToString()) + " (Php " + equitySpotPayment1.ToString("#,##0.00") + ") on the " + equitySpotPayment1Pos.ToString("0") + "st payment.  ", fontArial12);
+                            }
+                            if (equitySpotPayment2 > 0)
+                            {
+                                //decimal payment2 = netEquityPayments / 2;
+                                if (equitySpotPayment1 > 0) p11Phrase8 = new Phrase("And ", fontArial12);
+                                p11Phrase9 = new Phrase(GetMoneyWord(equitySpotPayment2.ToString()) + " (Php " + equitySpotPayment2.ToString("#,##0.00") + ") on the " + equitySpotPayment2Pos.ToString("0") + "th payment.  ", fontArial12);
+                            }
+                            if (equitySpotPayment3 > 0)
+                            {
+                                //decimal payment3 = netEquityPayments;
+                                if (equitySpotPayment1 + equitySpotPayment2 > 0) p11Phrase10 = new Phrase("And ", fontArial12);
+                                p11Phrase11 = new Phrase(GetMoneyWord(equitySpotPayment3.ToString()) + " (Php " + equitySpotPayment3.ToString("#,##0.00") + ") on the " + equitySpotPayment3Pos.ToString("0") + "th payment.  ", fontArial12);
+                            }
+
+                            if (netEquityInterest > 0)
+                            {
+                                p11Phrase12 = new Phrase("Having an interest of " + netEquityInterest.ToString("0") + "%. ", fontArial12);
+                            }
+
+                            Paragraph p11c = new Paragraph { p11Phrase4, 
+                                                             p11Phrase4a, 
+                                                             p11Phrase5, 
+                                                             p11Phrase6, 
+                                                             p11Phrase7,
+                                                             p11Phrase8,
+                                                             p11Phrase9,
+                                                             p11Phrase10,
+                                                             p11Phrase11,
+                                                             p11Phrase12};
+
                             p11c.Alignment = Element.ALIGN_JUSTIFIED;
                             p11c.FirstLineIndent = 80f;
                             document.Add(p11c);
                         }
                         else
                         {
-                            Paragraph p11b = new Paragraph { p11Phrase4, p11Phrase4a, p11Phrase5, p11Phrase6 };
-                            p11b.Alignment = Element.ALIGN_JUSTIFIED;
-                            p11b.FirstLineIndent = 80f;
-                            document.Add(p11b);
+                            Paragraph p11a = new Paragraph { p11Phrase4, p11Phrase4a };
+                            p11a.Alignment = Element.ALIGN_JUSTIFIED;
+                            p11a.FirstLineIndent = 80f;
+                            document.Add(p11a);
                         }
                     }
-                    else
-                    {
-                        Paragraph p11a = new Paragraph { p11Phrase4, p11Phrase4a };
-                        p11a.Alignment = Element.ALIGN_JUSTIFIED;
-                        p11a.FirstLineIndent = 80f;
-                        document.Add(p11a);
-                    }
+
                 }
 
                 document.Add(spaceTable);

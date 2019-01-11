@@ -59,9 +59,9 @@
     <Type Name="MstBroker">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="BrokerCode" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="LastName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="FirstName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="MiddleName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="MiddleName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="LicenseNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="BirthDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="CivilStatus" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
@@ -373,6 +373,37 @@
       <Association Name="TrnSoldUnit_TrnCommissionRequest" Member="TrnSoldUnit" ThisKey="SoldUnitId" OtherKey="Id" Type="TrnSoldUnit" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.TrnSoldUnitEquitySchedule" Member="TrnSoldUnitEquitySchedules">
+    <Type Name="TrnSoldUnitEquitySchedule">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SoldUnitId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Amortization" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="CheckNumber" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="CheckDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CheckBank" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="TrnSoldUnit_TrnSoldUnitEquitySchedule" Member="TrnSoldUnit" ThisKey="SoldUnitId" OtherKey="Id" Type="TrnSoldUnit" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrnSoldUnitRequirement" Member="TrnSoldUnitRequirements">
+    <Type Name="TrnSoldUnitRequirement">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SoldUnitId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CheckListRequirementId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Attachment1" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment2" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment3" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment4" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment5" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StatusDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Association Name="TrnSoldUnitRequirement_TrnSoldUnitRequirementActivity" Member="TrnSoldUnitRequirementActivities" ThisKey="Id" OtherKey="SoldUnitRequirementId" Type="TrnSoldUnitRequirementActivity" />
+      <Association Name="MstCheckListRequirement_TrnSoldUnitRequirement" Member="MstCheckListRequirement" ThisKey="CheckListRequirementId" OtherKey="Id" Type="MstCheckListRequirement" IsForeignKey="true" />
+      <Association Name="TrnSoldUnit_TrnSoldUnitRequirement" Member="TrnSoldUnit" ThisKey="SoldUnitId" OtherKey="Id" Type="TrnSoldUnit" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.TrnSoldUnit" Member="TrnSoldUnits">
     <Type Name="TrnSoldUnit">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -388,6 +419,12 @@
       <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="EquityValue" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="EquityPercent" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="EquitySpotPayment1" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="EquitySpotPayment2" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="EquitySpotPayment3" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="EquitySpotPayment1Pos" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EquitySpotPayment2Pos" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EquitySpotPayment3Pos" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Discount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="Reservation" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="NetEquity" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
@@ -424,37 +461,6 @@
       <Association Name="MstUser_TrnSoldUnit2" Member="MstUser2" ThisKey="CreatedBy" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
       <Association Name="MstUser_TrnSoldUnit3" Member="MstUser3" ThisKey="PreparedBy" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
       <Association Name="MstUser_TrnSoldUnit4" Member="MstUser4" ThisKey="UpdatedBy" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.TrnSoldUnitEquitySchedule" Member="TrnSoldUnitEquitySchedules">
-    <Type Name="TrnSoldUnitEquitySchedule">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="SoldUnitId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="PaymentDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Amortization" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="CheckNumber" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="CheckDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="CheckBank" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="Remarks" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Association Name="TrnSoldUnit_TrnSoldUnitEquitySchedule" Member="TrnSoldUnit" ThisKey="SoldUnitId" OtherKey="Id" Type="TrnSoldUnit" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.TrnSoldUnitRequirement" Member="TrnSoldUnitRequirements">
-    <Type Name="TrnSoldUnitRequirement">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="SoldUnitId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CheckListRequirementId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Attachment1" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="Attachment2" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="Attachment3" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="Attachment4" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="Attachment5" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="Remarks" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="StatusDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
-      <Association Name="TrnSoldUnitRequirement_TrnSoldUnitRequirementActivity" Member="TrnSoldUnitRequirementActivities" ThisKey="Id" OtherKey="SoldUnitRequirementId" Type="TrnSoldUnitRequirementActivity" />
-      <Association Name="MstCheckListRequirement_TrnSoldUnitRequirement" Member="MstCheckListRequirement" ThisKey="CheckListRequirementId" OtherKey="Id" Type="MstCheckListRequirement" IsForeignKey="true" />
-      <Association Name="TrnSoldUnit_TrnSoldUnitRequirement" Member="TrnSoldUnit" ThisKey="SoldUnitId" OtherKey="Id" Type="TrnSoldUnit" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
 </Database>

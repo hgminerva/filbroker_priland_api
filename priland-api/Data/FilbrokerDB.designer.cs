@@ -90,15 +90,15 @@ namespace priland_api.Data
     partial void InsertTrnCommissionRequest(TrnCommissionRequest instance);
     partial void UpdateTrnCommissionRequest(TrnCommissionRequest instance);
     partial void DeleteTrnCommissionRequest(TrnCommissionRequest instance);
-    partial void InsertTrnSoldUnit(TrnSoldUnit instance);
-    partial void UpdateTrnSoldUnit(TrnSoldUnit instance);
-    partial void DeleteTrnSoldUnit(TrnSoldUnit instance);
     partial void InsertTrnSoldUnitEquitySchedule(TrnSoldUnitEquitySchedule instance);
     partial void UpdateTrnSoldUnitEquitySchedule(TrnSoldUnitEquitySchedule instance);
     partial void DeleteTrnSoldUnitEquitySchedule(TrnSoldUnitEquitySchedule instance);
     partial void InsertTrnSoldUnitRequirement(TrnSoldUnitRequirement instance);
     partial void UpdateTrnSoldUnitRequirement(TrnSoldUnitRequirement instance);
     partial void DeleteTrnSoldUnitRequirement(TrnSoldUnitRequirement instance);
+    partial void InsertTrnSoldUnit(TrnSoldUnit instance);
+    partial void UpdateTrnSoldUnit(TrnSoldUnit instance);
+    partial void DeleteTrnSoldUnit(TrnSoldUnit instance);
     #endregion
 		
 		public FilbrokerDBDataContext() : 
@@ -291,14 +291,6 @@ namespace priland_api.Data
 			}
 		}
 		
-		public System.Data.Linq.Table<TrnSoldUnit> TrnSoldUnits
-		{
-			get
-			{
-				return this.GetTable<TrnSoldUnit>();
-			}
-		}
-		
 		public System.Data.Linq.Table<TrnSoldUnitEquitySchedule> TrnSoldUnitEquitySchedules
 		{
 			get
@@ -312,6 +304,14 @@ namespace priland_api.Data
 			get
 			{
 				return this.GetTable<TrnSoldUnitRequirement>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TrnSoldUnit> TrnSoldUnits
+		{
+			get
+			{
+				return this.GetTable<TrnSoldUnit>();
 			}
 		}
 	}
@@ -1627,7 +1627,7 @@ namespace priland_api.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
 		public string LastName
 		{
 			get
@@ -1647,7 +1647,7 @@ namespace priland_api.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
 		public string FirstName
 		{
 			get
@@ -1667,7 +1667,7 @@ namespace priland_api.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MiddleName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MiddleName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
 		public string MiddleName
 		{
 			get
@@ -8837,6 +8837,689 @@ namespace priland_api.Data
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrnSoldUnitEquitySchedule")]
+	public partial class TrnSoldUnitEquitySchedule : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _SoldUnitId;
+		
+		private System.DateTime _PaymentDate;
+		
+		private decimal _Amortization;
+		
+		private string _CheckNumber;
+		
+		private System.Nullable<System.DateTime> _CheckDate;
+		
+		private string _CheckBank;
+		
+		private string _Remarks;
+		
+		private EntityRef<TrnSoldUnit> _TrnSoldUnit;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnSoldUnitIdChanging(int value);
+    partial void OnSoldUnitIdChanged();
+    partial void OnPaymentDateChanging(System.DateTime value);
+    partial void OnPaymentDateChanged();
+    partial void OnAmortizationChanging(decimal value);
+    partial void OnAmortizationChanged();
+    partial void OnCheckNumberChanging(string value);
+    partial void OnCheckNumberChanged();
+    partial void OnCheckDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnCheckDateChanged();
+    partial void OnCheckBankChanging(string value);
+    partial void OnCheckBankChanged();
+    partial void OnRemarksChanging(string value);
+    partial void OnRemarksChanged();
+    #endregion
+		
+		public TrnSoldUnitEquitySchedule()
+		{
+			this._TrnSoldUnit = default(EntityRef<TrnSoldUnit>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SoldUnitId", DbType="Int NOT NULL")]
+		public int SoldUnitId
+		{
+			get
+			{
+				return this._SoldUnitId;
+			}
+			set
+			{
+				if ((this._SoldUnitId != value))
+				{
+					if (this._TrnSoldUnit.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSoldUnitIdChanging(value);
+					this.SendPropertyChanging();
+					this._SoldUnitId = value;
+					this.SendPropertyChanged("SoldUnitId");
+					this.OnSoldUnitIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentDate", DbType="DateTime NOT NULL")]
+		public System.DateTime PaymentDate
+		{
+			get
+			{
+				return this._PaymentDate;
+			}
+			set
+			{
+				if ((this._PaymentDate != value))
+				{
+					this.OnPaymentDateChanging(value);
+					this.SendPropertyChanging();
+					this._PaymentDate = value;
+					this.SendPropertyChanged("PaymentDate");
+					this.OnPaymentDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amortization", DbType="Decimal(18,5) NOT NULL")]
+		public decimal Amortization
+		{
+			get
+			{
+				return this._Amortization;
+			}
+			set
+			{
+				if ((this._Amortization != value))
+				{
+					this.OnAmortizationChanging(value);
+					this.SendPropertyChanging();
+					this._Amortization = value;
+					this.SendPropertyChanged("Amortization");
+					this.OnAmortizationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckNumber", DbType="NVarChar(255)")]
+		public string CheckNumber
+		{
+			get
+			{
+				return this._CheckNumber;
+			}
+			set
+			{
+				if ((this._CheckNumber != value))
+				{
+					this.OnCheckNumberChanging(value);
+					this.SendPropertyChanging();
+					this._CheckNumber = value;
+					this.SendPropertyChanged("CheckNumber");
+					this.OnCheckNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CheckDate
+		{
+			get
+			{
+				return this._CheckDate;
+			}
+			set
+			{
+				if ((this._CheckDate != value))
+				{
+					this.OnCheckDateChanging(value);
+					this.SendPropertyChanging();
+					this._CheckDate = value;
+					this.SendPropertyChanged("CheckDate");
+					this.OnCheckDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckBank", DbType="NVarChar(255)")]
+		public string CheckBank
+		{
+			get
+			{
+				return this._CheckBank;
+			}
+			set
+			{
+				if ((this._CheckBank != value))
+				{
+					this.OnCheckBankChanging(value);
+					this.SendPropertyChanging();
+					this._CheckBank = value;
+					this.SendPropertyChanged("CheckBank");
+					this.OnCheckBankChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Remarks", DbType="NVarChar(MAX)")]
+		public string Remarks
+		{
+			get
+			{
+				return this._Remarks;
+			}
+			set
+			{
+				if ((this._Remarks != value))
+				{
+					this.OnRemarksChanging(value);
+					this.SendPropertyChanging();
+					this._Remarks = value;
+					this.SendPropertyChanged("Remarks");
+					this.OnRemarksChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrnSoldUnit_TrnSoldUnitEquitySchedule", Storage="_TrnSoldUnit", ThisKey="SoldUnitId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public TrnSoldUnit TrnSoldUnit
+		{
+			get
+			{
+				return this._TrnSoldUnit.Entity;
+			}
+			set
+			{
+				TrnSoldUnit previousValue = this._TrnSoldUnit.Entity;
+				if (((previousValue != value) 
+							|| (this._TrnSoldUnit.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TrnSoldUnit.Entity = null;
+						previousValue.TrnSoldUnitEquitySchedules.Remove(this);
+					}
+					this._TrnSoldUnit.Entity = value;
+					if ((value != null))
+					{
+						value.TrnSoldUnitEquitySchedules.Add(this);
+						this._SoldUnitId = value.Id;
+					}
+					else
+					{
+						this._SoldUnitId = default(int);
+					}
+					this.SendPropertyChanged("TrnSoldUnit");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrnSoldUnitRequirement")]
+	public partial class TrnSoldUnitRequirement : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _SoldUnitId;
+		
+		private int _CheckListRequirementId;
+		
+		private string _Attachment1;
+		
+		private string _Attachment2;
+		
+		private string _Attachment3;
+		
+		private string _Attachment4;
+		
+		private string _Attachment5;
+		
+		private string _Remarks;
+		
+		private string _Status;
+		
+		private System.DateTime _StatusDate;
+		
+		private EntitySet<TrnSoldUnitRequirementActivity> _TrnSoldUnitRequirementActivities;
+		
+		private EntityRef<MstCheckListRequirement> _MstCheckListRequirement;
+		
+		private EntityRef<TrnSoldUnit> _TrnSoldUnit;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnSoldUnitIdChanging(int value);
+    partial void OnSoldUnitIdChanged();
+    partial void OnCheckListRequirementIdChanging(int value);
+    partial void OnCheckListRequirementIdChanged();
+    partial void OnAttachment1Changing(string value);
+    partial void OnAttachment1Changed();
+    partial void OnAttachment2Changing(string value);
+    partial void OnAttachment2Changed();
+    partial void OnAttachment3Changing(string value);
+    partial void OnAttachment3Changed();
+    partial void OnAttachment4Changing(string value);
+    partial void OnAttachment4Changed();
+    partial void OnAttachment5Changing(string value);
+    partial void OnAttachment5Changed();
+    partial void OnRemarksChanging(string value);
+    partial void OnRemarksChanged();
+    partial void OnStatusChanging(string value);
+    partial void OnStatusChanged();
+    partial void OnStatusDateChanging(System.DateTime value);
+    partial void OnStatusDateChanged();
+    #endregion
+		
+		public TrnSoldUnitRequirement()
+		{
+			this._TrnSoldUnitRequirementActivities = new EntitySet<TrnSoldUnitRequirementActivity>(new Action<TrnSoldUnitRequirementActivity>(this.attach_TrnSoldUnitRequirementActivities), new Action<TrnSoldUnitRequirementActivity>(this.detach_TrnSoldUnitRequirementActivities));
+			this._MstCheckListRequirement = default(EntityRef<MstCheckListRequirement>);
+			this._TrnSoldUnit = default(EntityRef<TrnSoldUnit>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SoldUnitId", DbType="Int NOT NULL")]
+		public int SoldUnitId
+		{
+			get
+			{
+				return this._SoldUnitId;
+			}
+			set
+			{
+				if ((this._SoldUnitId != value))
+				{
+					if (this._TrnSoldUnit.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSoldUnitIdChanging(value);
+					this.SendPropertyChanging();
+					this._SoldUnitId = value;
+					this.SendPropertyChanged("SoldUnitId");
+					this.OnSoldUnitIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckListRequirementId", DbType="Int NOT NULL")]
+		public int CheckListRequirementId
+		{
+			get
+			{
+				return this._CheckListRequirementId;
+			}
+			set
+			{
+				if ((this._CheckListRequirementId != value))
+				{
+					if (this._MstCheckListRequirement.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCheckListRequirementIdChanging(value);
+					this.SendPropertyChanging();
+					this._CheckListRequirementId = value;
+					this.SendPropertyChanged("CheckListRequirementId");
+					this.OnCheckListRequirementIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment1", DbType="NVarChar(255)")]
+		public string Attachment1
+		{
+			get
+			{
+				return this._Attachment1;
+			}
+			set
+			{
+				if ((this._Attachment1 != value))
+				{
+					this.OnAttachment1Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment1 = value;
+					this.SendPropertyChanged("Attachment1");
+					this.OnAttachment1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment2", DbType="NVarChar(255)")]
+		public string Attachment2
+		{
+			get
+			{
+				return this._Attachment2;
+			}
+			set
+			{
+				if ((this._Attachment2 != value))
+				{
+					this.OnAttachment2Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment2 = value;
+					this.SendPropertyChanged("Attachment2");
+					this.OnAttachment2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment3", DbType="NVarChar(255)")]
+		public string Attachment3
+		{
+			get
+			{
+				return this._Attachment3;
+			}
+			set
+			{
+				if ((this._Attachment3 != value))
+				{
+					this.OnAttachment3Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment3 = value;
+					this.SendPropertyChanged("Attachment3");
+					this.OnAttachment3Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment4", DbType="NVarChar(255)")]
+		public string Attachment4
+		{
+			get
+			{
+				return this._Attachment4;
+			}
+			set
+			{
+				if ((this._Attachment4 != value))
+				{
+					this.OnAttachment4Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment4 = value;
+					this.SendPropertyChanged("Attachment4");
+					this.OnAttachment4Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment5", DbType="NVarChar(255)")]
+		public string Attachment5
+		{
+			get
+			{
+				return this._Attachment5;
+			}
+			set
+			{
+				if ((this._Attachment5 != value))
+				{
+					this.OnAttachment5Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment5 = value;
+					this.SendPropertyChanged("Attachment5");
+					this.OnAttachment5Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Remarks", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Remarks
+		{
+			get
+			{
+				return this._Remarks;
+			}
+			set
+			{
+				if ((this._Remarks != value))
+				{
+					this.OnRemarksChanging(value);
+					this.SendPropertyChanging();
+					this._Remarks = value;
+					this.SendPropertyChanged("Remarks");
+					this.OnRemarksChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				if ((this._Status != value))
+				{
+					this.OnStatusChanging(value);
+					this.SendPropertyChanging();
+					this._Status = value;
+					this.SendPropertyChanged("Status");
+					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusDate", DbType="Date NOT NULL")]
+		public System.DateTime StatusDate
+		{
+			get
+			{
+				return this._StatusDate;
+			}
+			set
+			{
+				if ((this._StatusDate != value))
+				{
+					this.OnStatusDateChanging(value);
+					this.SendPropertyChanging();
+					this._StatusDate = value;
+					this.SendPropertyChanged("StatusDate");
+					this.OnStatusDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrnSoldUnitRequirement_TrnSoldUnitRequirementActivity", Storage="_TrnSoldUnitRequirementActivities", ThisKey="Id", OtherKey="SoldUnitRequirementId")]
+		public EntitySet<TrnSoldUnitRequirementActivity> TrnSoldUnitRequirementActivities
+		{
+			get
+			{
+				return this._TrnSoldUnitRequirementActivities;
+			}
+			set
+			{
+				this._TrnSoldUnitRequirementActivities.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstCheckListRequirement_TrnSoldUnitRequirement", Storage="_MstCheckListRequirement", ThisKey="CheckListRequirementId", OtherKey="Id", IsForeignKey=true)]
+		public MstCheckListRequirement MstCheckListRequirement
+		{
+			get
+			{
+				return this._MstCheckListRequirement.Entity;
+			}
+			set
+			{
+				MstCheckListRequirement previousValue = this._MstCheckListRequirement.Entity;
+				if (((previousValue != value) 
+							|| (this._MstCheckListRequirement.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MstCheckListRequirement.Entity = null;
+						previousValue.TrnSoldUnitRequirements.Remove(this);
+					}
+					this._MstCheckListRequirement.Entity = value;
+					if ((value != null))
+					{
+						value.TrnSoldUnitRequirements.Add(this);
+						this._CheckListRequirementId = value.Id;
+					}
+					else
+					{
+						this._CheckListRequirementId = default(int);
+					}
+					this.SendPropertyChanged("MstCheckListRequirement");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrnSoldUnit_TrnSoldUnitRequirement", Storage="_TrnSoldUnit", ThisKey="SoldUnitId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public TrnSoldUnit TrnSoldUnit
+		{
+			get
+			{
+				return this._TrnSoldUnit.Entity;
+			}
+			set
+			{
+				TrnSoldUnit previousValue = this._TrnSoldUnit.Entity;
+				if (((previousValue != value) 
+							|| (this._TrnSoldUnit.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TrnSoldUnit.Entity = null;
+						previousValue.TrnSoldUnitRequirements.Remove(this);
+					}
+					this._TrnSoldUnit.Entity = value;
+					if ((value != null))
+					{
+						value.TrnSoldUnitRequirements.Add(this);
+						this._SoldUnitId = value.Id;
+					}
+					else
+					{
+						this._SoldUnitId = default(int);
+					}
+					this.SendPropertyChanged("TrnSoldUnit");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_TrnSoldUnitRequirementActivities(TrnSoldUnitRequirementActivity entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrnSoldUnitRequirement = this;
+		}
+		
+		private void detach_TrnSoldUnitRequirementActivities(TrnSoldUnitRequirementActivity entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrnSoldUnitRequirement = null;
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrnSoldUnit")]
 	public partial class TrnSoldUnit : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -8868,6 +9551,18 @@ namespace priland_api.Data
 		private decimal _EquityValue;
 		
 		private decimal _EquityPercent;
+		
+		private decimal _EquitySpotPayment1;
+		
+		private decimal _EquitySpotPayment2;
+		
+		private decimal _EquitySpotPayment3;
+		
+		private int _EquitySpotPayment1Pos;
+		
+		private int _EquitySpotPayment2Pos;
+		
+		private int _EquitySpotPayment3Pos;
 		
 		private decimal _Discount;
 		
@@ -8971,6 +9666,18 @@ namespace priland_api.Data
     partial void OnEquityValueChanged();
     partial void OnEquityPercentChanging(decimal value);
     partial void OnEquityPercentChanged();
+    partial void OnEquitySpotPayment1Changing(decimal value);
+    partial void OnEquitySpotPayment1Changed();
+    partial void OnEquitySpotPayment2Changing(decimal value);
+    partial void OnEquitySpotPayment2Changed();
+    partial void OnEquitySpotPayment3Changing(decimal value);
+    partial void OnEquitySpotPayment3Changed();
+    partial void OnEquitySpotPayment1PosChanging(int value);
+    partial void OnEquitySpotPayment1PosChanged();
+    partial void OnEquitySpotPayment2PosChanging(int value);
+    partial void OnEquitySpotPayment2PosChanged();
+    partial void OnEquitySpotPayment3PosChanging(int value);
+    partial void OnEquitySpotPayment3PosChanged();
     partial void OnDiscountChanging(decimal value);
     partial void OnDiscountChanged();
     partial void OnReservationChanging(decimal value);
@@ -9313,6 +10020,126 @@ namespace priland_api.Data
 					this._EquityPercent = value;
 					this.SendPropertyChanged("EquityPercent");
 					this.OnEquityPercentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EquitySpotPayment1", DbType="Decimal(18,5) NOT NULL")]
+		public decimal EquitySpotPayment1
+		{
+			get
+			{
+				return this._EquitySpotPayment1;
+			}
+			set
+			{
+				if ((this._EquitySpotPayment1 != value))
+				{
+					this.OnEquitySpotPayment1Changing(value);
+					this.SendPropertyChanging();
+					this._EquitySpotPayment1 = value;
+					this.SendPropertyChanged("EquitySpotPayment1");
+					this.OnEquitySpotPayment1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EquitySpotPayment2", DbType="Decimal(18,5) NOT NULL")]
+		public decimal EquitySpotPayment2
+		{
+			get
+			{
+				return this._EquitySpotPayment2;
+			}
+			set
+			{
+				if ((this._EquitySpotPayment2 != value))
+				{
+					this.OnEquitySpotPayment2Changing(value);
+					this.SendPropertyChanging();
+					this._EquitySpotPayment2 = value;
+					this.SendPropertyChanged("EquitySpotPayment2");
+					this.OnEquitySpotPayment2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EquitySpotPayment3", DbType="Decimal(18,5) NOT NULL")]
+		public decimal EquitySpotPayment3
+		{
+			get
+			{
+				return this._EquitySpotPayment3;
+			}
+			set
+			{
+				if ((this._EquitySpotPayment3 != value))
+				{
+					this.OnEquitySpotPayment3Changing(value);
+					this.SendPropertyChanging();
+					this._EquitySpotPayment3 = value;
+					this.SendPropertyChanged("EquitySpotPayment3");
+					this.OnEquitySpotPayment3Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EquitySpotPayment1Pos", DbType="Int NOT NULL")]
+		public int EquitySpotPayment1Pos
+		{
+			get
+			{
+				return this._EquitySpotPayment1Pos;
+			}
+			set
+			{
+				if ((this._EquitySpotPayment1Pos != value))
+				{
+					this.OnEquitySpotPayment1PosChanging(value);
+					this.SendPropertyChanging();
+					this._EquitySpotPayment1Pos = value;
+					this.SendPropertyChanged("EquitySpotPayment1Pos");
+					this.OnEquitySpotPayment1PosChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EquitySpotPayment2Pos", DbType="Int NOT NULL")]
+		public int EquitySpotPayment2Pos
+		{
+			get
+			{
+				return this._EquitySpotPayment2Pos;
+			}
+			set
+			{
+				if ((this._EquitySpotPayment2Pos != value))
+				{
+					this.OnEquitySpotPayment2PosChanging(value);
+					this.SendPropertyChanging();
+					this._EquitySpotPayment2Pos = value;
+					this.SendPropertyChanged("EquitySpotPayment2Pos");
+					this.OnEquitySpotPayment2PosChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EquitySpotPayment3Pos", DbType="Int NOT NULL")]
+		public int EquitySpotPayment3Pos
+		{
+			get
+			{
+				return this._EquitySpotPayment3Pos;
+			}
+			set
+			{
+				if ((this._EquitySpotPayment3Pos != value))
+				{
+					this.OnEquitySpotPayment3PosChanging(value);
+					this.SendPropertyChanging();
+					this._EquitySpotPayment3Pos = value;
+					this.SendPropertyChanged("EquitySpotPayment3Pos");
+					this.OnEquitySpotPayment3PosChanged();
 				}
 			}
 		}
@@ -10230,689 +11057,6 @@ namespace priland_api.Data
 		{
 			this.SendPropertyChanging();
 			entity.TrnSoldUnit = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrnSoldUnitEquitySchedule")]
-	public partial class TrnSoldUnitEquitySchedule : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _SoldUnitId;
-		
-		private System.DateTime _PaymentDate;
-		
-		private decimal _Amortization;
-		
-		private string _CheckNumber;
-		
-		private System.Nullable<System.DateTime> _CheckDate;
-		
-		private string _CheckBank;
-		
-		private string _Remarks;
-		
-		private EntityRef<TrnSoldUnit> _TrnSoldUnit;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnSoldUnitIdChanging(int value);
-    partial void OnSoldUnitIdChanged();
-    partial void OnPaymentDateChanging(System.DateTime value);
-    partial void OnPaymentDateChanged();
-    partial void OnAmortizationChanging(decimal value);
-    partial void OnAmortizationChanged();
-    partial void OnCheckNumberChanging(string value);
-    partial void OnCheckNumberChanged();
-    partial void OnCheckDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnCheckDateChanged();
-    partial void OnCheckBankChanging(string value);
-    partial void OnCheckBankChanged();
-    partial void OnRemarksChanging(string value);
-    partial void OnRemarksChanged();
-    #endregion
-		
-		public TrnSoldUnitEquitySchedule()
-		{
-			this._TrnSoldUnit = default(EntityRef<TrnSoldUnit>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SoldUnitId", DbType="Int NOT NULL")]
-		public int SoldUnitId
-		{
-			get
-			{
-				return this._SoldUnitId;
-			}
-			set
-			{
-				if ((this._SoldUnitId != value))
-				{
-					if (this._TrnSoldUnit.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnSoldUnitIdChanging(value);
-					this.SendPropertyChanging();
-					this._SoldUnitId = value;
-					this.SendPropertyChanged("SoldUnitId");
-					this.OnSoldUnitIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentDate", DbType="DateTime NOT NULL")]
-		public System.DateTime PaymentDate
-		{
-			get
-			{
-				return this._PaymentDate;
-			}
-			set
-			{
-				if ((this._PaymentDate != value))
-				{
-					this.OnPaymentDateChanging(value);
-					this.SendPropertyChanging();
-					this._PaymentDate = value;
-					this.SendPropertyChanged("PaymentDate");
-					this.OnPaymentDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amortization", DbType="Decimal(18,5) NOT NULL")]
-		public decimal Amortization
-		{
-			get
-			{
-				return this._Amortization;
-			}
-			set
-			{
-				if ((this._Amortization != value))
-				{
-					this.OnAmortizationChanging(value);
-					this.SendPropertyChanging();
-					this._Amortization = value;
-					this.SendPropertyChanged("Amortization");
-					this.OnAmortizationChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckNumber", DbType="NVarChar(255)")]
-		public string CheckNumber
-		{
-			get
-			{
-				return this._CheckNumber;
-			}
-			set
-			{
-				if ((this._CheckNumber != value))
-				{
-					this.OnCheckNumberChanging(value);
-					this.SendPropertyChanging();
-					this._CheckNumber = value;
-					this.SendPropertyChanged("CheckNumber");
-					this.OnCheckNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckDate", DbType="DateTime")]
-		public System.Nullable<System.DateTime> CheckDate
-		{
-			get
-			{
-				return this._CheckDate;
-			}
-			set
-			{
-				if ((this._CheckDate != value))
-				{
-					this.OnCheckDateChanging(value);
-					this.SendPropertyChanging();
-					this._CheckDate = value;
-					this.SendPropertyChanged("CheckDate");
-					this.OnCheckDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckBank", DbType="NVarChar(255)")]
-		public string CheckBank
-		{
-			get
-			{
-				return this._CheckBank;
-			}
-			set
-			{
-				if ((this._CheckBank != value))
-				{
-					this.OnCheckBankChanging(value);
-					this.SendPropertyChanging();
-					this._CheckBank = value;
-					this.SendPropertyChanged("CheckBank");
-					this.OnCheckBankChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Remarks", DbType="NVarChar(MAX)")]
-		public string Remarks
-		{
-			get
-			{
-				return this._Remarks;
-			}
-			set
-			{
-				if ((this._Remarks != value))
-				{
-					this.OnRemarksChanging(value);
-					this.SendPropertyChanging();
-					this._Remarks = value;
-					this.SendPropertyChanged("Remarks");
-					this.OnRemarksChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrnSoldUnit_TrnSoldUnitEquitySchedule", Storage="_TrnSoldUnit", ThisKey="SoldUnitId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public TrnSoldUnit TrnSoldUnit
-		{
-			get
-			{
-				return this._TrnSoldUnit.Entity;
-			}
-			set
-			{
-				TrnSoldUnit previousValue = this._TrnSoldUnit.Entity;
-				if (((previousValue != value) 
-							|| (this._TrnSoldUnit.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TrnSoldUnit.Entity = null;
-						previousValue.TrnSoldUnitEquitySchedules.Remove(this);
-					}
-					this._TrnSoldUnit.Entity = value;
-					if ((value != null))
-					{
-						value.TrnSoldUnitEquitySchedules.Add(this);
-						this._SoldUnitId = value.Id;
-					}
-					else
-					{
-						this._SoldUnitId = default(int);
-					}
-					this.SendPropertyChanged("TrnSoldUnit");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrnSoldUnitRequirement")]
-	public partial class TrnSoldUnitRequirement : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _SoldUnitId;
-		
-		private int _CheckListRequirementId;
-		
-		private string _Attachment1;
-		
-		private string _Attachment2;
-		
-		private string _Attachment3;
-		
-		private string _Attachment4;
-		
-		private string _Attachment5;
-		
-		private string _Remarks;
-		
-		private string _Status;
-		
-		private System.DateTime _StatusDate;
-		
-		private EntitySet<TrnSoldUnitRequirementActivity> _TrnSoldUnitRequirementActivities;
-		
-		private EntityRef<MstCheckListRequirement> _MstCheckListRequirement;
-		
-		private EntityRef<TrnSoldUnit> _TrnSoldUnit;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnSoldUnitIdChanging(int value);
-    partial void OnSoldUnitIdChanged();
-    partial void OnCheckListRequirementIdChanging(int value);
-    partial void OnCheckListRequirementIdChanged();
-    partial void OnAttachment1Changing(string value);
-    partial void OnAttachment1Changed();
-    partial void OnAttachment2Changing(string value);
-    partial void OnAttachment2Changed();
-    partial void OnAttachment3Changing(string value);
-    partial void OnAttachment3Changed();
-    partial void OnAttachment4Changing(string value);
-    partial void OnAttachment4Changed();
-    partial void OnAttachment5Changing(string value);
-    partial void OnAttachment5Changed();
-    partial void OnRemarksChanging(string value);
-    partial void OnRemarksChanged();
-    partial void OnStatusChanging(string value);
-    partial void OnStatusChanged();
-    partial void OnStatusDateChanging(System.DateTime value);
-    partial void OnStatusDateChanged();
-    #endregion
-		
-		public TrnSoldUnitRequirement()
-		{
-			this._TrnSoldUnitRequirementActivities = new EntitySet<TrnSoldUnitRequirementActivity>(new Action<TrnSoldUnitRequirementActivity>(this.attach_TrnSoldUnitRequirementActivities), new Action<TrnSoldUnitRequirementActivity>(this.detach_TrnSoldUnitRequirementActivities));
-			this._MstCheckListRequirement = default(EntityRef<MstCheckListRequirement>);
-			this._TrnSoldUnit = default(EntityRef<TrnSoldUnit>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SoldUnitId", DbType="Int NOT NULL")]
-		public int SoldUnitId
-		{
-			get
-			{
-				return this._SoldUnitId;
-			}
-			set
-			{
-				if ((this._SoldUnitId != value))
-				{
-					if (this._TrnSoldUnit.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnSoldUnitIdChanging(value);
-					this.SendPropertyChanging();
-					this._SoldUnitId = value;
-					this.SendPropertyChanged("SoldUnitId");
-					this.OnSoldUnitIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckListRequirementId", DbType="Int NOT NULL")]
-		public int CheckListRequirementId
-		{
-			get
-			{
-				return this._CheckListRequirementId;
-			}
-			set
-			{
-				if ((this._CheckListRequirementId != value))
-				{
-					if (this._MstCheckListRequirement.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnCheckListRequirementIdChanging(value);
-					this.SendPropertyChanging();
-					this._CheckListRequirementId = value;
-					this.SendPropertyChanged("CheckListRequirementId");
-					this.OnCheckListRequirementIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment1", DbType="NVarChar(255)")]
-		public string Attachment1
-		{
-			get
-			{
-				return this._Attachment1;
-			}
-			set
-			{
-				if ((this._Attachment1 != value))
-				{
-					this.OnAttachment1Changing(value);
-					this.SendPropertyChanging();
-					this._Attachment1 = value;
-					this.SendPropertyChanged("Attachment1");
-					this.OnAttachment1Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment2", DbType="NVarChar(255)")]
-		public string Attachment2
-		{
-			get
-			{
-				return this._Attachment2;
-			}
-			set
-			{
-				if ((this._Attachment2 != value))
-				{
-					this.OnAttachment2Changing(value);
-					this.SendPropertyChanging();
-					this._Attachment2 = value;
-					this.SendPropertyChanged("Attachment2");
-					this.OnAttachment2Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment3", DbType="NVarChar(255)")]
-		public string Attachment3
-		{
-			get
-			{
-				return this._Attachment3;
-			}
-			set
-			{
-				if ((this._Attachment3 != value))
-				{
-					this.OnAttachment3Changing(value);
-					this.SendPropertyChanging();
-					this._Attachment3 = value;
-					this.SendPropertyChanged("Attachment3");
-					this.OnAttachment3Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment4", DbType="NVarChar(255)")]
-		public string Attachment4
-		{
-			get
-			{
-				return this._Attachment4;
-			}
-			set
-			{
-				if ((this._Attachment4 != value))
-				{
-					this.OnAttachment4Changing(value);
-					this.SendPropertyChanging();
-					this._Attachment4 = value;
-					this.SendPropertyChanged("Attachment4");
-					this.OnAttachment4Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment5", DbType="NVarChar(255)")]
-		public string Attachment5
-		{
-			get
-			{
-				return this._Attachment5;
-			}
-			set
-			{
-				if ((this._Attachment5 != value))
-				{
-					this.OnAttachment5Changing(value);
-					this.SendPropertyChanging();
-					this._Attachment5 = value;
-					this.SendPropertyChanged("Attachment5");
-					this.OnAttachment5Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Remarks", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Remarks
-		{
-			get
-			{
-				return this._Remarks;
-			}
-			set
-			{
-				if ((this._Remarks != value))
-				{
-					this.OnRemarksChanging(value);
-					this.SendPropertyChanging();
-					this._Remarks = value;
-					this.SendPropertyChanged("Remarks");
-					this.OnRemarksChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string Status
-		{
-			get
-			{
-				return this._Status;
-			}
-			set
-			{
-				if ((this._Status != value))
-				{
-					this.OnStatusChanging(value);
-					this.SendPropertyChanging();
-					this._Status = value;
-					this.SendPropertyChanged("Status");
-					this.OnStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusDate", DbType="Date NOT NULL")]
-		public System.DateTime StatusDate
-		{
-			get
-			{
-				return this._StatusDate;
-			}
-			set
-			{
-				if ((this._StatusDate != value))
-				{
-					this.OnStatusDateChanging(value);
-					this.SendPropertyChanging();
-					this._StatusDate = value;
-					this.SendPropertyChanged("StatusDate");
-					this.OnStatusDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrnSoldUnitRequirement_TrnSoldUnitRequirementActivity", Storage="_TrnSoldUnitRequirementActivities", ThisKey="Id", OtherKey="SoldUnitRequirementId")]
-		public EntitySet<TrnSoldUnitRequirementActivity> TrnSoldUnitRequirementActivities
-		{
-			get
-			{
-				return this._TrnSoldUnitRequirementActivities;
-			}
-			set
-			{
-				this._TrnSoldUnitRequirementActivities.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstCheckListRequirement_TrnSoldUnitRequirement", Storage="_MstCheckListRequirement", ThisKey="CheckListRequirementId", OtherKey="Id", IsForeignKey=true)]
-		public MstCheckListRequirement MstCheckListRequirement
-		{
-			get
-			{
-				return this._MstCheckListRequirement.Entity;
-			}
-			set
-			{
-				MstCheckListRequirement previousValue = this._MstCheckListRequirement.Entity;
-				if (((previousValue != value) 
-							|| (this._MstCheckListRequirement.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._MstCheckListRequirement.Entity = null;
-						previousValue.TrnSoldUnitRequirements.Remove(this);
-					}
-					this._MstCheckListRequirement.Entity = value;
-					if ((value != null))
-					{
-						value.TrnSoldUnitRequirements.Add(this);
-						this._CheckListRequirementId = value.Id;
-					}
-					else
-					{
-						this._CheckListRequirementId = default(int);
-					}
-					this.SendPropertyChanged("MstCheckListRequirement");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrnSoldUnit_TrnSoldUnitRequirement", Storage="_TrnSoldUnit", ThisKey="SoldUnitId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public TrnSoldUnit TrnSoldUnit
-		{
-			get
-			{
-				return this._TrnSoldUnit.Entity;
-			}
-			set
-			{
-				TrnSoldUnit previousValue = this._TrnSoldUnit.Entity;
-				if (((previousValue != value) 
-							|| (this._TrnSoldUnit.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TrnSoldUnit.Entity = null;
-						previousValue.TrnSoldUnitRequirements.Remove(this);
-					}
-					this._TrnSoldUnit.Entity = value;
-					if ((value != null))
-					{
-						value.TrnSoldUnitRequirements.Add(this);
-						this._SoldUnitId = value.Id;
-					}
-					else
-					{
-						this._SoldUnitId = default(int);
-					}
-					this.SendPropertyChanged("TrnSoldUnit");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_TrnSoldUnitRequirementActivities(TrnSoldUnitRequirementActivity entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrnSoldUnitRequirement = this;
-		}
-		
-		private void detach_TrnSoldUnitRequirementActivities(TrnSoldUnitRequirementActivity entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrnSoldUnitRequirement = null;
 		}
 	}
 }
