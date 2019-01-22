@@ -12,5 +12,6 @@ namespace priland_api.Models
         public Int32 CustomerId { get; set; }
         public String CustomerCode { get; set; }
         public String Customer { get; set; }
+        public String Address { get; set; }
     }
 }

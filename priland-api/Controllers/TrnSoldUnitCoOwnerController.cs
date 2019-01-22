@@ -34,13 +34,15 @@ namespace priland_api.Controllers
         public List<TrnSoldUnitCoOwner> ListCoOwner(String soldUnitId)
         {
             var soldUnitOwners = from d in db.TrnSoldUnitCoOwners
+                                 where d.SoldUnitId == Convert.ToInt32(soldUnitId)
                                  select new TrnSoldUnitCoOwner
                                  {
                                      Id = d.Id,
                                      SoldUnitId = d.SoldUnitId,
                                      CustomerId = d.CustomerId,
                                      CustomerCode = d.MstCustomer.CustomerCode,
-                                     Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName
+                                     Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
+                                     Address = d.MstCustomer.Address
                                  };
 
             return soldUnitOwners.ToList();
@@ -107,8 +109,8 @@ namespace priland_api.Controllers
             }
         }
 
-        [HttpDelete, Route("delete")]
-        public HttpResponseMessage DeleteSoldUnitOwner(TrnSoldUnitCoOwner objSoldUnitOwner)
+        [HttpDelete, Route("delete/{id}")]
+        public HttpResponseMessage DeleteSoldUnitOwner(String id)
         {
             try
             {
@@ -116,7 +118,7 @@ namespace priland_api.Controllers
                 String responseMessage = "";
 
                 var currentUser = from d in db.MstUsers where d.AspNetId == User.Identity.GetUserId() select d;
-                var currentSoldUnitOwner = from d in db.TrnSoldUnitCoOwners where d.Id == objSoldUnitOwner.Id select d;
+                var currentSoldUnitOwner = from d in db.TrnSoldUnitCoOwners where d.Id == Convert.ToInt32(id) select d;
 
                 if (!currentUser.Any()) { responseStatusCode = HttpStatusCode.NotFound; responseMessage = "No current user logged in."; }
                 if (!currentSoldUnitOwner.Any()) { responseStatusCode = HttpStatusCode.NotFound; responseMessage = "Reference not found."; }
