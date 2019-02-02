@@ -148,7 +148,7 @@ namespace priland_api.Controllers
                     var commissionRequests = from d in db.TrnCommissionRequests.OrderByDescending(d => d.Id) select d;
                     if (commissionRequests.Any())
                     {
-                        Int32 nextCommissionRequestNumber = Convert.ToInt32(commissionRequests.FirstOrDefault().CommissionNumber) + 1;
+                        Int32 nextCommissionRequestNumber = Convert.ToInt32(commissionRequests.FirstOrDefault().CommissionRequestNumber) + 1;
                         commissionRequestNumber = padNumWithZero(nextCommissionRequestNumber, 10);
                     }
 
