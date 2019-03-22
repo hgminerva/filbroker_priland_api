@@ -1585,9 +1585,11 @@ namespace priland_api.Controllers
                 document.Add(spaceTable);
 
                 Phrase p2Phrase = new Phrase(
-                    "This Contact to Sell (hereinafter referred to as the “Contract”) made and entered into this day of "
-                    + soldUnit.FirstOrDefault().SoldUnitDate.ToString("MM-dd-yyyy", CultureInfo.InvariantCulture)
-                    + " at Cebu City, Cebu, Philippines, by and between:", fontArial12);
+                    "This Contact to Sell (hereinafter referred to as the “Contract”) made and entered into this day of ________________ at Cebu City, Cebu, Philippines, by and between:", fontArial12);
+
+               // " + soldUnit.FirstOrDefault().SoldUnitDate.ToString("MM-dd-yyyy", CultureInfo.InvariantCulture) + "
+
+
 
                 Paragraph p2 = new Paragraph
                 {
@@ -1838,7 +1840,7 @@ namespace priland_api.Controllers
                 Decimal price = soldUnit.FirstOrDefault().Price;
                 GetMoneyWord(price.ToString());
 
-                Phrase p10Phrase = new Phrase("a.	The TOTAL CONTRACT PRICE for the above-described HOUSE AND LOT shall be ", fontArial12);
+                Phrase p10Phrase = new Phrase("a.	The TOTAL CONTRACT PRICE for the above-described HOUSE AND LOT/UNIT shall be ", fontArial12);
                 Phrase p10Phrase1 = new Phrase(GetMoneyWord(price.ToString()) + " (Php " + price.ToString("#,##0.00") + ")", fontArial12Bold);
                 Phrase p10Phrase2 = new Phrase(", breakdown as follows: ", fontArial12);
                 Paragraph p10 = new Paragraph
@@ -2095,8 +2097,8 @@ namespace priland_api.Controllers
                 document.Add(p14);
                 document.Add(spaceTable);
 
-                Phrase p15Phrase = new Phrase("Notwithstanding the amortization schedule agreed upon, the BUYER may opt to pay the remaining balance of the CONTRACT PRICE through a loan which she "
-                    + "may obtain from any public or private financing institution, the feeas and charges of which shall be for their own account.", fontArial12);
+                Phrase p15Phrase = new Phrase("Notwithstanding the amortization schedule agreed upon, the BUYER may opt to pay the remaining balance of the CONTRACT PRICE through a loan which he/she "
+                    + "may obtain from any public or private financing institution, the fee as and charges of which shall be for their own account.", fontArial12);
 
                 Paragraph p15 = new Paragraph
                 {
@@ -2176,7 +2178,7 @@ namespace priland_api.Controllers
                 document.Add(spaceTable);
 
                 Phrase p22Phrase = new Phrase("The SELLER shall have the right to determine the application of payments made by the BUYER. Unless otherwise indicated in the SELLER’s"
-                    + "official receipt, payments shall be applied in the following order:", fontArial12);
+                    + " official receipt, payments shall be applied in the following order:", fontArial12);
 
                 Paragraph p22 = new Paragraph
                 {
@@ -2214,7 +2216,7 @@ namespace priland_api.Controllers
                 document.Add(spaceTable);
 
                 Phrase p25Phrase = new Phrase("The BUYER shall not make any construction, alteration or renovations/additions on the UNIT without first obtaining the prior consent of the SELLER."
-                    + " The building of the house or the renovatons/additions to be made by the BUYER shall be subject to the approval of the SELLER. To ensure the proper"
+                    + " The building of the house or the renovations/additions to be made by the BUYER shall be subject to the approval of the SELLER. To ensure the proper"
                     + " conduct of the works, the BUYER shall post a cash bond in an amount to be fixed by the SELLER depending on the nature of the works to be undertaken,"
                     + " before commencing such works. Said bond shall be returned to the  BUYER upon completion of the construction, after deducting costs of utilities, damage"
                     + " to the common areas and other lots, and liability to third parties, if any.", fontArial12);
@@ -2363,7 +2365,7 @@ namespace priland_api.Controllers
                 Phrase p36Phrase = new Phrase("Should the BUYER fail to pay such taxes, the SELLER may, at its option but without any obligation on its part, pay the taxes due for and in"
                     + " behalf of the BUYER, with right of reimbursement from the BUYER, with interest and penalties at the same rate as those charged in case of default in the"
                     + " payment of the balance of the CONTRACT PRICE. Such interest and penalties shall be computed from the time payments were made by the SELLER until the same are"
-                    + " fully reimbursement by the BUYER.", fontArial12);
+                    + " fully reimbursed by the BUYER.", fontArial12);
 
                 Paragraph p36 = new Paragraph
                 {
@@ -2405,7 +2407,7 @@ namespace priland_api.Controllers
                 document.Add(p39);
                 document.Add(spaceTable);
 
-                Phrase p40Phrase = new Phrase("The value added tax, if any, documentary stamp tax, registration fees and any all other fees and expenses(except local transfer taxes) required to transfer title to the UNIIT in the nae of the BUYER shall be for the BUYER’s account.", fontArial12);
+                Phrase p40Phrase = new Phrase("The value added tax, if any, documentary stamp tax, registration fees and any all other fees and expenses(except local transfer taxes) required to transfer title to the UNIT in the name of the BUYER shall be for the BUYER’s account.", fontArial12);
 
                 Paragraph p40 = new Paragraph
                 {
@@ -2428,7 +2430,7 @@ namespace priland_api.Controllers
 
                 Phrase p42Phrase = new Phrase("If the BUYER defaults in the performance of their obligations under this Contract, including but not limited to the non payment of any obligation regarding telephone, cable,"
                     + " electric and water connections and deposits, as well as assessments, association dues and similar fees, the SELLER, at their option, may cancel and rescind this Contract upon"
-                    + " writted notice to the BUYER/S and without need of any judicial declaration to that effect. In such case, any amount paid on accunt of the UNIT by the BUYER is not entitled to reimbursement"
+                    + " written notice to the BUYER/S and without need of any judicial declaration to that effect. In such case, any amount paid on account of the UNIT by the BUYER is not entitled to reimbursement"
                     + " if his/her payment is less than two(2) years.", fontArial12);
 
                 Paragraph p42 = new Paragraph
@@ -2442,7 +2444,7 @@ namespace priland_api.Controllers
                 document.Add(spaceTable);
 
                 Phrase p43Phrase = new Phrase("The above, however, is without prejudice to  the application of the provisions of Republic Act(R.A) No. 6552, otherwise knows as the ‘Realty Installment Buyers Protection Act’ which is"
-                    + " hereby made na integral part hereof. In case of such cancellation or rescission,  the SELLER shall be at liberty to dispose  of and sell the UNIT to any other person in the same manner as if this"
+                    + " hereby made an integral part hereof. In case of such cancellation or rescission,  the SELLER shall be at liberty to dispose  of and sell the UNIT to any other person in the same manner as if this"
                     + " Contract has never been executed or entered into.", fontArial12);
 
                 Paragraph p43 = new Paragraph
@@ -2501,10 +2503,10 @@ namespace priland_api.Controllers
                 document.Add(p47);
                 document.Add(spaceTable);
 
-                Phrase p48Phrase = new Phrase("For purposes of availing and securing a loan or finanction package to pay the balance of the CONTRACT PRICE,"
-                    + " the BUYER recognizes and agress to the right of the SELLER to assign all  its rights and receivables under  this Contract in favor of the funding bank or financial institution."
+                Phrase p48Phrase = new Phrase("For purposes of availing and securing a loan or financing package to pay the balance of the CONTRACT PRICE,"
+                    + " the BUYER recognizes and agrees to the right of the SELLER to assign all  its rights and receivables under  this Contract in favor of the funding bank or financial institution."
                     + " In such case, the BUYER undertakes to conform to the same and to perform faithfully all his obligations under this Contract without need of demand from the SELLER’s assignee."
-                    + " Accordingly, the BUYER agrees that the assignee shall assume all the rights and interest of the SELLER under this Contract, and upon advice by the assigne,"
+                    + " Accordingly, the BUYER agrees that the assignee shall assume all the rights and interest of the SELLER under this Contract, and upon advice by the assignee,"
                     + " the BUYER shall pay their obligations under this Contract directly to the assignee. This assignment of rights and receivables shall be without prejudice to the execution of"
                     + " a deed of sale with real state mortgage on the UNIT which may immediately or thereafter be required by the SELLER or the assignee bank or"
                     + " financial institution for the purpose of securing the loan or financing package availed of for the payment of the balance of the CONTRACT PRICE of the BUYER to the SELLER,"
@@ -2622,10 +2624,10 @@ namespace priland_api.Controllers
                 document.Add(spaceTable);
 
                 Phrase p57Phrase = new Phrase("The SELLER warrants and guarantees(a) the authenticity and validity of the title to the UNIT subject of this Contact and undertakes to defend the same against"
-                    + " all claims of any and all persons and entities; (b) that the title to the UNIIT is free from liens and encumbrances, except for the mortgage, if any, referred"
+                    + " all claims of any and all persons and entities; (b) that the title to the UNIT is free from liens and encumbrances, except for the mortgage, if any, referred"
                     + " to herein, those provided in the Declaration of Covenants, Conditions and Restrictions, those imposed by law, the Articles of Incorporation and By Laws of the"
                     + " Association, zoning regulations and other restrictions on the use and occupancy of the UNIT as may be imposed by government and other authorities having"
-                    + " junsdiction thereon, and to other restrictions and easements of record; and (c) that the UNIT is free from and clear of tenants, occupants and squatters and"
+                    + " jurisdiction thereon, and to other restrictions and easements of record; and (c) that the UNIT is free from and clear of tenants, occupants and squatters and"
                     + " undertakes to hold the BUYER, their successor and assigns, free and harmless from any liability or responsibility with regard to any such tenants, occupants or"
                     + " squatters, or their eviction from the UNIT.", fontArial12);
 
@@ -2705,7 +2707,7 @@ namespace priland_api.Controllers
                 document.Add(p62);
                 document.Add(spaceTable);
 
-                Phrase p63Phrase = new Phrase("The SELLER may not be compelled to complete the construction of the UNIT priod to the BUYER’s full settlement of the downpayment and"
+                Phrase p63Phrase = new Phrase("The SELLER may not be compelled to complete the construction of the UNIT prior to the BUYER’s full settlement of the downpayment and"
                     + " any additional amounts due relative thereto, and the delivery of the postdated check to cover the BUYER’s monthly amortization payments.", fontArial12);
 
                 Paragraph p63 = new Paragraph
@@ -2729,7 +2731,7 @@ namespace priland_api.Controllers
 
                 Phrase p65Phrase = new Phrase("The possession of the Unit shall be delivered by the SELLER to the BUYER within reasonable period of time from the"
                     + " date of completion of construction of such UNIT and its related facilities. It is understood, however, that physical possession of the PROPERTY shall not"
-                    + " be delivered by the SELLER to the BUYER unless the later shall have complied with all conditions and requirements prescribed for this purpose by the"
+                    + " be delivered by the SELLER to the BUYER unless the latter shall have complied with all conditions and requirements prescribed for this purpose by the"
                     + " SELLER to the BUYER unless the latter shall have complied with all conditions and requirements prescribed for this purpose by the SELLER under its"
                     + " policies prevailing at the time.", fontArial12);
 
@@ -2929,7 +2931,7 @@ namespace priland_api.Controllers
                 document.Add(p79);
                 document.Add(spaceTable);
 
-                Phrase p80Phrase = new Phrase("(c) Discrepancy of less than ten percent (10%) in the approximate gross are of the UNIT as stated in the Contract, in brochures or price list than the actual area of the UNIT when completed, shall not result in an increase or decrease in the selling price.", fontArial12);
+                Phrase p80Phrase = new Phrase("(c) Discrepancy of less than ten percent (10%) in the approximate gross area of the UNIT as stated in the Contract, in brochures or price list than the actual area of the UNIT when completed, shall not result in an increase or decrease in the selling price.", fontArial12);
 
                 Paragraph p80 = new Paragraph
                 {
@@ -2966,7 +2968,7 @@ namespace priland_api.Controllers
                 document.Add(spaceTable);
 
                 Phrase p83Phrase = new Phrase("(e) In the event that the subdivision project and UNIT becomes not economically feasible such that there are adverse conditions, changes and its structure,"
-                    + " or other similar factors or reasons, the SELLER may, upon written notice to the BUYER, change or alter the designe, specifications and/or the price of the UNIT or replace"
+                    + " or other similar factors or reasons, the SELLER may, upon written notice to the BUYER, change or alter the design, specifications and/or the price of the UNIT or replace"
                     + " the same with a similar lot, or cancel this Contract and return in full, without interest, all payments received from the BUYER.", fontArial12);
 
                 Paragraph p83 = new Paragraph
@@ -3045,7 +3047,7 @@ namespace priland_api.Controllers
                 document.Add(p88);
                 document.Add(spaceTable);
 
-                Phrase p89Phrase = new Phrase("19. Separability Cluase", fontArial12BoldItalic);
+                Phrase p89Phrase = new Phrase("19. Separability Clause", fontArial12BoldItalic);
                 Paragraph p89 = new Paragraph
                 {
                     p89Phrase
@@ -3068,7 +3070,7 @@ namespace priland_api.Controllers
                 document.Add(p90);
                 document.Add(spaceTable);
 
-                Phrase p91Phrase = new Phrase("20. Repealing Clase", fontArial12BoldItalic);
+                Phrase p91Phrase = new Phrase("20. Repealing Clause", fontArial12BoldItalic);
                 Paragraph p91 = new Paragraph
                 {
                     p91Phrase
@@ -3269,7 +3271,7 @@ namespace priland_api.Controllers
 
                 document.Add(spaceTable);
 
-                Phrase p100Phrase = new Phrase("All own to me and idetified through the competent evidence of identity hereinabove describe to be the same persons who executed"
+                Phrase p100Phrase = new Phrase("All known to me and identified through the competent evidence of identity hereinabove describe to be the same persons who executed"
                     + " the foregoing deed and acknowledge that the same is their own and free and voluntary act, deed, their authority and that of the corporation herein represented.", fontArial12);
 
                 Paragraph p100 = new Paragraph
@@ -3284,7 +3286,7 @@ namespace priland_api.Controllers
 
                 Phrase p101Phrase = new Phrase("This instrument refers to a Contract to Sell consisting of five (5) pages, and Annex “A”, signed by the parties and their instrumental"
                     + " witnesses at the end of the body of the documents and on the left hand margin of the reserve side hereof and the Annex, each and every page"
-                    + " of which is saled with my notarial seal.", fontArial12);
+                    + " of which is sealed with my notarial seal.", fontArial12);
 
                 Paragraph p101 = new Paragraph
                 {

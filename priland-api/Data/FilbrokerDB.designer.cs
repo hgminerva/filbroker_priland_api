@@ -5562,6 +5562,8 @@ namespace priland_api.Data
 		
 		private decimal _Price;
 		
+		private decimal _TSP;
+		
 		private string _Status;
 		
 		private bool _IsLocked;
@@ -5608,6 +5610,8 @@ namespace priland_api.Data
     partial void OnTFAChanged();
     partial void OnPriceChanging(decimal value);
     partial void OnPriceChanged();
+    partial void OnTSPChanging(decimal value);
+    partial void OnTSPChanged();
     partial void OnStatusChanging(string value);
     partial void OnStatusChanged();
     partial void OnIsLockedChanging(bool value);
@@ -5817,6 +5821,26 @@ namespace priland_api.Data
 					this._Price = value;
 					this.SendPropertyChanged("Price");
 					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TSP", DbType="Decimal(18,5) NOT NULL")]
+		public decimal TSP
+		{
+			get
+			{
+				return this._TSP;
+			}
+			set
+			{
+				if ((this._TSP != value))
+				{
+					this.OnTSPChanging(value);
+					this.SendPropertyChanging();
+					this._TSP = value;
+					this.SendPropertyChanged("TSP");
+					this.OnTSPChanged();
 				}
 			}
 		}
@@ -8902,6 +8926,8 @@ namespace priland_api.Data
 		
 		private int _CheckListId;
 		
+		private decimal _PriceDiscount;
+		
 		private decimal _Price;
 		
 		private decimal _EquityValue;
@@ -8947,6 +8973,8 @@ namespace priland_api.Data
 		private string _Financing;
 		
 		private string _Remarks;
+		
+		private string _FinancingType;
 		
 		private int _PreparedBy;
 		
@@ -9018,6 +9046,8 @@ namespace priland_api.Data
     partial void OnBrokerCoordinatorChanged();
     partial void OnCheckListIdChanging(int value);
     partial void OnCheckListIdChanged();
+    partial void OnPriceDiscountChanging(decimal value);
+    partial void OnPriceDiscountChanged();
     partial void OnPriceChanging(decimal value);
     partial void OnPriceChanged();
     partial void OnEquityValueChanging(decimal value);
@@ -9064,6 +9094,8 @@ namespace priland_api.Data
     partial void OnFinancingChanged();
     partial void OnRemarksChanging(string value);
     partial void OnRemarksChanged();
+    partial void OnFinancingTypeChanging(string value);
+    partial void OnFinancingTypeChanged();
     partial void OnPreparedByChanging(int value);
     partial void OnPreparedByChanged();
     partial void OnCheckedByChanging(int value);
@@ -9319,6 +9351,26 @@ namespace priland_api.Data
 					this._CheckListId = value;
 					this.SendPropertyChanged("CheckListId");
 					this.OnCheckListIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceDiscount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal PriceDiscount
+		{
+			get
+			{
+				return this._PriceDiscount;
+			}
+			set
+			{
+				if ((this._PriceDiscount != value))
+				{
+					this.OnPriceDiscountChanging(value);
+					this.SendPropertyChanging();
+					this._PriceDiscount = value;
+					this.SendPropertyChanged("PriceDiscount");
+					this.OnPriceDiscountChanged();
 				}
 			}
 		}
@@ -9779,6 +9831,26 @@ namespace priland_api.Data
 					this._Remarks = value;
 					this.SendPropertyChanged("Remarks");
 					this.OnRemarksChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FinancingType", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string FinancingType
+		{
+			get
+			{
+				return this._FinancingType;
+			}
+			set
+			{
+				if ((this._FinancingType != value))
+				{
+					this.OnFinancingTypeChanging(value);
+					this.SendPropertyChanging();
+					this._FinancingType = value;
+					this.SendPropertyChanged("FinancingType");
+					this.OnFinancingTypeChanged();
 				}
 			}
 		}

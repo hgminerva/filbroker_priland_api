@@ -28,13 +28,14 @@ namespace priland_api.Controllers
                                   UnitCode = d.UnitCode,
                                   Block = d.Block,
                                   Lot = d.Lot,
-                                  ProjectId=d.ProjectId,
-                                  Project=d.MstProject.Project,
-                                  HouseModelId=d.HouseModelId,
-                                  HouseModel=d.MstHouseModel.HouseModel,
-                                  TLA=d.TLA,
-                                  TFA=d.TFA,
-                                  Price=d.Price,
+                                  ProjectId = d.ProjectId,
+                                  Project = d.MstProject.Project,
+                                  HouseModelId = d.HouseModelId,
+                                  HouseModel = d.MstHouseModel.HouseModel,
+                                  TLA = d.TLA,
+                                  TFA = d.TFA,
+                                  Price = d.Price,
+                                  TSP = d.TSP,
                                   Status = d.Status,
                                   IsLocked = d.IsLocked,
                                   CreatedBy = d.CreatedBy,
@@ -67,6 +68,7 @@ namespace priland_api.Controllers
                                   TLA = d.TLA,
                                   TFA = d.TFA,
                                   Price = d.Price,
+                                  TSP = d.TSP,
                                   Status = d.Status,
                                   IsLocked = d.IsLocked,
                                   CreatedBy = d.CreatedBy,
@@ -116,28 +118,29 @@ namespace priland_api.Controllers
         public MstUnit GetMstUnitId(string id)
         {
             var MstUnitData = from d in db.MstUnits
-                                 where d.Id == Convert.ToInt32(id)
-                                 select new MstUnit
-                                 {
-                                     Id = d.Id,
-                                     UnitCode = d.UnitCode,
-                                     Block = d.Block,
-                                     Lot = d.Lot,
-                                     ProjectId = d.ProjectId,
-                                     Project = d.MstProject.Project,
-                                     HouseModelId = d.HouseModelId,
-                                     HouseModel = d.MstHouseModel.HouseModel,
-                                     TLA = d.TLA,
-                                     TFA = d.TFA,
-                                     Price = d.Price,
-                                     Status = d.Status,
-                                     IsLocked = d.IsLocked,
-                                     CreatedBy = d.CreatedBy,
-                                     CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                     UpdatedBy = d.UpdatedBy,
-                                     UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                     Customer = d.Status == "CLOSE" ? d.TrnSoldUnits.Where(s => s.Status == "SOLD").FirstOrDefault().MstCustomer.LastName : ""
-                                 };
+                              where d.Id == Convert.ToInt32(id)
+                              select new MstUnit
+                              {
+                                  Id = d.Id,
+                                  UnitCode = d.UnitCode,
+                                  Block = d.Block,
+                                  Lot = d.Lot,
+                                  ProjectId = d.ProjectId,
+                                  Project = d.MstProject.Project,
+                                  HouseModelId = d.HouseModelId,
+                                  HouseModel = d.MstHouseModel.HouseModel,
+                                  TLA = d.TLA,
+                                  TFA = d.TFA,
+                                  Price = d.Price,
+                                  TSP = d.TSP,
+                                  Status = d.Status,
+                                  IsLocked = d.IsLocked,
+                                  CreatedBy = d.CreatedBy,
+                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                  UpdatedBy = d.UpdatedBy,
+                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                  Customer = d.Status == "CLOSE" ? d.TrnSoldUnits.Where(s => s.Status == "SOLD").FirstOrDefault().MstCustomer.LastName : ""
+                              };
             return (MstUnit)MstUnitData.FirstOrDefault();
         }
 
@@ -167,6 +170,7 @@ namespace priland_api.Controllers
                             TLA = unit.TLA,
                             TFA = unit.TFA,
                             Price = unit.Price,
+                            TSP = unit.TSP,
                             Status = unit.Status,
                             IsLocked = unit.IsLocked,
                             CreatedBy = currentUser.FirstOrDefault().Id,
@@ -207,7 +211,7 @@ namespace priland_api.Controllers
                 var MstUnitData = from d in db.MstUnits where d.Id == Convert.ToInt32(id) select d;
                 if (MstUnitData.Any())
                 {
-                    if (MstUnitData.First().IsLocked==false)
+                    if (MstUnitData.First().IsLocked == false)
                     {
                         db.MstUnits.DeleteOnSubmit(MstUnitData.First());
                         db.SubmitChanges();
@@ -258,6 +262,7 @@ namespace priland_api.Controllers
                             UpdateMstUnitData.TLA = unit.TLA;
                             UpdateMstUnitData.TFA = unit.TFA;
                             UpdateMstUnitData.Price = unit.Price;
+                            UpdateMstUnitData.TSP = unit.TSP;
                             UpdateMstUnitData.Status = unit.Status;
                             UpdateMstUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
                             UpdateMstUnitData.UpdatedDateTime = DateTime.Now;
@@ -313,6 +318,7 @@ namespace priland_api.Controllers
                         UpdateMstUnitData.TLA = unit.TLA;
                         UpdateMstUnitData.TFA = unit.TFA;
                         UpdateMstUnitData.Price = unit.Price;
+                        UpdateMstUnitData.TSP = unit.TSP;
                         UpdateMstUnitData.Status = unit.Status;
                         UpdateMstUnitData.IsLocked = true;
                         UpdateMstUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;

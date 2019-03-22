@@ -46,11 +46,11 @@ namespace priland_api.Controllers
                                       CustomerId = d.CustomerId,
                                       Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                       BrokerId = d.BrokerId,
-                                      Broker= d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
+                                      Broker = d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
                                       Agent = d.Agent,
                                       BrokerCoordinator = d.BrokerCoordinator,
                                       ChecklistId = d.CheckListId,
-                                      Checklist=d.MstCheckList.CheckList,
+                                      Checklist = d.MstCheckList.CheckList,
                                       Price = d.Price,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
@@ -116,6 +116,7 @@ namespace priland_api.Controllers
                                       ChecklistId = d.CheckListId,
                                       Checklist = d.MstCheckList.CheckList,
                                       Price = d.Price,
+                                      PriceDiscount = d.PriceDiscount,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
                                       EquitySpotPayment1 = d.EquitySpotPayment1,
@@ -175,6 +176,9 @@ namespace priland_api.Controllers
                                       BrokerCoordinator = d.BrokerCoordinator,
                                       ChecklistId = d.CheckListId,
                                       Price = d.Price,
+                                      TCP = d.MstUnit.Price,
+                                      TSP = d.MstUnit.TSP,
+                                      PriceDiscount = d.PriceDiscount,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
                                       EquitySpotPayment1 = d.EquitySpotPayment1,
@@ -197,6 +201,7 @@ namespace priland_api.Controllers
                                       PaymentOptions = d.PaymentOptions,
                                       Financing = d.Financing,
                                       Remarks = d.Remarks,
+                                      FinancingType = d.FinancingType,
                                       PreparedBy = d.PreparedBy,
                                       PreparedByUser = d.MstUser3.Username,
                                       CheckedBy = d.CheckedBy,
@@ -268,7 +273,7 @@ namespace priland_api.Controllers
                     }
 
                     String totalInvestment = "";
-                    String paymentOptions  = "";
+                    String paymentOptions = "";
                     String financing = "";
 
                     var settings = from d in db.SysSettings select d;
@@ -288,9 +293,13 @@ namespace priland_api.Controllers
                         var systemSettings = from d in db.SysSettings select d;
                         if (systemSettings.Any())
                         {
-                            if(systemSettings.FirstOrDefault().SoldUnitCheckedBy>0) checkedBy = systemSettings.FirstOrDefault().SoldUnitCheckedBy;
-                            if(systemSettings.FirstOrDefault().SoldUnitApprovedBy>0) approvedBy = systemSettings.FirstOrDefault().SoldUnitApprovedBy;
+                            if (systemSettings.FirstOrDefault().SoldUnitCheckedBy > 0) checkedBy = systemSettings.FirstOrDefault().SoldUnitCheckedBy;
+                            if (systemSettings.FirstOrDefault().SoldUnitApprovedBy > 0) approvedBy = systemSettings.FirstOrDefault().SoldUnitApprovedBy;
                         }
+
+                        var financingType = from d in db.SysDropDowns
+                                            where d.Category.Equals("FINANCING TYPE")
+                                            select d;
 
                         Data.TrnSoldUnit newTrnSoldUnit = new Data.TrnSoldUnit()
                         {
@@ -331,6 +340,7 @@ namespace priland_api.Controllers
                             Financing = financing,
 
                             Remarks = soldUnit.Remarks,
+                            FinancingType = financingType.FirstOrDefault().Value,
 
                             PreparedBy = currentUser.FirstOrDefault().Id,
                             CheckedBy = checkedBy,
@@ -413,49 +423,61 @@ namespace priland_api.Controllers
                                       select d;
                     if (currentUser.Any())
                     {
-                        var UpdateTrnSoldUnitData = TrnSoldUniData.FirstOrDefault();
+                        var soldUnits = from d in db.TrnSoldUnits
+                                        where d.UnitId == soldUnit.UnitId
+                                        select d;
 
-                        UpdateTrnSoldUnitData.SoldUnitDate = Convert.ToDateTime(soldUnit.SoldUnitDate);
-                        UpdateTrnSoldUnitData.ProjectId = soldUnit.ProjectId;
-                        UpdateTrnSoldUnitData.UnitId = soldUnit.UnitId;
-                        UpdateTrnSoldUnitData.CustomerId = soldUnit.CustomerId;
-                        UpdateTrnSoldUnitData.BrokerId = soldUnit.BrokerId;
-                        UpdateTrnSoldUnitData.Agent = soldUnit.Agent;
-                        UpdateTrnSoldUnitData.BrokerCoordinator = soldUnit.BrokerCoordinator;
-                        UpdateTrnSoldUnitData.CheckListId = soldUnit.ChecklistId;
-                        UpdateTrnSoldUnitData.Price = soldUnit.Price;
-                        UpdateTrnSoldUnitData.EquityValue = soldUnit.EquityValue;
-                        UpdateTrnSoldUnitData.EquityPercent = soldUnit.EquityPercent;
-                        UpdateTrnSoldUnitData.EquitySpotPayment1 = soldUnit.EquitySpotPayment1;
-                        UpdateTrnSoldUnitData.EquitySpotPayment2 = soldUnit.EquitySpotPayment2;
-                        UpdateTrnSoldUnitData.EquitySpotPayment3 = soldUnit.EquitySpotPayment3;
-                        UpdateTrnSoldUnitData.EquitySpotPayment1Pos = soldUnit.EquitySpotPayment1Pos;
-                        UpdateTrnSoldUnitData.EquitySpotPayment2Pos = soldUnit.EquitySpotPayment2Pos;
-                        UpdateTrnSoldUnitData.EquitySpotPayment3Pos = soldUnit.EquitySpotPayment3Pos;
-                        UpdateTrnSoldUnitData.Discount = soldUnit.Discount;
-                        UpdateTrnSoldUnitData.Reservation = soldUnit.Reservation;
-                        UpdateTrnSoldUnitData.NetEquity = soldUnit.NetEquity;
-                        UpdateTrnSoldUnitData.NetEquityInterest = soldUnit.NetEquityInterest;
-                        UpdateTrnSoldUnitData.NetEquityNoOfPayments = soldUnit.NetEquityNoOfPayments;
-                        UpdateTrnSoldUnitData.NetEquityAmortization = soldUnit.NetEquityAmortization;
-                        UpdateTrnSoldUnitData.Balance = soldUnit.Balance;
-                        UpdateTrnSoldUnitData.BalanceInterest = soldUnit.BalanceInterest;
-                        UpdateTrnSoldUnitData.BalanceNoOfPayments = soldUnit.BalanceNoOfPayments;
-                        UpdateTrnSoldUnitData.BalanceAmortization = soldUnit.BalanceAmortization;
-                        UpdateTrnSoldUnitData.TotalInvestment = soldUnit.TotalInvestment;
-                        UpdateTrnSoldUnitData.PaymentOptions = soldUnit.PaymentOptions;
-                        UpdateTrnSoldUnitData.Financing = soldUnit.Financing;
-                        UpdateTrnSoldUnitData.Remarks = soldUnit.Remarks;
-                        UpdateTrnSoldUnitData.PreparedBy = soldUnit.PreparedBy;
-                        UpdateTrnSoldUnitData.CheckedBy = soldUnit.CheckedBy;
-                        UpdateTrnSoldUnitData.ApprovedBy = soldUnit.ApprovedBy;
-                        UpdateTrnSoldUnitData.Status = soldUnit.Status;
-                        UpdateTrnSoldUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
-                        UpdateTrnSoldUnitData.UpdatedDateTime = DateTime.Now;
+                        if (!soldUnits.Any())
+                        {
+                            var UpdateTrnSoldUnitData = TrnSoldUniData.FirstOrDefault();
 
-                        db.SubmitChanges();
+                            UpdateTrnSoldUnitData.SoldUnitDate = Convert.ToDateTime(soldUnit.SoldUnitDate);
+                            UpdateTrnSoldUnitData.ProjectId = soldUnit.ProjectId;
+                            UpdateTrnSoldUnitData.UnitId = soldUnit.UnitId;
+                            UpdateTrnSoldUnitData.CustomerId = soldUnit.CustomerId;
+                            UpdateTrnSoldUnitData.BrokerId = soldUnit.BrokerId;
+                            UpdateTrnSoldUnitData.Agent = soldUnit.Agent;
+                            UpdateTrnSoldUnitData.BrokerCoordinator = soldUnit.BrokerCoordinator;
+                            UpdateTrnSoldUnitData.CheckListId = soldUnit.ChecklistId;
+                            UpdateTrnSoldUnitData.Price = soldUnit.Price;
+                            UpdateTrnSoldUnitData.EquityValue = soldUnit.EquityValue;
+                            UpdateTrnSoldUnitData.EquityPercent = soldUnit.EquityPercent;
+                            UpdateTrnSoldUnitData.EquitySpotPayment1 = soldUnit.EquitySpotPayment1;
+                            UpdateTrnSoldUnitData.EquitySpotPayment2 = soldUnit.EquitySpotPayment2;
+                            UpdateTrnSoldUnitData.EquitySpotPayment3 = soldUnit.EquitySpotPayment3;
+                            UpdateTrnSoldUnitData.EquitySpotPayment1Pos = soldUnit.EquitySpotPayment1Pos;
+                            UpdateTrnSoldUnitData.EquitySpotPayment2Pos = soldUnit.EquitySpotPayment2Pos;
+                            UpdateTrnSoldUnitData.EquitySpotPayment3Pos = soldUnit.EquitySpotPayment3Pos;
+                            UpdateTrnSoldUnitData.Discount = soldUnit.Discount;
+                            UpdateTrnSoldUnitData.Reservation = soldUnit.Reservation;
+                            UpdateTrnSoldUnitData.NetEquity = soldUnit.NetEquity;
+                            UpdateTrnSoldUnitData.NetEquityInterest = soldUnit.NetEquityInterest;
+                            UpdateTrnSoldUnitData.NetEquityNoOfPayments = soldUnit.NetEquityNoOfPayments;
+                            UpdateTrnSoldUnitData.NetEquityAmortization = soldUnit.NetEquityAmortization;
+                            UpdateTrnSoldUnitData.Balance = soldUnit.Balance;
+                            UpdateTrnSoldUnitData.BalanceInterest = soldUnit.BalanceInterest;
+                            UpdateTrnSoldUnitData.BalanceNoOfPayments = soldUnit.BalanceNoOfPayments;
+                            UpdateTrnSoldUnitData.BalanceAmortization = soldUnit.BalanceAmortization;
+                            UpdateTrnSoldUnitData.TotalInvestment = soldUnit.TotalInvestment;
+                            UpdateTrnSoldUnitData.PaymentOptions = soldUnit.PaymentOptions;
+                            UpdateTrnSoldUnitData.Financing = soldUnit.Financing;
+                            UpdateTrnSoldUnitData.Remarks = soldUnit.Remarks;
+                            UpdateTrnSoldUnitData.FinancingType = soldUnit.FinancingType;
+                            UpdateTrnSoldUnitData.PreparedBy = soldUnit.PreparedBy;
+                            UpdateTrnSoldUnitData.CheckedBy = soldUnit.CheckedBy;
+                            UpdateTrnSoldUnitData.ApprovedBy = soldUnit.ApprovedBy;
+                            UpdateTrnSoldUnitData.Status = soldUnit.Status;
+                            UpdateTrnSoldUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
+                            UpdateTrnSoldUnitData.UpdatedDateTime = DateTime.Now;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Unit already sold!");
+                        }
                     }
                     else
                     {
@@ -473,7 +495,7 @@ namespace priland_api.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
-        
+
         //Lock
         [HttpPut, Route("Lock")]
         public HttpResponseMessage LockSoldUnit(TrnSoldUnit soldUnit)
@@ -481,7 +503,7 @@ namespace priland_api.Controllers
             try
             {
                 var TrnSoldUniData = from d in db.TrnSoldUnits where d.Id == Convert.ToInt32(soldUnit.Id) select d;
-                
+
                 if (TrnSoldUniData.Any())
                 {
 
@@ -491,54 +513,66 @@ namespace priland_api.Controllers
 
                     if (currentUser.Any())
                     {
-                        var UpdateTrnSoldUnitData = TrnSoldUniData.FirstOrDefault();
+                        var soldUnits = from d in db.TrnSoldUnits
+                                        where d.UnitId == soldUnit.UnitId
+                                        select d;
 
-                        UpdateTrnSoldUnitData.SoldUnitDate = Convert.ToDateTime(soldUnit.SoldUnitDate);
-                        UpdateTrnSoldUnitData.ProjectId = soldUnit.ProjectId;
-                        UpdateTrnSoldUnitData.UnitId = soldUnit.UnitId;
-                        UpdateTrnSoldUnitData.CustomerId = soldUnit.CustomerId;
-                        UpdateTrnSoldUnitData.BrokerId = soldUnit.BrokerId;
-                        UpdateTrnSoldUnitData.Agent = soldUnit.Agent;
-                        UpdateTrnSoldUnitData.BrokerCoordinator = soldUnit.BrokerCoordinator;
-                        UpdateTrnSoldUnitData.CheckListId = soldUnit.ChecklistId;
-                        UpdateTrnSoldUnitData.Price = soldUnit.Price;
-                        UpdateTrnSoldUnitData.EquityValue = soldUnit.EquityValue;
-                        UpdateTrnSoldUnitData.EquityPercent = soldUnit.EquityPercent;
-                        UpdateTrnSoldUnitData.EquitySpotPayment1 = soldUnit.EquitySpotPayment1;
-                        UpdateTrnSoldUnitData.EquitySpotPayment2 = soldUnit.EquitySpotPayment2;
-                        UpdateTrnSoldUnitData.EquitySpotPayment3 = soldUnit.EquitySpotPayment3;
-                        UpdateTrnSoldUnitData.EquitySpotPayment1Pos = soldUnit.EquitySpotPayment1Pos;
-                        UpdateTrnSoldUnitData.EquitySpotPayment2Pos = soldUnit.EquitySpotPayment2Pos;
-                        UpdateTrnSoldUnitData.EquitySpotPayment3Pos = soldUnit.EquitySpotPayment3Pos;
-                        UpdateTrnSoldUnitData.Discount = soldUnit.Discount;
-                        UpdateTrnSoldUnitData.Reservation = soldUnit.Reservation;
-                        UpdateTrnSoldUnitData.NetEquity = soldUnit.NetEquity;
-                        UpdateTrnSoldUnitData.NetEquityInterest = soldUnit.NetEquityInterest;
-                        UpdateTrnSoldUnitData.NetEquityNoOfPayments = soldUnit.NetEquityNoOfPayments;
-                        UpdateTrnSoldUnitData.NetEquityAmortization = soldUnit.NetEquityAmortization;
-                        UpdateTrnSoldUnitData.Balance = soldUnit.Balance;
-                        UpdateTrnSoldUnitData.BalanceInterest = soldUnit.BalanceInterest;
-                        UpdateTrnSoldUnitData.BalanceNoOfPayments = soldUnit.BalanceNoOfPayments;
-                        UpdateTrnSoldUnitData.BalanceAmortization = soldUnit.BalanceAmortization;
-                        UpdateTrnSoldUnitData.TotalInvestment = soldUnit.TotalInvestment;
-                        UpdateTrnSoldUnitData.PaymentOptions = soldUnit.PaymentOptions;
-                        UpdateTrnSoldUnitData.Financing = soldUnit.Financing;
-                        UpdateTrnSoldUnitData.Remarks = soldUnit.Remarks;
-                        UpdateTrnSoldUnitData.PreparedBy = soldUnit.PreparedBy;
-                        UpdateTrnSoldUnitData.CheckedBy = soldUnit.CheckedBy;
-                        UpdateTrnSoldUnitData.ApprovedBy = soldUnit.ApprovedBy;
-                        UpdateTrnSoldUnitData.Status = soldUnit.Status;
-                        UpdateTrnSoldUnitData.IsLocked = true;
-                        UpdateTrnSoldUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
-                        UpdateTrnSoldUnitData.UpdatedDateTime = DateTime.Now;
+                        if (!soldUnits.Any())
+                        {
+                            var UpdateTrnSoldUnitData = TrnSoldUniData.FirstOrDefault();
 
-                        // update unit status
-                        var currentUnit = from d in db.MstUnits where d.Id == soldUnit.UnitId select d;
-                        currentUnit.FirstOrDefault().Status = "CLOSE";
+                            UpdateTrnSoldUnitData.SoldUnitDate = Convert.ToDateTime(soldUnit.SoldUnitDate);
+                            UpdateTrnSoldUnitData.ProjectId = soldUnit.ProjectId;
+                            UpdateTrnSoldUnitData.UnitId = soldUnit.UnitId;
+                            UpdateTrnSoldUnitData.CustomerId = soldUnit.CustomerId;
+                            UpdateTrnSoldUnitData.BrokerId = soldUnit.BrokerId;
+                            UpdateTrnSoldUnitData.Agent = soldUnit.Agent;
+                            UpdateTrnSoldUnitData.BrokerCoordinator = soldUnit.BrokerCoordinator;
+                            UpdateTrnSoldUnitData.CheckListId = soldUnit.ChecklistId;
+                            UpdateTrnSoldUnitData.Price = soldUnit.Price;
+                            UpdateTrnSoldUnitData.EquityValue = soldUnit.EquityValue;
+                            UpdateTrnSoldUnitData.EquityPercent = soldUnit.EquityPercent;
+                            UpdateTrnSoldUnitData.EquitySpotPayment1 = soldUnit.EquitySpotPayment1;
+                            UpdateTrnSoldUnitData.EquitySpotPayment2 = soldUnit.EquitySpotPayment2;
+                            UpdateTrnSoldUnitData.EquitySpotPayment3 = soldUnit.EquitySpotPayment3;
+                            UpdateTrnSoldUnitData.EquitySpotPayment1Pos = soldUnit.EquitySpotPayment1Pos;
+                            UpdateTrnSoldUnitData.EquitySpotPayment2Pos = soldUnit.EquitySpotPayment2Pos;
+                            UpdateTrnSoldUnitData.EquitySpotPayment3Pos = soldUnit.EquitySpotPayment3Pos;
+                            UpdateTrnSoldUnitData.Discount = soldUnit.Discount;
+                            UpdateTrnSoldUnitData.Reservation = soldUnit.Reservation;
+                            UpdateTrnSoldUnitData.NetEquity = soldUnit.NetEquity;
+                            UpdateTrnSoldUnitData.NetEquityInterest = soldUnit.NetEquityInterest;
+                            UpdateTrnSoldUnitData.NetEquityNoOfPayments = soldUnit.NetEquityNoOfPayments;
+                            UpdateTrnSoldUnitData.NetEquityAmortization = soldUnit.NetEquityAmortization;
+                            UpdateTrnSoldUnitData.Balance = soldUnit.Balance;
+                            UpdateTrnSoldUnitData.BalanceInterest = soldUnit.BalanceInterest;
+                            UpdateTrnSoldUnitData.BalanceNoOfPayments = soldUnit.BalanceNoOfPayments;
+                            UpdateTrnSoldUnitData.BalanceAmortization = soldUnit.BalanceAmortization;
+                            UpdateTrnSoldUnitData.TotalInvestment = soldUnit.TotalInvestment;
+                            UpdateTrnSoldUnitData.PaymentOptions = soldUnit.PaymentOptions;
+                            UpdateTrnSoldUnitData.Financing = soldUnit.Financing;
+                            UpdateTrnSoldUnitData.Remarks = soldUnit.Remarks;
+                            UpdateTrnSoldUnitData.FinancingType = soldUnit.FinancingType;
+                            UpdateTrnSoldUnitData.PreparedBy = soldUnit.PreparedBy;
+                            UpdateTrnSoldUnitData.CheckedBy = soldUnit.CheckedBy;
+                            UpdateTrnSoldUnitData.ApprovedBy = soldUnit.ApprovedBy;
+                            UpdateTrnSoldUnitData.Status = soldUnit.Status;
+                            UpdateTrnSoldUnitData.IsLocked = true;
+                            UpdateTrnSoldUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
+                            UpdateTrnSoldUnitData.UpdatedDateTime = DateTime.Now;
 
-                        db.SubmitChanges();
+                            // update unit status
+                            var currentUnit = from d in db.MstUnits where d.Id == soldUnit.UnitId select d;
+                            currentUnit.FirstOrDefault().Status = "CLOSE";
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Unit already sold!");
+                        }
                     }
                     else
                     {
@@ -564,13 +598,13 @@ namespace priland_api.Controllers
             try
             {
                 var TrnSoldUnitData = from d in db.TrnSoldUnits where d.Id == Convert.ToInt32(soldUnit.Id) select d;
-                
+
                 if (TrnSoldUnitData.Any())
                 {
                     var currentUser = from d in db.MstUsers
                                       where d.AspNetId == User.Identity.GetUserId()
                                       select d;
-                    
+
                     if (currentUser.Any())
                     {
                         var UnLockTrnSoldUnitData = TrnSoldUnitData.FirstOrDefault();
@@ -736,6 +770,10 @@ namespace priland_api.Controllers
 
                             if (projectId > 0 && unitId > 0 && checklistId > 0 && customerId > 0 && brokerId > 0)
                             {
+                                var financingType = from d in db.SysDropDowns
+                                                    where d.Category.Equals("FINANCING TYPE")
+                                                    select d;
+
                                 Data.TrnSoldUnit newTrnSoldUnit = new Data.TrnSoldUnit()
                                 {
                                     SoldUnitNumber = soldUnitNumber,
@@ -776,6 +814,7 @@ namespace priland_api.Controllers
 
                                     Remarks = soldUnit.Remarks,
 
+                                    FinancingType = financingType.FirstOrDefault().Value,
                                     PreparedBy = currentUser.FirstOrDefault().Id,
                                     CheckedBy = currentUser.FirstOrDefault().Id,
                                     ApprovedBy = currentUser.FirstOrDefault().Id,
@@ -797,7 +836,7 @@ namespace priland_api.Controllers
                             {
                                 return 0;
                             }
-                         
+
                         }
                         else
                         {

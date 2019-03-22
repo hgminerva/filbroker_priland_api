@@ -22,7 +22,10 @@ namespace priland_api.Models
         public String BrokerCoordinator { get; set; }
         public Int32 ChecklistId { get; set; }
         public String Checklist { get; set; }
+        public Decimal PriceDiscount { get; set; }
         public Decimal Price { get; set; }
+        public Decimal TCP { get; set; }
+        public Decimal TSP { get; set; }
         public Decimal EquityValue { get; set; }
         public Decimal EquityPercent { get; set; }
         public Decimal EquitySpotPayment1 { get; set; }
@@ -45,6 +48,7 @@ namespace priland_api.Models
         public String PaymentOptions { get; set; }
         public String Financing { get; set; }
         public String Remarks { get; set; }
+        public String FinancingType { get; set; }
         public Int32 PreparedBy { get; set; }
         public String PreparedByUser { get; set; }
         public Int32 CheckedBy { get; set; }

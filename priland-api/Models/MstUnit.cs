@@ -18,6 +18,7 @@ namespace priland_api.Models
         public Decimal TLA { get; set; }
         public Decimal TFA { get; set; }
         public Decimal Price { get; set; }
+        public Decimal TSP { get; set; }
         public String Status { get; set; }
         public Boolean IsLocked { get; set; }
         public Int32 CreatedBy { get; set; }

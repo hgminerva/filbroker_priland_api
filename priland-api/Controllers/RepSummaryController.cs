@@ -81,29 +81,29 @@ namespace priland_api.Controllers
                                                    d.TrnSoldUnit.SoldUnitDate <= Convert.ToDateTime(dateEnd)
                                              orderby d.TrnSoldUnit.SoldUnitDate, d.TrnSoldUnit.SoldUnitNumber, d.MstCheckListRequirement.RequirementNo ascending
                                              select new TrnSoldUnitRequirement
-                                              {
-                                                Id = d.Id,
-                                                SoldUnitId = d.SoldUnitId,
-                                                ChecklistRequirementId = d.MstCheckListRequirement.Id,
-                                                ChecklistRequirement = d.MstCheckListRequirement.Requirement,
-                                                ChecklistRequirementNo = d.MstCheckListRequirement.RequirementNo,
-                                                ChecklistCategory = d.MstCheckListRequirement.Category,
-                                                ChecklistType = d.MstCheckListRequirement.Type,
-                                                ChecklistWithAttachments = d.MstCheckListRequirement.WithAttachments,
-                                                Attachment1 = d.Attachment1,
-                                                Attachment2 = d.Attachment2,
-                                                Attachment3 = d.Attachment3,
-                                                Attachment4 = d.Attachment4,
-                                                Attachment5 = d.Attachment5,
-                                                Remarks = d.Remarks,
-                                                Status = d.Status,
-                                                StatusDate = d.StatusDate.ToShortDateString(),
-                                                SoldUnitNumber = d.TrnSoldUnit.SoldUnitNumber,
-                                                SoldUnitDate = d.TrnSoldUnit.SoldUnitDate.ToShortDateString(),
-                                                Project = d.TrnSoldUnit.MstProject.Project,
-                                                Unit = d.TrnSoldUnit.MstUnit.UnitCode,
-                                                Customer = d.TrnSoldUnit.MstCustomer.LastName + ", " + d.TrnSoldUnit.MstCustomer.FirstName + " " + d.TrnSoldUnit.MstCustomer.MiddleName
-                                              };
+                                             {
+                                                 Id = d.Id,
+                                                 SoldUnitId = d.SoldUnitId,
+                                                 ChecklistRequirementId = d.MstCheckListRequirement.Id,
+                                                 ChecklistRequirement = d.MstCheckListRequirement.Requirement,
+                                                 ChecklistRequirementNo = d.MstCheckListRequirement.RequirementNo,
+                                                 ChecklistCategory = d.MstCheckListRequirement.Category,
+                                                 ChecklistType = d.MstCheckListRequirement.Type,
+                                                 ChecklistWithAttachments = d.MstCheckListRequirement.WithAttachments,
+                                                 Attachment1 = d.Attachment1,
+                                                 Attachment2 = d.Attachment2,
+                                                 Attachment3 = d.Attachment3,
+                                                 Attachment4 = d.Attachment4,
+                                                 Attachment5 = d.Attachment5,
+                                                 Remarks = d.Remarks,
+                                                 Status = d.Status,
+                                                 StatusDate = d.StatusDate.ToShortDateString(),
+                                                 SoldUnitNumber = d.TrnSoldUnit.SoldUnitNumber,
+                                                 SoldUnitDate = d.TrnSoldUnit.SoldUnitDate.ToShortDateString(),
+                                                 Project = d.TrnSoldUnit.MstProject.Project,
+                                                 Unit = d.TrnSoldUnit.MstUnit.UnitCode,
+                                                 Customer = d.TrnSoldUnit.MstCustomer.LastName + ", " + d.TrnSoldUnit.MstCustomer.FirstName + " " + d.TrnSoldUnit.MstCustomer.MiddleName
+                                             };
             return TrnSoldUnitRequirementData.ToList();
         }
 
@@ -166,6 +166,50 @@ namespace priland_api.Controllers
                                                        User = d.MstUser.FullName
                                                    };
             return TrnSoldUnitRequirementActivities.ToList();
+        }
+
+        // Customer List Filtered By UpdateDateTime
+        [HttpGet, Route("ListCustomerFilterByUpdateDateTime/{dateStart}/{dateEnd}")]
+        public List<MstCustomer> GetCustomerListFilterByUpdateDateTime(string dateStart, string dateEnd)
+        {
+            var MstCustomerList = from d in db.MstCustomers
+                                  where d.UpdatedDateTime >= Convert.ToDateTime(dateStart) &&
+                                        d.UpdatedDateTime <= Convert.ToDateTime(dateEnd)
+                                  select new MstCustomer
+                                  {
+                                      Id = d.Id,
+                                      CustomerCode = d.CustomerCode,
+                                      LastName = d.LastName,
+                                      FirstName = d.FirstName,
+                                      Gender = d.Gender,
+                                      Address = d.Address,
+                                      EmailAddress = d.EmailAddress,
+                                      TelephoneNumber = d.TelephoneNumber
+                                  };
+
+            return MstCustomerList.ToList();
+        }
+
+        // Broker List Filtered By UpdateDateTime
+        [HttpGet, Route("ListBrokerFilterByUpdateDateTime/{dateStart}/{dateEnd}")]
+        public List<MstBroker> GetBrokerListFilterByUpdateDateTime(string dateStart, string dateEnd)
+        {
+            var MstBrokerList = from d in db.MstBrokers
+                                  where d.UpdatedDateTime >= Convert.ToDateTime(dateStart) &&
+                                        d.UpdatedDateTime <= Convert.ToDateTime(dateEnd)
+                                  select new MstBroker
+                                  {
+                                      Id = d.Id,
+                                      BrokerCode = d.BrokerCode,
+                                      LastName = d.LastName,
+                                      FirstName = d.FirstName,
+                                      Gender = d.Gender,
+                                      Address = d.Address,
+                                      EmailAddress = d.EmailAddress,
+                                      TelephoneNumber = d.TelephoneNumber
+                                  };
+
+            return MstBrokerList.ToList();
         }
     }
 }
