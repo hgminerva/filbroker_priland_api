@@ -1516,7 +1516,7 @@ namespace priland_api.Controllers
             PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
             document.SetPageSize(new Rectangle(612, 1728));
-            document.SetMargins(30f, 30f, 30f, 30f);
+            document.SetMargins(30f, 30f, 0f, 0f);
 
             // =============
             // Open Document
