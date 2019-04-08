@@ -423,11 +423,23 @@ namespace priland_api.Controllers
                                       select d;
                     if (currentUser.Any())
                     {
+                        Boolean isSold = false;
+
                         var soldUnits = from d in db.TrnSoldUnits
                                         where d.UnitId == soldUnit.UnitId
+                                        && d.Id != soldUnit.Id
                                         select d;
 
-                        if (!soldUnits.Any())
+                        if (soldUnits.Any())
+                        {
+                            isSold = true;
+                        }
+
+                        if (isSold)
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Unit already sold!");
+                        }
+                        else
                         {
                             var UpdateTrnSoldUnitData = TrnSoldUniData.FirstOrDefault();
 
@@ -474,10 +486,6 @@ namespace priland_api.Controllers
 
                             return Request.CreateResponse(HttpStatusCode.OK);
                         }
-                        else
-                        {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Unit already sold!");
-                        }
                     }
                     else
                     {
@@ -513,11 +521,23 @@ namespace priland_api.Controllers
 
                     if (currentUser.Any())
                     {
+                        Boolean isSold = false;
+
                         var soldUnits = from d in db.TrnSoldUnits
                                         where d.UnitId == soldUnit.UnitId
+                                        && d.Id != soldUnit.Id
                                         select d;
 
-                        if (!soldUnits.Any())
+                        if (soldUnits.Any())
+                        {
+                            isSold = true;
+                        }
+
+                        if (isSold)
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Unit already sold!");
+                        }
+                        else
                         {
                             var UpdateTrnSoldUnitData = TrnSoldUniData.FirstOrDefault();
 
@@ -568,10 +588,6 @@ namespace priland_api.Controllers
                             db.SubmitChanges();
 
                             return Request.CreateResponse(HttpStatusCode.OK);
-                        }
-                        else
-                        {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Unit already sold!");
                         }
                     }
                     else
