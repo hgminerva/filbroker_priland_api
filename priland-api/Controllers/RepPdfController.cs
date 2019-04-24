@@ -1585,10 +1585,7 @@ namespace priland_api.Controllers
                 document.Add(spaceTable);
 
                 Phrase p2Phrase = new Phrase(
-                    "This Contact to Sell (hereinafter referred to as the “Contract”) made and entered into this day of ________________ at Cebu City, Cebu, Philippines, by and between:", fontArial12);
-
-               // " + soldUnit.FirstOrDefault().SoldUnitDate.ToString("MM-dd-yyyy", CultureInfo.InvariantCulture) + "
-
+                    "This Contact to Sell (hereinafter referred to as the “Contract”) made and entered into this day of " + soldUnit.FirstOrDefault().SoldUnitDate.ToString("MM-dd-yyyy", CultureInfo.InvariantCulture) + "at Cebu City, Cebu, Philippines, by and between:", fontArial12);
 
 
                 Paragraph p2 = new Paragraph
@@ -1798,10 +1795,10 @@ namespace priland_api.Controllers
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Project", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstProject.Project, fontArial12Bold)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Block/Building No.", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Floor", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.Block, fontArial12Bold)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Lot/Floor-Unit No.", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Unit", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.Lot, fontArial12Bold)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Lot Area", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
@@ -2561,7 +2558,7 @@ namespace priland_api.Controllers
                 document.Add(p51);
                 document.Add(spaceTable);
 
-                Phrase p52Phrase = new Phrase("(a) Payment in full of the CONTRACT PRICE and any ann all interests, penalties and other charges such as, but not limited to, telephone, cable, electric and water"
+                Phrase p52Phrase = new Phrase("(a) Payment in full of the CONTRACT PRICE and any all interests, penalties and other charges such as, but not limited to, telephone, cable, electric and water"
                     + " connections and deposits which may have accrued or which may have been advanced by the SELLER, including all other obligations of the BUYER under this Contract such as"
                     + " insurance premiums, cost of repairs, real state taxes advanced by the SELLER and bank charges or interests incidental to the BUYER’S loan or financial package;", fontArial12);
 
