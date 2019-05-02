@@ -1602,7 +1602,7 @@ namespace priland_api.Controllers
                     Phrase p3Phrase = new Phrase(sysSettings.FirstOrDefault().Company, fontArial12Bold);
                     Phrase p3Phrase2 = new Phrase(
                         ", a corporation duly organized and existing under and by virtue of the laws of the Philippines,"
-                        + " with principal office address at S. Jayme St., Zone Pechay, Pakna-an, Mandaue City,"
+                        + " with principal office address at Priland Development Corporation 18th Floor, BPI Cebu Corporation Center Cor. Archbishop Reyes & Luzon Ave. Cebu Business Park, Cebu City 6000,"
                         + " represented in this contract by ________________, now and hereinafter referred to as the “SELLER”;", fontArial12);
 
                     Paragraph p3 = new Paragraph
@@ -2131,7 +2131,7 @@ namespace priland_api.Controllers
                 document.Add(spaceTable);
 
                 Phrase p18Phrase = new Phrase("All payments other than those covered by the postdated checks due under this Contract shall be made by the BUYER to the SELLER’s cashiers at the SELLER’s"
-                    + " office at S.Jayme St., Zone Pechay, Pakna-an, Mandaue City, Cebu Philippines, without necessity of demand or notice. Failure by the BUYER to do so shall entitle"
+                    + " office at Priland Development Corporation 18th Floor, BPI Cebu Corporation Center Cor. Archbishop Reyes & Luzon Ave. Cebu Business Park, Cebu City 6000, without necessity of demand or notice. Failure by the BUYER to do so shall entitle"
                     + " the SELLER to charge penalty at the rate of 3% per month.", fontArial12);
 
                 Paragraph p18 = new Paragraph
