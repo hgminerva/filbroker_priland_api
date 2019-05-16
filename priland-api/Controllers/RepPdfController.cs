@@ -1510,13 +1510,22 @@ namespace priland_api.Controllers
         [HttpGet, Route("SoldUnitContract/{id}")]
         public HttpResponseMessage PdfSoldUnitContract(int id)
         {
-            // ===============
-            // Open PDF Stream
-            // ===============
-            PdfWriter.GetInstance(document, workStream).CloseStream = false;
+            Font updateFontArial10 = FontFactory.GetFont("Arial", 7);
+            Font updateFontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+            Font updateFontArial10BoldItalic = FontFactory.GetFont("Arial", 5, Font.BOLDITALIC, BaseColor.WHITE);
+            Font updateFontArial12Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+            Font updateFontArial12BoldItalic = FontFactory.GetFont("Arial", 7, Font.BOLDITALIC);
+            Font updateFontArial12 = FontFactory.GetFont("Arial", 7);
+            Font updateFontArial12Italic = FontFactory.GetFont("Arial", 7, Font.ITALIC);
+            Font updateFontArial17Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
+            Font updateFontArial11Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+        // ===============
+        // Open PDF Stream
+        // ===============
+        PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
             document.SetPageSize(new Rectangle(612, 1728));
-            document.SetMargins(30f, 30f, 0f, 0f);
+            document.SetMargins(30f, 30f, 10f, 10f);
 
             // =============
             // Open Document
@@ -1527,10 +1536,10 @@ namespace priland_api.Controllers
             // Space Table
             // ===========
             PdfPTable spaceTable = new PdfPTable(1);
-            float[] widthCellsSpaceTable = new float[] { 100f };
+            float[] widthCellsSpaceTable = new float[] { 5f };
             spaceTable.SetWidths(widthCellsSpaceTable);
-            spaceTable.WidthPercentage = 100;
-            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 5f, Border = 0 });
+            spaceTable.WidthPercentage = 80;
+            spaceTable.AddCell(new PdfPCell(new Phrase(" ", updateFontArial10Bold)) { PaddingTop = 1f, Border = 0 });
 
             // ===============
             // Settings (Data)
@@ -1547,7 +1556,7 @@ namespace priland_api.Controllers
                 //pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
                 //pdfTableCompanyDetail.WidthPercentage = 100;
                 //pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase(sysSettings.FirstOrDefault().Company, fontArial17Bold)) { Border = 0 });
-                //pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Contract to Sell", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
+                //pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Contract to Sell", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 }); 
                 //document.Add(pdfTableCompanyDetail);
                 //document.Add(line);
 
@@ -1570,22 +1579,24 @@ namespace priland_api.Controllers
                 pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
                 pdfTableCompanyDetail.WidthPercentage = 100;
                 pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
-                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Contract to Sell", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Contract to Sell", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
                 document.Add(pdfTableCompanyDetail);
                 document.Add(line);
 
                 document.Add(spaceTable);
 
+
                 Paragraph p1 = new Paragraph
                 {
-                    new Chunk("KNOW ALL MEN BY THESE PRESENTS", fontArial12)
+                    new Chunk("KNOW ALL MEN BY THESE PRESENTS", updateFontArial12)
                 };
 
+                p1.SetLeading(7f, 0);
                 document.Add(p1);
                 document.Add(spaceTable);
 
                 Phrase p2Phrase = new Phrase(
-                    "This Contact to Sell (hereinafter referred to as the “Contract”) made and entered into this day of " + soldUnit.FirstOrDefault().SoldUnitDate.ToString("MM-dd-yyyy", CultureInfo.InvariantCulture) + "at Cebu City, Cebu, Philippines, by and between:", fontArial12);
+                    "This Contact to Sell (hereinafter referred to as the “Contract”) made and entered into this day of " + soldUnit.FirstOrDefault().SoldUnitDate.ToString("MM-dd-yyyy", CultureInfo.InvariantCulture) + "at Cebu City, Cebu, Philippines, by and between:", updateFontArial12);
 
 
                 Paragraph p2 = new Paragraph
@@ -1593,22 +1604,26 @@ namespace priland_api.Controllers
                     p2Phrase
                 };
 
-                p2.FirstLineIndent = 80f;
+                p2.SetLeading(7f, 0);
+
+
+                p2.FirstLineIndent = 40f;
                 document.Add(p2);
                 document.Add(spaceTable);
 
                 if (sysSettings.Any())
                 {
-                    Phrase p3Phrase = new Phrase(sysSettings.FirstOrDefault().Company, fontArial12Bold);
+                    Phrase p3Phrase = new Phrase(sysSettings.FirstOrDefault().Company, updateFontArial12Bold);
                     Phrase p3Phrase2 = new Phrase(
                         ", a corporation duly organized and existing under and by virtue of the laws of the Philippines,"
                         + " with principal office address at Priland Development Corporation 18th Floor, BPI Cebu Corporation Center Cor. Archbishop Reyes & Luzon Ave. Cebu Business Park, Cebu City 6000,"
-                        + " represented in this contract by ________________, now and hereinafter referred to as the “SELLER”;", fontArial12);
+                        + " represented in this contract by ________________, now and hereinafter referred to as the “SELLER”;", updateFontArial12);
 
                     Paragraph p3 = new Paragraph
                     {
                         p3Phrase, p3Phrase2
                     };
+                    p3.SetLeading(7f, 0);
 
                     p3.Alignment = Element.ALIGN_JUSTIFIED;
                     p3.IndentationLeft = 80f;
@@ -1630,27 +1645,30 @@ namespace priland_api.Controllers
 
                 if (CivilStatus.Equals("MARRIED"))
                 {
-                    Phrase p4Phrase = new Phrase("-and-", fontArial12);
+                    Phrase p4Phrase = new Phrase("-and-", updateFontArial12);
                     Paragraph p4 = new Paragraph
                     {
                         p4Phrase
                     };
 
+                    p4.SetLeading(7f, 0);
+
                     p4.Alignment = 1;
                     document.Add(p4);
                     document.Add(spaceTable);
 
-                    Phrase p5Phrase = new Phrase(Customer, fontArial12Bold);
-                    Phrase p5Phrase1 = new Phrase(", of legal age, " + Citizen + " married to ", fontArial12);
-                    Phrase p5Phrase2 = new Phrase(Spouse, fontArial12);
-                    Phrase p5Phrase3 = new Phrase(", and with residence and postal address at ", fontArial12);
-                    Phrase p5Phrase4 = new Phrase(Address, fontArial12);
-                    Phrase p5Phrase5 = new Phrase(", hereinafter referred as the “BUYER”.", fontArial12);
+                    Phrase p5Phrase = new Phrase(Customer, updateFontArial12Bold);
+                    Phrase p5Phrase1 = new Phrase(", of legal age, " + Citizen + " married to ", updateFontArial12);
+                    Phrase p5Phrase2 = new Phrase(Spouse, updateFontArial12);
+                    Phrase p5Phrase3 = new Phrase(", and with residence and postal address at ", updateFontArial12);
+                    Phrase p5Phrase4 = new Phrase(Address, updateFontArial12);
+                    Phrase p5Phrase5 = new Phrase(", hereinafter referred as the “BUYER”.", updateFontArial12);
 
                     Paragraph p5 = new Paragraph {
                                     p5Phrase, p5Phrase1, p5Phrase2, p5Phrase3, p5Phrase4, p5Phrase5
                                 };
 
+                    p5.SetLeading(7f, 0);
                     p5.Alignment = Element.ALIGN_JUSTIFIED;
                     p5.IndentationLeft = 80f;
                     p5.IndentationRight = 80f;
@@ -1660,26 +1678,27 @@ namespace priland_api.Controllers
                 }
                 else
                 {
-                    Phrase p4Phrase = new Phrase("-and-", fontArial12);
+                    Phrase p4Phrase = new Phrase("-and-", updateFontArial12);
                     Paragraph p4 = new Paragraph
                     {
                         p4Phrase
                     };
 
+                    p4.SetLeading(7f, 0);
                     p4.Alignment = 1;
                     document.Add(p4);
                     document.Add(spaceTable);
 
-                    Phrase p5Phrase = new Phrase(Customer, fontArial12Bold);
-                    Phrase p5Phrase1 = new Phrase(", of legal age, " + Citizen, fontArial12);
-                    Phrase p5Phrase3 = new Phrase(", with residence and postal address at ", fontArial12);
-                    Phrase p5Phrase4 = new Phrase(Address, fontArial12);
-                    Phrase p5Phrase5 = new Phrase(", hereinafter referred as the “BUYER”.", fontArial12);
+                    Phrase p5Phrase = new Phrase(Customer, updateFontArial12Bold);
+                    Phrase p5Phrase1 = new Phrase(", of legal age, " + Citizen, updateFontArial12);
+                    Phrase p5Phrase3 = new Phrase(", with residence and postal address at ", updateFontArial12);
+                    Phrase p5Phrase4 = new Phrase(Address, updateFontArial12);
+                    Phrase p5Phrase5 = new Phrase(", hereinafter referred as the “BUYER”.", updateFontArial12);
 
                     Paragraph p5 = new Paragraph {
                                     p5Phrase, p5Phrase1, p5Phrase3, p5Phrase4, p5Phrase5
                                 };
-
+                    p5.SetLeading(7f, 0);
                     p5.Alignment = Element.ALIGN_JUSTIFIED;
                     p5.IndentationLeft = 80f;
                     p5.IndentationRight = 80f;
@@ -1701,26 +1720,27 @@ namespace priland_api.Controllers
 
                         if (coOwner.MstCustomer.CivilStatus.Equals("MARRIED"))
                         {
-                            Phrase p4Phrase = new Phrase("-and-", fontArial12);
+                            Phrase p4Phrase = new Phrase("-and-", updateFontArial12);
                             Paragraph p4 = new Paragraph
                             {
                                 p4Phrase
                             };
-
+                            p4.SetLeading(7f, 0);
                             p4.Alignment = 1;
                             document.Add(p4);
                             document.Add(spaceTable);
 
-                            Phrase p5Phrase = new Phrase(coOwnerCustomer, fontArial12Bold);
-                            Phrase p5Phrase1 = new Phrase(", of legal age, " + Citizen + " married to ", fontArial12);
-                            Phrase p5Phrase2 = new Phrase(coOwnerSpouse, fontArial12);
-                            Phrase p5Phrase3 = new Phrase(", and with residence and postal address at ", fontArial12);
-                            Phrase p5Phrase4 = new Phrase(coOwner.MstCustomer.Address, fontArial12);
-                            Phrase p5Phrase5 = new Phrase(", hereinafter referred as the “BUYER”.", fontArial12);
+                            Phrase p5Phrase = new Phrase(coOwnerCustomer, updateFontArial12Bold);
+                            Phrase p5Phrase1 = new Phrase(", of legal age, " + Citizen + " married to ", updateFontArial12);
+                            Phrase p5Phrase2 = new Phrase(coOwnerSpouse, updateFontArial12);
+                            Phrase p5Phrase3 = new Phrase(", and with residence and postal address at ", updateFontArial12);
+                            Phrase p5Phrase4 = new Phrase(coOwner.MstCustomer.Address, updateFontArial12);
+                            Phrase p5Phrase5 = new Phrase(", hereinafter referred as the “BUYER”.", updateFontArial12);
 
                             Paragraph p5 = new Paragraph {
                                     p5Phrase, p5Phrase1, p5Phrase2, p5Phrase3, p5Phrase4, p5Phrase5
                                 };
+                            p5.SetLeading(7f, 0);
 
                             p5.Alignment = Element.ALIGN_JUSTIFIED;
                             p5.IndentationLeft = 80f;
@@ -1731,25 +1751,27 @@ namespace priland_api.Controllers
                         }
                         else
                         {
-                            Phrase p4Phrase = new Phrase("-and-", fontArial12);
+                            Phrase p4Phrase = new Phrase("-and-", updateFontArial12);
                             Paragraph p4 = new Paragraph
                             {
                                 p4Phrase
                             };
+                            p4.SetLeading(7f, 0);
 
                             p4.Alignment = 1;
                             document.Add(p4);
                             document.Add(spaceTable);
 
-                            Phrase p5Phrase = new Phrase(coOwnerCustomer, fontArial12Bold);
-                            Phrase p5Phrase1 = new Phrase(", of legal age, " + Citizen, fontArial12);
-                            Phrase p5Phrase3 = new Phrase(", with residence and postal address at ", fontArial12);
-                            Phrase p5Phrase4 = new Phrase(coOwner.MstCustomer.Address, fontArial12);
-                            Phrase p5Phrase5 = new Phrase(", hereinafter referred as the “BUYER”.", fontArial12);
+                            Phrase p5Phrase = new Phrase(coOwnerCustomer, updateFontArial12Bold);
+                            Phrase p5Phrase1 = new Phrase(", of legal age, " + Citizen, updateFontArial12);
+                            Phrase p5Phrase3 = new Phrase(", with residence and postal address at ", updateFontArial12);
+                            Phrase p5Phrase4 = new Phrase(coOwner.MstCustomer.Address, updateFontArial12);
+                            Phrase p5Phrase5 = new Phrase(", hereinafter referred as the “BUYER”.", updateFontArial12);
 
                             Paragraph p5 = new Paragraph {
                                 p5Phrase, p5Phrase1, p5Phrase3, p5Phrase4, p5Phrase5
                             };
+                            p5.SetLeading(7f, 0);
 
                             p5.Alignment = Element.ALIGN_JUSTIFIED;
                             p5.IndentationLeft = 80f;
@@ -1761,12 +1783,13 @@ namespace priland_api.Controllers
                     }
                 }
 
-                Phrase p6Phrase = new Phrase("WITNESSETH:", fontArial12);
+                Phrase p6Phrase = new Phrase("WITNESSETH:", updateFontArial12);
                 Paragraph p6 = new Paragraph
                 {
                     p6Phrase
                 };
 
+                p6.SetLeading(7f, 0);
                 p6.Alignment = 1;
                 document.Add(p6);
                 document.Add(spaceTable);
@@ -1775,13 +1798,14 @@ namespace priland_api.Controllers
                     + " to fully perform and comply with all his/her/their obligations,covenants,conditions,and restrictions as herein specified and as enumerated"
                     + " in the DECLARATION OF COVENANTS,CONDITIONS AND RESTRICTIONS (attached hereto as Annex “A” and hereby made an integral part thereof), the SELLER"
                     + " hereby agrees and contracts to sell to the BUYER, and the latter hereby agree/s and contract/s to buy form the former, one(1) dwelling unit,"
-                    + " situated in " + soldUnit.FirstOrDefault().MstProject.Address + ", which unit is specifically identified as (as hereinafter referred to as UNIT):", fontArial12);
+                    + " situated in " + soldUnit.FirstOrDefault().MstProject.Address + ", which unit is specifically identified as (as hereinafter referred to as UNIT):", updateFontArial12);
                 Paragraph p7 = new Paragraph
                 {
                     p7Phrase
                 };
 
-                p7.FirstLineIndent = 40f;
+                p7.SetLeading(7f, 0);
+                p7.FirstLineIndent = 20f;
                 p7.Alignment = Element.ALIGN_JUSTIFIED;
                 document.Add(p7);
                 document.Add(spaceTable);
@@ -1792,61 +1816,64 @@ namespace priland_api.Controllers
                 PdfPTable pdfTableProjectContract = new PdfPTable(3);
                 pdfTableProjectContract.SetWidths(new float[] { 120f, 20f, 200f });
                 pdfTableProjectContract.WidthPercentage = 80;
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Project", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstProject.Project, fontArial12Bold)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Floor", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.Block, fontArial12Bold)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Unit", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.Lot, fontArial12Bold)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Lot Area", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.TLA.ToString("#,##0.00") + " square meters", fontArial12Bold)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("House Model", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.MstHouseModel.HouseModel, fontArial12Bold)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Floor Area", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.TFA.ToString("#,##0.00") + " square meters", fontArial12Bold)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Project", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", updateFontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstProject.Project, updateFontArial12Bold)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Floor", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", updateFontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.Block, updateFontArial12Bold)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Unit", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", updateFontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.Lot, updateFontArial12Bold)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Lot Area", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", updateFontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.TLA.ToString("#,##0.00") + " square meters", updateFontArial12Bold)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("House Model", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", updateFontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.MstHouseModel.HouseModel, updateFontArial12Bold)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Floor Area", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", updateFontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.TFA.ToString("#,##0.00") + " square meters", updateFontArial12Bold)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 document.Add(pdfTableProjectContract);
                 document.Add(spaceTable);
 
                 Phrase p8Phrase = new Phrase("The said DECLARATION OF COVENANTS, CONDITIONS AND RESTRICTIONS shall be annotated as liens and easements on the  corresponding certificate of"
-                    + " title to be issued to the BUYER/S upon compliance with all his/her/their obligations as specified hereunder:", fontArial12);
+                    + " title to be issued to the BUYER/S upon compliance with all his/her/their obligations as specified hereunder:", updateFontArial12);
                 Paragraph p8 = new Paragraph
                 {
                     p8Phrase
                 };
 
+                p8.SetLeading(7f, 0);
                 p8.Alignment = Element.ALIGN_JUSTIFIED;
-                p8.FirstLineIndent = 80f;
+                p8.FirstLineIndent = 40f;
                 document.Add(p8);
                 document.Add(spaceTable);
 
-                Phrase p9Phrase = new Phrase("1. Contract Price and Manner of Payment", fontArial12BoldItalic);
+                Phrase p9Phrase = new Phrase("1. Contract Price and Manner of Payment", updateFontArial12BoldItalic);
                 Paragraph p9 = new Paragraph
                 {
                     p9Phrase
                 };
 
+                p9.SetLeading(7f, 0);
                 document.Add(p9);
                 document.Add(spaceTable);
 
                 Decimal price = soldUnit.FirstOrDefault().Price;
                 GetMoneyWord(price.ToString());
 
-                Phrase p10Phrase = new Phrase("a.	The TOTAL CONTRACT PRICE for the above-described HOUSE AND LOT/UNIT shall be ", fontArial12);
-                Phrase p10Phrase1 = new Phrase(GetMoneyWord(price.ToString()) + " (Php " + price.ToString("#,##0.00") + ")", fontArial12Bold);
-                Phrase p10Phrase2 = new Phrase(", breakdown as follows: ", fontArial12);
+                Phrase p10Phrase = new Phrase("a.	The TOTAL CONTRACT PRICE for the above-described HOUSE AND LOT/UNIT shall be ", updateFontArial12);
+                Phrase p10Phrase1 = new Phrase(GetMoneyWord(price.ToString()) + " (Php " + price.ToString("#,##0.00") + ")", updateFontArial12Bold);
+                Phrase p10Phrase2 = new Phrase(", breakdown as follows: ", updateFontArial12);
                 Paragraph p10 = new Paragraph
                 {
                     p10Phrase, p10Phrase1, p10Phrase2
                 };
 
+                p10.SetLeading(7f, 0);
                 p10.Alignment = Element.ALIGN_JUSTIFIED;
-                p10.FirstLineIndent = 80f;
+                p10.FirstLineIndent = 40f;
                 document.Add(p10);
                 document.Add(spaceTable);
 
@@ -1856,14 +1883,14 @@ namespace priland_api.Controllers
                 PdfPTable pdfTableBreakdown = new PdfPTable(2);
                 pdfTableBreakdown.SetWidths(new float[] { 120f, 200f });
                 pdfTableBreakdown.WidthPercentage = 80;
-                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("Particulars", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("Amount", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("Selling Price", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase(price.ToString("#,##0.00"), fontArial12Bold)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("Value Added Tax (VAT)", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("0", fontArial12Bold)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("Processing costs", fontArial12)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("0", fontArial12Bold)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("Particulars", updateFontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("Amount", updateFontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("Selling Price", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase(price.ToString("#,##0.00"), updateFontArial12Bold)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("Value Added Tax (VAT)", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("0", updateFontArial12Bold)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("Processing costs", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableBreakdown.AddCell(new PdfPCell(new Phrase("0", updateFontArial12Bold)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 document.Add(pdfTableBreakdown);
                 document.Add(spaceTable);
 
@@ -1904,29 +1931,31 @@ namespace priland_api.Controllers
                 {
                     if (equitySpotPayment1 + equitySpotPayment2 + equitySpotPayment3 == 0)
                     {
-                        Phrase p11Phrase4 = new Phrase("Net of RESERVATION and DISCOUNT is ", fontArial12);
-                        Phrase p11Phrase4a = new Phrase(GetMoneyWord(netEquity.ToString()) + " (Php " + netEquity.ToString("#,##0.00") + ").  ", fontArial12Bold);
+                        Phrase p11Phrase4 = new Phrase("Net of RESERVATION and DISCOUNT is ", updateFontArial12);
+                        Phrase p11Phrase4a = new Phrase(GetMoneyWord(netEquity.ToString()) + " (Php " + netEquity.ToString("#,##0.00") + ").  ", updateFontArial12Bold);
 
                         if (netEquityPayments > 0)
                         {
-                            Phrase p11Phrase5 = new Phrase("Payable in " + netEquityPayments.ToString("0") + " months at ", fontArial12);
-                            Phrase p11Phrase6 = new Phrase(GetMoneyWord(netEquityAmortization.ToString()) + " (Php " + netEquityAmortization.ToString("#,##0.00") + ").  ", fontArial12);
+                            Phrase p11Phrase5 = new Phrase("Payable in " + netEquityPayments.ToString("0") + " months at ", updateFontArial12);
+                            Phrase p11Phrase6 = new Phrase(GetMoneyWord(netEquityAmortization.ToString()) + " (Php " + netEquityAmortization.ToString("#,##0.00") + ").  ", updateFontArial12);
 
                             if (netEquityInterest > 0)
                             {
-                                Phrase p11Phrase7 = new Phrase("Having an interest of " + netEquityInterest.ToString("0") + "%. ", fontArial12);
+                                Phrase p11Phrase7 = new Phrase("Having an interest of " + netEquityInterest.ToString("0") + "%. ", updateFontArial12);
 
                                 Paragraph p11c = new Paragraph { p11Phrase5, p11Phrase6, p11Phrase7 };
+                                p11c.SetLeading(7f, 0);
                                 p11c.Alignment = Element.ALIGN_JUSTIFIED;
-                                p11c.FirstLineIndent = 80f;
+                                p11c.FirstLineIndent = 40f;
 
                                 downpaymentParagraph.Add(p11c);
                             }
                             else
                             {
                                 Paragraph p11b = new Paragraph { p11Phrase5, p11Phrase6 };
+                                p11b.SetLeading(7f, 0);
                                 p11b.Alignment = Element.ALIGN_JUSTIFIED;
-                                p11b.FirstLineIndent = 80f;
+                                p11b.FirstLineIndent = 40f;
 
                                 downpaymentParagraph.Add(p11b);
                             }
@@ -1934,48 +1963,49 @@ namespace priland_api.Controllers
                         else
                         {
                             Paragraph p11a = new Paragraph { };
+                            p11a.SetLeading(7f, 0);
                             p11a.Alignment = Element.ALIGN_JUSTIFIED;
-                            p11a.FirstLineIndent = 80f;
+                            p11a.FirstLineIndent = 40f;
 
                             downpaymentParagraph.Add(p11a);
                         }
                     }
                     else
                     {
-                        Phrase p11Phrase4 = new Phrase("Net of RESERVATION, DISCOUNT and all SPOT PAYMENTS is ", fontArial12);
-                        Phrase p11Phrase4a = new Phrase(GetMoneyWord(netEquity.ToString()) + " (Php " + netEquity.ToString("#,##0.00") + ").  ", fontArial12Bold);
+                        Phrase p11Phrase4 = new Phrase("Net of RESERVATION, DISCOUNT and all SPOT PAYMENTS is ", updateFontArial12);
+                        Phrase p11Phrase4a = new Phrase(GetMoneyWord(netEquity.ToString()) + " (Php " + netEquity.ToString("#,##0.00") + ").  ", updateFontArial12Bold);
 
                         if (netEquityPayments > 0)
                         {
-                            Phrase p11Phrase5 = new Phrase("Payable in " + netEquityPayments.ToString("0") + " months at ", fontArial12);
-                            Phrase p11Phrase6 = new Phrase(GetMoneyWord(netEquityAmortization.ToString()) + " (Php " + netEquityAmortization.ToString("#,##0.00") + ").  With ", fontArial12);
-                            Phrase p11Phrase7 = new Phrase("", fontArial12);
-                            Phrase p11Phrase8 = new Phrase("", fontArial12);
-                            Phrase p11Phrase9 = new Phrase("", fontArial12);
-                            Phrase p11Phrase10 = new Phrase("", fontArial12);
-                            Phrase p11Phrase11 = new Phrase("", fontArial12);
-                            Phrase p11Phrase12 = new Phrase("", fontArial12);
+                            Phrase p11Phrase5 = new Phrase("Payable in " + netEquityPayments.ToString("0") + " months at ", updateFontArial12);
+                            Phrase p11Phrase6 = new Phrase(GetMoneyWord(netEquityAmortization.ToString()) + " (Php " + netEquityAmortization.ToString("#,##0.00") + ").  With ", updateFontArial12);
+                            Phrase p11Phrase7 = new Phrase("", updateFontArial12);
+                            Phrase p11Phrase8 = new Phrase("", updateFontArial12);
+                            Phrase p11Phrase9 = new Phrase("", updateFontArial12);
+                            Phrase p11Phrase10 = new Phrase("", updateFontArial12);
+                            Phrase p11Phrase11 = new Phrase("", updateFontArial12);
+                            Phrase p11Phrase12 = new Phrase("", updateFontArial12);
 
                             if (equitySpotPayment1 > 0)
                             {
-                                p11Phrase7 = new Phrase(GetMoneyWord(equitySpotPayment1.ToString()) + " (Php " + equitySpotPayment1.ToString("#,##0.00") + ") on the " + equitySpotPayment1Pos.ToString("0") + "st payment.  ", fontArial12);
+                                p11Phrase7 = new Phrase(GetMoneyWord(equitySpotPayment1.ToString()) + " (Php " + equitySpotPayment1.ToString("#,##0.00") + ") on the " + equitySpotPayment1Pos.ToString("0") + "st payment.  ", updateFontArial12);
                             }
                             if (equitySpotPayment2 > 0)
                             {
                                 //decimal payment2 = netEquityPayments / 2;
-                                if (equitySpotPayment1 > 0) p11Phrase8 = new Phrase("And ", fontArial12);
-                                p11Phrase9 = new Phrase(GetMoneyWord(equitySpotPayment2.ToString()) + " (Php " + equitySpotPayment2.ToString("#,##0.00") + ") on the " + equitySpotPayment2Pos.ToString("0") + "th payment.  ", fontArial12);
+                                if (equitySpotPayment1 > 0) p11Phrase8 = new Phrase("And ", updateFontArial12);
+                                p11Phrase9 = new Phrase(GetMoneyWord(equitySpotPayment2.ToString()) + " (Php " + equitySpotPayment2.ToString("#,##0.00") + ") on the " + equitySpotPayment2Pos.ToString("0") + "th payment.  ", updateFontArial12);
                             }
                             if (equitySpotPayment3 > 0)
                             {
                                 //decimal payment3 = netEquityPayments;
-                                if (equitySpotPayment1 + equitySpotPayment2 > 0) p11Phrase10 = new Phrase("And ", fontArial12);
-                                p11Phrase11 = new Phrase(GetMoneyWord(equitySpotPayment3.ToString()) + " (Php " + equitySpotPayment3.ToString("#,##0.00") + ") on the " + equitySpotPayment3Pos.ToString("0") + "th payment.  ", fontArial12);
+                                if (equitySpotPayment1 + equitySpotPayment2 > 0) p11Phrase10 = new Phrase("And ", updateFontArial12);
+                                p11Phrase11 = new Phrase(GetMoneyWord(equitySpotPayment3.ToString()) + " (Php " + equitySpotPayment3.ToString("#,##0.00") + ") on the " + equitySpotPayment3Pos.ToString("0") + "th payment.  ", updateFontArial12);
                             }
 
                             if (netEquityInterest > 0)
                             {
-                                p11Phrase12 = new Phrase("Having an interest of " + netEquityInterest.ToString("0") + "%. ", fontArial12);
+                                p11Phrase12 = new Phrase("Having an interest of " + netEquityInterest.ToString("0") + "%. ", updateFontArial12);
                             }
 
                             Paragraph p11c = new Paragraph { p11Phrase5,
@@ -1986,17 +2016,18 @@ namespace priland_api.Controllers
                                                              p11Phrase10,
                                                              p11Phrase11,
                                                              p11Phrase12};
-
+                            p11c.SetLeading(7f, 0);
                             p11c.Alignment = Element.ALIGN_JUSTIFIED;
-                            p11c.FirstLineIndent = 80f;
+                            p11c.FirstLineIndent = 40f;
 
                             downpaymentParagraph.Add(p11c);
                         }
                         else
                         {
                             Paragraph p11a = new Paragraph { };
+                            p11a.SetLeading(7f, 0);
                             p11a.Alignment = Element.ALIGN_JUSTIFIED;
-                            p11a.FirstLineIndent = 80f;
+                            p11a.FirstLineIndent = 40f;
 
                             downpaymentParagraph.Add(p11a);
                         }
@@ -2008,30 +2039,34 @@ namespace priland_api.Controllers
 
                 Paragraph balanceParagraph = new Paragraph();
 
+
+
                 // Balance
                 if (balance > 0)
                 {
-                    Phrase p11Phrase8 = new Phrase("The remaining BALANCE of ", fontArial12);
-                    Phrase p11Phrase8a = new Phrase(GetMoneyWord(balance.ToString()) + " (Php " + balance.ToString("#,##0.00") + ") ", fontArial12Bold);
-                    Phrase p11Phrase9 = new Phrase("through preferred financing instrument.  ", fontArial12);
+                    Phrase p11Phrase8 = new Phrase("The remaining BALANCE of ", updateFontArial12);
+                    Phrase p11Phrase8a = new Phrase(GetMoneyWord(balance.ToString()) + " (Php " + balance.ToString("#,##0.00") + ") ", updateFontArial12Bold);
+                    Phrase p11Phrase9 = new Phrase("through preferred financing instrument.  ", updateFontArial12);
 
                     Paragraph p11d = new Paragraph { p11Phrase8, p11Phrase8a, p11Phrase9 };
+                    p11d.SetLeading(7f, 0);
                     p11d.Alignment = Element.ALIGN_JUSTIFIED;
-                    p11d.FirstLineIndent = 80f;
+                    p11d.FirstLineIndent = 40f;
 
                     balanceParagraph.Add(p11d);
                 }
 
                 //document.Add(spaceTable);
 
-                Phrase p11Phrase = new Phrase("b.	The TOTAL CONTRACT PRICE  shall be payable as follows", fontArial12);
+                Phrase p11Phrase = new Phrase("b.	The TOTAL CONTRACT PRICE  shall be payable as follows", updateFontArial12);
                 Paragraph p11 = new Paragraph
                 {
                     p11Phrase
                 };
 
+                p11.SetLeading(7f, 0);
                 p11.Alignment = Element.ALIGN_JUSTIFIED;
-                p11.FirstLineIndent = 80f;
+                p11.FirstLineIndent = 40f;
                 document.Add(p11);
                 document.Add(spaceTable);
 
@@ -2041,30 +2076,31 @@ namespace priland_api.Controllers
                 PdfPTable pdfTableContractPrice = new PdfPTable(3);
                 pdfTableContractPrice.SetWidths(new float[] { 100f, 100f, 200f });
                 pdfTableContractPrice.WidthPercentage = 100;
-                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("Particulars", fontArial10Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("Amount (Php)", fontArial10Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("Payment Terms", fontArial10Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("Reservation Fee", fontArial10)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().Reservation.ToString("#,##0.00"), fontArial10)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("", fontArial10)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("Downpayment", fontArial10)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().NetEquity.ToString("#,##0.00"), fontArial10)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableContractPrice.AddCell(new PdfPCell(downpaymentParagraph) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("Balance", fontArial10)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().Balance.ToString("#,##0.00"), fontArial10)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableContractPrice.AddCell(new PdfPCell(balanceParagraph) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("Particulars", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("Amount (Php)", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("Payment Terms", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("Reservation Fee", updateFontArial10)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().Reservation.ToString("#,##0.00"), updateFontArial10)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("", updateFontArial10)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("Downpayment", updateFontArial10)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().NetEquity.ToString("#,##0.00"), updateFontArial10)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableContractPrice.AddCell(new PdfPCell(downpaymentParagraph) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase("Balance", updateFontArial10)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableContractPrice.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().Balance.ToString("#,##0.00"), updateFontArial10)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableContractPrice.AddCell(new PdfPCell(balanceParagraph) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 document.Add(pdfTableContractPrice);
                 document.Add(spaceTable);
 
                 Phrase p12Phrase = new Phrase("Postdated checks shall be issued by the BUYER hereof to cover all the abovementioned installments. Any unpaid balance of the CONTRACT " +
-                                              "PRICE shall earn an interest of 3% per month.", fontArial12);
+                                              "PRICE shall earn an interest of 3% per month.", updateFontArial12);
 
                 Paragraph p12 = new Paragraph
                 {
                     p12Phrase
                 };
 
-                p12.FirstLineIndent = 80f;
+                p12.SetLeading(7f, 0);
+                p12.FirstLineIndent = 40f;
                 document.Add(p12);
                 document.Add(spaceTable);
 
@@ -2073,142 +2109,151 @@ namespace priland_api.Controllers
                     + "In the event the SELLER accepts the BUYER’s payment after due date, such payment shall include an additional sum to cover penaltieson delayed installment "
                     + "at the rate of 3% per month of delay on the amount due. The imposition of the penalty shall be without prejudice to the availment  by the seller of any remedy "
                     + "provided hereunder and by law. Moreover, acceptance of said payment should not be construed as condonation  of any subsequent failure, delay or default by "
-                    + "the BUYER.", fontArial12);
+                    + "the BUYER.", updateFontArial12);
 
                 Paragraph p13 = new Paragraph
                 {
                     p13Phrase
                 };
 
+                p13.SetLeading(7f, 0);
+
                 p13.Alignment = Element.ALIGN_JUSTIFIED;
-                p13.FirstLineIndent = 80f;
+                p13.FirstLineIndent = 40f;
                 document.Add(p13);
                 document.Add(spaceTable);
 
-                Phrase p14Phrase = new Phrase("2. Financing Option", fontArial12BoldItalic);
+                Phrase p14Phrase = new Phrase("2. Financing Option", updateFontArial12BoldItalic);
                 Paragraph p14 = new Paragraph
                 {
                     p14Phrase
                 };
-
+                p14.SetLeading(7f, 0);
                 document.Add(p14);
                 document.Add(spaceTable);
 
                 Phrase p15Phrase = new Phrase("Notwithstanding the amortization schedule agreed upon, the BUYER may opt to pay the remaining balance of the CONTRACT PRICE through a loan which he/she "
-                    + "may obtain from any public or private financing institution, the fee as and charges of which shall be for their own account.", fontArial12);
+                    + "may obtain from any public or private financing institution, the fee as and charges of which shall be for their own account.", updateFontArial12);
 
                 Paragraph p15 = new Paragraph
                 {
                     p15Phrase
                 };
-
+                p15.SetLeading(7f, 0);
                 p15.Alignment = Element.ALIGN_JUSTIFIED;
-                p15.FirstLineIndent = 80f;
+                p15.FirstLineIndent = 40f;
                 document.Add(p15);
                 document.Add(spaceTable);
 
                 Phrase p16Phrase = new Phrase("Should the loan approved for the BUYER be less than the balance of the CONTRACT PRICE, the BUYER shall pay the SELLER the amount corresponding to the "
                     + "difference upon approval of the said loan. Upon the BUYER’S availment of the said loan to the SELLER, the above schedule of payment shall be considered of no "
-                    + "further effect and/or amended as the case may be.", fontArial12);
+                    + "further effect and/or amended as the case may be.", updateFontArial12);
 
                 Paragraph p16 = new Paragraph
                 {
                     p16Phrase
                 };
 
+                p16.SetLeading(7f, 0);
                 p16.Alignment = Element.ALIGN_JUSTIFIED;
-                p16.FirstLineIndent = 80f;
+                p16.FirstLineIndent = 40f;
                 document.Add(p16);
                 document.Add(spaceTable);
 
-                Phrase p17Phrase = new Phrase("3. Place of Payment", fontArial12BoldItalic);
+                Phrase p17Phrase = new Phrase("3. Place of Payment", updateFontArial12BoldItalic);
                 Paragraph p17 = new Paragraph
                 {
                     p17Phrase
                 };
-
+                p17.SetLeading(7f, 0);
                 document.Add(p17);
                 document.Add(spaceTable);
 
                 Phrase p18Phrase = new Phrase("All payments other than those covered by the postdated checks due under this Contract shall be made by the BUYER to the SELLER’s cashiers at the SELLER’s"
                     + " office at Priland Development Corporation 18th Floor, BPI Cebu Corporation Center Cor. Archbishop Reyes & Luzon Ave. Cebu Business Park, Cebu City 6000, without necessity of demand or notice. Failure by the BUYER to do so shall entitle"
-                    + " the SELLER to charge penalty at the rate of 3% per month.", fontArial12);
+                    + " the SELLER to charge penalty at the rate of 3% per month.", updateFontArial12);
 
                 Paragraph p18 = new Paragraph
                 {
                     p18Phrase
                 };
-
+                p18.SetLeading(7f, 0);
                 p18.Alignment = Element.ALIGN_JUSTIFIED;
-                p18.FirstLineIndent = 80f;
+                p18.FirstLineIndent = 40f;
                 document.Add(p18);
                 document.Add(spaceTable);
 
-                Phrase p19Phrase = new Phrase("4. Solidary Liability", fontArial12BoldItalic);
+                Phrase p19Phrase = new Phrase("4. Solidary Liability", updateFontArial12BoldItalic);
                 Paragraph p19 = new Paragraph
                 {
                     p19Phrase
                 };
 
+                p19.SetLeading(7f, 0);
                 document.Add(p19);
                 document.Add(spaceTable);
 
-                Phrase p20Phrase = new Phrase("If there are two or more BUYERS under this Contract, they shall be deemed solidarily liable for all the obligations of herein set forth.", fontArial12);
+                Phrase p20Phrase = new Phrase("If there are two or more BUYERS under this Contract, they shall be deemed solidarily liable for all the obligations of herein set forth.", updateFontArial12);
 
                 Paragraph p20 = new Paragraph
                 {
                     p20Phrase
                 };
 
+                p20.SetLeading(7f, 0);
                 p20.Alignment = Element.ALIGN_JUSTIFIED;
-                p20.FirstLineIndent = 80f;
+                p20.FirstLineIndent = 40f;
                 document.Add(p20);
                 document.Add(spaceTable);
 
-                Phrase p21Phrase = new Phrase("5. Application of Payments", fontArial12BoldItalic);
+                Phrase p21Phrase = new Phrase("5. Application of Payments", updateFontArial12BoldItalic);
                 Paragraph p21 = new Paragraph
                 {
                     p21Phrase
                 };
 
+                p21.SetLeading(7f, 0);
                 document.Add(p21);
                 document.Add(spaceTable);
 
                 Phrase p22Phrase = new Phrase("The SELLER shall have the right to determine the application of payments made by the BUYER. Unless otherwise indicated in the SELLER’s"
-                    + " official receipt, payments shall be applied in the following order:", fontArial12);
+                    + " official receipt, payments shall be applied in the following order:", updateFontArial12);
 
                 Paragraph p22 = new Paragraph
                 {
                     p22Phrase
                 };
 
+                p2.SetLeading(7f, 0);
                 p22.Alignment = Element.ALIGN_JUSTIFIED;
-                p22.FirstLineIndent = 80f;
+                p22.FirstLineIndent = 40f;
                 document.Add(p22);
                 document.Add(spaceTable);
 
-                Phrase p23Phrase = new Phrase("(a) To costs and expenses incurred or advance by the SELLER pursuant to the Contract \n", fontArial12);
-                Phrase p23Phrase2 = new Phrase("(b) To penalties \n", fontArial12);
-                Phrase p23Phrase3 = new Phrase("(c) To interests \n", fontArial12);
-                Phrase p23Phrase4 = new Phrase("(d) To the principal", fontArial12);
+                Phrase p23Phrase = new Phrase("(a) To costs and expenses incurred or advance by the SELLER pursuant to the Contract \n", updateFontArial12);
+                Phrase p23Phrase2 = new Phrase("(b) To penalties \n", updateFontArial12);
+                Phrase p23Phrase3 = new Phrase("(c) To interests \n", updateFontArial12);
+                Phrase p23Phrase4 = new Phrase("(d) To the principal", updateFontArial12);
 
                 Paragraph p23 = new Paragraph
                 {
                     p23Phrase, p23Phrase2, p23Phrase3, p23Phrase4
                 };
 
+                p23.SetLeading(7f, 0);
                 p23.Alignment = Element.ALIGN_JUSTIFIED;
                 p23.IndentationLeft = 80f;
                 p23.IndentationRight = 80f;
                 document.Add(p23);
                 document.Add(spaceTable);
 
-                Phrase p24Phrase = new Phrase("6. Restrictions", fontArial12BoldItalic);
+                Phrase p24Phrase = new Phrase("6. Restrictions", updateFontArial12BoldItalic);
                 Paragraph p24 = new Paragraph
                 {
                     p24Phrase
                 };
 
+                p24.SetLeading(7f, 0);
                 document.Add(p24);
                 document.Add(spaceTable);
 
@@ -2216,39 +2261,42 @@ namespace priland_api.Controllers
                     + " The building of the house or the renovations/additions to be made by the BUYER shall be subject to the approval of the SELLER. To ensure the proper"
                     + " conduct of the works, the BUYER shall post a cash bond in an amount to be fixed by the SELLER depending on the nature of the works to be undertaken,"
                     + " before commencing such works. Said bond shall be returned to the  BUYER upon completion of the construction, after deducting costs of utilities, damage"
-                    + " to the common areas and other lots, and liability to third parties, if any.", fontArial12);
+                    + " to the common areas and other lots, and liability to third parties, if any.", updateFontArial12);
 
                 Paragraph p25 = new Paragraph
                 {
                     p25Phrase
                 };
 
+                p25.SetLeading(7f, 0);
                 p25.Alignment = Element.ALIGN_JUSTIFIED;
-                p25.FirstLineIndent = 80f;
+                p25.FirstLineIndent = 40f;
                 document.Add(p25);
                 document.Add(spaceTable);
 
                 Phrase p26Phrase = new Phrase("The BUYER  further agrees to strictly comply all the terms, conditions and limitations contained in the Declaration of Covenants, Conditions and Restrictions"
                     + " for the subdivision project, a copy of which is hereto attached as Annex “A” and made integral part hereof, as well as all the rules, regulations, and restrictions as may"
                     + " now or hereafter be required by the SELLER or the Association. The BUYER further confirms that his obligations under this Contract shall survive the full payment"
-                    + " of the CONTRACT PRICE and the execution of the Deed of Absolute Sale.", fontArial12);
+                    + " of the CONTRACT PRICE and the execution of the Deed of Absolute Sale.", updateFontArial12);
 
                 Paragraph p26 = new Paragraph
                 {
                     p26Phrase
                 };
 
+                p26.SetLeading(7f, 0);
                 p26.Alignment = Element.ALIGN_JUSTIFIED;
-                p26.FirstLineIndent = 80f;
+                p26.FirstLineIndent = 40f;
                 document.Add(p26);
                 document.Add(spaceTable);
 
-                Phrase p27Phrase = new Phrase("7. Homeowners’ Association", fontArial12BoldItalic);
+                Phrase p27Phrase = new Phrase("7. Homeowners’ Association", updateFontArial12BoldItalic);
                 Paragraph p27 = new Paragraph
                 {
                     p27Phrase
                 };
 
+                p27.SetLeading(7f, 0);
                 document.Add(p27);
                 document.Add(spaceTable);
 
@@ -2256,56 +2304,60 @@ namespace priland_api.Controllers
                     + " and maintenance of the community’s facilities and utilities,cleanliness and beautification of subdivision premises, collection of garbage,"
                     + " security, fire protection, enforcement of the deed of restrictions and restrictive easements, and in general, for promoting the common benefit of"
                     + " the residents therein, the OWNER/DEVELOPER/SELLER shall initiate the organization of the homeowners’ association (referred to as the “Association”),"
-                    + " which shall be a non stock, and non profit organization.", fontArial12);
+                    + " which shall be a non stock, and non profit organization.", updateFontArial12);
 
                 Paragraph p28 = new Paragraph
                 {
                     p28Phrase
                 };
 
+                p28.SetLeading(7f, 0);
                 p28.Alignment = Element.ALIGN_JUSTIFIED;
-                p28.FirstLineIndent = 80f;
+                p28.FirstLineIndent = 40f;
                 document.Add(p28);
                 document.Add(spaceTable);
 
                 Phrase p29Phrase = new Phrase("The OWNER/SELLER/DEVELOPER and its representative/s are hereby authorized and empowered by the BUYER  to organize, incorporate and register the"
                     + " Association with the Housing Land Use Regulatory Board(HLURB), the Securities and Exchange Commission(SEC), the Local Government Unit concern and other"
                     + " government agencies, and/or entities of which the BUYER becomes an automatic member upon incorporation of the Association. The BUYER therefore agree/s and"
-                    + " covenants to abide by its rules and regulations and to pay the dues and assessments duty levied and imposed by the Association.", fontArial12);
+                    + " covenants to abide by its rules and regulations and to pay the dues and assessments duty levied and imposed by the Association.", updateFontArial12);
 
                 Paragraph p29 = new Paragraph
                 {
                     p29Phrase
                 };
 
+                p29.SetLeading(7f, 0);
                 p29.Alignment = Element.ALIGN_JUSTIFIED;
-                p29.FirstLineIndent = 80f;
+                p29.FirstLineIndent = 40f;
                 document.Add(p29);
                 document.Add(spaceTable);
 
                 Phrase p30Phrase = new Phrase("Association dues shall be assessed upon the BUYER for such purpose/s and in such time and manner as set forth in the Articles of Incorporation"
-                    + " and By-Law, and in the rules and regulations to be adopted by the Association.", fontArial12);
+                    + " and By-Law, and in the rules and regulations to be adopted by the Association.", updateFontArial12);
 
                 Paragraph p30 = new Paragraph
                 {
                     p30Phrase
                 };
 
+                p30.SetLeading(7f, 0);
                 p30.Alignment = Element.ALIGN_JUSTIFIED;
-                p30.FirstLineIndent = 80f;
+                p30.FirstLineIndent = 40f;
                 document.Add(p30);
                 document.Add(spaceTable);
 
                 Phrase p31Phrase = new Phrase("The BUYER shall abide the rules and regulations issued by the SELLER or the Association in connection with the use and enjoyment of the facilities"
-                    + " existing in the subdivision/village.", fontArial12);
+                    + " existing in the subdivision/village.", updateFontArial12);
 
                 Paragraph p31 = new Paragraph
                 {
                     p31Phrase
                 };
 
+                p31.SetLeading(7f, 0);
                 p31.Alignment = Element.ALIGN_JUSTIFIED;
-                p31.FirstLineIndent = 80f;
+                p31.FirstLineIndent = 40f;
                 document.Add(p31);
                 document.Add(spaceTable);
 
@@ -2313,33 +2365,36 @@ namespace priland_api.Controllers
                     + " ASSOCIATION. The voting rights of unit owner/s who are not in good standing and of the amortizing buyers shall be executed by the"
                     + " SELLER/OWNER/DEVELOPER until such time as their respective obligation to the ASSOCIATION or to the SELLER are fully satisfied. A unit owner in"
                     + " good standing is one who has fully paid for his UNIT and is not delinquent in the payment of association dues and other assessments made by the"
-                    + " ASSOCIATION.", fontArial12);
+                    + " ASSOCIATION.", updateFontArial12);
 
                 Paragraph p32 = new Paragraph
                 {
                     p32Phrase
                 };
 
+                p32.SetLeading(7f, 0);
                 p32.Alignment = Element.ALIGN_JUSTIFIED;
-                p32.FirstLineIndent = 80f;
+                p32.FirstLineIndent = 40f;
                 document.Add(p32);
                 document.Add(spaceTable);
 
-                Phrase p33Phrase = new Phrase("8. Taxes", fontArial12BoldItalic);
+                Phrase p33Phrase = new Phrase("8. Taxes", updateFontArial12BoldItalic);
                 Paragraph p33 = new Paragraph
                 {
                     p33Phrase
                 };
 
+                p33.SetLeading(7f, 0);
                 document.Add(p33);
                 document.Add(spaceTable);
 
-                Phrase p34Phrase = new Phrase("Real Property Tax", fontArial12Italic);
+                Phrase p34Phrase = new Phrase("Real Property Tax", updateFontArial12Italic);
                 Paragraph p34 = new Paragraph
                 {
                     p34Phrase
                 };
 
+                p34.SetLeading(7f, 0);
                 document.Add(p34);
                 document.Add(spaceTable);
 
@@ -2347,140 +2402,152 @@ namespace priland_api.Controllers
                     + " and penalties in case of delinquency, shall be borne and paid by the BUYER from and after the title to the UNIT is registered in the BUYER’s name,"
                     + " or from the date possession of the UNIT is delivered to the BUYER, whichever comes first. The BUYER shall submit to the SELLER the official"
                     + " receipts evidencing payments of such liabilities within fifteen (15) days from the date such payments are made, which shall in no case be later"
-                    + " than April 15 of each year.", fontArial12);
+                    + " than April 15 of each year.", updateFontArial12);
 
                 Paragraph p35 = new Paragraph
                 {
                     p35Phrase
                 };
 
+                p35.SetLeading(7f, 0);
                 p35.Alignment = Element.ALIGN_JUSTIFIED;
-                p35.FirstLineIndent = 80f;
+                p35.FirstLineIndent = 40f;
                 document.Add(p35);
                 document.Add(spaceTable);
 
                 Phrase p36Phrase = new Phrase("Should the BUYER fail to pay such taxes, the SELLER may, at its option but without any obligation on its part, pay the taxes due for and in"
                     + " behalf of the BUYER, with right of reimbursement from the BUYER, with interest and penalties at the same rate as those charged in case of default in the"
                     + " payment of the balance of the CONTRACT PRICE. Such interest and penalties shall be computed from the time payments were made by the SELLER until the same are"
-                    + " fully reimbursed by the BUYER.", fontArial12);
+                    + " fully reimbursed by the BUYER.", updateFontArial12);
 
                 Paragraph p36 = new Paragraph
                 {
                     p36Phrase
                 };
 
+                p36.SetLeading(7f, 0);
                 p36.Alignment = Element.ALIGN_JUSTIFIED;
-                p36.FirstLineIndent = 80f;
+                p36.FirstLineIndent = 40f;
                 document.Add(p36);
                 document.Add(spaceTable);
 
-                Phrase p37Phrase = new Phrase("Withholding Tax and Local Transfer Tax", fontArial12Italic);
+                Phrase p37Phrase = new Phrase("Withholding Tax and Local Transfer Tax", updateFontArial12Italic);
                 Paragraph p37 = new Paragraph
                 {
                     p37Phrase
                 };
 
+                p37.SetLeading(7f, 0);
                 document.Add(p37);
                 document.Add(spaceTable);
 
-                Phrase p38Phrase = new Phrase("The withholding tax and local transfer tax or its equivalent tax on the sale of the UNIT to the BUYER shall be for the account of the SELLER.", fontArial12);
+                Phrase p38Phrase = new Phrase("The withholding tax and local transfer tax or its equivalent tax on the sale of the UNIT to the BUYER shall be for the account of the SELLER.", updateFontArial12);
 
                 Paragraph p38 = new Paragraph
                 {
                     p36Phrase
                 };
 
+                p38.SetLeading(7f, 0);
                 p38.Alignment = Element.ALIGN_JUSTIFIED;
-                p38.FirstLineIndent = 80f;
+                p38.FirstLineIndent = 40f;
                 document.Add(p38);
                 document.Add(spaceTable);
 
-                Phrase p39Phrase = new Phrase("Value-Added Tax and Documentary Stamp Tax", fontArial12Italic);
+                Phrase p39Phrase = new Phrase("Value-Added Tax and Documentary Stamp Tax", updateFontArial12Italic);
                 Paragraph p39 = new Paragraph
                 {
                     p39Phrase
                 };
 
+                p39.SetLeading(7f, 0);
                 document.Add(p39);
                 document.Add(spaceTable);
 
-                Phrase p40Phrase = new Phrase("The value added tax, if any, documentary stamp tax, registration fees and any all other fees and expenses(except local transfer taxes) required to transfer title to the UNIT in the name of the BUYER shall be for the BUYER’s account.", fontArial12);
+                Phrase p40Phrase = new Phrase("The value added tax, if any, documentary stamp tax, registration fees and any all other fees and expenses(except local transfer taxes) required to transfer title to the UNIT in the name of the BUYER shall be for the BUYER’s account.", updateFontArial12);
 
                 Paragraph p40 = new Paragraph
                 {
                     p40Phrase
                 };
 
+                p40.SetLeading(7f, 0);
                 p40.Alignment = Element.ALIGN_JUSTIFIED;
-                p40.FirstLineIndent = 80f;
+                p40.FirstLineIndent = 40f;
                 document.Add(p40);
                 document.Add(spaceTable);
 
-                Phrase p41Phrase = new Phrase("9. Default", fontArial12BoldItalic);
+                Phrase p41Phrase = new Phrase("9. Default", updateFontArial12BoldItalic);
                 Paragraph p41 = new Paragraph
                 {
                     p41Phrase
                 };
 
+                p41.SetLeading(7f, 0);
                 document.Add(p41);
                 document.Add(spaceTable);
 
                 Phrase p42Phrase = new Phrase("If the BUYER defaults in the performance of their obligations under this Contract, including but not limited to the non payment of any obligation regarding telephone, cable,"
                     + " electric and water connections and deposits, as well as assessments, association dues and similar fees, the SELLER, at their option, may cancel and rescind this Contract upon"
                     + " written notice to the BUYER/S and without need of any judicial declaration to that effect. In such case, any amount paid on account of the UNIT by the BUYER is not entitled to reimbursement"
-                    + " if his/her payment is less than two(2) years.", fontArial12);
+                    + " if his/her payment is less than two(2) years.", updateFontArial12);
 
                 Paragraph p42 = new Paragraph
                 {
                     p42Phrase
                 };
 
+                p42.SetLeading(7f, 0);
                 p42.Alignment = Element.ALIGN_JUSTIFIED;
-                p42.FirstLineIndent = 80f;
+                p42.FirstLineIndent = 40f;
                 document.Add(p42);
                 document.Add(spaceTable);
 
                 Phrase p43Phrase = new Phrase("The above, however, is without prejudice to  the application of the provisions of Republic Act(R.A) No. 6552, otherwise knows as the ‘Realty Installment Buyers Protection Act’ which is"
                     + " hereby made an integral part hereof. In case of such cancellation or rescission,  the SELLER shall be at liberty to dispose  of and sell the UNIT to any other person in the same manner as if this"
-                    + " Contract has never been executed or entered into.", fontArial12);
+                    + " Contract has never been executed or entered into.", updateFontArial12);
 
                 Paragraph p43 = new Paragraph
                 {
                     p43Phrase
                 };
 
+                p43.SetLeading(7f, 0);
                 p43.Alignment = Element.ALIGN_JUSTIFIED;
-                p43.FirstLineIndent = 80f;
+                p43.FirstLineIndent = 40f;
                 document.Add(p43);
                 document.Add(spaceTable);
 
-                Phrase p44Phrase = new Phrase("10. Breach of Contract", fontArial12BoldItalic);
+                Phrase p44Phrase = new Phrase("10. Breach of Contract", updateFontArial12BoldItalic);
                 Paragraph p44 = new Paragraph
                 {
                     p44Phrase
                 };
 
+                p44.SetLeading(7f, 0);
                 document.Add(p44);
                 document.Add(spaceTable);
 
-                Phrase p45Phrase = new Phrase("Breach by the BUYER of any of the conditions contained herein shall have the same effect as nonpayment of the installment and other payment obligations, as provided in the preceding paragraphs.", fontArial12);
+                Phrase p45Phrase = new Phrase("Breach by the BUYER of any of the conditions contained herein shall have the same effect as nonpayment of the installment and other payment obligations, as provided in the preceding paragraphs.", updateFontArial12);
 
                 Paragraph p45 = new Paragraph
                 {
                     p45Phrase
                 };
 
+                p45.SetLeading(7f, 0);
                 p45.Alignment = Element.ALIGN_JUSTIFIED;
-                p45.FirstLineIndent = 80f;
+                p45.FirstLineIndent = 40f;
                 document.Add(p45);
                 document.Add(spaceTable);
 
-                Phrase p46Phrase = new Phrase("11. Assignment of Rights", fontArial12BoldItalic);
+                Phrase p46Phrase = new Phrase("11. Assignment of Rights", updateFontArial12BoldItalic);
                 Paragraph p46 = new Paragraph
                 {
                     p46Phrase
                 };
 
+                p46.SetLeading(7f, 0);
                 document.Add(p46);
                 document.Add(spaceTable);
 
@@ -2488,15 +2555,16 @@ namespace priland_api.Controllers
                     + " and all its rights and interest under this Contract, including all its receivables due hereunder, and/or the UNIT subject hereof; Provided, however, that any such purchaser,"
                     + " assignee or transferee expressly binds itself to honor the terms and conditions of this Contract with respect to the rights of the BUYER. The BUYER likewise agrees that the SELLER"
                     + " shall have the right to mortgage the entire subdivision project or portions thereof, including the UNIT in conformity with provision of PD 957 or BP 220; Provided, however, that upon"
-                    + " the BUYER’s full payment of the CONTRACT PRICE, the title of the UNIT shall be delivered by the SELLER to the BUYER free from any and all kinds of liens and encumbrances.", fontArial12);
+                    + " the BUYER’s full payment of the CONTRACT PRICE, the title of the UNIT shall be delivered by the SELLER to the BUYER free from any and all kinds of liens and encumbrances.", updateFontArial12);
 
                 Paragraph p47 = new Paragraph
                 {
                     p47Phrase
                 };
 
+                p47.SetLeading(7f, 0);
                 p47.Alignment = Element.ALIGN_JUSTIFIED;
-                p47.FirstLineIndent = 80f;
+                p47.FirstLineIndent = 40f;
                 document.Add(p47);
                 document.Add(spaceTable);
 
@@ -2507,15 +2575,16 @@ namespace priland_api.Controllers
                     + " the BUYER shall pay their obligations under this Contract directly to the assignee. This assignment of rights and receivables shall be without prejudice to the execution of"
                     + " a deed of sale with real state mortgage on the UNIT which may immediately or thereafter be required by the SELLER or the assignee bank or"
                     + " financial institution for the purpose of securing the loan or financing package availed of for the payment of the balance of the CONTRACT PRICE of the BUYER to the SELLER,"
-                    + " the BUYER hereby ratifying and confirming any and all acts of the SELLER in the execution of the power of attorney herein given.", fontArial12);
+                    + " the BUYER hereby ratifying and confirming any and all acts of the SELLER in the execution of the power of attorney herein given.", updateFontArial12);
 
                 Paragraph p48 = new Paragraph
                 {
                     p48Phrase
                 };
 
+                p48.SetLeading(7f, 0);
                 p48.Alignment = Element.ALIGN_JUSTIFIED;
-                p48.FirstLineIndent = 80f;
+                p48.FirstLineIndent = 40f;
                 document.Add(p48);
                 document.Add(spaceTable);
 
@@ -2523,100 +2592,108 @@ namespace priland_api.Controllers
                     + " the SELLER. In case the SELLER approves the assignment, the BUYER shall pay the SELLER a transfer fee in the amount of P15,100.00  or such other amount as the SELLER may otherwise fix. However,"
                     + " he BUYER may, without securing a formal approval from the SELLER, assign its rights and interests under this Contract in favor of the assignee bank/financial institution (not applicable) to secure"
                     + " a loan which the BUYER may obtain from said bank to finance payment of the balance of the CONTRACT PRICE for the UNIT to the SELLER. Any such purchaser, assignee or transferee expressly binds himself"
-                    + " to honor the terms and conditions of this Contract with respect to the rights and interest of the SELLER.", fontArial12);
+                    + " to honor the terms and conditions of this Contract with respect to the rights and interest of the SELLER.", updateFontArial12);
 
                 Paragraph p49 = new Paragraph
                 {
                     p49Phrase
                 };
 
+                p49.SetLeading(7f, 0);
                 p49.Alignment = Element.ALIGN_JUSTIFIED;
-                p49.FirstLineIndent = 80f;
+                p49.FirstLineIndent = 40f;
                 document.Add(p49);
                 document.Add(spaceTable);
 
-                Phrase p50Phrase = new Phrase("12. Title and Ownership of the Unit", fontArial12BoldItalic);
+                Phrase p50Phrase = new Phrase("12. Title and Ownership of the Unit", updateFontArial12BoldItalic);
                 Paragraph p50 = new Paragraph
                 {
                     p50Phrase
                 };
 
+                p50.SetLeading(7f, 0);
                 document.Add(p50);
                 document.Add(spaceTable);
 
                 Phrase p51Phrase = new Phrase("The SELLER shall execute or cause the execution of a separate Deed of Absolute Sale and the issuance of the Certificate of Title to the Unit in favor of the BUYER,"
                     + " their successor and assigns, therby conveying to the BUYER, their successors and assign the title, rights and interests in the UNIT as soon as the following shall have been"
-                    + " accomplished:", fontArial12);
+                    + " accomplished:", updateFontArial12);
 
                 Paragraph p51 = new Paragraph
                 {
                     p51Phrase
                 };
 
+                p51.SetLeading(7f, 0);
                 p51.Alignment = Element.ALIGN_JUSTIFIED;
-                p51.FirstLineIndent = 80f;
+                p51.FirstLineIndent = 40f;
                 document.Add(p51);
                 document.Add(spaceTable);
 
                 Phrase p52Phrase = new Phrase("(a) Payment in full of the CONTRACT PRICE and any all interests, penalties and other charges such as, but not limited to, telephone, cable, electric and water"
                     + " connections and deposits which may have accrued or which may have been advanced by the SELLER, including all other obligations of the BUYER under this Contract such as"
-                    + " insurance premiums, cost of repairs, real state taxes advanced by the SELLER and bank charges or interests incidental to the BUYER’S loan or financial package;", fontArial12);
+                    + " insurance premiums, cost of repairs, real state taxes advanced by the SELLER and bank charges or interests incidental to the BUYER’S loan or financial package;", updateFontArial12);
 
                 Paragraph p52 = new Paragraph
                 {
                     p52Phrase
                 };
 
+                p52.SetLeading(7f, 0);
                 p52.Alignment = Element.ALIGN_JUSTIFIED;
-                p52.IndentationLeft = 80f;
-                p52.IndentationRight = 80f;
+                p52.IndentationLeft = 40f;
+                p52.IndentationRight = 40f;
                 document.Add(p52);
                 document.Add(spaceTable);
 
-                Phrase p53Phrase = new Phrase("(b) Issuance by the Registry of Deeds of the individual Certificate of Title covering the Unit in the name of the BUYER; and", fontArial12);
+                Phrase p53Phrase = new Phrase("(b) Issuance by the Registry of Deeds of the individual Certificate of Title covering the Unit in the name of the BUYER; and", updateFontArial12);
 
                 Paragraph p53 = new Paragraph
                 {
                     p53Phrase
                 };
 
+                p53.SetLeading(7f, 0);
                 p53.Alignment = Element.ALIGN_JUSTIFIED;
-                p53.IndentationLeft = 80f;
-                p53.IndentationRight = 80f;
+                p53.IndentationLeft = 40f;
+                p53.IndentationRight = 40f;
                 document.Add(p53);
                 document.Add(spaceTable);
 
-                Phrase p54Phrase = new Phrase("(c) Payment of the membership fee to the Associaton, or to the SELLER if payment of such amount had been advanced by the SELLER, in such amount as shall be determined by the latter.", fontArial12);
+                Phrase p54Phrase = new Phrase("(c) Payment of the membership fee to the Associaton, or to the SELLER if payment of such amount had been advanced by the SELLER, in such amount as shall be determined by the latter.", updateFontArial12);
 
                 Paragraph p54 = new Paragraph
                 {
                     p54Phrase
                 };
 
+                p54.SetLeading(7f, 0);
                 p54.Alignment = Element.ALIGN_JUSTIFIED;
-                p54.IndentationLeft = 80f;
-                p54.IndentationRight = 80f;
+                p54.IndentationLeft = 40f;
+                p54.IndentationRight = 40f;
                 document.Add(p54);
                 document.Add(spaceTable);
 
-                Phrase p55Phrase = new Phrase("In the event that the Deed of Absolute Sale is executed prior to the BUYER’s settlement of association dues, electric and water deposits, and other advances/fees as may be imposed or incurred due to the BUYER’s financing requirements, the SELLER shall not deliver the UNIT, or the Certificate of Title therefor, until such time as all of the BUYER’S payables are settled in full.", fontArial12);
+                Phrase p55Phrase = new Phrase("In the event that the Deed of Absolute Sale is executed prior to the BUYER’s settlement of association dues, electric and water deposits, and other advances/fees as may be imposed or incurred due to the BUYER’s financing requirements, the SELLER shall not deliver the UNIT, or the Certificate of Title therefor, until such time as all of the BUYER’S payables are settled in full.", updateFontArial12);
 
                 Paragraph p55 = new Paragraph
                 {
                     p55Phrase
                 };
 
+                p55.SetLeading(7f, 0);
                 p55.Alignment = Element.ALIGN_JUSTIFIED;
-                p55.FirstLineIndent = 80f;
+                p55.FirstLineIndent = 40f;
                 document.Add(p55);
                 document.Add(spaceTable);
 
-                Phrase p56Phrase = new Phrase("13. Warranties", fontArial12BoldItalic);
+                Phrase p56Phrase = new Phrase("13. Warranties", updateFontArial12BoldItalic);
                 Paragraph p56 = new Paragraph
                 {
                     p56Phrase
                 };
 
+                p56.SetLeading(7f, 0);
                 document.Add(p56);
                 document.Add(spaceTable);
 
@@ -2626,51 +2703,55 @@ namespace priland_api.Controllers
                     + " Association, zoning regulations and other restrictions on the use and occupancy of the UNIT as may be imposed by government and other authorities having"
                     + " jurisdiction thereon, and to other restrictions and easements of record; and (c) that the UNIT is free from and clear of tenants, occupants and squatters and"
                     + " undertakes to hold the BUYER, their successor and assigns, free and harmless from any liability or responsibility with regard to any such tenants, occupants or"
-                    + " squatters, or their eviction from the UNIT.", fontArial12);
+                    + " squatters, or their eviction from the UNIT.", updateFontArial12);
 
                 Paragraph p57 = new Paragraph
                 {
                     p57Phrase
                 };
 
+                p57.SetLeading(7f, 0);
                 p57.Alignment = Element.ALIGN_JUSTIFIED;
-                p57.FirstLineIndent = 80f;
+                p57.FirstLineIndent = 40f;
                 document.Add(p57);
                 document.Add(spaceTable);
 
-                Phrase p58Phrase = new Phrase("14. Completion of Construction of the Unit", fontArial12BoldItalic);
+                Phrase p58Phrase = new Phrase("14. Completion of Construction of the Unit", updateFontArial12BoldItalic);
                 Paragraph p58 = new Paragraph
                 {
                     p58Phrase
                 };
 
+                p58.SetLeading(7f, 0);
                 document.Add(p58);
                 document.Add(spaceTable);
 
-                Phrase p59Phrase = new Phrase("The SELLER projects, without any warranty or covenant, the completion of construction of the UNIT and the subdivision project within the timetable allowed by HLURB, and/or other competent authority, unless prevented by “force majeure”.", fontArial12);
+                Phrase p59Phrase = new Phrase("The SELLER projects, without any warranty or covenant, the completion of construction of the UNIT and the subdivision project within the timetable allowed by HLURB, and/or other competent authority, unless prevented by “force majeure”.", updateFontArial12);
 
                 Paragraph p59 = new Paragraph
                 {
                     p59Phrase
                 };
 
+                p59.SetLeading(7f, 0);
                 p59.Alignment = Element.ALIGN_JUSTIFIED;
-                p59.FirstLineIndent = 80f;
+                p59.FirstLineIndent = 40f;
                 document.Add(p59);
                 document.Add(spaceTable);
 
                 Phrase p60Phrase = new Phrase("The term “force majeure” as used herein refers to any condition, event, cause or reason beyond the control of the SELLER, including but not limited to, any act of God, strikes, lockouts or other"
                     + " industrial disturbances, serious civil disturbances, unavoidable accidents, blow out, acts of the public enemy, war ,blockade, public riot, fire, flood, explosion, governmental or municipal restraint, court or"
                     + " administrative injunctions or other court or administrative orders stopping or interfering with the work progress, shortage or unavailability of equipment, materials or labor, restrictions or limitations upon the"
-                    + " user thereof and/or acts of third person/s.", fontArial12);
+                    + " user thereof and/or acts of third person/s.", updateFontArial12);
 
                 Paragraph p60 = new Paragraph
                 {
                     p60Phrase
                 };
 
+                p60.SetLeading(7f, 0);
                 p60.Alignment = Element.ALIGN_JUSTIFIED;
-                p60.FirstLineIndent = 80f;
+                p60.FirstLineIndent = 40f;
                 document.Add(p60);
                 document.Add(spaceTable);
 
@@ -2678,51 +2759,55 @@ namespace priland_api.Controllers
                     + " be entitled to such additional period of time sufficient to enable it to complete the construction of the same as shall correspond to the period of delay due"
                     + " to such cause. Should any condition or, cause beyond the control of the SELLER arise which renders the completion of the UNIT or the subdivision project no"
                     + " longer possible, the SELLER shall be relieved of any obligation arising out of this Contract, except to reimburse the BUYER whatever it may have received from"
-                    + " them under and by virtue of this Contract, without interest in any event at all.", fontArial12);
+                    + " them under and by virtue of this Contract, without interest in any event at all.", updateFontArial12);
 
                 Paragraph p61 = new Paragraph
                 {
                     p61Phrase
                 };
 
+                p61.SetLeading(7f, 0);
                 p61.Alignment = Element.ALIGN_JUSTIFIED;
-                p61.FirstLineIndent = 80f;
+                p61.FirstLineIndent = 40f;
                 document.Add(p61);
                 document.Add(spaceTable);
 
                 Phrase p62Phrase = new Phrase("The BUYER expressly agrees and accepts that the failure of the SELLER to complete the UNIT or the subdivision project within the period specified above due to any force majeure shall"
                     + " not be a ground to rescind or cancel this Contract and the SELLER have no liability whatsoever to the BUYER for such non completion, except as provided in the immediately preceding paragraph and"
-                    + " Section 23 of Presidentail Decreee(PD) No. 967.", fontArial12);
+                    + " Section 23 of Presidentail Decreee(PD) No. 967.", updateFontArial12);
 
                 Paragraph p62 = new Paragraph
                 {
                     p62Phrase
                 };
 
+                p62.SetLeading(7f, 0);
                 p62.Alignment = Element.ALIGN_JUSTIFIED;
-                p62.FirstLineIndent = 80f;
+                p62.FirstLineIndent = 40f;
                 document.Add(p62);
                 document.Add(spaceTable);
 
                 Phrase p63Phrase = new Phrase("The SELLER may not be compelled to complete the construction of the UNIT prior to the BUYER’s full settlement of the downpayment and"
-                    + " any additional amounts due relative thereto, and the delivery of the postdated check to cover the BUYER’s monthly amortization payments.", fontArial12);
+                    + " any additional amounts due relative thereto, and the delivery of the postdated check to cover the BUYER’s monthly amortization payments.", updateFontArial12);
 
                 Paragraph p63 = new Paragraph
                 {
                     p63Phrase
                 };
 
+                p63.SetLeading(7f, 0);
                 p63.Alignment = Element.ALIGN_JUSTIFIED;
-                p63.FirstLineIndent = 80f;
+                p63.FirstLineIndent = 40f;
                 document.Add(p63);
                 document.Add(spaceTable);
 
-                Phrase p64Phrase = new Phrase("15. Delivery of the Unit", fontArial12BoldItalic);
+                Phrase p64Phrase = new Phrase("15. Delivery of the Unit", updateFontArial12BoldItalic);
                 Paragraph p64 = new Paragraph
                 {
                     p64Phrase
                 };
 
+                p64.SetLeading(7f, 0);
                 document.Add(p64);
                 document.Add(spaceTable);
 
@@ -2730,15 +2815,16 @@ namespace priland_api.Controllers
                     + " date of completion of construction of such UNIT and its related facilities. It is understood, however, that physical possession of the PROPERTY shall not"
                     + " be delivered by the SELLER to the BUYER unless the latter shall have complied with all conditions and requirements prescribed for this purpose by the"
                     + " SELLER to the BUYER unless the latter shall have complied with all conditions and requirements prescribed for this purpose by the SELLER under its"
-                    + " policies prevailing at the time.", fontArial12);
+                    + " policies prevailing at the time.", updateFontArial12);
 
                 Paragraph p65 = new Paragraph
                 {
                     p65Phrase
                 };
 
+                p65.SetLeading(7f, 0);
                 p65.Alignment = Element.ALIGN_JUSTIFIED;
-                p65.FirstLineIndent = 80f;
+                p65.FirstLineIndent = 40f;
                 document.Add(p65);
                 document.Add(spaceTable);
 
@@ -2746,29 +2832,31 @@ namespace priland_api.Controllers
                     + " for delivery or occupancy by the BUYER. If the BUYER is not in default, the possession of the UNIT shall be delivered to them. The BUYER shall be given a"
                     + " reasonable opportunity to inspect and examine the UNIT before acceptance of the same. Provided however, that if no inspection is made on or before the date or"
                     + " within the period stated in the notice, the UNIT shall be deemed to have already been inspected by the BUYER and the same shall be considered as to have been"
-                    + " completed and delivered in the date specified in the Notice.", fontArial12);
+                    + " completed and delivered in the date specified in the Notice.", updateFontArial12);
 
                 Paragraph p66 = new Paragraph
                 {
                     p66Phrase
                 };
 
+                p66.SetLeading(7f, 0);
                 p66.Alignment = Element.ALIGN_JUSTIFIED;
-                p66.FirstLineIndent = 80f;
+                p66.FirstLineIndent = 40f;
                 document.Add(p66);
                 document.Add(spaceTable);
 
                 Phrase p67Phrase = new Phrase("Within the prescribed period for inspection prior to the turnover of the UNIT to the BUYER, the BUYER shall register with the SELLER their written"
                     + " complaint on any defect. Failure to so register such complaint shall be deemed an unqualified and unconditional acceptance of the UNIT by the BUYER and shall constitute"
-                    + " a bar for future complaint or action on the same.", fontArial12);
+                    + " a bar for future complaint or action on the same.", updateFontArial12);
 
                 Paragraph p67 = new Paragraph
                 {
                     p67Phrase
                 };
 
+                p67.SetLeading(7f, 0);
                 p67.Alignment = Element.ALIGN_JUSTIFIED;
-                p67.FirstLineIndent = 80f;
+                p67.FirstLineIndent = 40f;
                 document.Add(p67);
                 document.Add(spaceTable);
 
@@ -2776,189 +2864,204 @@ namespace priland_api.Controllers
                     + " (1) on the date specified in the SELLER’s notice of turnover  and upon the BUYER’s actual or constructive receipt thereof irrespective of their"
                     + " non-occupancy of the UNIT for any reason whatsoever; (2) when the BUYER actually occupies the UNIT; (3) when the BUYER commences to introduce"
                     + " improvements, alterations, furnishing, etc. on the UNIT; (4) when the BUYER takes or receives the keys to the UNIT;"
-                    + " (5) when the BUYER accepts the UNIT or when the UNIT is deemed accepted as provided herein,", fontArial12);
+                    + " (5) when the BUYER accepts the UNIT or when the UNIT is deemed accepted as provided herein,", updateFontArial12);
 
                 Paragraph p68 = new Paragraph
                 {
                     p68Phrase
                 };
 
+                p68.SetLeading(7f, 0);
                 p68.Alignment = Element.ALIGN_JUSTIFIED;
-                p68.FirstLineIndent = 80f;
+                p68.FirstLineIndent = 40f;
                 document.Add(p68);
                 document.Add(spaceTable);
 
                 Phrase p69Phrase = new Phrase("From and after the date specified in notice of turnover, or when the BUYER takes possession of the UNIT in accordance with the immediately"
                     + " preceding paragraph, notwithstanding title to the UNIT had not been transferred to the BUYER, the BUYER shall, in place of the SELLER, observe all the"
                     + " conditions and restrictions on the UNIT and shall henceforth be liable for all risk of loss or damage to the UNIT, charges and fees for utilities and service,"
-                    + " taxes and homeowners’ association dues, and other related obligations and assessments pertaining to the UNIT.", fontArial12);
+                    + " taxes and homeowners’ association dues, and other related obligations and assessments pertaining to the UNIT.", updateFontArial12);
 
                 Paragraph p69 = new Paragraph
                 {
                     p69Phrase
                 };
 
+                p69.SetLeading(7f, 0);
                 p69.Alignment = Element.ALIGN_JUSTIFIED;
-                p69.FirstLineIndent = 80f;
+                p69.FirstLineIndent = 40f;
                 document.Add(p69);
                 document.Add(spaceTable);
 
                 Phrase p70Phrase = new Phrase("The BUYER shall, before moving into the UNIT. Pay membership and other dues assessed on the UNIT by the Homeowners’"
-                    + " Association to be established in the subdivision project.", fontArial12);
+                    + " Association to be established in the subdivision project.", updateFontArial12);
 
                 Paragraph p70 = new Paragraph
                 {
                     p70Phrase
                 };
 
+                p70.SetLeading(7f, 0);
                 p70.Alignment = Element.ALIGN_JUSTIFIED;
-                p70.FirstLineIndent = 80f;
+                p70.FirstLineIndent = 40f;
                 document.Add(p70);
                 document.Add(spaceTable);
 
                 Phrase p71Phrase = new Phrase("Upon moving in, the BUYER shall pay move-in fees covering the determined cost incurred by the SELLER for pedestal,"
-                    + " electrical connection and water connection of the HOUSE and LOT.", fontArial12);
+                    + " electrical connection and water connection of the HOUSE and LOT.", updateFontArial12);
 
                 Paragraph p71 = new Paragraph
                 {
                     p71Phrase
                 };
 
+                p71.SetLeading(7f, 0);
                 p71.Alignment = Element.ALIGN_JUSTIFIED;
-                p71.FirstLineIndent = 80f;
+                p71.FirstLineIndent = 40f;
                 document.Add(p71);
                 document.Add(spaceTable);
 
-                Phrase p72Phrase = new Phrase("16. Insurance", fontArial12BoldItalic);
+                Phrase p72Phrase = new Phrase("16. Insurance", updateFontArial12BoldItalic);
                 Paragraph p72 = new Paragraph
                 {
                     p72Phrase
                 };
 
+                p72.SetLeading(7f, 0);
                 document.Add(p72);
                 document.Add(spaceTable);
 
                 Phrase p73Phrase = new Phrase("The BUYER shall obtain and maintain the following insurance until the BUYER has fully paid the Contrast Price and its related"
-                    + " charges to the SELLER, with the SELLER or its assignee as the designated beneficiary:", fontArial12);
+                    + " charges to the SELLER, with the SELLER or its assignee as the designated beneficiary:", updateFontArial12);
 
                 Paragraph p73 = new Paragraph
                 {
                     p73Phrase
                 };
 
+                p73.SetLeading(7f, 0);
                 p73.Alignment = Element.ALIGN_JUSTIFIED;
-                p73.FirstLineIndent = 80f;
+                p73.FirstLineIndent = 40f;
                 document.Add(p73);
                 document.Add(spaceTable);
 
                 Phrase p74Phrase = new Phrase("(a) Redemption Insurance – This Insurance, which cover risk in case of death of the BUYER, is subject to the Schedule of Insurance"
-                    + " in the SELLER’s Master Policy.", fontArial12);
+                    + " in the SELLER’s Master Policy.", updateFontArial12);
 
                 Paragraph p74 = new Paragraph
                 {
                     p74Phrase
                 };
 
+                p74.SetLeading(7f, 0);
                 p74.Alignment = Element.ALIGN_JUSTIFIED;
-                p74.IndentationLeft = 80f;
-                p74.IndentationRight = 80f;
+                p74.IndentationLeft = 40f;
+                p74.IndentationRight = 40f;
                 document.Add(p74);
                 document.Add(spaceTable);
 
                 Phrase p75Phrase = new Phrase("(b) Fire Insurance – The buyer shall obtain fire as well as allied peril insurance/s on the UNIT for an amount equivalent to at least"
                     + " the contract value of the residential unit and/or its improvements. The premiums for this coverage shall be prepared annually by the BUYER."
                     + " The initial year’s prepayment shall, be deducted from, the Contrast proceeds, while the repayments for the succeeding years shall be collected"
-                    + " together with the BUYER’s monthly installment payments.", fontArial12);
+                    + " together with the BUYER’s monthly installment payments.", updateFontArial12);
 
                 Paragraph p75 = new Paragraph
                 {
                     p75Phrase
                 };
 
+                p75.SetLeading(7f, 0);
                 p75.Alignment = Element.ALIGN_JUSTIFIED;
-                p75.IndentationLeft = 80f;
-                p75.IndentationRight = 80f;
+                p75.IndentationLeft = 40f;
+                p75.IndentationRight = 40f;
                 document.Add(p75);
                 document.Add(spaceTable);
 
-                Phrase p76Phrase = new Phrase("(c) Other insurances as may be required for purposes of the BUYER’s housing loan.", fontArial12);
+                Phrase p76Phrase = new Phrase("(c) Other insurances as may be required for purposes of the BUYER’s housing loan.", updateFontArial12);
 
                 Paragraph p76 = new Paragraph
                 {
                     p76Phrase
                 };
 
+                p76.SetLeading(7f, 0);
                 p76.Alignment = Element.ALIGN_JUSTIFIED;
-                p76.IndentationLeft = 80f;
-                p76.IndentationRight = 80f;
+                p76.IndentationLeft = 40f;
+                p76.IndentationRight = 40f;
                 document.Add(p76);
                 document.Add(spaceTable);
 
-                Phrase p77Phrase = new Phrase("17. Miscellaneous Provisions", fontArial12BoldItalic);
+                Phrase p77Phrase = new Phrase("17. Miscellaneous Provisions", updateFontArial12BoldItalic);
                 Paragraph p77 = new Paragraph
                 {
                     p77Phrase
                 };
 
+                p77.SetLeading(7f, 0);
                 document.Add(p77);
                 document.Add(spaceTable);
 
                 Phrase p78Phrase = new Phrase("(a) The BUYER warrants in full the truth of the representations made in the applications for the purchase of the UNIT subject of this Contract,"
-                    + " and any falsehood or misrepresentation stated therein shall be sufficient ground for the cancellation or rescission of this Contract.", fontArial12);
+                    + " and any falsehood or misrepresentation stated therein shall be sufficient ground for the cancellation or rescission of this Contract.", updateFontArial12);
 
                 Paragraph p78 = new Paragraph
                 {
                     p78Phrase
                 };
 
+                p78.SetLeading(7f, 0);
                 p78.Alignment = Element.ALIGN_JUSTIFIED;
-                p78.IndentationLeft = 80f;
+                p78.IndentationLeft = 40f;
                 document.Add(p78);
                 document.Add(spaceTable);
 
-                Phrase p79Phrase = new Phrase("(b) The BUYER shall notify the SELLER in writing of any change in their mailing address. Should the BUYER fails to do so, their address stated in the Contract shall remain their address for all intents and purposes.", fontArial12);
+                Phrase p79Phrase = new Phrase("(b) The BUYER shall notify the SELLER in writing of any change in their mailing address. Should the BUYER fails to do so, their address stated in the Contract shall remain their address for all intents and purposes.", updateFontArial12);
 
                 Paragraph p79 = new Paragraph
                 {
                     p79Phrase
                 };
 
+                p79.SetLeading(7f, 0);
                 p79.Alignment = Element.ALIGN_JUSTIFIED;
-                p79.IndentationLeft = 80f;
+                p79.IndentationLeft = 40f;
                 document.Add(p79);
                 document.Add(spaceTable);
 
-                Phrase p80Phrase = new Phrase("(c) Discrepancy of less than ten percent (10%) in the approximate gross area of the UNIT as stated in the Contract, in brochures or price list than the actual area of the UNIT when completed, shall not result in an increase or decrease in the selling price.", fontArial12);
+                Phrase p80Phrase = new Phrase("(c) Discrepancy of less than ten percent (10%) in the approximate gross area of the UNIT as stated in the Contract, in brochures or price list than the actual area of the UNIT when completed, shall not result in an increase or decrease in the selling price.", updateFontArial12);
 
                 Paragraph p80 = new Paragraph
                 {
                     p80Phrase
                 };
 
+                p80.SetLeading(7f, 0);
                 p80.Alignment = Element.ALIGN_JUSTIFIED;
-                p80.IndentationLeft = 80f;
+                p80.IndentationLeft = 40f;
                 document.Add(p80);
                 document.Add(spaceTable);
 
-                Phrase p81Phrase = new Phrase("(d) The SELLER reserves the right to construct other improvements on available, unutilized or vacant land or space surrounding or adjacent to the UNIT and hereby reserves its ownership thereof.", fontArial12);
+                Phrase p81Phrase = new Phrase("(d) The SELLER reserves the right to construct other improvements on available, unutilized or vacant land or space surrounding or adjacent to the UNIT and hereby reserves its ownership thereof.", updateFontArial12);
 
                 Paragraph p81 = new Paragraph
                 {
                     p81Phrase
                 };
 
+                p81.SetLeading(7f, 0);
                 p81.Alignment = Element.ALIGN_JUSTIFIED;
-                p81.IndentationLeft = 80f;
+                p81.IndentationLeft = 40f;
                 document.Add(p81);
                 document.Add(spaceTable);
 
-                Phrase p82Phrase = new Phrase("(d1) The SELLER may upgrade/downgrade/revise house specification as part of the exercise of its right pursuant to this Contract being developer.", fontArial12);
+                Phrase p82Phrase = new Phrase("(d1) The SELLER may upgrade/downgrade/revise house specification as part of the exercise of its right pursuant to this Contract being developer.", updateFontArial12);
 
                 Paragraph p82 = new Paragraph
                 {
                     p82Phrase
                 };
 
+                p82.SetLeading(7f, 0);
                 p82.Alignment = Element.ALIGN_JUSTIFIED;
                 p82.IndentationLeft = 140f;
                 document.Add(p82);
@@ -2966,64 +3069,69 @@ namespace priland_api.Controllers
 
                 Phrase p83Phrase = new Phrase("(e) In the event that the subdivision project and UNIT becomes not economically feasible such that there are adverse conditions, changes and its structure,"
                     + " or other similar factors or reasons, the SELLER may, upon written notice to the BUYER, change or alter the design, specifications and/or the price of the UNIT or replace"
-                    + " the same with a similar lot, or cancel this Contract and return in full, without interest, all payments received from the BUYER.", fontArial12);
+                    + " the same with a similar lot, or cancel this Contract and return in full, without interest, all payments received from the BUYER.", updateFontArial12);
 
                 Paragraph p83 = new Paragraph
                 {
                     p83Phrase
                 };
 
+                p83.SetLeading(7f, 0);
                 p83.Alignment = Element.ALIGN_JUSTIFIED;
-                p83.IndentationLeft = 80f;
+                p83.IndentationLeft = 40f;
                 document.Add(p83);
                 document.Add(spaceTable);
 
                 Phrase p84Phrase = new Phrase("(f) If the sale of the UNIT hereunder constitutes “bulk buying” subject to the provisions of HLURB Administrative Order NO. 09, Series"
                     + " of 1994, or the HLURB Rules and Regulations on Bulk Buying, the BUYER hereby agrees and undertakes to comply  with the provisions of the aforesaid"
-                    + " Administrative Order.", fontArial12);
+                    + " Administrative Order.", updateFontArial12);
 
                 Paragraph p84 = new Paragraph
                 {
                     p84Phrase
                 };
 
+                p84.SetLeading(7f, 0);
                 p84.Alignment = Element.ALIGN_JUSTIFIED;
-                p84.IndentationLeft = 80f;
+                p84.IndentationLeft = 40f;
                 document.Add(p84);
                 document.Add(spaceTable);
 
                 Phrase p85Phrase = new Phrase("(g) The BUYER agrees to be bound by all terms and conditions on the Declaration of Restrictions for the Subdivision Project and the Articles of"
                     + " Incorporation and By Laws of the homeowners association, copies of which shall be duly finished upon request of the BUYER. The BUYER further confirms that his obligations"
-                    + " under this Contract will survive upon payment of the CONTRACT PRICE and the execution of the Deed of Absolute Sale.", fontArial12);
+                    + " under this Contract will survive upon payment of the CONTRACT PRICE and the execution of the Deed of Absolute Sale.", updateFontArial12);
 
                 Paragraph p85 = new Paragraph
                 {
                     p85Phrase
                 };
 
+                p85.SetLeading(7f, 0);
                 p85.Alignment = Element.ALIGN_JUSTIFIED;
-                p85.IndentationLeft = 80f;
+                p85.IndentationLeft = 40f;
                 document.Add(p85);
                 document.Add(spaceTable);
 
-                Phrase p86Phrase = new Phrase("(h) Any reference to any party to this Contract includes such party’s successor and assigns.", fontArial12);
+                Phrase p86Phrase = new Phrase("(h) Any reference to any party to this Contract includes such party’s successor and assigns.", updateFontArial12);
 
                 Paragraph p86 = new Paragraph
                 {
                     p86Phrase
                 };
 
+                p86.SetLeading(7f, 0);
                 p86.Alignment = Element.ALIGN_JUSTIFIED;
-                p86.IndentationLeft = 80f;
+                p86.IndentationLeft = 40f;
                 document.Add(p86);
                 document.Add(spaceTable);
 
-                Phrase p87Phrase = new Phrase("18. Venue", fontArial12BoldItalic);
+                Phrase p87Phrase = new Phrase("18. Venue", updateFontArial12BoldItalic);
                 Paragraph p87 = new Paragraph
                 {
                     p87Phrase
                 };
 
+                p87.SetLeading(7f, 0);
                 document.Add(p87);
                 document.Add(spaceTable);
 
@@ -3032,86 +3140,93 @@ namespace priland_api.Controllers
                     + " the BUYER shall further pay the SELLER, as and by way of attorney’s fees, a sum equivalent to at least twenty percent (20%) of the total amount"
                     + " due or involved , or the amount of fifty thousand pesos (P50,000.00) whichever is higher, in addition to the cost and expenses of litigation, and"
                     + " to the actual and other damages provided hereinabove to which the SELLER shall be entitled  by law and under this Contract. Any actions or"
-                    + " proceedings related to this Contract shall be brought before proper courts of Cebu City, all other venues being expressly waived.", fontArial12);
+                    + " proceedings related to this Contract shall be brought before proper courts of Cebu City, all other venues being expressly waived.", updateFontArial12);
 
                 Paragraph p88 = new Paragraph
                 {
                     p88Phrase
                 };
 
+                p88.SetLeading(7f, 0);
                 p88.Alignment = Element.ALIGN_JUSTIFIED;
-                p88.FirstLineIndent = 80f;
+                p88.FirstLineIndent = 40f;
                 document.Add(p88);
                 document.Add(spaceTable);
 
-                Phrase p89Phrase = new Phrase("19. Separability Clause", fontArial12BoldItalic);
+                Phrase p89Phrase = new Phrase("19. Separability Clause", updateFontArial12BoldItalic);
                 Paragraph p89 = new Paragraph
                 {
                     p89Phrase
                 };
 
+                p89.SetLeading(7f, 0);
                 document.Add(p89);
                 document.Add(spaceTable);
 
                 Phrase p90Phrase = new Phrase("In case one or more of the provisions contained in this Contract to Sell shall be declared invalid, illegal or unenforceable in any"
                     + " respect by a competent authority, the validity, legality, and enforceability of the remaining provisions contained herein shall not in any way be"
-                    + " affected or impaired thereby.", fontArial12);
+                    + " affected or impaired thereby.", updateFontArial12);
 
                 Paragraph p90 = new Paragraph
                 {
                     p90Phrase
                 };
 
+                p90.SetLeading(7f, 0);
                 p90.Alignment = Element.ALIGN_JUSTIFIED;
-                p90.FirstLineIndent = 80f;
+                p90.FirstLineIndent = 40f;
                 document.Add(p90);
                 document.Add(spaceTable);
 
-                Phrase p91Phrase = new Phrase("20. Repealing Clause", fontArial12BoldItalic);
+                Phrase p91Phrase = new Phrase("20. Repealing Clause", updateFontArial12BoldItalic);
                 Paragraph p91 = new Paragraph
                 {
                     p91Phrase
                 };
 
+                p91.SetLeading(7f, 0);
                 document.Add(p91);
                 document.Add(spaceTable);
 
                 Phrase p92Phrase = new Phrase("This Contract cancels and supersedes all previous  Contracts between tha parties herein and this Contract shall not be considered as changed, modified,"
                     + " altered or in any manner amended by acts of tolerance of the SELLER unless such changes, modifications, alterations or amendments are made in writing and signed by"
-                    + " both parties to this contract.", fontArial12);
+                    + " both parties to this contract.", updateFontArial12);
 
                 Paragraph p92 = new Paragraph
                 {
                     p92Phrase
                 };
 
+                p92.SetLeading(7f, 0);
                 p92.Alignment = Element.ALIGN_JUSTIFIED;
-                p92.FirstLineIndent = 80f;
+                p92.FirstLineIndent = 40f;
                 document.Add(p92);
                 document.Add(spaceTable);
 
-                Phrase p93Phrase = new Phrase("21. ", fontArial12BoldItalic);
+                Phrase p93Phrase = new Phrase("21. ", updateFontArial12BoldItalic);
 
                 Phrase p93Phrase2 = new Phrase("The BUYER hereby represent/s that (i) this Contract has been read, understood and accepted by them; (ii) the obligations of the BUYER hereunder and"
                     + " under the Deed of Absolute Sale, including their compliance with the Declaration of Covenants, Conditions and Restrictions constitutes legal, valid and binding obligations,"
-                    + " fully enforceable against them; and (iii) the BUYER has full power, authority and legal right to execute, deliver and perform this Contract and the Deed of Sale.", fontArial12);
+                    + " fully enforceable against them; and (iii) the BUYER has full power, authority and legal right to execute, deliver and perform this Contract and the Deed of Sale.", updateFontArial12);
 
                 Paragraph p93 = new Paragraph
                 {
                     p93Phrase, p93Phrase2
                 };
 
+                p93.SetLeading(7f, 0);
                 p93.Alignment = Element.ALIGN_JUSTIFIED;
                 document.Add(p93);
                 document.Add(spaceTable);
 
-                Phrase p94Phrase = new Phrase("IN WITNESS WHEREOF, The parties hereto signed this instrument on the date and the place hereinbefore mentioned.", fontArial12);
+                Phrase p94Phrase = new Phrase("IN WITNESS WHEREOF, The parties hereto signed this instrument on the date and the place hereinbefore mentioned.", updateFontArial12);
 
                 Paragraph p94 = new Paragraph
                 {
                     p94Phrase
                 };
 
+                p94.SetLeading(7f, 0);
                 p94.Alignment = Element.ALIGN_JUSTIFIED;
                 document.Add(p94);
                 document.Add(spaceTable);
@@ -3119,13 +3234,14 @@ namespace priland_api.Controllers
 
                 if (sysSettings.Any())
                 {
-                    Phrase p95Phrase = new Phrase(sysSettings.FirstOrDefault().Company, fontArial12Bold);
+                    Phrase p95Phrase = new Phrase(sysSettings.FirstOrDefault().Company, updateFontArial12Bold);
 
                     Paragraph p95 = new Paragraph
                     {
                         p95Phrase
                     };
 
+                    p95.SetLeading(7f, 0);
                     p95.Alignment = Element.ALIGN_JUSTIFIED;
                     document.Add(p95);
                     document.Add(spaceTable);
@@ -3134,29 +3250,29 @@ namespace priland_api.Controllers
                 PdfPTable pdfTableSignatureSignatures = new PdfPTable(5);
                 pdfTableSignatureSignatures.SetWidths(new float[] { 100f, 15f, 100f, 15f, 100f });
                 pdfTableSignatureSignatures.WidthPercentage = 100;
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("Seller", fontArial12)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("Buyer/s", fontArial12)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("Seller", updateFontArial12)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("Buyer/s", updateFontArial12)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
 
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("Represented by:", fontArial12)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("Represented by:", updateFontArial12)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Border = 0 });
 
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 60f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 60f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
 
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 1 });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 1 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 1 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 1 });
 
                 //pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0, PaddingTop = 30f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                 //pdfTableSignatureSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
@@ -3171,13 +3287,14 @@ namespace priland_api.Controllers
                 document.Add(spaceTable);
                 document.Add(spaceTable);
 
-                Phrase p96Phrase = new Phrase("Signed in the presence of: ", fontArial12);
+                Phrase p96Phrase = new Phrase("Signed in the presence of: ", updateFontArial12);
 
                 Paragraph p96 = new Paragraph
                 {
                     p96Phrase
                 };
 
+                p96.SetLeading(7f, 0);
                 p96.Alignment = Element.ALIGN_CENTER;
                 document.Add(p96);
                 document.Add(spaceTable);
@@ -3185,123 +3302,129 @@ namespace priland_api.Controllers
                 PdfPTable pdfTableWitnessesSignatures = new PdfPTable(3);
                 pdfTableWitnessesSignatures.SetWidths(new float[] { 100f, 50f, 100f });
                 pdfTableWitnessesSignatures.WidthPercentage = 100;
-                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase("Witness", fontArial12)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase("Witness", fontArial12)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase("Witness", updateFontArial12)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableWitnessesSignatures.AddCell(new PdfPCell(new Phrase("Witness", updateFontArial12)) { HorizontalAlignment = 1, Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                 document.Add(pdfTableWitnessesSignatures);
 
                 document.Add(spaceTable);
                 document.Add(spaceTable);
 
-                Phrase p97Phrase = new Phrase("ACKNOWLEDGEMENT", fontArial12Bold);
+                Phrase p97Phrase = new Phrase("ACKNOWLEDGEMENT", updateFontArial12Bold);
 
                 Paragraph p97 = new Paragraph
                 {
                     p97Phrase
                 };
 
+                p97.SetLeading(7f, 0);
                 p97.Alignment = Element.ALIGN_CENTER;
                 document.Add(p97);
                 document.Add(spaceTable);
 
-                Phrase p98Phrase = new Phrase("REPUBLIC OF THE PHILIPPINES \nCITY OF CEBU", fontArial12);
+                Phrase p98Phrase = new Phrase("REPUBLIC OF THE PHILIPPINES \nCITY OF CEBU", updateFontArial12);
 
                 Paragraph p98 = new Paragraph
                 {
                     p98Phrase
                 };
 
+                p98.SetLeading(7f, 0);
                 p98.Alignment = Element.ALIGN_JUSTIFIED;
                 document.Add(p98);
                 document.Add(spaceTable);
 
-                Phrase p99Phrase = new Phrase("BEFORE ME a Notary Public for and in the above jurisdiction, this ________ day of __________________, personally appeared the following:", fontArial12);
+                Phrase p99Phrase = new Phrase("BEFORE ME a Notary Public for and in the above jurisdiction, this ________ day of __________________, personally appeared the following:", updateFontArial12);
 
                 Paragraph p99 = new Paragraph
                 {
                     p99Phrase
                 };
 
+                p99.SetLeading(7f, 0);
                 p99.Alignment = Element.ALIGN_JUSTIFIED;
-                p99.FirstLineIndent = 80f;
+                p99.FirstLineIndent = 40f;
                 document.Add(p99);
                 document.Add(spaceTable);
 
                 PdfPTable pdfTableIdentification = new PdfPTable(5);
                 pdfTableIdentification.SetWidths(new float[] { 100f, 20f, 100f, 20f, 100f });
                 pdfTableIdentification.WidthPercentage = 100;
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("NAME", fontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("IDENTIFICATION", fontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("ISSUED BY", fontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("NAME", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("IDENTIFICATION", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("ISSUED BY", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
                 if (sysSettings.Any())
                 {
-                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase(sysSettings.FirstOrDefault().Company, fontArial12)) { Border = 0, PaddingTop = 10f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase("TIN: ", fontArial12)) { Border = 0, PaddingTop = 10f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase("Bureau of Internal Revenue", fontArial12)) { Border = 0, PaddingTop = 10f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase(sysSettings.FirstOrDefault().Company, updateFontArial12)) { Border = 0, PaddingTop = 10f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase("TIN: ", updateFontArial12)) { Border = 0, PaddingTop = 10f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                    pdfTableIdentification.AddCell(new PdfPCell(new Phrase("Bureau of Internal Revenue", updateFontArial12)) { Border = 0, PaddingTop = 10f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                 }
 
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(Customer, fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstCustomer.IdType + ": " + soldUnit.FirstOrDefault().MstCustomer.IdNumber, fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstCustomer.IdType + " Agency", fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(Customer, updateFontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstCustomer.IdType + ": " + soldUnit.FirstOrDefault().MstCustomer.IdNumber, updateFontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstCustomer.IdType + " Agency", updateFontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                 //pdfTableIdentification.AddCell(new PdfPCell(new Phrase("Bureau of Internal Revenue", fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(Spouse, fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("TIN: " + soldUnit.FirstOrDefault().MstCustomer.SpouseTIN, fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("Bureau of Internal Revenue", fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0 });
-                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(Spouse, updateFontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("TIN: " + soldUnit.FirstOrDefault().MstCustomer.SpouseTIN, updateFontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase("Bureau of Internal Revenue", updateFontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0 });
+                pdfTableIdentification.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                 document.Add(pdfTableIdentification);
 
                 document.Add(spaceTable);
 
                 Phrase p100Phrase = new Phrase("All known to me and identified through the competent evidence of identity hereinabove describe to be the same persons who executed"
-                    + " the foregoing deed and acknowledge that the same is their own and free and voluntary act, deed, their authority and that of the corporation herein represented.", fontArial12);
+                    + " the foregoing deed and acknowledge that the same is their own and free and voluntary act, deed, their authority and that of the corporation herein represented.", updateFontArial12);
 
                 Paragraph p100 = new Paragraph
                 {
                     p100Phrase
                 };
 
+                p100.SetLeading(7f, 0);
                 p100.Alignment = Element.ALIGN_JUSTIFIED;
-                p100.FirstLineIndent = 80f;
+                p100.FirstLineIndent = 40f;
                 document.Add(p100);
                 document.Add(spaceTable);
 
                 Phrase p101Phrase = new Phrase("This instrument refers to a Contract to Sell consisting of five (5) pages, and Annex “A”, signed by the parties and their instrumental"
                     + " witnesses at the end of the body of the documents and on the left hand margin of the reserve side hereof and the Annex, each and every page"
-                    + " of which is sealed with my notarial seal.", fontArial12);
+                    + " of which is sealed with my notarial seal.", updateFontArial12);
 
                 Paragraph p101 = new Paragraph
                 {
                     p101Phrase
                 };
 
+                p101.SetLeading(7f, 0);
                 p101.Alignment = Element.ALIGN_JUSTIFIED;
-                p101.FirstLineIndent = 80f;
+                p101.FirstLineIndent = 40f;
                 document.Add(p101);
                 document.Add(spaceTable);
 
-                Phrase p102Phrase = new Phrase("WITNESS MY HAND AND NOTARIAL SEAL on the date and at the place first hereinabove written.", fontArial12);
+                Phrase p102Phrase = new Phrase("WITNESS MY HAND AND NOTARIAL SEAL on the date and at the place first hereinabove written.", updateFontArial12);
 
                 Paragraph p102 = new Paragraph
                 {
                     p102Phrase
                 };
 
+                p102.SetLeading(7f, 0);
                 p102.Alignment = Element.ALIGN_JUSTIFIED;
                 p102.IndentationLeft = 80f;
                 document.Add(p102);
@@ -3311,13 +3434,14 @@ namespace priland_api.Controllers
                     "Doc.No.      \t _______________  ; \n" +
                     "Page No.    \t _______________  ; \n" +
                     "Book No.    \t _______________  ; \n" +
-                    "Series No.  \t _______________  ; \n", fontArial12);
+                    "Series No.  \t _______________  ; \n", updateFontArial12);
 
                 Paragraph p103 = new Paragraph
                 {
                     p103Phrase
                 };
 
+                p103.SetLeading(7f, 0);
                 p103.Alignment = Element.ALIGN_JUSTIFIED;
                 p103.IndentationLeft = 80f;
                 document.Add(p103);
