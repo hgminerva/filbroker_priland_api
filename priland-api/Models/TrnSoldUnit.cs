@@ -35,8 +35,10 @@ namespace priland_api.Models
         public Int32 EquitySpotPayment2Pos { get; set; }
         public Int32 EquitySpotPayment3Pos { get; set; }
         public Decimal Discount { get; set; }
+        public Decimal DiscountedEquity { get; set; }
         public Decimal Reservation { get; set; }
         public Decimal NetEquity { get; set; }
+        public Decimal NetEquityBalance { get; set; }
         public Decimal NetEquityInterest { get; set; }
         public Decimal NetEquityNoOfPayments { get; set; }
         public Decimal NetEquityAmortization { get; set; }

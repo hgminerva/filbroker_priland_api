@@ -1519,10 +1519,11 @@ namespace priland_api.Controllers
             Font updateFontArial12Italic = FontFactory.GetFont("Arial", 7, Font.ITALIC);
             Font updateFontArial17Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
             Font updateFontArial11Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
-        // ===============
-        // Open PDF Stream
-        // ===============
-        PdfWriter.GetInstance(document, workStream).CloseStream = false;
+
+            // ===============
+            // Open PDF Stream
+            // ===============
+            PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
             document.SetPageSize(new Rectangle(612, 1728));
             document.SetMargins(30f, 30f, 10f, 10f);

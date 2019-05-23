@@ -61,8 +61,10 @@ namespace priland_api.Controllers
                                       EquitySpotPayment2Pos = d.EquitySpotPayment2Pos,
                                       EquitySpotPayment3Pos = d.EquitySpotPayment3Pos,
                                       Discount = d.Discount,
+                                      DiscountedEquity = d.DiscountedEquity,
                                       Reservation = d.Reservation,
                                       NetEquity = d.NetEquity,
+                                      NetEquityBalance = d.NetEquityBalance,
                                       NetEquityInterest = d.NetEquityInterest,
                                       NetEquityNoOfPayments = d.NetEquityNoOfPayments,
                                       NetEquityAmortization = d.NetEquityAmortization,
@@ -126,8 +128,10 @@ namespace priland_api.Controllers
                                       EquitySpotPayment2Pos = d.EquitySpotPayment2Pos,
                                       EquitySpotPayment3Pos = d.EquitySpotPayment3Pos,
                                       Discount = d.Discount,
+                                      DiscountedEquity = d.DiscountedEquity,
                                       Reservation = d.Reservation,
                                       NetEquity = d.NetEquity,
+                                      NetEquityBalance = d.NetEquityBalance,
                                       NetEquityInterest = d.NetEquityInterest,
                                       NetEquityNoOfPayments = d.NetEquityNoOfPayments,
                                       NetEquityAmortization = d.NetEquityAmortization,
@@ -188,8 +192,10 @@ namespace priland_api.Controllers
                                       EquitySpotPayment2Pos = d.EquitySpotPayment2Pos,
                                       EquitySpotPayment3Pos = d.EquitySpotPayment3Pos,
                                       Discount = d.Discount,
+                                      DiscountedEquity = d.DiscountedEquity,
                                       Reservation = d.Reservation,
                                       NetEquity = d.NetEquity,
+                                      NetEquityBalance = d.NetEquityBalance,
                                       NetEquityInterest = d.NetEquityInterest,
                                       NetEquityNoOfPayments = d.NetEquityNoOfPayments,
                                       NetEquityAmortization = d.NetEquityAmortization,
@@ -325,8 +331,10 @@ namespace priland_api.Controllers
                             EquitySpotPayment2Pos = 0,
                             EquitySpotPayment3Pos = 0,
                             Discount = 0,
+                            DiscountedEquity = 0,
                             Reservation = 0,
                             NetEquity = 0,
+                            NetEquityBalance = 0,
                             NetEquityInterest = 0,
                             NetEquityNoOfPayments = 0,
                             NetEquityAmortization = 0,
@@ -461,8 +469,10 @@ namespace priland_api.Controllers
                             UpdateTrnSoldUnitData.EquitySpotPayment2Pos = soldUnit.EquitySpotPayment2Pos;
                             UpdateTrnSoldUnitData.EquitySpotPayment3Pos = soldUnit.EquitySpotPayment3Pos;
                             UpdateTrnSoldUnitData.Discount = soldUnit.Discount;
+                            UpdateTrnSoldUnitData.DiscountedEquity = soldUnit.DiscountedEquity;
                             UpdateTrnSoldUnitData.Reservation = soldUnit.Reservation;
                             UpdateTrnSoldUnitData.NetEquity = soldUnit.NetEquity;
+                            UpdateTrnSoldUnitData.NetEquityBalance = soldUnit.NetEquityBalance;
                             UpdateTrnSoldUnitData.NetEquityInterest = soldUnit.NetEquityInterest;
                             UpdateTrnSoldUnitData.NetEquityNoOfPayments = soldUnit.NetEquityNoOfPayments;
                             UpdateTrnSoldUnitData.NetEquityAmortization = soldUnit.NetEquityAmortization;
@@ -559,8 +569,10 @@ namespace priland_api.Controllers
                             UpdateTrnSoldUnitData.EquitySpotPayment2Pos = soldUnit.EquitySpotPayment2Pos;
                             UpdateTrnSoldUnitData.EquitySpotPayment3Pos = soldUnit.EquitySpotPayment3Pos;
                             UpdateTrnSoldUnitData.Discount = soldUnit.Discount;
+                            UpdateTrnSoldUnitData.DiscountedEquity = soldUnit.DiscountedEquity;
                             UpdateTrnSoldUnitData.Reservation = soldUnit.Reservation;
                             UpdateTrnSoldUnitData.NetEquity = soldUnit.NetEquity;
+                            UpdateTrnSoldUnitData.NetEquityBalance = soldUnit.NetEquityBalance;
                             UpdateTrnSoldUnitData.NetEquityInterest = soldUnit.NetEquityInterest;
                             UpdateTrnSoldUnitData.NetEquityNoOfPayments = soldUnit.NetEquityNoOfPayments;
                             UpdateTrnSoldUnitData.NetEquityAmortization = soldUnit.NetEquityAmortization;
@@ -814,8 +826,10 @@ namespace priland_api.Controllers
                                     EquitySpotPayment2Pos = 0,
                                     EquitySpotPayment3Pos = 0,
                                     Discount = 0,
+                                    DiscountedEquity = 0,
                                     Reservation = 0,
                                     NetEquity = 0,
+                                    NetEquityBalance = 0,
                                     NetEquityInterest = 0,
                                     NetEquityNoOfPayments = 0,
                                     NetEquityAmortization = 0,
