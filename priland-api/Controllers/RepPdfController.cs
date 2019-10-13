@@ -24,6 +24,7 @@ namespace priland_api.Controllers
         private MemoryStream workStream = new MemoryStream();
         private Document document = new Document(new Rectangle(PageSize.A3), 72, 72, 72, 72);
 
+
         // ====================
         // PDF Customized Fonts
         // ====================
@@ -3644,5 +3645,158 @@ namespace priland_api.Controllers
             return response;
         }
 
+        [HttpGet, Route("BuyersUndertaking")]
+        public HttpResponseMessage BuyersUndertaking()
+        {
+            Font updateFontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+            Font updateFontArialBold = FontFactory.GetFont("Arial", 14, Font.BOLD);
+
+
+            // ===============
+            // Open PDF Stream
+            // ===============
+            PdfWriter.GetInstance(document, workStream).CloseStream = false;
+            document.SetMargins(30f, 30f, 30f, 30f);
+
+            PdfPTable spaceTable = new PdfPTable(1);
+            float[] widthCellsSpaceTable = new float[] { 5f };
+            spaceTable.SetWidths(widthCellsSpaceTable);
+            spaceTable.WidthPercentage = 80;
+            spaceTable.AddCell(new PdfPCell(new Phrase(" ", updateFontArial10Bold)) { PaddingTop = 1f, Border = 0 });
+            // =============
+            // Open Document
+            // =============
+            document.Open();
+
+
+
+            Phrase headerPhraseLabel = new Phrase("BUYER'S UNDERTAKING \n");
+            Phrase headerDatailPhraseData = new Phrase("Revised 09.03.19");
+            Paragraph paragraph1 = new Paragraph
+                {
+                    headerPhraseLabel, headerDatailPhraseData
+                };
+            document.Add(paragraph1);
+            document.Add(spaceTable);
+
+            Phrase paragraph2Phrase = new Phrase("WHEREAS, on __________________________________ the undersigned applied to purchase from Greentech Development Corporation, \n" +
+                "a parcel of land / house and lot, particularly described in the Reservation Agreement Form the undersigned accomplished for this purpose.");
+            Paragraph paragraph2 = new Paragraph
+                {
+                    paragraph2Phrase
+                };
+            document.Add(paragraph2);
+            document.Add(spaceTable);
+
+            Phrase paragraph3Phrase = new Phrase("NOW THEREFORE, for and in consideration of the foregoing premises, the undersigned hereby:");
+            Paragraph paragraph3 = new Paragraph
+                {
+                    paragraph3Phrase
+                };
+            document.Add(paragraph2);
+            document.Add(spaceTable);
+
+
+            Phrase paragraph4Phrase = new Phrase("Commits to submit the following requirements DP & Loan Processing according to the timelines below as follows:");
+            Paragraph paragraph4 = new Paragraph
+                {
+                   paragraph4Phrase
+                };
+            document.Add(paragraph4);
+            document.Add(spaceTable);
+
+            List list1 = new List(List.ORDERED, 20f);
+            list1.SetListSymbol("\u2022");
+
+            list1.IndentationLeft = 20f;
+            list1.IndentationRight = 20f;
+
+            list1.Add("Reservation Date		:_____________________(Date today)");
+            list1.Add("Down Payment Deadline	:_____________________(30 days)");
+            list1.Add("Requirements Deadline	:_____________________(30 days)");
+            list1.Add("Loan Approval Deadline	:_____________________(60 days)");
+            document.Add(list1);
+            document.Add(spaceTable);
+
+            Phrase paragraph5Phrase = new Phrase("NOTE/ INSTRUCTIONS:");
+            Paragraph paragraph5 = new Paragraph
+                {
+                   paragraph5Phrase
+                };
+            document.Add(paragraph5);
+            List list2 = new List(List.ORDERED, 20f);
+            list1.SetListSymbol("\u2022");
+
+            list2.Add("BUYER to submit requirements at BANK.");
+            list2.Add("Upon submission, client must submit the transmittal slip back to Greentech with the name and signature of the Bank’s representative who received the documents.");
+            list2.Add("To confirm submission of complete requirements to the BANK, the client must request the bank to send a confirmation email to Greentech upon reviewing the complete requirements of the client.");
+            list2.Add("BUYER to follow-up at BANK for approval.");
+            document.Add(list2);
+            document.Add(spaceTable);
+
+            Phrase paragraph6Phrase = new Phrase("I undersigned that my failure to submit the above requirements required from me and /or any misrepresentation on the information indicated in my Loan Application Form will be sufficient ground for Greentech Development Corporation to cancel my contract and forfeit as liquidated damages my reservation fee and whatever other payments I made.");
+            Paragraph paragraph6 = new Paragraph
+                {
+                    paragraph6Phrase
+                };
+            document.Add(paragraph6);
+            Phrase paragraph7Phrase = new Phrase("I am aware and I agree that as part of Bank Financing requirement, I will pay the bank charges being billed by the bank and I will sign the contract documents of the bank within 30 days from the bank’s advice, otherwise, at the absolute discretion of the Greentech Development Corporation, to the cancellation or rescission of this contract, penalty charges amounting to not more than Ten Thousand Pesos (Php10,000) per month of the delay period and/or the forfeiture of all amount paid by the buyer as liquidated damages.");
+            Paragraph paragraph7 = new Paragraph
+                {
+                    paragraph7Phrase
+                };
+            document.Add(paragraph7);
+
+            document.Add(spaceTable);
+            document.Add(spaceTable);
+            document.Add(spaceTable);
+
+
+
+            PdfPTable table = new PdfPTable(2);
+            float[] widths = new float[] { 5f, 5f};
+            table.SetWidths(widths);
+            table.WidthPercentage = 80;
+
+            PdfPCell row1column1 = new PdfPCell(new PdfPCell(new Phrase("_________________________", updateFontArialBold)) { PaddingTop = 1f, Border = 0 });
+            PdfPCell row1column2 = new PdfPCell(new PdfPCell(new Phrase("_________________________", updateFontArialBold)) { PaddingTop = 1f, Border = 0 });
+            PdfPCell row2column1 = new PdfPCell(new PdfPCell(new Phrase("Signature of Buyer over Printed Name", updateFontArialBold)) { PaddingTop = 1f, Border = 0 });
+            PdfPCell rowcolumn2 = new PdfPCell(new PdfPCell(new Phrase("Spouse (if applicable)", updateFontArialBold)) { PaddingTop = 1f, Border = 0 });
+
+            //cell.Colspan = 2;
+            //cell.HorizontalAlignment = 0;
+            table.AddCell(row1column1);
+            table.AddCell(row1column2);
+            table.AddCell(row2column1);
+            table.AddCell(rowcolumn2);
+            document.Add(table);
+
+
+
+            // ==============
+            // Close Document
+            // ==============
+            document.Close();
+
+
+
+            byte[] byteInfo = workStream.ToArray();
+
+            workStream.Write(byteInfo, 0, byteInfo.Length);
+            workStream.Position = 0;
+
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
+            response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StreamContent(workStream);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            response.Content.Headers.ContentLength = byteInfo.Length;
+
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
+            {
+                response.Content.Headers.ContentDisposition = contentDisposition;
+            }
+            return response;
+        }
     }
 }

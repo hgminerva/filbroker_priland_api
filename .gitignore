@@ -155,3 +155,4 @@ $RECYCLE.BIN/
 # Mac desktop service store files
 .DS_Store
 /.vs/priland-api/v15/Server/sqlite3/db.lock
+/.vs/priland-api/v16/Server/sqlite3/db.lock
