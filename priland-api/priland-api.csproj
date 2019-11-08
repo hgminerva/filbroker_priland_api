@@ -241,6 +241,8 @@
     <Compile Include="Controllers\SysDropDownController.cs" />
     <Compile Include="Controllers\SysPageController.cs" />
     <Compile Include="Controllers\SysSettingsController.cs" />
+    <Compile Include="Controllers\TrnCollectionController.cs" />
+    <Compile Include="Controllers\TrnCollectionPaymentController.cs" />
     <Compile Include="Controllers\TrnCommissionRequestController.cs" />
     <Compile Include="Controllers\TrnSoldUnitController.cs" />
     <Compile Include="Controllers\TrnSoldUnitCoOwnerController.cs" />
@@ -273,6 +275,9 @@
     <Compile Include="Models\SysDropDown.cs" />
     <Compile Include="Models\SysPage.cs" />
     <Compile Include="Models\SysSettings.cs" />
+    <Compile Include="Models\TrnCollection.cs" />
+    <Compile Include="Models\TrnCollectionPayment.cs" />
+    <Compile Include="Models\TrnCollectionPaymentSoldUnit.cs" />
     <Compile Include="Models\TrnCommissionRequest.cs" />
     <Compile Include="Models\TrnSoldUnit.cs" />
     <Compile Include="Models\TrnSoldUnitCoOwner.cs" />
