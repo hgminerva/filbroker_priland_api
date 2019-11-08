@@ -3645,8 +3645,8 @@ namespace priland_api.Controllers
             return response;
         }
 
-        [HttpGet, Route("BuyersUndertaking")]
-        public HttpResponseMessage BuyersUndertaking()
+        [HttpGet, Route("BuyersUndertaking/{id}")]
+        public HttpResponseMessage BuyersUndertaking(Int32 id)
         {
             Font updateFontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
             Font updateFontArialBold = FontFactory.GetFont("Arial", 14, Font.BOLD);
@@ -3797,8 +3797,8 @@ namespace priland_api.Controllers
             return response;
         }
 
-        [HttpGet, Route("ReservationAgreement")]
-        public HttpResponseMessage ReservationAgreement()
+        [HttpGet, Route("ReservationAgreement/{id}")]
+        public HttpResponseMessage ReservationAgreement(Int32 id)
         {
             Font updateFontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
             Font updateFontArialBold = FontFactory.GetFont("Arial", 14, Font.BOLD);
