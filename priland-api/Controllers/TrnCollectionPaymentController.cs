@@ -30,7 +30,7 @@ namespace priland_api.Controllers
         }
 
         [HttpGet, Route("CollectionPayment/{collectionId}")]
-        public List<TrnCollectionPayment> GetCollectionList(Int32 collectionId)
+        public List<TrnCollectionPayment> GetCollectionPayment(Int32 collectionId)
         {
             var collectionList = from d in db.TrnCollectionPayments
                                  where d.CollectionId == collectionId
@@ -39,7 +39,7 @@ namespace priland_api.Controllers
                                      Id = d.Id,
                                      CollectionId = d.CollectionId,
                                      SoldUnitId = d.SoldUnitId,
-                                     SoldUnit = d.TrnSoldUnit.MstUnit.UnitCode,
+                                     SoldUnit = d.TrnSoldUnit.SoldUnitNumber,
                                      Project = d.TrnSoldUnit.MstUnit.MstProject.Project,
                                      PayType = d.PayType,
                                      Amount = d.Amount,
@@ -52,14 +52,16 @@ namespace priland_api.Controllers
         }
 
         //Sold Units
-        [HttpGet, Route("SoldUnits")]
-        public List<TrnCollectionPaymentSoldUnit> GetSoldUnits()
+        [HttpGet, Route("SoldUnits/{customerId}")]
+        public List<TrnCollectionPaymentSoldUnit> GetSoldUnits(string customerId)
         {
             var soldUnits = from d in db.TrnSoldUnits
+                            where d.CustomerId == Convert.ToInt32(customerId)
                                  select new TrnCollectionPaymentSoldUnit
                                  {
                                      Id = d.Id,
-                                     SoldUnit = d.MstUnit.UnitCode,
+                                     SoldUnitNumber = d.SoldUnitNumber,
+                                     UnitCode = d.MstUnit.UnitCode,
                                      Project = d.MstProject.Project
                                  };
             return soldUnits.ToList();
@@ -99,11 +101,21 @@ namespace priland_api.Controllers
                         soldUnitId = soldUnit.FirstOrDefault().Id;
                     }
 
+                    string collectioPayType = "";
+                    var paytype = from d in db.SysDropDowns
+                                  where d.Id == Convert.ToInt32(collectionPayment.PayType)
+                                  select d;
+
+                    if (paytype.Any())
+                    {
+                        collectioPayType = paytype.FirstOrDefault().Description;
+                    }
+
                     Data.TrnCollectionPayment newCollectionPayment = new Data.TrnCollectionPayment()
                     {
                         CollectionId = collectionPayment.CollectionId,
                         SoldUnitId = collectionPayment.SoldUnitId,
-                        PayType = collectionPayment.PayType,
+                        PayType = collectioPayType,
                         Amount = collectionPayment.Amount,
                         CheckNumber = collectionPayment.CheckNumber,
                         CheckDate = Convert.ToDateTime(collectionPayment.CheckDate),
@@ -145,7 +157,7 @@ namespace priland_api.Controllers
 
                     string collectioPayType = "";
                     var paytype = from d in db.SysDropDowns
-                                  where d.Description == collectionPayment.PayType
+                                  where d.Id == Convert.ToInt32(collectionPayment.PayType)
                                   select d;
 
                     if (paytype.Any()) {
