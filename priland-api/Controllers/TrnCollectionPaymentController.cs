@@ -72,7 +72,7 @@ namespace priland_api.Controllers
         public List<SysDropDown> GetSysDropDown()
         {
             var sysDropDown = from d in db.SysDropDowns
-                            where d.Category.Equals("FINANCING TYPE")
+                            where d.Category.Equals("PAY TYPE")
                             select new SysDropDown
                             {
                                 Id = d.Id,
@@ -101,21 +101,11 @@ namespace priland_api.Controllers
                         soldUnitId = soldUnit.FirstOrDefault().Id;
                     }
 
-                    string collectioPayType = "";
-                    var paytype = from d in db.SysDropDowns
-                                  where d.Id == Convert.ToInt32(collectionPayment.PayType)
-                                  select d;
-
-                    if (paytype.Any())
-                    {
-                        collectioPayType = paytype.FirstOrDefault().Description;
-                    }
-
                     Data.TrnCollectionPayment newCollectionPayment = new Data.TrnCollectionPayment()
                     {
                         CollectionId = collectionPayment.CollectionId,
                         SoldUnitId = collectionPayment.SoldUnitId,
-                        PayType = collectioPayType,
+                        PayType = collectionPayment.PayType,
                         Amount = collectionPayment.Amount,
                         CheckNumber = collectionPayment.CheckNumber,
                         CheckDate = Convert.ToDateTime(collectionPayment.CheckDate),
@@ -155,20 +145,11 @@ namespace priland_api.Controllers
                 {
                     var currentCollectionPayments = from d in db.TrnCollectionPayments where d.Id == Convert.ToInt32(collectionPayment.Id) select d;
 
-                    string collectioPayType = "";
-                    var paytype = from d in db.SysDropDowns
-                                  where d.Id == Convert.ToInt32(collectionPayment.PayType)
-                                  select d;
-
-                    if (paytype.Any()) {
-                        collectioPayType = paytype.FirstOrDefault().Description;
-                    }
-
                     if (currentCollectionPayments.Any())
                     {
                         var updateCollectionPayment = currentCollectionPayments.FirstOrDefault();
                         updateCollectionPayment.SoldUnitId = collectionPayment.SoldUnitId;
-                        updateCollectionPayment.PayType = collectioPayType;
+                        updateCollectionPayment.PayType = collectionPayment.PayType;
                         updateCollectionPayment.Amount = collectionPayment.Amount;
                         updateCollectionPayment.CheckNumber = collectionPayment.CheckNumber;
                         updateCollectionPayment.CheckDate = Convert.ToDateTime(collectionPayment.CheckDate);

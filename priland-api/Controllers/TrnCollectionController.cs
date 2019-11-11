@@ -34,11 +34,11 @@ namespace priland_api.Controllers
         [HttpGet, Route("CustomerList")]
         public List<MstCustomer> GetCollectionList()
         {
-            var customers = from d in db.TrnCollections
+            var customers = from d in db.MstCustomers
                             select new MstCustomer
                             {
                                 Id = d.Id,
-                                FullName = d.MstCustomer.LastName + "," + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
+                                FullName = d.LastName + "," + d.FirstName + " " + d.MiddleName,
                             };
             return customers.ToList();
         }
