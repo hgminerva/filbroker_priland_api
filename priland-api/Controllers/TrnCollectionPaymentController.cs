@@ -57,13 +57,13 @@ namespace priland_api.Controllers
         {
             var soldUnits = from d in db.TrnSoldUnits
                             where d.CustomerId == Convert.ToInt32(customerId)
-                                 select new TrnCollectionPaymentSoldUnit
-                                 {
-                                     Id = d.Id,
-                                     SoldUnitNumber = d.SoldUnitNumber,
-                                     UnitCode = d.MstUnit.UnitCode,
-                                     Project = d.MstProject.Project
-                                 };
+                            select new TrnCollectionPaymentSoldUnit
+                            {
+                                Id = d.Id,
+                                SoldUnitNumber = d.SoldUnitNumber,
+                                UnitCode = d.MstUnit.UnitCode,
+                                Project = d.MstProject.Project
+                            };
             return soldUnits.ToList();
         }
 
@@ -72,12 +72,12 @@ namespace priland_api.Controllers
         public List<SysDropDown> GetSysDropDown()
         {
             var sysDropDown = from d in db.SysDropDowns
-                            where d.Category.Equals("PAY TYPE")
-                            select new SysDropDown
-                            {
-                                Id = d.Id,
-                                Description = d.Description,
-                            };
+                              where d.Category.Equals("PAY TYPE")
+                              select new SysDropDown
+                              {
+                                  Id = d.Id,
+                                  Description = d.Description,
+                              };
             return sysDropDown.ToList();
         }
 
@@ -93,30 +93,34 @@ namespace priland_api.Controllers
 
                 if (currentUser.Any())
                 {
-                    var soldUnit = from d in db.TrnSoldUnits
-                                   select d;
-                    Int32 soldUnitId = 0;
-                    if (soldUnit.Any())
+                    var collection = from d in db.TrnCollections
+                                     where d.Id == collectionPayment.CollectionId
+                                     select d;
+
+                    if (collection.Any())
                     {
-                        soldUnitId = soldUnit.FirstOrDefault().Id;
+                        Data.TrnCollectionPayment newCollectionPayment = new Data.TrnCollectionPayment()
+                        {
+                            CollectionId = collectionPayment.CollectionId,
+                            SoldUnitId = collectionPayment.SoldUnitId,
+                            PayType = collectionPayment.PayType,
+                            Amount = collectionPayment.Amount,
+                            CheckNumber = collectionPayment.CheckNumber,
+                            CheckDate = Convert.ToDateTime(collectionPayment.CheckDate),
+                            CheckBank = collectionPayment.CheckBank,
+                            OtherInformation = collectionPayment.OtherInformation,
+                        };
+
+                        db.TrnCollectionPayments.InsertOnSubmit(newCollectionPayment);
+                        db.SubmitChanges();
+
+                        return 1;
                     }
-
-                    Data.TrnCollectionPayment newCollectionPayment = new Data.TrnCollectionPayment()
+                    else
                     {
-                        CollectionId = collectionPayment.CollectionId,
-                        SoldUnitId = collectionPayment.SoldUnitId,
-                        PayType = collectionPayment.PayType,
-                        Amount = collectionPayment.Amount,
-                        CheckNumber = collectionPayment.CheckNumber,
-                        CheckDate = Convert.ToDateTime(collectionPayment.CheckDate),
-                        CheckBank = collectionPayment.CheckBank,
-                        OtherInformation = collectionPayment.OtherInformation,
-                    };
+                        return 0;
 
-                    db.TrnCollectionPayments.InsertOnSubmit(newCollectionPayment);
-                    db.SubmitChanges();
-
-                    return newCollectionPayment.Id;
+                    }
                 }
                 else
                 {

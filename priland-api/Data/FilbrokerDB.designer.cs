@@ -10148,6 +10148,10 @@ namespace priland_api.Data
 		
 		private System.DateTime _UpdatedDateTime;
 		
+		private System.Nullable<decimal> _PricePayment;
+		
+		private System.Nullable<decimal> _PriceBalance;
+		
 		private EntitySet<TrnCollectionPayment> _TrnCollectionPayments;
 		
 		private EntitySet<TrnCommissionRequest> _TrnCommissionRequests;
@@ -10274,6 +10278,10 @@ namespace priland_api.Data
     partial void OnUpdatedByChanged();
     partial void OnUpdatedDateTimeChanging(System.DateTime value);
     partial void OnUpdatedDateTimeChanged();
+    partial void OnPricePaymentChanging(System.Nullable<decimal> value);
+    partial void OnPricePaymentChanged();
+    partial void OnPriceBalanceChanging(System.Nullable<decimal> value);
+    partial void OnPriceBalanceChanged();
     #endregion
 		
 		public TrnSoldUnit()
@@ -11252,6 +11260,46 @@ namespace priland_api.Data
 					this._UpdatedDateTime = value;
 					this.SendPropertyChanged("UpdatedDateTime");
 					this.OnUpdatedDateTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PricePayment", DbType="Decimal(18,5)")]
+		public System.Nullable<decimal> PricePayment
+		{
+			get
+			{
+				return this._PricePayment;
+			}
+			set
+			{
+				if ((this._PricePayment != value))
+				{
+					this.OnPricePaymentChanging(value);
+					this.SendPropertyChanging();
+					this._PricePayment = value;
+					this.SendPropertyChanged("PricePayment");
+					this.OnPricePaymentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceBalance", DbType="Decimal(18,5)")]
+		public System.Nullable<decimal> PriceBalance
+		{
+			get
+			{
+				return this._PriceBalance;
+			}
+			set
+			{
+				if ((this._PriceBalance != value))
+				{
+					this.OnPriceBalanceChanging(value);
+					this.SendPropertyChanging();
+					this._PriceBalance = value;
+					this.SendPropertyChanged("PriceBalance");
+					this.OnPriceBalanceChanged();
 				}
 			}
 		}

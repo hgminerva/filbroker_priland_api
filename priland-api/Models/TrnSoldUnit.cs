@@ -63,5 +63,7 @@ namespace priland_api.Models
         public String CreatedDateTime { get; set; }
         public Int32 UpdatedBy { get; set; }
         public String UpdatedDateTime { get; set; }
+        public Decimal? PriceBalance { get; set; }
+        public Decimal? PricePayment { get; set; }
     }
 }

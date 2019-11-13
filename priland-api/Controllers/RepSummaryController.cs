@@ -67,7 +67,9 @@ namespace priland_api.Controllers
                                       CreatedBy = d.CreatedBy,
                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                       UpdatedBy = d.UpdatedBy,
-                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                      PricePayment = d.PricePayment != null ? d.PricePayment : 0,
+                                      PriceBalance = d.PriceBalance != null ? d.PriceBalance : 0
                                   };
             return TrnSoldUnitData.ToList();
         }

@@ -113,6 +113,37 @@ namespace priland_api.Controllers
             return collection.FirstOrDefault();
         }
 
+        public void UpdateAccountsReceivable(Int32 soldUnitId)
+        {
+            Decimal pricePayment = 0;
+
+            var collectionPayment = from d in db.TrnCollectionPayments
+                                    where d.SoldUnitId == soldUnitId
+                                    && d.TrnCollection.IsLocked == true
+                                    select d;
+
+            if (collectionPayment.Any())
+            {
+                pricePayment = collectionPayment.Sum(d => d.Amount);
+            }
+
+            var soldUnit = from d in db.TrnSoldUnits
+                           where d.Id == soldUnitId
+                           select d;
+
+            if (soldUnit.Any())
+            {
+                Decimal price = soldUnit.FirstOrDefault().Price;
+                Decimal priceDiscount = soldUnit.FirstOrDefault().PriceDiscount;
+                Decimal priceBalance = price - priceDiscount - pricePayment;
+
+                var updateSoldUnit = soldUnit.FirstOrDefault();
+                updateSoldUnit.PricePayment = pricePayment;
+                updateSoldUnit.PriceBalance = priceBalance;
+                db.SubmitChanges();
+            }
+        }
+
         //Add
         [HttpPost, Route("Add")]
         public Int32 PostCollection()
@@ -263,8 +294,20 @@ namespace priland_api.Controllers
                             UpdateTrnCollection.CreatedBy = collection.CheckedBy;
                             UpdateTrnCollection.UpdatedBy = collection.UpdatedBy;
                             UpdateTrnCollection.UpdatedDateTime = DateTime.Today;
-
                             db.SubmitChanges();
+
+                            var collectionPayments = from d in db.TrnCollectionPayments
+                                                     where d.CollectionId == Convert.ToInt32(collection.Id)
+                                                     group d by new { d.SoldUnitId } into g
+                                                     select g.Key;
+
+                            if (collectionPayments.ToList().Any())
+                            {
+                                foreach (var collectionPayment in collectionPayments)
+                                {
+                                    UpdateAccountsReceivable(collectionPayment.SoldUnitId);
+                                }
+                            }
 
                             return Request.CreateResponse(HttpStatusCode.OK);
                         }

@@ -468,6 +468,8 @@
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="PricePayment" Type="System.Decimal" DbType="Decimal(18,5)" CanBeNull="true" />
+      <Column Name="PriceBalance" Type="System.Decimal" DbType="Decimal(18,5)" CanBeNull="true" />
       <Association Name="TrnSoldUnit_TrnCollectionPayment" Member="TrnCollectionPayments" ThisKey="Id" OtherKey="SoldUnitId" Type="TrnCollectionPayment" />
       <Association Name="TrnSoldUnit_TrnCommissionRequest" Member="TrnCommissionRequests" ThisKey="Id" OtherKey="SoldUnitId" Type="TrnCommissionRequest" />
       <Association Name="TrnSoldUnit_TrnSoldUnitCoOwner" Member="TrnSoldUnitCoOwners" ThisKey="Id" OtherKey="SoldUnitId" Type="TrnSoldUnitCoOwner" />
