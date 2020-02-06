@@ -314,14 +314,18 @@
       <LastGenOutput>FilbrokerDB.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Properties\PublishProfiles\filbrokerwebsite-greentech-api - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\filbrokerwebsite-greentech-api - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-priland - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-priland - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-priland - FTP2.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-priland - FTP3.pubxml" />
+    <None Include="Properties\PublishProfiles\filbrokerwebsite-priland - FTP4.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-priland - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-priland - Web Deploy1.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-priland - Web Deploy2.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-priland - Web Deploy3.pubxml" />
+    <None Include="Properties\PublishProfiles\filbrokerwebsite-priland - Web Deploy4.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
