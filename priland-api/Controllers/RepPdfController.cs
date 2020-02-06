@@ -3833,6 +3833,17 @@ namespace priland_api.Controllers
             spaceTable.WidthPercentage = 80;
             spaceTable.AddCell(new PdfPCell(new Phrase(" ", updateFontArial10Bold)) { PaddingTop = 1f, Border = 0 });
 
+            String project = "";
+            String unit = "";
+            String lotArea = "";
+            String TCP = "";
+
+            String reservationFee = "";
+
+            String applicant = "";
+            String date = "";
+            String address = "";
+
             // =============
             // Get Sold Unit
             // =============
@@ -3854,6 +3865,17 @@ namespace priland_api.Controllers
                 document.Add(line);
 
                 document.Add(spaceTable);
+
+                project = soldUnit.FirstOrDefault().MstProject.Project;
+                unit = soldUnit.FirstOrDefault().MstUnit.UnitCode;
+                lotArea = soldUnit.FirstOrDefault().MstUnit.Lot;
+                TCP = soldUnit.FirstOrDefault().MstUnit.Price.ToString("#,##0.00");
+
+                reservationFee = soldUnit.FirstOrDefault().Reservation.ToString("#,##0.00");
+
+                applicant = soldUnit.FirstOrDefault().MstCustomer.FirstName + " " + soldUnit.FirstOrDefault().MstCustomer.MiddleName + " " + soldUnit.FirstOrDefault().MstCustomer.LastName;
+                date = soldUnit.FirstOrDefault().SoldUnitDate.ToShortDateString();
+                address = soldUnit.FirstOrDefault().MstCustomer.Address;
             }
 
             Paragraph p1 = new Paragraph
@@ -3883,11 +3905,11 @@ namespace priland_api.Controllers
             tblProjects.AddCell(new PdfPCell(new Phrase("LOT AREA", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
             tblProjects.AddCell(new PdfPCell(new Phrase("TCP", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
             tblProjects.AddCell(new PdfPCell(new Phrase("TRANSFER CHARGES", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblProjects.AddCell(new PdfPCell(new Phrase(" ", updateFontArial10)));
-            tblProjects.AddCell(new PdfPCell(new Phrase(" ", updateFontArial10)));
-            tblProjects.AddCell(new PdfPCell(new Phrase(" ", updateFontArial10)));
-            tblProjects.AddCell(new PdfPCell(new Phrase(" ", updateFontArial10)));
-            tblProjects.AddCell(new PdfPCell(new Phrase(" ", updateFontArial10)));
+            tblProjects.AddCell(new PdfPCell(new Phrase(project, updateFontArial10)));
+            tblProjects.AddCell(new PdfPCell(new Phrase(unit, updateFontArial10)));
+            tblProjects.AddCell(new PdfPCell(new Phrase(lotArea, updateFontArial10)) { HorizontalAlignment = 2 });
+            tblProjects.AddCell(new PdfPCell(new Phrase(TCP, updateFontArial10)) { HorizontalAlignment = 2 });
+            tblProjects.AddCell(new PdfPCell(new Phrase(" ", updateFontArial10)) { HorizontalAlignment = 2 });
             document.Add(tblProjects);
             document.Add(spaceTable);
 
@@ -3911,7 +3933,7 @@ namespace priland_api.Controllers
             tblContent.AddCell(new PdfPCell(new Phrase("If I opt to obtain outside financing for the entire balance of the purchase price or any part thereof, I shall comply with the procedure and requirements of GREENTECH DEVELOPMENT CORPORATION, on commercial financing.", updateFontArial12)) { Colspan = 3, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
 
             tblContent.AddCell(new PdfPCell(new Phrase("2.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("The RESERVATION FEE of P________________________ shall be deductible from the D/P of the TCP.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("The RESERVATION FEE of P " + reservationFee + " shall be deductible from the D/P of the TCP.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
 
             tblContent.AddCell(new PdfPCell(new Phrase("3.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
             tblContent.AddCell(new PdfPCell(new Phrase("The DOWNPAYMENT of P______________________, payable in the amount of P________________ per month for ____________ (___) months.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
@@ -4024,14 +4046,14 @@ namespace priland_api.Controllers
             tblContentSignature.SetWidths(tblContentSignatureWidths);
             tblContentSignature.WidthPercentage = 100;
 
-            tblContentSignature.AddCell(new PdfPCell(new Phrase("___________________________", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContentSignature.AddCell(new PdfPCell(new Phrase(applicant.ToUpper(), updateFontArial12)) { Border = 0, HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
             tblContentSignature.AddCell(new PdfPCell(new Phrase("With my marital consent: ______________________________________", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContentSignature.AddCell(new PdfPCell(new Phrase("(Name & Signature of Applicant)", updateFontArial12Bold)) { Border = 0, PaddingBottom = 10f });
+            tblContentSignature.AddCell(new PdfPCell(new Phrase("(Name & Signature of Applicant)", updateFontArial12Bold)) { Border = 0, HorizontalAlignment = 1, PaddingBottom = 10f });
             tblContentSignature.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0, PaddingBottom = 10f });
 
-            tblContentSignature.AddCell(new PdfPCell(new Phrase("Date: ______________________", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContentSignature.AddCell(new PdfPCell(new Phrase("Address: ___________________________________________________", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContentSignature.AddCell(new PdfPCell(new Phrase("Date: " + date, updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContentSignature.AddCell(new PdfPCell(new Phrase("Address: " + address, updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
 
             document.Add(tblContentSignature);
 
