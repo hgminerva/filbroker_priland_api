@@ -192,6 +192,21 @@ namespace priland_api.Controllers
 
             if (sysSettings.Any())
             {
+                // ============
+                // Company Logo
+                // ============
+                var projectLogo = from d in db.MstProjects
+                                  select d;
+
+                Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
+                logo.ScaleToFit(1000f, 60f);
+
+                PdfPTable pdfTableCompanyLogo = new PdfPTable(1);
+                pdfTableCompanyLogo.SetWidths(new float[] { 100f });
+                pdfTableCompanyLogo.WidthPercentage = 100;
+                pdfTableCompanyLogo.AddCell(new PdfPCell(logo) { Border = 0 });
+                document.Add(pdfTableCompanyLogo);
+
                 // ===============
                 // Company Details
                 // ===============
@@ -251,6 +266,13 @@ namespace priland_api.Controllers
                 String Remarks = customer.FirstOrDefault().Remarks;
                 String Status = customer.FirstOrDefault().Status;
                 String Picture = customer.FirstOrDefault().Picture;
+                String SpouseLastName = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseLastName) == true ? " " : customer.FirstOrDefault().SpouseLastName;
+                String SpouseFirstName = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseFirstName) == true ? " " : customer.FirstOrDefault().SpouseFirstName;
+                String SpouseMiddleName = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseMiddleName) == true ? " " : customer.FirstOrDefault().SpouseMiddleName;
+                String SpouseBirthDate = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseBirthDate.ToString()) == true ? " " : customer.FirstOrDefault().SpouseBirthDate.ToString();
+                String SpouseCitizen = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseCitizen) == true ? " " : customer.FirstOrDefault().SpouseCitizen;
+                String SpouseTIN = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseTIN) == true ? " " : customer.FirstOrDefault().SpouseTIN;
+                String SpouseEmployer = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseEmployer) == true ? " " : customer.FirstOrDefault().SpouseEmployer;
 
                 // ======================
                 // Table Customer (BUYER)
@@ -562,6 +584,169 @@ namespace priland_api.Controllers
                 pdfTableEmploymentContactEmailAndNumbers.AddCell(new PdfPCell(employementMobileNoParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
                 document.Add(pdfTableEmploymentContactEmailAndNumbers);
+
+                // =====================================
+                // Table Customer (Spouse's Information)
+                // =====================================
+                PdfPTable pdfTableCustomerSpouseInformation = new PdfPTable(4);
+                pdfTableCustomerSpouseInformation.SetWidths(new float[] { 100f, 100f, 100f, 100f });
+                pdfTableCustomerSpouseInformation.WidthPercentage = 100;
+
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(new Phrase("SPOUSE'S INFORMATION", fontArial10BoldItalic)) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, BackgroundColor = BaseColor.BLACK });
+
+                Phrase spouseTitlePhraseLabel = new Phrase("Title \n\n", fontArial10Bold);
+                Phrase spouseTitlePhraseData = new Phrase(" ", fontArial13);
+                Paragraph titleParagraph = new Paragraph
+                {
+                    spouseTitlePhraseLabel, spouseTitlePhraseData
+                };
+
+                Phrase spouseFirstNamePhraseLabel = new Phrase("First Name \n\n", fontArial10Bold);
+                Phrase spouseFirstNamePhraseData = new Phrase(SpouseFirstName, fontArial13);
+                Paragraph spouseFirstNameParagraph = new Paragraph
+                {
+                    spouseFirstNamePhraseLabel, spouseFirstNamePhraseData
+                };
+
+                Phrase spouseMiddleNamePhraseLabel = new Phrase("Middle Name \n\n", fontArial10Bold);
+                Phrase spouseMiddleNamePhraseData = new Phrase(SpouseMiddleName, fontArial13);
+                Paragraph spouseMiddleNamePhraseDataParagraph = new Paragraph
+                {
+                    spouseMiddleNamePhraseLabel, spouseMiddleNamePhraseData
+                };
+
+                Phrase spouseLastNamePhraseLabel = new Phrase("Last Name \n\n", fontArial10Bold);
+                Phrase spouseLastNamePhraseData = new Phrase(SpouseLastName, fontArial13);
+                Paragraph spouseLastNamePhraseDataParagraph = new Paragraph
+                {
+                    spouseLastNamePhraseLabel, spouseLastNamePhraseData
+                };
+
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(titleParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseFirstNameParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseMiddleNamePhraseDataParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseLastNamePhraseDataParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+
+                Phrase spouseBirthdayPhraseLabel = new Phrase("Birthday \n\n", fontArial10Bold);
+                Phrase spouseBirthdayPhraseData = new Phrase(SpouseBirthDate, fontArial13);
+                Paragraph spouseBirthdayParagraph = new Paragraph
+                {
+                    spouseBirthdayPhraseLabel, spouseBirthdayPhraseData
+                };
+
+                Phrase spouseCivilStatusPhraseLabel = new Phrase( "Civil Status \n\n", fontArial10Bold);
+                Phrase spouseCivilStatusPhraseData = new Phrase("", fontArial13);
+                Paragraph spouseCivilStatusParagraph = new Paragraph
+                {
+                    spouseCivilStatusPhraseLabel, spouseCivilStatusPhraseData
+                };
+
+                Phrase spouseSexPhraseLabel = new Phrase("Sex \n\n", fontArial10Bold);
+                Phrase spouseSexPhraseData = new Phrase(" ", fontArial13);
+                Paragraph spouseSexParagraph = new Paragraph
+                {
+                    spouseSexPhraseLabel, spouseSexPhraseData
+                };
+
+                Phrase spouseCitizenshipPhraseLabel = new Phrase("Citizenship \n\n", fontArial10Bold);
+                Phrase spouseCitizenshipPhraseData = new Phrase(SpouseCitizen, fontArial13);
+                Paragraph spouseCitizenshipParagraph = new Paragraph
+                {
+                    spouseCitizenshipPhraseLabel, spouseCitizenshipPhraseData
+                };
+
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseBirthdayParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseCivilStatusParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseSexParagraph) {  PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseCitizenshipParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+
+                Phrase spouseAddressPhraseLabel = new Phrase("Address \n\n", fontArial10Bold);
+                Phrase spouseAddressPhraseData = new Phrase(" ", fontArial13);
+                Paragraph spouseAddressParagraph = new Paragraph
+                {
+                    spouseAddressPhraseLabel, spouseAddressPhraseData
+                };
+
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseAddressParagraph) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+
+                Phrase spouseContactNumberPhraseLabel = new Phrase("Contact Number \n\n", fontArial10Bold);
+                Phrase spouseContactNumberPhraseData = new Phrase(" ", fontArial13);
+                Paragraph spouseContactNumberCityParagraph = new Paragraph
+                {
+                    spouseContactNumberPhraseLabel, spouseContactNumberPhraseData
+                };
+
+                Phrase spouseMobilePhraseLabel = new Phrase("Mobile \n\n", fontArial10Bold);
+                Phrase spouseMobilePhraseData = new Phrase("", fontArial13);
+                Paragraph spouseMobileParagraph = new Paragraph
+                {
+                    spouseMobilePhraseLabel, spouseMobilePhraseData
+                };
+
+                Phrase spouseNameOfCompanyPhraseLabel = new Phrase("Name of Company \n\n", fontArial10Bold);
+                Phrase spouseNameOfCompanyPhraseData = new Phrase(" ", fontArial13);
+                Paragraph spouseNameOfCompanyParagraph = new Paragraph
+                {
+                    spouseMobilePhraseLabel, spouseMobilePhraseData
+                };
+
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseContactNumberCityParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseMobileParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseNameOfCompanyParagraph) { Colspan = 2, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+
+
+                Phrase spouseCompanyAddressPhraseLabel = new Phrase("Company Address \n\n", fontArial10Bold);
+                Phrase spouseCompanyAddressPhraseData = new Phrase(" ", fontArial13);
+                Paragraph spouseCompanyAddressParagraph = new Paragraph
+                {
+                    spouseCompanyAddressPhraseLabel, spouseCompanyAddressPhraseData
+                };
+
+                Phrase spouseSalaryPhraseLabel = new Phrase("Salary \n\n", fontArial10Bold);
+                Phrase spouseSalaryPhraseData = new Phrase(" ", fontArial13);
+                Paragraph spouseSalaryParagraph = new Paragraph
+                {
+                    spouseSalaryPhraseLabel, spouseSalaryPhraseData
+                };
+
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseCompanyAddressParagraph) { Colspan = 3, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseSalaryParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+
+
+                Phrase spousePositionPhraseLabel = new Phrase("Position \n\n", fontArial10Bold);
+                Phrase spousePositionPhraseData = new Phrase(" ", fontArial13);
+                Paragraph spousePositionParagraph = new Paragraph
+                {
+                    spousePositionPhraseLabel, spousePositionPhraseData
+                };
+
+                Phrase spouseNoOfYearsPhraseLabel = new Phrase("No. of Years \n\n", fontArial10Bold);
+                Phrase spouseNoOfYearsPhraseData = new Phrase(" ", fontArial13);
+                Paragraph spouseNoOfYearseNoParagraph = new Paragraph
+                {
+                    spouseNoOfYearsPhraseLabel, spouseNoOfYearsPhraseData
+                };
+
+                Phrase spouseCancelledCardPhraseLabel = new Phrase("Cancelled Card \n\n", fontArial10Bold);
+                Phrase spouseCancelledCardPhraseData = new Phrase(" ", fontArial13);
+                Paragraph spouseCancelledCardParagraph = new Paragraph
+                {
+                    spouseCancelledCardPhraseLabel, spouseCancelledCardPhraseData
+                };
+
+                Phrase spouseExistingLoanPhraseLabel = new Phrase("Existing Loan \n\n", fontArial10Bold);
+                Phrase spouseExistingLoanPhraseData = new Phrase(" ", fontArial13);
+                Paragraph spouseExistingLoanParagraph = new Paragraph
+                {
+                    spouseExistingLoanPhraseLabel, spouseExistingLoanPhraseData
+                };
+
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spousePositionParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseNoOfYearseNoParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseCancelledCardParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseExistingLoanParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+
+                document.Add(pdfTableCustomerSpouseInformation);
             }
 
             // ==============
@@ -3840,20 +4025,23 @@ namespace priland_api.Controllers
 
             String reservationFee = "";
 
-            String applicant = "";
+            String applicant = "Sample";
             String date = "";
             String address = "";
 
-            // =============
-            // Get Sold Unit
-            // =============
-            var soldUnit = from d in db.TrnSoldUnits
+            // ============
+            // Get Customer
+            // ============
+            var customer = from d in db.MstCustomers
                            where d.Id == Convert.ToInt32(id)
                            select d;
 
-            if (soldUnit.Any())
+            if (customer.Any())
             {
-                Image logo = Image.GetInstance(soldUnit.FirstOrDefault().MstProject.ProjectLogo);
+                var projectLogo = from d in db.MstProjects
+                                  select d;
+
+                Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
                 logo.ScaleToFit(1000f, 60f);
 
                 PdfPTable pdfTableCompanyDetail = new PdfPTable(2);
@@ -3866,16 +4054,8 @@ namespace priland_api.Controllers
 
                 document.Add(spaceTable);
 
-                project = soldUnit.FirstOrDefault().MstProject.Project;
-                unit = soldUnit.FirstOrDefault().MstUnit.UnitCode;
-                lotArea = soldUnit.FirstOrDefault().MstUnit.Lot;
-                TCP = soldUnit.FirstOrDefault().MstUnit.Price.ToString("#,##0.00");
-
-                reservationFee = soldUnit.FirstOrDefault().Reservation.ToString("#,##0.00");
-
-                applicant = soldUnit.FirstOrDefault().MstCustomer.FirstName + " " + soldUnit.FirstOrDefault().MstCustomer.MiddleName + " " + soldUnit.FirstOrDefault().MstCustomer.LastName;
-                date = soldUnit.FirstOrDefault().SoldUnitDate.ToShortDateString();
-                address = soldUnit.FirstOrDefault().MstCustomer.Address;
+                applicant = customer.FirstOrDefault().FirstName + " " + customer.FirstOrDefault().MiddleName + " " + customer.FirstOrDefault().LastName;
+                address = customer.FirstOrDefault().Address;
             }
 
             Paragraph p1 = new Paragraph
@@ -4073,6 +4253,81 @@ namespace priland_api.Controllers
 
             document.Add(tblContentCompanySignature);
             document.Add(spaceTable);
+
+            // ==============
+            // Close Document
+            // ==============
+            document.Close();
+
+            byte[] byteInfo = workStream.ToArray();
+
+            workStream.Write(byteInfo, 0, byteInfo.Length);
+            workStream.Position = 0;
+
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
+            response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StreamContent(workStream);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            response.Content.Headers.ContentLength = byteInfo.Length;
+
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
+            {
+                response.Content.Headers.ContentDisposition = contentDisposition;
+            }
+            return response;
+        }
+
+        [HttpGet, Route("ClientsProfile/{id}")]
+        public HttpResponseMessage ClientsProfile(Int32 id) {
+            Font updateFontArial10 = FontFactory.GetFont("Arial", 7);
+            Font updateFontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+            Font updateFontArial10BoldItalic = FontFactory.GetFont("Arial", 5, Font.BOLDITALIC, BaseColor.WHITE);
+            Font updateFontArial12Bold = FontFactory.GetFont("Arial", 9, Font.BOLD);
+            Font updateFontArial12BoldItalic = FontFactory.GetFont("Arial", 9, Font.BOLDITALIC);
+            Font updateFontArial12 = FontFactory.GetFont("Arial", 9);
+            Font updateFontArial12Italic = FontFactory.GetFont("Arial", 9, Font.ITALIC);
+            Font updateFontArial17Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
+            Font updateFontArial17UNDERLINE = FontFactory.GetFont("Arial", 12, Font.UNDERLINE);
+
+            Font updateFontArial11Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+            Font updateFontArialBold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+
+            // ===============
+            // Open PDF Stream
+            // ===============
+            PdfWriter.GetInstance(document, workStream).CloseStream = false;
+
+            document.SetPageSize(PageSize.LETTER);
+            document.SetMargins(50f, 50f, 50f, 50f);
+
+            // =============
+            // Open Document
+            // =============
+            document.Open();
+
+            var customer = from d in db.MstCustomers
+                           where d.Id == Convert.ToInt32(id)
+                           select d;
+
+            if (customer.Any())
+            {
+                var projectLogo = from d in db.MstProjects
+                                  select d;
+
+                Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
+                logo.ScaleToFit(1000f, 60f);
+
+                PdfPTable pdfTableCompanyDetail = new PdfPTable(1);
+                pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
+                pdfTableCompanyDetail.WidthPercentage = 100;
+                pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("CLIENT'S PROFILE", updateFontArial17UNDERLINE)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("(Rev.9.30.15)", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+
+
+
+            }
 
             // ==============
             // Close Document
