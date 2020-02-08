@@ -634,7 +634,7 @@ namespace priland_api.Controllers
                     spouseBirthdayPhraseLabel, spouseBirthdayPhraseData
                 };
 
-                Phrase spouseCivilStatusPhraseLabel = new Phrase( "Civil Status \n\n", fontArial10Bold);
+                Phrase spouseCivilStatusPhraseLabel = new Phrase("Civil Status \n\n", fontArial10Bold);
                 Phrase spouseCivilStatusPhraseData = new Phrase("", fontArial13);
                 Paragraph spouseCivilStatusParagraph = new Paragraph
                 {
@@ -657,7 +657,7 @@ namespace priland_api.Controllers
 
                 pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseBirthdayParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
                 pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseCivilStatusParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
-                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseSexParagraph) {  PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseSexParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
                 pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseCitizenshipParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
                 Phrase spouseAddressPhraseLabel = new Phrase("Address \n\n", fontArial10Bold);
@@ -4279,7 +4279,8 @@ namespace priland_api.Controllers
         }
 
         [HttpGet, Route("ClientsProfile/{id}")]
-        public HttpResponseMessage ClientsProfile(Int32 id) {
+        public HttpResponseMessage ClientsProfile(Int32 id)
+        {
             Font updateFontArial10 = FontFactory.GetFont("Arial", 7);
             Font updateFontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
             Font updateFontArial10BoldItalic = FontFactory.GetFont("Arial", 5, Font.BOLDITALIC, BaseColor.WHITE);
@@ -4326,6 +4327,138 @@ namespace priland_api.Controllers
                 pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("(Rev.9.30.15)", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
 
 
+
+            }
+
+            // ==============
+            // Close Document
+            // ==============
+            document.Close();
+
+            byte[] byteInfo = workStream.ToArray();
+
+            workStream.Write(byteInfo, 0, byteInfo.Length);
+            workStream.Position = 0;
+
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
+            response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StreamContent(workStream);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            response.Content.Headers.ContentLength = byteInfo.Length;
+
+            ContentDispositionHeaderValue contentDisposition = null;
+            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
+            {
+                response.Content.Headers.ContentDisposition = contentDisposition;
+            }
+            return response;
+        }
+
+        [HttpGet, Route("ComputationSheet/{id}")]
+        public HttpResponseMessage ComputationSheet(Int32 id)
+        {
+            Font updateFontArial10 = FontFactory.GetFont("Arial", 7);
+            Font updateFontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+            Font updateFontArial10BoldItalic = FontFactory.GetFont("Arial", 5, Font.BOLDITALIC, BaseColor.WHITE);
+            Font updateFontArial12Bold = FontFactory.GetFont("Arial", 9, Font.BOLD);
+            Font updateFontArial12BoldItalic = FontFactory.GetFont("Arial", 9, Font.BOLDITALIC);
+            Font updateFontArial12 = FontFactory.GetFont("Arial", 9);
+            Font updateFontArial12Italic = FontFactory.GetFont("Arial", 9, Font.ITALIC);
+            Font updateFontArial17Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
+            Font updateFontArial17UNDERLINE = FontFactory.GetFont("Arial", 12, Font.UNDERLINE);
+
+            Font updateFontArial11Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+            Font updateFontArialBold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+
+            // ===============
+            // Open PDF Stream
+            // ===============
+            PdfWriter.GetInstance(document, workStream).CloseStream = false;
+
+            document.SetPageSize(PageSize.LETTER);
+            document.SetMargins(50f, 50f, 30f, 50f);
+
+            // =============
+            // Open Document
+            // =============
+            document.Open();
+
+            var customer = from d in db.MstCustomers
+                           where d.Id == Convert.ToInt32(id)
+                           select d;
+
+            if (customer.Any())
+            {
+                var projectLogo = from d in db.MstProjects
+                                  select d;
+                Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
+                logo.ScaleToFit(1000f, 60f);
+
+                PdfPTable pdfTableComputationSheet = new PdfPTable(4);
+                pdfTableComputationSheet.SetWidths(new float[] { 25f, 25f, 100f, 100f });
+                pdfTableComputationSheet.WidthPercentage = 100;
+                pdfTableComputationSheet.AddCell(new PdfPCell(logo) { Colspan = 4, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("COMPUTATION SHEET", updateFontArial17Bold)) { Colspan = 4, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("TCP: ____________________________________", updateFontArial12)) { Colspan = 4, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("I. R/F: ______________________________________", updateFontArial12Bold)) { Colspan = 3, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("II. D/P: ________________ = ______________________", updateFontArial12Bold)) { Colspan = 3, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Less R/F:  ______________________________________", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Net D/P:  ______________________________________", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Terms:  ____________________________month/s @ _______% (interest / discount)", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Monthly D/P: Php____________________________month/s @ _______% (interest / discount)", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("III. BAL: ______________________________________", updateFontArial12Bold)) { Colspan = 3, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("___ CASH", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("___ BANK", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("___ IN-HOUSE", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Term:__________months", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Int. Rate:__________%", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Mo. Amortization:_________________", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+
+                document.Add(pdfTableComputationSheet);
+
+                document.Add(line);
+
+                PdfPTable pdfTableComputationSheetAdditionalInfo = new PdfPTable(2);
+                pdfTableComputationSheetAdditionalInfo.SetWidths(new float[] { 100f, 100f });
+                pdfTableComputationSheetAdditionalInfo.WidthPercentage = 100;
+
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Project: _______________________________", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Unit #: ________________________________", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("______________________________________", updateFontArial12)) { PaddingTop = 30, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("______________________________________", updateFontArial12)) { PaddingTop = 30, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("BUYER", updateFontArial12Bold)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Sales Manager", updateFontArial12Bold)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("(Signature over printed name)", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Date: _________________________________", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Legend:", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("TCP: Total Contract Price", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Approved by:", updateFontArial12Italic)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("R/F: Reservation Fee", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("D/P: Down Payment", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("BAL: Balance", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Kaiser Christopher F. Tan", updateFontArial12Bold)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Int: Interest per annum", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("President / CEo", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+
+                document.Add(pdfTableComputationSheetAdditionalInfo);
 
             }
 
