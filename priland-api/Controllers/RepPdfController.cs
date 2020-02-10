@@ -3835,7 +3835,8 @@ namespace priland_api.Controllers
         {
             Font updateFontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
             Font updateFontArialBold = FontFactory.GetFont("Arial", 14, Font.BOLD);
-
+            Font updateFontArial17Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
+            Font updateFontArial11Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
 
             // ===============
             // Open PDF Stream
@@ -3853,13 +3854,27 @@ namespace priland_api.Controllers
             // =============
             document.Open();
 
-            Phrase headerPhraseLabel = new Phrase("BUYER'S UNDERTAKING \n");
-            Phrase headerDatailPhraseData = new Phrase("Revised 09.03.19");
-            Paragraph paragraph1 = new Paragraph
-                {
-                    headerPhraseLabel, headerDatailPhraseData
-                };
-            document.Add(paragraph1);
+            var projectLogo = from d in db.MstProjects
+                              select d;
+
+            Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
+            logo.ScaleToFit(1000f, 60f);
+
+            PdfPTable pdfTableCompanyDetail = new PdfPTable(2);
+            pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
+            pdfTableCompanyDetail.WidthPercentage = 100;
+            pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
+            pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("BUYER'S UNDERTAKING \n Revised 09.03.19", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
+            document.Add(pdfTableCompanyDetail);
+            document.Add(line);
+
+            //Phrase headerPhraseLabel = new Phrase("BUYER'S UNDERTAKING \n");
+            //Phrase headerDatailPhraseData = new Phrase("Revised 09.03.19");
+            //Paragraph paragraph1 = new Paragraph
+            //    {
+            //        headerPhraseLabel, headerDatailPhraseData
+            //    };
+            //document.Add(paragraph1);
             document.Add(spaceTable);
 
             Phrase paragraph2Phrase = new Phrase("WHEREAS, on __________________________________ the undersigned applied to purchase from Greentech Development Corporation, \n" +
@@ -4278,82 +4293,6 @@ namespace priland_api.Controllers
             return response;
         }
 
-        [HttpGet, Route("ClientsProfile/{id}")]
-        public HttpResponseMessage ClientsProfile(Int32 id)
-        {
-            Font updateFontArial10 = FontFactory.GetFont("Arial", 7);
-            Font updateFontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
-            Font updateFontArial10BoldItalic = FontFactory.GetFont("Arial", 5, Font.BOLDITALIC, BaseColor.WHITE);
-            Font updateFontArial12Bold = FontFactory.GetFont("Arial", 9, Font.BOLD);
-            Font updateFontArial12BoldItalic = FontFactory.GetFont("Arial", 9, Font.BOLDITALIC);
-            Font updateFontArial12 = FontFactory.GetFont("Arial", 9);
-            Font updateFontArial12Italic = FontFactory.GetFont("Arial", 9, Font.ITALIC);
-            Font updateFontArial17Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
-            Font updateFontArial17UNDERLINE = FontFactory.GetFont("Arial", 12, Font.UNDERLINE);
-
-            Font updateFontArial11Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
-            Font updateFontArialBold = FontFactory.GetFont("Arial", 7, Font.BOLD);
-
-            // ===============
-            // Open PDF Stream
-            // ===============
-            PdfWriter.GetInstance(document, workStream).CloseStream = false;
-
-            document.SetPageSize(PageSize.LETTER);
-            document.SetMargins(50f, 50f, 50f, 50f);
-
-            // =============
-            // Open Document
-            // =============
-            document.Open();
-
-            var customer = from d in db.MstCustomers
-                           where d.Id == Convert.ToInt32(id)
-                           select d;
-
-            if (customer.Any())
-            {
-                var projectLogo = from d in db.MstProjects
-                                  select d;
-
-                Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
-                logo.ScaleToFit(1000f, 60f);
-
-                PdfPTable pdfTableCompanyDetail = new PdfPTable(1);
-                pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
-                pdfTableCompanyDetail.WidthPercentage = 100;
-                pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
-                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("CLIENT'S PROFILE", updateFontArial17UNDERLINE)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("(Rev.9.30.15)", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-
-
-
-            }
-
-            // ==============
-            // Close Document
-            // ==============
-            document.Close();
-
-            byte[] byteInfo = workStream.ToArray();
-
-            workStream.Write(byteInfo, 0, byteInfo.Length);
-            workStream.Position = 0;
-
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.BadRequest);
-            response = Request.CreateResponse(HttpStatusCode.OK);
-            response.Content = new StreamContent(workStream);
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
-            response.Content.Headers.ContentLength = byteInfo.Length;
-
-            ContentDispositionHeaderValue contentDisposition = null;
-            if (ContentDispositionHeaderValue.TryParse("inline; filename=customer.pdf", out contentDisposition))
-            {
-                response.Content.Headers.ContentDisposition = contentDisposition;
-            }
-            return response;
-        }
-
         [HttpGet, Route("ComputationSheet/{id}")]
         public HttpResponseMessage ComputationSheet(Int32 id)
         {
@@ -4391,14 +4330,21 @@ namespace priland_api.Controllers
             {
                 var projectLogo = from d in db.MstProjects
                                   select d;
+
                 Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
                 logo.ScaleToFit(1000f, 60f);
+
+                PdfPTable pdfTableCompanyDetail = new PdfPTable(2);
+                pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
+                pdfTableCompanyDetail.WidthPercentage = 100;
+                pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Computation Sheet", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
+                document.Add(pdfTableCompanyDetail);
+                document.Add(line);
 
                 PdfPTable pdfTableComputationSheet = new PdfPTable(4);
                 pdfTableComputationSheet.SetWidths(new float[] { 25f, 25f, 100f, 100f });
                 pdfTableComputationSheet.WidthPercentage = 100;
-                pdfTableComputationSheet.AddCell(new PdfPCell(logo) { Colspan = 4, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("COMPUTATION SHEET", updateFontArial17Bold)) { Colspan = 4, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("TCP: ____________________________________", updateFontArial12)) { Colspan = 4, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
                 pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("I. R/F: ______________________________________", updateFontArial12Bold)) { Colspan = 3, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
