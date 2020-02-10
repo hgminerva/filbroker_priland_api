@@ -316,8 +316,10 @@
     </Content>
     <None Include="Properties\PublishProfiles\filbrokerwebsite-greentech-api - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-greentech-api - FTP1.pubxml" />
+    <None Include="Properties\PublishProfiles\filbrokerwebsite-greentech-api - FTP2.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-greentech-api - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-greentech-api - Web Deploy1.pubxml" />
+    <None Include="Properties\PublishProfiles\filbrokerwebsite-greentech-api - Web Deploy2.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-priland - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-priland - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\filbrokerwebsite-priland - FTP2.pubxml" />
