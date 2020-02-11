@@ -3937,6 +3937,163 @@ namespace priland_api.Controllers
             document.Add(list1);
             document.Add(spaceTable);
 
+            PdfPTable pdfTableCheckList = new PdfPTable(2);
+            pdfTableCheckList.SetWidths(new float[] { 100f, 100f });
+            pdfTableCheckList.WidthPercentage = 100;
+
+            Phrase phraseEmployed1 = new Phrase("__ Employed:", updateFontArial12);
+            Phrase phraseEmployed2 = new Phrase("1. (COE) Certificate of Employment with Salary & Position \n\n", updateFontArial12);
+            Phrase phraseEmployed3 = new Phrase("2. (ITR)Latest Income Tax Return(for the Last 2-years) / Latest 3 months Payslip \n\n", updateFontArial12);
+            Phrase phraseEmployed4 = new Phrase("3. (ID)2 Valid ID's with 3 spicemen signature \n\n", updateFontArial12);
+            Phrase phraseEmployed5 = new Phrase("4. Cedula \n\n", updateFontArial12);
+            Phrase phraseEmployed6 = new Phrase("5. (POB)Proof of Billing \n\n", updateFontArial12);
+            Phrase phraseEmployed7 = new Phrase("6. (BS)Bank Statement (Lates 6 months) or Photocopy of Passbooks for the last 2 years \n\n", updateFontArial12);
+            Phrase phraseEmployed8 = new Phrase("7. ID Picture 2x2 2pcx. \n\n", updateFontArial12);
+            Phrase phraseEmployed9 = new Phrase("8. (PDC) Post Dated Checks for the down payment \n\n", updateFontArial12);
+            Phrase phraseEmployed10 = new Phrase("9. Loan Application Form (Bank Loan) \n\n", updateFontArial12);
+            Phrase phraseEmployed11 = new Phrase("10. Marriage Contract (if Married) / Cenomar (if Single) \n\n", updateFontArial12);
+
+            Paragraph paragraphEmployedHeader = new Paragraph
+            {
+                    phraseEmployed1
+            };
+
+            Paragraph paragraphEmployed = new Paragraph
+            {
+                    phraseEmployed2,
+                    phraseEmployed3,
+                    phraseEmployed4,
+                    phraseEmployed5,
+                    phraseEmployed6,
+                    phraseEmployed7,
+                    phraseEmployed8,
+                    phraseEmployed9,
+                    phraseEmployed10,
+                    phraseEmployed11
+            };
+
+            Phrase phraseOFW1 = new Phrase("__ OFW", updateFontArial12);
+            Phrase phraseOFW2 = new Phrase("1. Contract of Employment (consularized or email by the employer tru CFBC-Ceby@yahoo.com) \n\n", updateFontArial12);
+            Phrase phraseOFW3 = new Phrase("2. (ID)2 Valid ID's with 3 specimen signature \n\n", updateFontArial12);
+            Phrase phraseOFW4 = new Phrase("3. Proof of Billing \n\n", updateFontArial12);
+            Phrase phraseOFW5 = new Phrase("4. (BS)Bank Statement (Latest 6 months) or Photocopy of Passbook for the last 2 years \n\n", updateFontArial12);
+            Phrase phraseOFW6 = new Phrase("5. ID Picture \n\n", updateFontArial12);
+            Phrase phraseOFW7 = new Phrase("6. (SPA) Irrevocable Special Power of Attorney(annotated and validated by the Philippine Consulate) \n\n", updateFontArial12);
+            Phrase phraseOFW8 = new Phrase("7. Cedula \n\n", updateFontArial12);
+            Phrase phraseOFW9 = new Phrase("8. (PDC) Post Dated Checks for the down payment \n\n", updateFontArial12);
+            Phrase phraseOFW10 = new Phrase("9. Loan Application Form (Bank Loan) \n\n", updateFontArial12);
+            Phrase phraseOFW11 = new Phrase("10. Marriage Contract (if Married) / Cenomar (if Single) \n\n", updateFontArial12);
+            Phrase phraseOFW112 = new Phrase("11. Latest 3 months Payslip \n\n", updateFontArial12);
+
+            Paragraph paragraphOFWHeader = new Paragraph
+            {
+                    phraseOFW1,
+            };
+            Paragraph paragraphOFW = new Paragraph
+            {
+                    phraseOFW2,
+                    phraseOFW3,
+                    phraseOFW4,
+                    phraseOFW5,
+                    phraseOFW6,
+                    phraseOFW7,
+                    phraseOFW8,
+                    phraseOFW9,
+                    phraseOFW10,
+                    phraseOFW11,
+                    phraseOFW112
+            };
+            pdfTableCheckList.AddCell(new PdfPCell(paragraphOFWHeader) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
+            pdfTableCheckList.AddCell(new PdfPCell(paragraphEmployedHeader) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
+            pdfTableCheckList.AddCell(new PdfPCell(paragraphEmployed) { PaddingLeft = 18f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
+            pdfTableCheckList.AddCell(new PdfPCell(paragraphOFW) { PaddingLeft = 18f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
+
+            document.Add(spaceTable);
+
+            Phrase phraseSSB1 = new Phrase("__ Self-Employed/Sole Proprietorship/Businessman", updateFontArial12);
+            Phrase phraseSSB2 = new Phrase("1. (ITR)Latest Income Tax Return with Audited Financial Statement (for the Last 2-years) \n\n", updateFontArial12);
+            Phrase phraseSSB3 = new Phrase("2. DTI Certificate of Registration and/ or SEC registration \n\n", updateFontArial12);
+            Phrase phraseSSB4 = new Phrase("3. Mayor's Business Permit \n\n", updateFontArial12);
+            Phrase phraseSSB5 = new Phrase("4. (ID)2 Valid ID's with 3 specimen signature \n\n", updateFontArial12);
+            Phrase phraseSSB6 = new Phrase("5. Cedula \n\n", updateFontArial12);
+            Phrase phraseSSB7 = new Phrase("6. (POB)Proof of Billing \n\n", updateFontArial12);
+            Phrase phraseSSB8 = new Phrase("7. (BS) Bank Statement (Latest 6 months) of Photocopy of Passbooks for the last 2 years \n\n", updateFontArial12);
+            Phrase phraseSSB9 = new Phrase("8. ID Picture 2X2 21 \n\n", updateFontArial12);
+            Phrase phraseSSB10 = new Phrase("9. (PDC) Post Dated Checks for the down payment \n\n", updateFontArial12);
+            Phrase phraseSSB11 = new Phrase("10. Loan Application Form (Bank Loan) \n\n", updateFontArial12);
+            Phrase phraseSSB12 = new Phrase("11. Marriage Contract (if Married) / Cenomar (if Single) \n\n", updateFontArial12);
+
+            Paragraph paragraphSSBHeader = new Paragraph
+            {
+                    phraseSSB1,
+
+            };
+            Paragraph paragraphSSB = new Paragraph
+            {
+                    phraseSSB2,
+                    phraseSSB3,
+                    phraseSSB4,
+                    phraseSSB5,
+                    phraseSSB6
+                    
+            };
+
+            Paragraph paragraphSSB1 = new Paragraph
+            {
+                    phraseSSB7,
+                    phraseSSB8,
+                    phraseSSB9,
+                    phraseSSB10,
+                    phraseSSB11,
+                    phraseSSB12
+            };
+
+            Phrase phraseSeaman1 = new Phrase("__ Seafere/Seaman", updateFontArial12);
+            Phrase phraseSeaman2 = new Phrase("1. Contract of Employment \n\n", updateFontArial12);
+            Phrase phraseSeaman3 = new Phrase("2. (ID)2 Valid ID's with 3 specimen signature \n\n", updateFontArial12);
+            Phrase phraseSeaman4 = new Phrase("3. (POB)Proof of Billing \n\n", updateFontArial12);
+            Phrase phraseSeaman5 = new Phrase("4. Cedula \n\n", updateFontArial12);
+            Phrase phraseSeaman6 = new Phrase("5. (BS) Bank Statement (Latest 6 months) or Photocopy of Passbooks for the last 2 years \n\n", updateFontArial12);
+            Phrase phraseSeaman7 = new Phrase("6. ID Picture \n\n", updateFontArial12);
+            Phrase phraseSeaman8 = new Phrase("7. (SPA) Irrevocable Special Power of Attorney(annotated and validated by the Philippin Consulate) \n\n", updateFontArial12);
+            Phrase phraseSeaman9 = new Phrase("8. (PDC) Post Dated Check for the down payment \n\n", updateFontArial12);
+            Phrase phraseSeaman10 = new Phrase("9. Marriage Contract (if Married / Cenomar (if Single)) \n\n", updateFontArial12);
+            Phrase phraseSeaman11 = new Phrase("10. Loan Application Form (Bank Loan) \n\n", updateFontArial12);
+            Phrase phraseSeaman12 = new Phrase("11. Latest 3 months Payslip \n\n", updateFontArial12);
+
+            Paragraph paragraphSeamanHeader = new Paragraph
+            {
+                    phraseSeaman1
+            };
+            Paragraph paragraphSeaman = new Paragraph
+            {
+                    phraseSeaman2,
+                    phraseSeaman3,
+                    phraseSeaman4,
+                    phraseSeaman5,
+                    phraseSeaman6
+            };
+
+
+            Paragraph paragraphSeaman1 = new Paragraph
+            {
+                    phraseSeaman7,
+                    phraseSeaman8,
+                    phraseSeaman9,
+                    phraseSeaman10,
+                    phraseSeaman11,
+                    phraseSeaman12
+            };
+
+            pdfTableCheckList.AddCell(new PdfPCell(paragraphSSBHeader) { PaddingLeft = 8f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
+            pdfTableCheckList.AddCell(new PdfPCell(paragraphSeamanHeader) { PaddingLeft = 8f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
+            pdfTableCheckList.AddCell(new PdfPCell(paragraphSSB) { PaddingLeft = 18f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
+            pdfTableCheckList.AddCell(new PdfPCell(paragraphSeaman) { PaddingLeft = 18f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
+            pdfTableCheckList.AddCell(new PdfPCell(paragraphSSB1) { PaddingTop = 3f, PaddingLeft = 18f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
+            pdfTableCheckList.AddCell(new PdfPCell(paragraphSeaman1) { PaddingTop = 3f, PaddingLeft = 18f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
+            document.Add(pdfTableCheckList);
+            document.Add(spaceTable);
+
             Phrase paragraph5Phrase = new Phrase("NOTE/ INSTRUCTIONS: ", updateFontArial12);
             Paragraph paragraph5 = new Paragraph
                 {
@@ -3954,6 +4111,7 @@ namespace priland_api.Controllers
             list2.Add(new ListItem("To confirm submission of complete requirements to the BANK, the client must request the bank to send a confirmation email to Greentech upon reviewing the complete requirements of the client.", updateFontArial12));
             list2.Add(new ListItem("BUYER to follow-up at BANK for approval.", updateFontArial12));
             document.Add(list2);
+
             document.Add(spaceTable);
 
             Phrase paragraph6Phrase = new Phrase("I undersigned that my failure to submit the above requirements required from me and /or any misrepresentation on the information indicated in my Loan Application Form will be sufficient ground for Greentech Development Corporation to cancel my contract and forfeit as liquidated damages my reservation fee and whatever other payments I made.", updateFontArial12);
