@@ -164,11 +164,24 @@ namespace priland_api.Controllers
         [HttpGet, Route("Customer/{id}")]
         public HttpResponseMessage PdfCustomer(string id)
         {
+            Font updateFontArial10 = FontFactory.GetFont("Arial", 7);
+            Font updateFontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+            Font updateFontArial10BoldItalic = FontFactory.GetFont("Arial", 5, Font.BOLDITALIC, BaseColor.WHITE);
+            Font updateFontArial12Bold = FontFactory.GetFont("Arial", 9, Font.BOLD);
+            Font updateFontArial12BoldItalic = FontFactory.GetFont("Arial", 9, Font.BOLDITALIC);
+            Font updateFontArial12 = FontFactory.GetFont("Arial", 9);
+            Font updateFontArial12Italic = FontFactory.GetFont("Arial", 9, Font.ITALIC);
+            Font updateFontArial17Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
+            Font updateFontArial11Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+            Font updateFontArialBold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+
             // ===============
             // Open PDF Stream
             // ===============
             PdfWriter.GetInstance(document, workStream).CloseStream = false;
-            document.SetMargins(30f, 30f, 30f, 30f);
+
+            document.SetPageSize(PageSize.LETTER);
+            document.SetMargins(50f, 50f, 50f, 50f);
 
             // =============
             // Open Document
@@ -182,7 +195,7 @@ namespace priland_api.Controllers
             float[] widthCellsSpaceTable = new float[] { 100f };
             spaceTable.SetWidths(widthCellsSpaceTable);
             spaceTable.WidthPercentage = 100;
-            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 5f, Border = 0 });
+            spaceTable.AddCell(new PdfPCell(new Phrase(" ", updateFontArial10Bold)) { PaddingTop = 5f, Border = 0 });
 
             // ===============
             // Settings (Data)
@@ -195,28 +208,40 @@ namespace priland_api.Controllers
                 // ============
                 // Company Logo
                 // ============
-                var projectLogo = from d in db.MstProjects
-                                  select d;
-
+                var projectLogo = from d in db.MstProjects select d;
                 Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
                 logo.ScaleToFit(1000f, 60f);
 
-                PdfPTable pdfTableCompanyLogo = new PdfPTable(1);
-                pdfTableCompanyLogo.SetWidths(new float[] { 100f });
-                pdfTableCompanyLogo.WidthPercentage = 100;
-                pdfTableCompanyLogo.AddCell(new PdfPCell(logo) { Border = 0 });
-                document.Add(pdfTableCompanyLogo);
-
-                // ===============
-                // Company Details
-                // ===============
                 PdfPTable pdfTableCompanyDetail = new PdfPTable(2);
                 pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
                 pdfTableCompanyDetail.WidthPercentage = 100;
-                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase(sysSettings.FirstOrDefault().Company, fontArial17Bold)) { Border = 0 });
-                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Individual Customer Information Sheet", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("CLIENT'S PROFILE", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
                 document.Add(pdfTableCompanyDetail);
                 document.Add(line);
+
+                //var projectLogo = from d in db.MstProjects
+                //                  select d;
+
+                //Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
+                //logo.ScaleToFit(1000f, 60f);
+
+                //PdfPTable pdfTableCompanyLogo = new PdfPTable(1);
+                //pdfTableCompanyLogo.SetWidths(new float[] { 100f });
+                //pdfTableCompanyLogo.WidthPercentage = 100;
+                //pdfTableCompanyLogo.AddCell(new PdfPCell(logo) { Border = 0 });
+                //document.Add(pdfTableCompanyLogo);
+
+                //// ===============
+                //// Company Details
+                //// ===============
+                //PdfPTable pdfTableCompanyDetail = new PdfPTable(2);
+                //pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
+                //pdfTableCompanyDetail.WidthPercentage = 100;
+                //pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase(sysSettings.FirstOrDefault().Company, fontArial17Bold)) { Border = 0 });
+                //pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Individual Customer Information Sheet", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
+                //document.Add(pdfTableCompanyDetail);
+                //document.Add(line);
 
                 document.Add(spaceTable);
             }
@@ -269,7 +294,7 @@ namespace priland_api.Controllers
                 String SpouseLastName = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseLastName) == true ? " " : customer.FirstOrDefault().SpouseLastName;
                 String SpouseFirstName = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseFirstName) == true ? " " : customer.FirstOrDefault().SpouseFirstName;
                 String SpouseMiddleName = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseMiddleName) == true ? " " : customer.FirstOrDefault().SpouseMiddleName;
-                String SpouseBirthDate = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseBirthDate.ToString()) == true ? " " : customer.FirstOrDefault().SpouseBirthDate.ToString();
+                String SpouseBirthDate = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseBirthDate.ToString()) == true ? " " : Convert.ToDateTime(customer.FirstOrDefault().SpouseBirthDate).ToShortDateString();
                 String SpouseCitizen = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseCitizen) == true ? " " : customer.FirstOrDefault().SpouseCitizen;
                 String SpouseTIN = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseTIN) == true ? " " : customer.FirstOrDefault().SpouseTIN;
                 String SpouseEmployer = String.IsNullOrEmpty(customer.FirstOrDefault().SpouseEmployer) == true ? " " : customer.FirstOrDefault().SpouseEmployer;
@@ -281,24 +306,24 @@ namespace priland_api.Controllers
                 pdfTableCustomerBuyer.SetWidths(new float[] { 100f, 50f, 50f, 100f });
                 pdfTableCustomerBuyer.WidthPercentage = 100;
 
-                pdfTableCustomerBuyer.AddCell(new PdfPCell(new Phrase("BUYER", fontArial10BoldItalic)) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, BackgroundColor = BaseColor.BLACK });
+                pdfTableCustomerBuyer.AddCell(new PdfPCell(new Phrase("BUYER", updateFontArial10BoldItalic)) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, BackgroundColor = BaseColor.BLACK });
 
-                Phrase lastNamePhraseLabel = new Phrase("Last Name \n\n", fontArial10Bold);
-                Phrase lastNamePhraseData = new Phrase(LastName, fontArial13);
+                Phrase lastNamePhraseLabel = new Phrase("Last Name \n\n", updateFontArial10Bold);
+                Phrase lastNamePhraseData = new Phrase(LastName, updateFontArial12);
                 Paragraph lastNameParagraph = new Paragraph
                 {
                     lastNamePhraseLabel, lastNamePhraseData
                 };
 
-                Phrase firstNamePhraseLabel = new Phrase("First Name \n\n", fontArial10Bold);
-                Phrase firstNamePhraseData = new Phrase(FirstName, fontArial13);
+                Phrase firstNamePhraseLabel = new Phrase("First Name \n\n", updateFontArial10Bold);
+                Phrase firstNamePhraseData = new Phrase(FirstName, updateFontArial12);
                 Paragraph firstNameParagraph = new Paragraph
                 {
                     firstNamePhraseLabel, firstNamePhraseData
                 };
 
-                Phrase middleNamePhraseLabel = new Phrase("Middle Name \n\n", fontArial10Bold);
-                Phrase middleNamePhraseData = new Phrase(MiddleName, fontArial13);
+                Phrase middleNamePhraseLabel = new Phrase("Middle Name \n\n", updateFontArial10Bold);
+                Phrase middleNamePhraseData = new Phrase(MiddleName, updateFontArial12);
                 Paragraph middleNameParagraph = new Paragraph
                 {
                     middleNamePhraseLabel, middleNamePhraseData
@@ -308,29 +333,29 @@ namespace priland_api.Controllers
                 pdfTableCustomerBuyer.AddCell(new PdfPCell(firstNameParagraph) { Colspan = 2, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
                 pdfTableCustomerBuyer.AddCell(new PdfPCell(middleNameParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
-                Phrase civilStatusPhraseLabel = new Phrase("Civil Status \n\n", fontArial10Bold);
-                Phrase civilStatusPhraseData = new Phrase(CivilStatus, fontArial13);
+                Phrase civilStatusPhraseLabel = new Phrase("Civil Status \n\n", updateFontArial10Bold);
+                Phrase civilStatusPhraseData = new Phrase(CivilStatus, updateFontArial12);
                 Paragraph civilStatusParagraph = new Paragraph
                 {
                     civilStatusPhraseLabel, civilStatusPhraseData
                 };
 
-                Phrase genderPhraseLabel = new Phrase("Gender \n\n", fontArial10Bold);
-                Phrase genderPhraseData = new Phrase(Gender, fontArial13);
+                Phrase genderPhraseLabel = new Phrase("Gender \n\n", updateFontArial10Bold);
+                Phrase genderPhraseData = new Phrase(Gender, updateFontArial12);
                 Paragraph genderParagraph = new Paragraph
                 {
                     genderPhraseLabel, genderPhraseData
                 };
 
-                Phrase birthDatePhraseLabel = new Phrase("Birth Date \n\n", fontArial10Bold);
-                Phrase birthDatePhraseData = new Phrase(BirthDate, fontArial13);
+                Phrase birthDatePhraseLabel = new Phrase("Birth Date \n\n", updateFontArial10Bold);
+                Phrase birthDatePhraseData = new Phrase(BirthDate, updateFontArial12);
                 Paragraph birthDateParagraph = new Paragraph
                 {
                     birthDatePhraseLabel, birthDatePhraseData
                 };
 
-                Phrase citizenShipPhraseLabel = new Phrase("Citizenship \n\n", fontArial10Bold);
-                Phrase citizenShipPhraseData = new Phrase(" ", fontArial13);
+                Phrase citizenShipPhraseLabel = new Phrase("Citizenship \n\n", updateFontArial10Bold);
+                Phrase citizenShipPhraseData = new Phrase(" ", updateFontArial12);
                 Paragraph citizenShipParagraph = new Paragraph
                 {
                     citizenShipPhraseLabel, citizenShipPhraseData
@@ -341,23 +366,23 @@ namespace priland_api.Controllers
                 pdfTableCustomerBuyer.AddCell(new PdfPCell(birthDateParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
                 pdfTableCustomerBuyer.AddCell(new PdfPCell(citizenShipParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
-                Phrase taxIdentificationNoPhraseLabel = new Phrase("Tax Identification No. \n\n", fontArial10Bold);
-                Phrase taxIdentificationNoPhraseData = new Phrase(TIN, fontArial13);
+                Phrase taxIdentificationNoPhraseLabel = new Phrase("Tax Identification No. \n\n", updateFontArial10Bold);
+                Phrase taxIdentificationNoPhraseData = new Phrase(TIN, updateFontArial12);
                 Paragraph taxIdentificationNoParagraph = new Paragraph
                 {
                     taxIdentificationNoPhraseLabel, taxIdentificationNoPhraseData
                 };
 
 
-                Phrase idTypePhraseLabel = new Phrase("ID Type \n\n", fontArial10Bold);
-                Phrase idTypePhraseData = new Phrase(IdType, fontArial13);
+                Phrase idTypePhraseLabel = new Phrase("ID Type \n\n", updateFontArial10Bold);
+                Phrase idTypePhraseData = new Phrase(IdType, updateFontArial12);
                 Paragraph idTypeParagraph = new Paragraph
                 {
                     idTypePhraseLabel, idTypePhraseData
                 };
 
-                Phrase idNumberPhraseLabel = new Phrase("ID Number \n\n", fontArial10Bold);
-                Phrase idNumberPhraseData = new Phrase(IdNumber, fontArial13);
+                Phrase idNumberPhraseLabel = new Phrase("ID Number \n\n", updateFontArial10Bold);
+                Phrase idNumberPhraseData = new Phrase(IdNumber, updateFontArial12);
                 Paragraph idNumberParagraph = new Paragraph
                 {
                     idNumberPhraseLabel, idNumberPhraseData
@@ -376,10 +401,10 @@ namespace priland_api.Controllers
                 pdfTableCustomerContactDetails.SetWidths(new float[] { 100f, 100f, 100f, 100f });
                 pdfTableCustomerContactDetails.WidthPercentage = 100;
 
-                pdfTableCustomerContactDetails.AddCell(new PdfPCell(new Phrase("CONTACT DETAILS", fontArial10BoldItalic)) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, BackgroundColor = BaseColor.BLACK });
+                pdfTableCustomerContactDetails.AddCell(new PdfPCell(new Phrase("CONTACT DETAILS", updateFontArial10BoldItalic)) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, BackgroundColor = BaseColor.BLACK });
 
-                Phrase homeAddressPhraseLabel = new Phrase("Home Address \n\n", fontArial10Bold);
-                Phrase homeAddressPhraseData = new Phrase(Address, fontArial13);
+                Phrase homeAddressPhraseLabel = new Phrase("Home Address \n\n", updateFontArial10Bold);
+                Phrase homeAddressPhraseData = new Phrase(Address, updateFontArial12);
                 Paragraph homeAddressParagraph = new Paragraph
                 {
                     homeAddressPhraseLabel, homeAddressPhraseData
@@ -387,29 +412,29 @@ namespace priland_api.Controllers
 
                 pdfTableCustomerContactDetails.AddCell(new PdfPCell(homeAddressParagraph) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
-                Phrase municipalityCityPhraseLabel = new Phrase("Municipality / City \n\n", fontArial10Bold);
-                Phrase municipalityCityPhraseData = new Phrase(City, fontArial13);
+                Phrase municipalityCityPhraseLabel = new Phrase("Municipality / City \n\n", updateFontArial10Bold);
+                Phrase municipalityCityPhraseData = new Phrase(City, updateFontArial12);
                 Paragraph municipalityCityParagraph = new Paragraph
                 {
                     municipalityCityPhraseLabel, municipalityCityPhraseData
                 };
 
-                Phrase provinceStatePhraseLabel = new Phrase("Province / State \n\n", fontArial10Bold);
-                Phrase provinceStatePhraseData = new Phrase(Province, fontArial13);
+                Phrase provinceStatePhraseLabel = new Phrase("Province / State \n\n", updateFontArial10Bold);
+                Phrase provinceStatePhraseData = new Phrase(Province, updateFontArial12);
                 Paragraph provinceStateParagraph = new Paragraph
                 {
                     provinceStatePhraseLabel, provinceStatePhraseData
                 };
 
-                Phrase countryPhraseLabel = new Phrase("Country \n\n", fontArial10Bold);
-                Phrase countryPhraseData = new Phrase(Country, fontArial13);
+                Phrase countryPhraseLabel = new Phrase("Country \n\n", updateFontArial10Bold);
+                Phrase countryPhraseData = new Phrase(Country, updateFontArial12);
                 Paragraph countryParagraph = new Paragraph
                 {
                     countryPhraseLabel, countryPhraseData
                 };
 
-                Phrase postalPhraseLabel = new Phrase("Postal \n\n", fontArial10Bold);
-                Phrase postalPhraseData = new Phrase(ZipCode, fontArial13);
+                Phrase postalPhraseLabel = new Phrase("Postal \n\n", updateFontArial10Bold);
+                Phrase postalPhraseData = new Phrase(ZipCode, updateFontArial12);
                 Paragraph postalParagraph = new Paragraph
                 {
                     postalPhraseLabel, postalPhraseData
@@ -420,22 +445,22 @@ namespace priland_api.Controllers
                 pdfTableCustomerContactDetails.AddCell(new PdfPCell(countryParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
                 pdfTableCustomerContactDetails.AddCell(new PdfPCell(postalParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
-                Phrase emailAddressPhraseLabel = new Phrase("Email Address \n\n", fontArial10Bold);
-                Phrase emailAddressPhraseData = new Phrase(EmailAddress, fontArial13);
+                Phrase emailAddressPhraseLabel = new Phrase("Email Address \n\n", updateFontArial10Bold);
+                Phrase emailAddressPhraseData = new Phrase(EmailAddress, updateFontArial12);
                 Paragraph emailAddressParagraph = new Paragraph
                 {
                     emailAddressPhraseLabel, emailAddressPhraseData
                 };
 
-                Phrase landLineNoPhraseLabel = new Phrase("Landline No. \n\n", fontArial10Bold);
-                Phrase landLineNoPhraseData = new Phrase(TelephoneNumber, fontArial13);
+                Phrase landLineNoPhraseLabel = new Phrase("Landline No. \n\n", updateFontArial10Bold);
+                Phrase landLineNoPhraseData = new Phrase(TelephoneNumber, updateFontArial12);
                 Paragraph landLineNoParagraph = new Paragraph
                 {
                     landLineNoPhraseLabel, landLineNoPhraseData
                 };
 
-                Phrase mobileNoPhraseLabel = new Phrase("Mobile No. \n\n", fontArial10Bold);
-                Phrase mobileNoPhraseData = new Phrase(MobileNumber, fontArial13);
+                Phrase mobileNoPhraseLabel = new Phrase("Mobile No. \n\n", updateFontArial10Bold);
+                Phrase mobileNoPhraseData = new Phrase(MobileNumber, updateFontArial12);
                 Paragraph mobileNoParagraph = new Paragraph
                 {
                     mobileNoPhraseLabel, mobileNoPhraseData
@@ -463,24 +488,24 @@ namespace priland_api.Controllers
                 pdfTableCustomerEmploymentDetails.SetWidths(new float[] { 100f, 100f, 100f, 100f });
                 pdfTableCustomerEmploymentDetails.WidthPercentage = 100;
 
-                pdfTableCustomerEmploymentDetails.AddCell(new PdfPCell(new Phrase("EMPLOYMENT DETAILS", fontArial10BoldItalic)) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, BackgroundColor = BaseColor.BLACK });
+                pdfTableCustomerEmploymentDetails.AddCell(new PdfPCell(new Phrase("EMPLOYMENT DETAILS", updateFontArial10BoldItalic)) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, BackgroundColor = BaseColor.BLACK });
 
-                Phrase companyNamePhraseLabel = new Phrase("Company Name \n\n", fontArial10Bold);
-                Phrase companyNamePhraseData = new Phrase(Employer, fontArial13);
+                Phrase companyNamePhraseLabel = new Phrase("Company Name \n\n", updateFontArial10Bold);
+                Phrase companyNamePhraseData = new Phrase(Employer, updateFontArial12);
                 Paragraph companyNameParagraph = new Paragraph
                 {
                     companyNamePhraseLabel, companyNamePhraseData
                 };
 
-                Phrase natureOfBusinessPhraseLabel = new Phrase("Nature of Business \n\n", fontArial10Bold);
-                Phrase natureOfBusinessPhraseData = new Phrase(EmployerIndustry, fontArial13);
+                Phrase natureOfBusinessPhraseLabel = new Phrase("Nature of Business \n\n", updateFontArial10Bold);
+                Phrase natureOfBusinessPhraseData = new Phrase(EmployerIndustry, updateFontArial12);
                 Paragraph natureOfBusinessParagraph = new Paragraph
                 {
                     natureOfBusinessPhraseLabel, natureOfBusinessPhraseData
                 };
 
-                Phrase yearsEmployedInBusinessPhraseLabel = new Phrase("Years Employed / In Business \n\n", fontArial10Bold);
-                Phrase yearsEmployedInBusinessPhraseData = new Phrase(NoOfYearsEmployed, fontArial13);
+                Phrase yearsEmployedInBusinessPhraseLabel = new Phrase("Years Employed / In Business \n\n", updateFontArial10Bold);
+                Phrase yearsEmployedInBusinessPhraseData = new Phrase(NoOfYearsEmployed, updateFontArial12);
                 Paragraph yearsEmployedInBusinessParagraph = new Paragraph
                 {
                     yearsEmployedInBusinessPhraseLabel, yearsEmployedInBusinessPhraseData
@@ -490,15 +515,15 @@ namespace priland_api.Controllers
                 pdfTableCustomerEmploymentDetails.AddCell(new PdfPCell(natureOfBusinessParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
                 pdfTableCustomerEmploymentDetails.AddCell(new PdfPCell(yearsEmployedInBusinessParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
-                Phrase positionPhraseLabel = new Phrase("Position \n\n", fontArial10Bold);
-                Phrase positionPhraseData = new Phrase(Position, fontArial13);
+                Phrase positionPhraseLabel = new Phrase("Position \n\n", updateFontArial10Bold);
+                Phrase positionPhraseData = new Phrase(Position, updateFontArial12);
                 Paragraph positionParagraph = new Paragraph
                 {
                     positionPhraseLabel, positionPhraseData
                 };
 
-                Phrase employmentStatusPhraseLabel = new Phrase("Employment Status \n\n", fontArial10Bold);
-                Phrase employmentStatusPhraseData = new Phrase(EmploymentStatus, fontArial13);
+                Phrase employmentStatusPhraseLabel = new Phrase("Employment Status \n\n", updateFontArial10Bold);
+                Phrase employmentStatusPhraseData = new Phrase(EmploymentStatus, updateFontArial12);
                 Paragraph employmentStatusParagraph = new Paragraph
                 {
                     employmentStatusPhraseLabel, employmentStatusPhraseData
@@ -507,8 +532,8 @@ namespace priland_api.Controllers
                 pdfTableCustomerEmploymentDetails.AddCell(new PdfPCell(positionParagraph) { Colspan = 2, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
                 pdfTableCustomerEmploymentDetails.AddCell(new PdfPCell(employmentStatusParagraph) { Colspan = 2, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
-                Phrase employmentAddressPhraseLabel = new Phrase("No. Street Brgy. / Subdivision \n\n", fontArial10Bold);
-                Phrase employmentAddressPhraseData = new Phrase(EmployerAddress, fontArial13);
+                Phrase employmentAddressPhraseLabel = new Phrase("No. Street Brgy. / Subdivision \n\n", updateFontArial10Bold);
+                Phrase employmentAddressPhraseData = new Phrase(EmployerAddress, updateFontArial12);
                 Paragraph employmentAddressParagraph = new Paragraph
                 {
                     employmentAddressPhraseLabel, employmentAddressPhraseData
@@ -516,29 +541,29 @@ namespace priland_api.Controllers
 
                 pdfTableCustomerEmploymentDetails.AddCell(new PdfPCell(employmentAddressParagraph) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
-                Phrase employmentMunicipalityCityPhraseLabel = new Phrase("Municipality / City \n\n", fontArial10Bold);
-                Phrase employmentMunicipalityCityPhraseData = new Phrase(EmployerCity, fontArial13);
+                Phrase employmentMunicipalityCityPhraseLabel = new Phrase("Municipality / City \n\n", updateFontArial10Bold);
+                Phrase employmentMunicipalityCityPhraseData = new Phrase(EmployerCity, updateFontArial12);
                 Paragraph employmentMunicipalityCityParagraph = new Paragraph
                 {
                     employmentMunicipalityCityPhraseLabel, employmentMunicipalityCityPhraseData
                 };
 
-                Phrase employmentProvinceStatePhraseLabel = new Phrase("Province / State \n\n", fontArial10Bold);
-                Phrase employmentProvinceStatePhraseData = new Phrase(EmployerProvince, fontArial13);
+                Phrase employmentProvinceStatePhraseLabel = new Phrase("Province / State \n\n", updateFontArial10Bold);
+                Phrase employmentProvinceStatePhraseData = new Phrase(EmployerProvince, updateFontArial12);
                 Paragraph employmentProvinceStateParagraph = new Paragraph
                 {
                     employmentProvinceStatePhraseLabel, employmentProvinceStatePhraseData
                 };
 
-                Phrase employmentCountryPhraseLabel = new Phrase("Country \n\n", fontArial10Bold);
-                Phrase employmentCountryPhraseData = new Phrase(EmployerCountry, fontArial13);
+                Phrase employmentCountryPhraseLabel = new Phrase("Country \n\n", updateFontArial10Bold);
+                Phrase employmentCountryPhraseData = new Phrase(EmployerCountry, updateFontArial12);
                 Paragraph employmentCountryParagraph = new Paragraph
                 {
                     employmentCountryPhraseLabel, employmentCountryPhraseData
                 };
 
-                Phrase employmentPostalPhraseLabel = new Phrase("Postal \n\n", fontArial10Bold);
-                Phrase employmentPostalPhraseData = new Phrase(EmployerZipCode, fontArial13);
+                Phrase employmentPostalPhraseLabel = new Phrase("Postal \n\n", updateFontArial10Bold);
+                Phrase employmentPostalPhraseData = new Phrase(EmployerZipCode, updateFontArial12);
                 Paragraph employmentPostalParagraph = new Paragraph
                 {
                     employmentPostalPhraseLabel, employmentPostalPhraseData
@@ -551,22 +576,22 @@ namespace priland_api.Controllers
 
                 document.Add(pdfTableCustomerEmploymentDetails);
 
-                Phrase employementEmailAddressPhraseLabel = new Phrase("Email Address \n\n", fontArial10Bold);
-                Phrase employementEmailAddressPhraseData = new Phrase(" ", fontArial13);
+                Phrase employementEmailAddressPhraseLabel = new Phrase("Email Address \n\n", updateFontArial10Bold);
+                Phrase employementEmailAddressPhraseData = new Phrase(" ", updateFontArial12);
                 Paragraph employementEmailAddressParagraph = new Paragraph
                 {
                     employementEmailAddressPhraseLabel, employementEmailAddressPhraseData
                 };
 
-                Phrase employementLandLineNoPhraseLabel = new Phrase("Landline No. \n\n", fontArial10Bold);
-                Phrase employementLandLineNoPhraseData = new Phrase(EmployerTelephoneNumber, fontArial13);
+                Phrase employementLandLineNoPhraseLabel = new Phrase("Landline No. \n\n", updateFontArial10Bold);
+                Phrase employementLandLineNoPhraseData = new Phrase(EmployerTelephoneNumber, updateFontArial12);
                 Paragraph employementLandLineNoParagraph = new Paragraph
                 {
                     employementLandLineNoPhraseLabel, employementLandLineNoPhraseData
                 };
 
-                Phrase employementMobileNoPhraseLabel = new Phrase("Mobile No. \n\n", fontArial10Bold);
-                Phrase employementMobileNoPhraseData = new Phrase(EmployerMobileNumber, fontArial13);
+                Phrase employementMobileNoPhraseLabel = new Phrase("Mobile No. \n\n", updateFontArial10Bold);
+                Phrase employementMobileNoPhraseData = new Phrase(EmployerMobileNumber, updateFontArial12);
                 Paragraph employementMobileNoParagraph = new Paragraph
                 {
                     employementMobileNoPhraseLabel, employementMobileNoPhraseData
@@ -592,31 +617,31 @@ namespace priland_api.Controllers
                 pdfTableCustomerSpouseInformation.SetWidths(new float[] { 100f, 100f, 100f, 100f });
                 pdfTableCustomerSpouseInformation.WidthPercentage = 100;
 
-                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(new Phrase("SPOUSE'S INFORMATION", fontArial10BoldItalic)) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, BackgroundColor = BaseColor.BLACK });
+                pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(new Phrase("SPOUSE'S INFORMATION", updateFontArial10BoldItalic)) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, BackgroundColor = BaseColor.BLACK });
 
-                Phrase spouseTitlePhraseLabel = new Phrase("Title \n\n", fontArial10Bold);
-                Phrase spouseTitlePhraseData = new Phrase(" ", fontArial13);
+                Phrase spouseTitlePhraseLabel = new Phrase("Title \n\n", updateFontArial10Bold);
+                Phrase spouseTitlePhraseData = new Phrase(" ", updateFontArial12);
                 Paragraph titleParagraph = new Paragraph
                 {
                     spouseTitlePhraseLabel, spouseTitlePhraseData
                 };
 
-                Phrase spouseFirstNamePhraseLabel = new Phrase("First Name \n\n", fontArial10Bold);
-                Phrase spouseFirstNamePhraseData = new Phrase(SpouseFirstName, fontArial13);
+                Phrase spouseFirstNamePhraseLabel = new Phrase("First Name \n\n", updateFontArial10Bold);
+                Phrase spouseFirstNamePhraseData = new Phrase(SpouseFirstName, updateFontArial12);
                 Paragraph spouseFirstNameParagraph = new Paragraph
                 {
                     spouseFirstNamePhraseLabel, spouseFirstNamePhraseData
                 };
 
-                Phrase spouseMiddleNamePhraseLabel = new Phrase("Middle Name \n\n", fontArial10Bold);
-                Phrase spouseMiddleNamePhraseData = new Phrase(SpouseMiddleName, fontArial13);
+                Phrase spouseMiddleNamePhraseLabel = new Phrase("Middle Name \n\n", updateFontArial10Bold);
+                Phrase spouseMiddleNamePhraseData = new Phrase(SpouseMiddleName, updateFontArial12);
                 Paragraph spouseMiddleNamePhraseDataParagraph = new Paragraph
                 {
                     spouseMiddleNamePhraseLabel, spouseMiddleNamePhraseData
                 };
 
-                Phrase spouseLastNamePhraseLabel = new Phrase("Last Name \n\n", fontArial10Bold);
-                Phrase spouseLastNamePhraseData = new Phrase(SpouseLastName, fontArial13);
+                Phrase spouseLastNamePhraseLabel = new Phrase("Last Name \n\n", updateFontArial10Bold);
+                Phrase spouseLastNamePhraseData = new Phrase(SpouseLastName, updateFontArial12);
                 Paragraph spouseLastNamePhraseDataParagraph = new Paragraph
                 {
                     spouseLastNamePhraseLabel, spouseLastNamePhraseData
@@ -627,29 +652,29 @@ namespace priland_api.Controllers
                 pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseMiddleNamePhraseDataParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
                 pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseLastNamePhraseDataParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
-                Phrase spouseBirthdayPhraseLabel = new Phrase("Birthday \n\n", fontArial10Bold);
-                Phrase spouseBirthdayPhraseData = new Phrase(SpouseBirthDate, fontArial13);
+                Phrase spouseBirthdayPhraseLabel = new Phrase("Birthday \n\n", updateFontArial10Bold);
+                Phrase spouseBirthdayPhraseData = new Phrase(SpouseBirthDate, updateFontArial12);
                 Paragraph spouseBirthdayParagraph = new Paragraph
                 {
                     spouseBirthdayPhraseLabel, spouseBirthdayPhraseData
                 };
 
-                Phrase spouseCivilStatusPhraseLabel = new Phrase("Civil Status \n\n", fontArial10Bold);
-                Phrase spouseCivilStatusPhraseData = new Phrase("", fontArial13);
+                Phrase spouseCivilStatusPhraseLabel = new Phrase("Civil Status \n\n", updateFontArial10Bold);
+                Phrase spouseCivilStatusPhraseData = new Phrase("", updateFontArial12);
                 Paragraph spouseCivilStatusParagraph = new Paragraph
                 {
                     spouseCivilStatusPhraseLabel, spouseCivilStatusPhraseData
                 };
 
-                Phrase spouseSexPhraseLabel = new Phrase("Sex \n\n", fontArial10Bold);
-                Phrase spouseSexPhraseData = new Phrase(" ", fontArial13);
+                Phrase spouseSexPhraseLabel = new Phrase("Sex \n\n", updateFontArial10Bold);
+                Phrase spouseSexPhraseData = new Phrase(" ", updateFontArial12);
                 Paragraph spouseSexParagraph = new Paragraph
                 {
                     spouseSexPhraseLabel, spouseSexPhraseData
                 };
 
-                Phrase spouseCitizenshipPhraseLabel = new Phrase("Citizenship \n\n", fontArial10Bold);
-                Phrase spouseCitizenshipPhraseData = new Phrase(SpouseCitizen, fontArial13);
+                Phrase spouseCitizenshipPhraseLabel = new Phrase("Citizenship \n\n", updateFontArial10Bold);
+                Phrase spouseCitizenshipPhraseData = new Phrase(SpouseCitizen, updateFontArial12);
                 Paragraph spouseCitizenshipParagraph = new Paragraph
                 {
                     spouseCitizenshipPhraseLabel, spouseCitizenshipPhraseData
@@ -660,8 +685,8 @@ namespace priland_api.Controllers
                 pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseSexParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
                 pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseCitizenshipParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
-                Phrase spouseAddressPhraseLabel = new Phrase("Address \n\n", fontArial10Bold);
-                Phrase spouseAddressPhraseData = new Phrase(" ", fontArial13);
+                Phrase spouseAddressPhraseLabel = new Phrase("Address \n\n", updateFontArial10Bold);
+                Phrase spouseAddressPhraseData = new Phrase(" ", updateFontArial12);
                 Paragraph spouseAddressParagraph = new Paragraph
                 {
                     spouseAddressPhraseLabel, spouseAddressPhraseData
@@ -669,22 +694,22 @@ namespace priland_api.Controllers
 
                 pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseAddressParagraph) { Colspan = 4, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
-                Phrase spouseContactNumberPhraseLabel = new Phrase("Contact Number \n\n", fontArial10Bold);
-                Phrase spouseContactNumberPhraseData = new Phrase(" ", fontArial13);
+                Phrase spouseContactNumberPhraseLabel = new Phrase("Contact Number \n\n", updateFontArial10Bold);
+                Phrase spouseContactNumberPhraseData = new Phrase(" ", updateFontArial12);
                 Paragraph spouseContactNumberCityParagraph = new Paragraph
                 {
                     spouseContactNumberPhraseLabel, spouseContactNumberPhraseData
                 };
 
-                Phrase spouseMobilePhraseLabel = new Phrase("Mobile \n\n", fontArial10Bold);
-                Phrase spouseMobilePhraseData = new Phrase("", fontArial13);
+                Phrase spouseMobilePhraseLabel = new Phrase("Mobile \n\n", updateFontArial10Bold);
+                Phrase spouseMobilePhraseData = new Phrase("", updateFontArial12);
                 Paragraph spouseMobileParagraph = new Paragraph
                 {
                     spouseMobilePhraseLabel, spouseMobilePhraseData
                 };
 
-                Phrase spouseNameOfCompanyPhraseLabel = new Phrase("Name of Company \n\n", fontArial10Bold);
-                Phrase spouseNameOfCompanyPhraseData = new Phrase(" ", fontArial13);
+                Phrase spouseNameOfCompanyPhraseLabel = new Phrase("Name of Company \n\n", updateFontArial10Bold);
+                Phrase spouseNameOfCompanyPhraseData = new Phrase(" ", updateFontArial12);
                 Paragraph spouseNameOfCompanyParagraph = new Paragraph
                 {
                     spouseMobilePhraseLabel, spouseMobilePhraseData
@@ -695,15 +720,15 @@ namespace priland_api.Controllers
                 pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseNameOfCompanyParagraph) { Colspan = 2, PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
 
-                Phrase spouseCompanyAddressPhraseLabel = new Phrase("Company Address \n\n", fontArial10Bold);
-                Phrase spouseCompanyAddressPhraseData = new Phrase(" ", fontArial13);
+                Phrase spouseCompanyAddressPhraseLabel = new Phrase("Company Address \n\n", updateFontArial10Bold);
+                Phrase spouseCompanyAddressPhraseData = new Phrase(" ", updateFontArial12);
                 Paragraph spouseCompanyAddressParagraph = new Paragraph
                 {
                     spouseCompanyAddressPhraseLabel, spouseCompanyAddressPhraseData
                 };
 
-                Phrase spouseSalaryPhraseLabel = new Phrase("Salary \n\n", fontArial10Bold);
-                Phrase spouseSalaryPhraseData = new Phrase(" ", fontArial13);
+                Phrase spouseSalaryPhraseLabel = new Phrase("Salary \n\n", updateFontArial10Bold);
+                Phrase spouseSalaryPhraseData = new Phrase(" ", updateFontArial12);
                 Paragraph spouseSalaryParagraph = new Paragraph
                 {
                     spouseSalaryPhraseLabel, spouseSalaryPhraseData
@@ -713,29 +738,29 @@ namespace priland_api.Controllers
                 pdfTableCustomerSpouseInformation.AddCell(new PdfPCell(spouseSalaryParagraph) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f });
 
 
-                Phrase spousePositionPhraseLabel = new Phrase("Position \n\n", fontArial10Bold);
-                Phrase spousePositionPhraseData = new Phrase(" ", fontArial13);
+                Phrase spousePositionPhraseLabel = new Phrase("Position \n\n", updateFontArial10Bold);
+                Phrase spousePositionPhraseData = new Phrase(" ", updateFontArial12);
                 Paragraph spousePositionParagraph = new Paragraph
                 {
                     spousePositionPhraseLabel, spousePositionPhraseData
                 };
 
-                Phrase spouseNoOfYearsPhraseLabel = new Phrase("No. of Years \n\n", fontArial10Bold);
-                Phrase spouseNoOfYearsPhraseData = new Phrase(" ", fontArial13);
+                Phrase spouseNoOfYearsPhraseLabel = new Phrase("No. of Years \n\n", updateFontArial10Bold);
+                Phrase spouseNoOfYearsPhraseData = new Phrase(" ", updateFontArial12);
                 Paragraph spouseNoOfYearseNoParagraph = new Paragraph
                 {
                     spouseNoOfYearsPhraseLabel, spouseNoOfYearsPhraseData
                 };
 
-                Phrase spouseCancelledCardPhraseLabel = new Phrase("Cancelled Card \n\n", fontArial10Bold);
-                Phrase spouseCancelledCardPhraseData = new Phrase(" ", fontArial13);
+                Phrase spouseCancelledCardPhraseLabel = new Phrase("Cancelled Card \n\n", updateFontArial10Bold);
+                Phrase spouseCancelledCardPhraseData = new Phrase(" ", updateFontArial12);
                 Paragraph spouseCancelledCardParagraph = new Paragraph
                 {
                     spouseCancelledCardPhraseLabel, spouseCancelledCardPhraseData
                 };
 
-                Phrase spouseExistingLoanPhraseLabel = new Phrase("Existing Loan \n\n", fontArial10Bold);
-                Phrase spouseExistingLoanPhraseData = new Phrase(" ", fontArial13);
+                Phrase spouseExistingLoanPhraseLabel = new Phrase("Existing Loan \n\n", updateFontArial10Bold);
+                Phrase spouseExistingLoanPhraseData = new Phrase(" ", updateFontArial12);
                 Paragraph spouseExistingLoanParagraph = new Paragraph
                 {
                     spouseExistingLoanPhraseLabel, spouseExistingLoanPhraseData
@@ -3833,30 +3858,37 @@ namespace priland_api.Controllers
         [HttpGet, Route("BuyersUndertaking/{id}")]
         public HttpResponseMessage BuyersUndertaking(Int32 id)
         {
+            Font updateFontArial10 = FontFactory.GetFont("Arial", 7);
             Font updateFontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
-            Font updateFontArialBold = FontFactory.GetFont("Arial", 14, Font.BOLD);
+            Font updateFontArial10BoldItalic = FontFactory.GetFont("Arial", 5, Font.BOLDITALIC, BaseColor.WHITE);
+            Font updateFontArial12Bold = FontFactory.GetFont("Arial", 9, Font.BOLD);
+            Font updateFontArial12BoldItalic = FontFactory.GetFont("Arial", 9, Font.BOLDITALIC);
+            Font updateFontArial12 = FontFactory.GetFont("Arial", 9);
+            Font updateFontArial12Italic = FontFactory.GetFont("Arial", 9, Font.ITALIC);
             Font updateFontArial17Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
             Font updateFontArial11Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+            Font updateFontArialBold = FontFactory.GetFont("Arial", 7, Font.BOLD);
 
             // ===============
             // Open PDF Stream
             // ===============
             PdfWriter.GetInstance(document, workStream).CloseStream = false;
-            document.SetMargins(30f, 30f, 30f, 30f);
+
+            document.SetPageSize(PageSize.LETTER);
+            document.SetMargins(50f, 50f, 50f, 50f);
 
             PdfPTable spaceTable = new PdfPTable(1);
             float[] widthCellsSpaceTable = new float[] { 5f };
             spaceTable.SetWidths(widthCellsSpaceTable);
             spaceTable.WidthPercentage = 80;
             spaceTable.AddCell(new PdfPCell(new Phrase(" ", updateFontArial10Bold)) { PaddingTop = 1f, Border = 0 });
+
             // =============
             // Open Document
             // =============
             document.Open();
 
-            var projectLogo = from d in db.MstProjects
-                              select d;
-
+            var projectLogo = from d in db.MstProjects select d;
             Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
             logo.ScaleToFit(1000f, 60f);
 
@@ -3864,21 +3896,13 @@ namespace priland_api.Controllers
             pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
             pdfTableCompanyDetail.WidthPercentage = 100;
             pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
-            pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("BUYER'S UNDERTAKING \n Revised 09.03.19", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
+            pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("BUYER'S UNDERTAKING", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
             document.Add(pdfTableCompanyDetail);
             document.Add(line);
 
-            //Phrase headerPhraseLabel = new Phrase("BUYER'S UNDERTAKING \n");
-            //Phrase headerDatailPhraseData = new Phrase("Revised 09.03.19");
-            //Paragraph paragraph1 = new Paragraph
-            //    {
-            //        headerPhraseLabel, headerDatailPhraseData
-            //    };
-            //document.Add(paragraph1);
             document.Add(spaceTable);
 
-            Phrase paragraph2Phrase = new Phrase("WHEREAS, on __________________________________ the undersigned applied to purchase from Greentech Development Corporation, \n" +
-                "a parcel of land / house and lot, particularly described in the Reservation Agreement Form the undersigned accomplished for this purpose.");
+            Phrase paragraph2Phrase = new Phrase("WHEREAS, on __________________________________ the undersigned applied to purchase from Greentech Development Corporation, a parcel of land / house and lot, particularly described in the Reservation Agreement Form the undersigned accomplished for this purpose.", updateFontArial12);
             Paragraph paragraph2 = new Paragraph
                 {
                     paragraph2Phrase
@@ -3886,16 +3910,15 @@ namespace priland_api.Controllers
             document.Add(paragraph2);
             document.Add(spaceTable);
 
-            Phrase paragraph3Phrase = new Phrase("NOW THEREFORE, for and in consideration of the foregoing premises, the undersigned hereby:");
+            Phrase paragraph3Phrase = new Phrase("NOW THEREFORE, for and in consideration of the foregoing premises, the undersigned hereby:", updateFontArial12);
             Paragraph paragraph3 = new Paragraph
                 {
                     paragraph3Phrase
                 };
-            document.Add(paragraph2);
+            document.Add(paragraph3);
             document.Add(spaceTable);
 
-
-            Phrase paragraph4Phrase = new Phrase("Commits to submit the following requirements DP & Loan Processing according to the timelines below as follows:");
+            Phrase paragraph4Phrase = new Phrase("Commits to submit the following requirements DP & Loan Processing according to the timelines below as follows:", updateFontArial12);
             Paragraph paragraph4 = new Paragraph
                 {
                    paragraph4Phrase
@@ -3905,40 +3928,42 @@ namespace priland_api.Controllers
 
             List list1 = new List(List.ORDERED, 20f);
             list1.SetListSymbol("\u2022");
-
             list1.IndentationLeft = 20f;
             list1.IndentationRight = 20f;
-
-            list1.Add("Reservation Date		:_____________________(Date today)");
-            list1.Add("Down Payment Deadline	:_____________________(30 days)");
-            list1.Add("Requirements Deadline	:_____________________(30 days)");
-            list1.Add("Loan Approval Deadline	:_____________________(60 days)");
+            list1.Add(new ListItem("Reservation Date		:_____________________(Date today)", updateFontArial12));
+            list1.Add(new ListItem("Down Payment Deadline	:_____________________(30 days)", updateFontArial12));
+            list1.Add(new ListItem("Requirements Deadline	:_____________________(30 days)", updateFontArial12));
+            list1.Add(new ListItem("Loan Approval Deadline	:_____________________(60 days)", updateFontArial12));
             document.Add(list1);
             document.Add(spaceTable);
 
-            Phrase paragraph5Phrase = new Phrase("NOTE/ INSTRUCTIONS:");
+            Phrase paragraph5Phrase = new Phrase("NOTE/ INSTRUCTIONS: ", updateFontArial12);
             Paragraph paragraph5 = new Paragraph
                 {
                    paragraph5Phrase
                 };
             document.Add(paragraph5);
-            List list2 = new List(List.ORDERED, 20f);
-            list1.SetListSymbol("\u2022");
+            document.Add(spaceTable);
 
-            list2.Add("BUYER to submit requirements at BANK.");
-            list2.Add("Upon submission, client must submit the transmittal slip back to Greentech with the name and signature of the Bank’s representative who received the documents.");
-            list2.Add("To confirm submission of complete requirements to the BANK, the client must request the bank to send a confirmation email to Greentech upon reviewing the complete requirements of the client.");
-            list2.Add("BUYER to follow-up at BANK for approval.");
+            List list2 = new List(List.ORDERED, 20f);
+            list2.SetListSymbol("\u2022");
+            list2.IndentationLeft = 20f;
+            list2.IndentationRight = 20f;
+            list2.Add(new ListItem("BUYER to submit requirements at BANK.", updateFontArial12));
+            list2.Add(new ListItem("Upon submission, client must submit the transmittal slip back to Greentech with the name and signature of the Bank’s representative who received the documents.", updateFontArial12));
+            list2.Add(new ListItem("To confirm submission of complete requirements to the BANK, the client must request the bank to send a confirmation email to Greentech upon reviewing the complete requirements of the client.", updateFontArial12));
+            list2.Add(new ListItem("BUYER to follow-up at BANK for approval.", updateFontArial12));
             document.Add(list2);
             document.Add(spaceTable);
 
-            Phrase paragraph6Phrase = new Phrase("I undersigned that my failure to submit the above requirements required from me and /or any misrepresentation on the information indicated in my Loan Application Form will be sufficient ground for Greentech Development Corporation to cancel my contract and forfeit as liquidated damages my reservation fee and whatever other payments I made.");
+            Phrase paragraph6Phrase = new Phrase("I undersigned that my failure to submit the above requirements required from me and /or any misrepresentation on the information indicated in my Loan Application Form will be sufficient ground for Greentech Development Corporation to cancel my contract and forfeit as liquidated damages my reservation fee and whatever other payments I made.", updateFontArial12);
             Paragraph paragraph6 = new Paragraph
                 {
                     paragraph6Phrase
                 };
             document.Add(paragraph6);
-            Phrase paragraph7Phrase = new Phrase("I am aware and I agree that as part of Bank Financing requirement, I will pay the bank charges being billed by the bank and I will sign the contract documents of the bank within 30 days from the bank’s advice, otherwise, at the absolute discretion of the Greentech Development Corporation, to the cancellation or rescission of this contract, penalty charges amounting to not more than Ten Thousand Pesos (Php10,000) per month of the delay period and/or the forfeiture of all amount paid by the buyer as liquidated damages.");
+
+            Phrase paragraph7Phrase = new Phrase("I am aware and I agree that as part of Bank Financing requirement, I will pay the bank charges being billed by the bank and I will sign the contract documents of the bank within 30 days from the bank’s advice, otherwise, at the absolute discretion of the Greentech Development Corporation, to the cancellation or rescission of this contract, penalty charges amounting to not more than Ten Thousand Pesos (Php10,000) per month of the delay period and/or the forfeiture of all amount paid by the buyer as liquidated damages.", updateFontArial12);
             Paragraph paragraph7 = new Paragraph
                 {
                     paragraph7Phrase
@@ -3948,35 +3973,29 @@ namespace priland_api.Controllers
             document.Add(spaceTable);
             document.Add(spaceTable);
             document.Add(spaceTable);
-
-
+            document.Add(spaceTable);
+            document.Add(spaceTable);
 
             PdfPTable table = new PdfPTable(2);
             float[] widths1 = new float[] { 5f, 5f };
             table.SetWidths(widths1);
             table.WidthPercentage = 80;
 
-            PdfPCell tablerow1column1 = new PdfPCell(new Phrase("_________________________", updateFontArialBold)) { PaddingTop = 1f, Border = 0 };
-            PdfPCell tablerow1column2 = new PdfPCell(new Phrase("_________________________", updateFontArialBold)) { PaddingTop = 1f, Border = 0 };
-            PdfPCell tablerow2column1 = new PdfPCell(new Phrase("Signature of Buyer over Printed Name", updateFontArialBold)) { PaddingTop = 1f, Border = 0 };
-            PdfPCell tablerowcolumn2 = new PdfPCell(new Phrase("Spouse (if applicable)", updateFontArialBold)) { PaddingTop = 1f, Border = 0 };
+            PdfPCell tablerow1column1 = new PdfPCell(new Phrase("___________________________________", updateFontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, Border = 0 };
+            PdfPCell tablerow1column2 = new PdfPCell(new Phrase("___________________________________", updateFontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, Border = 0 };
+            PdfPCell tablerow2column1 = new PdfPCell(new Phrase("Signature of Buyer over Printed Name", updateFontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, Border = 0 };
+            PdfPCell tablerowcolumn2 = new PdfPCell(new Phrase("Spouse (if applicable)", updateFontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, Border = 0 };
 
-            //cell.Colspan = 2;
-            //cell.HorizontalAlignment = 0;
             table.AddCell(tablerow1column1);
             table.AddCell(tablerow1column2);
             table.AddCell(tablerow2column1);
             table.AddCell(tablerowcolumn2);
             document.Add(table);
 
-
-
             // ==============
             // Close Document
             // ==============
             document.Close();
-
-
 
             byte[] byteInfo = workStream.ToArray();
 
@@ -4063,7 +4082,7 @@ namespace priland_api.Controllers
                 pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
                 pdfTableCompanyDetail.WidthPercentage = 100;
                 pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
-                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Reservation Aggreeement", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("RESERVATION AGREEMENT", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
                 document.Add(pdfTableCompanyDetail);
                 document.Add(line);
 
@@ -4072,6 +4091,8 @@ namespace priland_api.Controllers
                 applicant = customer.FirstOrDefault().FirstName + " " + customer.FirstOrDefault().MiddleName + " " + customer.FirstOrDefault().LastName;
                 address = customer.FirstOrDefault().Address;
             }
+
+            document.Add(spaceTable);
 
             Paragraph p1 = new Paragraph
             {
@@ -4123,12 +4144,12 @@ namespace priland_api.Controllers
             tblContent.SetWidths(tblContentWidths);
             tblContent.WidthPercentage = 100;
             tblContent.AddCell(new PdfPCell(new Phrase("1.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("My preferred scheme is   _____________________ and is subject to the approval of Greentech Development Corporation.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("My preferred scheme is _____________________ and is subject to the approval of Greentech Development Corporation.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
 
             tblContent.AddCell(new PdfPCell(new Phrase("If I opt to obtain outside financing for the entire balance of the purchase price or any part thereof, I shall comply with the procedure and requirements of GREENTECH DEVELOPMENT CORPORATION, on commercial financing.", updateFontArial12)) { Colspan = 3, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
 
             tblContent.AddCell(new PdfPCell(new Phrase("2.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("The RESERVATION FEE of P " + reservationFee + " shall be deductible from the D/P of the TCP.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("The RESERVATION FEE of P_____________________" + reservationFee + " shall be deductible from the D/P of the TCP.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
 
             tblContent.AddCell(new PdfPCell(new Phrase("3.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
             tblContent.AddCell(new PdfPCell(new Phrase("The DOWNPAYMENT of P______________________, payable in the amount of P________________ per month for ____________ (___) months.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
@@ -4315,7 +4336,7 @@ namespace priland_api.Controllers
             PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
             document.SetPageSize(PageSize.LETTER);
-            document.SetMargins(50f, 50f, 30f, 50f);
+            document.SetMargins(50f, 50f, 50f, 50f);
 
             // =============
             // Open Document
@@ -4328,9 +4349,7 @@ namespace priland_api.Controllers
 
             if (customer.Any())
             {
-                var projectLogo = from d in db.MstProjects
-                                  select d;
-
+                var projectLogo = from d in db.MstProjects select d;
                 Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
                 logo.ScaleToFit(1000f, 60f);
 
@@ -4338,7 +4357,7 @@ namespace priland_api.Controllers
                 pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
                 pdfTableCompanyDetail.WidthPercentage = 100;
                 pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
-                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Computation Sheet", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("COMPUTATION SHEET", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
                 document.Add(pdfTableCompanyDetail);
                 document.Add(line);
 
@@ -4372,25 +4391,20 @@ namespace priland_api.Controllers
                 pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Int. Rate:__________%", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
                 pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Mo. Amortization:_________________", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-
                 document.Add(pdfTableComputationSheet);
-
                 document.Add(line);
 
                 PdfPTable pdfTableComputationSheetAdditionalInfo = new PdfPTable(2);
                 pdfTableComputationSheetAdditionalInfo.SetWidths(new float[] { 100f, 100f });
                 pdfTableComputationSheetAdditionalInfo.WidthPercentage = 100;
-
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Project: _______________________________", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Unit #: ________________________________", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("______________________________________", updateFontArial12)) { PaddingTop = 30, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("______________________________________", updateFontArial12)) { PaddingTop = 30, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("BUYER", updateFontArial12Bold)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Sales Manager", updateFontArial12Bold)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("(Signature over printed name)", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Date: _________________________________", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Legend:", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("TCP: Total Contract Price", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
@@ -4403,9 +4417,7 @@ namespace priland_api.Controllers
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Kaiser Christopher F. Tan", updateFontArial12Bold)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Int: Interest per annum", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("President / CEo", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-
                 document.Add(pdfTableComputationSheetAdditionalInfo);
-
             }
 
             // ==============
@@ -4431,6 +4443,5 @@ namespace priland_api.Controllers
             }
             return response;
         }
-
     }
 }
