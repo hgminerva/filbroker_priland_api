@@ -3888,21 +3888,30 @@ namespace priland_api.Controllers
             // =============
             document.Open();
 
-            var projectLogo = from d in db.MstProjects select d;
-            Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
-            logo.ScaleToFit(1000f, 60f);
+            String soldUnitDate = "";
 
-            PdfPTable pdfTableCompanyDetail = new PdfPTable(2);
-            pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
-            pdfTableCompanyDetail.WidthPercentage = 100;
-            pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
-            pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("BUYER'S UNDERTAKING", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
-            document.Add(pdfTableCompanyDetail);
-            document.Add(line);
+            var soldUnit = from d in db.TrnSoldUnits
+                           where d.Id == Convert.ToInt32(id)
+                           select d;
+
+            if (soldUnit.Any())
+            {
+                soldUnitDate = soldUnit.FirstOrDefault().SoldUnitDate.ToShortDateString();
+
+                Image logo = Image.GetInstance(soldUnit.FirstOrDefault().MstProject.ProjectLogo);
+
+                PdfPTable pdfTableCompanyDetail = new PdfPTable(2);
+                pdfTableCompanyDetail.SetWidths(new float[] { 50f, 100f });
+                pdfTableCompanyDetail.WidthPercentage = 100;
+                pdfTableCompanyDetail.AddCell(new PdfPCell(logo, true) { Border = 0 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("BUYER'S UNDERTAKING", updateFontArial17Bold)) { PaddingTop = 10, Border = 0, HorizontalAlignment = 2 });
+                document.Add(pdfTableCompanyDetail);
+                document.Add(line);
+            }
 
             document.Add(spaceTable);
 
-            Phrase paragraph2Phrase = new Phrase("WHEREAS, on __________________________________ the undersigned applied to purchase from Greentech Development Corporation, a parcel of land / house and lot, particularly described in the Reservation Agreement Form the undersigned accomplished for this purpose.", updateFontArial12);
+            Phrase paragraph2Phrase = new Phrase("WHEREAS, on " + soldUnitDate + " the undersigned applied to purchase from Greentech Development Corporation, a parcel of land / house and lot, particularly described in the Reservation Agreement Form the undersigned accomplished for this purpose.", updateFontArial12);
             Paragraph paragraph2 = new Paragraph
                 {
                     paragraph2Phrase
@@ -3941,17 +3950,17 @@ namespace priland_api.Controllers
             pdfTableCheckList.SetWidths(new float[] { 100f, 100f });
             pdfTableCheckList.WidthPercentage = 100;
 
-            Phrase phraseEmployed1 = new Phrase("__ Employed:", updateFontArial12);
-            Phrase phraseEmployed2 = new Phrase("1. (COE) Certificate of Employment with Salary & Position \n\n", updateFontArial12);
-            Phrase phraseEmployed3 = new Phrase("2. (ITR)Latest Income Tax Return(for the Last 2-years) / Latest 3 months Payslip \n\n", updateFontArial12);
-            Phrase phraseEmployed4 = new Phrase("3. (ID)2 Valid ID's with 3 spicemen signature \n\n", updateFontArial12);
-            Phrase phraseEmployed5 = new Phrase("4. Cedula \n\n", updateFontArial12);
-            Phrase phraseEmployed6 = new Phrase("5. (POB)Proof of Billing \n\n", updateFontArial12);
-            Phrase phraseEmployed7 = new Phrase("6. (BS)Bank Statement (Lates 6 months) or Photocopy of Passbooks for the last 2 years \n\n", updateFontArial12);
-            Phrase phraseEmployed8 = new Phrase("7. ID Picture 2x2 2pcx. \n\n", updateFontArial12);
-            Phrase phraseEmployed9 = new Phrase("8. (PDC) Post Dated Checks for the down payment \n\n", updateFontArial12);
-            Phrase phraseEmployed10 = new Phrase("9. Loan Application Form (Bank Loan) \n\n", updateFontArial12);
-            Phrase phraseEmployed11 = new Phrase("10. Marriage Contract (if Married) / Cenomar (if Single) \n\n", updateFontArial12);
+            Phrase phraseEmployed1 = new Phrase("Employed:", updateFontArial12Bold);
+            Phrase phraseEmployed2 = new Phrase("1. (COE) Certificate of Employment with Salary & Position \n", updateFontArial12);
+            Phrase phraseEmployed3 = new Phrase("2. (ITR)Latest Income Tax Return(for the Last 2-years) / Latest 3 months Payslip \n", updateFontArial12);
+            Phrase phraseEmployed4 = new Phrase("3. (ID)2 Valid ID's with 3 spicemen signature \n", updateFontArial12);
+            Phrase phraseEmployed5 = new Phrase("4. Cedula \n", updateFontArial12);
+            Phrase phraseEmployed6 = new Phrase("5. (POB)Proof of Billing \n", updateFontArial12);
+            Phrase phraseEmployed7 = new Phrase("6. (BS)Bank Statement (Lates 6 months) or Photocopy of Passbooks for the last 2 years \n", updateFontArial12);
+            Phrase phraseEmployed8 = new Phrase("7. ID Picture 2x2 2pcx. \n", updateFontArial12);
+            Phrase phraseEmployed9 = new Phrase("8. (PDC) Post Dated Checks for the down payment \n", updateFontArial12);
+            Phrase phraseEmployed10 = new Phrase("9. Loan Application Form (Bank Loan) \n", updateFontArial12);
+            Phrase phraseEmployed11 = new Phrase("10. Marriage Contract (if Married) / Cenomar (if Single) \n", updateFontArial12);
 
             Paragraph paragraphEmployedHeader = new Paragraph
             {
@@ -3972,18 +3981,18 @@ namespace priland_api.Controllers
                     phraseEmployed11
             };
 
-            Phrase phraseOFW1 = new Phrase("__ OFW", updateFontArial12);
-            Phrase phraseOFW2 = new Phrase("1. Contract of Employment (consularized or email by the employer tru CFBC-Ceby@yahoo.com) \n\n", updateFontArial12);
-            Phrase phraseOFW3 = new Phrase("2. (ID)2 Valid ID's with 3 specimen signature \n\n", updateFontArial12);
-            Phrase phraseOFW4 = new Phrase("3. Proof of Billing \n\n", updateFontArial12);
-            Phrase phraseOFW5 = new Phrase("4. (BS)Bank Statement (Latest 6 months) or Photocopy of Passbook for the last 2 years \n\n", updateFontArial12);
-            Phrase phraseOFW6 = new Phrase("5. ID Picture \n\n", updateFontArial12);
-            Phrase phraseOFW7 = new Phrase("6. (SPA) Irrevocable Special Power of Attorney(annotated and validated by the Philippine Consulate) \n\n", updateFontArial12);
-            Phrase phraseOFW8 = new Phrase("7. Cedula \n\n", updateFontArial12);
-            Phrase phraseOFW9 = new Phrase("8. (PDC) Post Dated Checks for the down payment \n\n", updateFontArial12);
-            Phrase phraseOFW10 = new Phrase("9. Loan Application Form (Bank Loan) \n\n", updateFontArial12);
-            Phrase phraseOFW11 = new Phrase("10. Marriage Contract (if Married) / Cenomar (if Single) \n\n", updateFontArial12);
-            Phrase phraseOFW112 = new Phrase("11. Latest 3 months Payslip \n\n", updateFontArial12);
+            Phrase phraseOFW1 = new Phrase("OFW", updateFontArial12Bold);
+            Phrase phraseOFW2 = new Phrase("1. Contract of Employment (consularized or email by the employer tru CFBC-Ceby@yahoo.com) \n", updateFontArial12);
+            Phrase phraseOFW3 = new Phrase("2. (ID)2 Valid ID's with 3 specimen signature \n", updateFontArial12);
+            Phrase phraseOFW4 = new Phrase("3. Proof of Billing \n", updateFontArial12);
+            Phrase phraseOFW5 = new Phrase("4. (BS)Bank Statement (Latest 6 months) or Photocopy of Passbook for the last 2 years \n", updateFontArial12);
+            Phrase phraseOFW6 = new Phrase("5. ID Picture \n", updateFontArial12);
+            Phrase phraseOFW7 = new Phrase("6. (SPA) Irrevocable Special Power of Attorney(annotated and validated by the Philippine Consulate) \n", updateFontArial12);
+            Phrase phraseOFW8 = new Phrase("7. Cedula \n", updateFontArial12);
+            Phrase phraseOFW9 = new Phrase("8. (PDC) Post Dated Checks for the down payment \n", updateFontArial12);
+            Phrase phraseOFW10 = new Phrase("9. Loan Application Form (Bank Loan) \n", updateFontArial12);
+            Phrase phraseOFW11 = new Phrase("10. Marriage Contract (if Married) / Cenomar (if Single) \n", updateFontArial12);
+            Phrase phraseOFW112 = new Phrase("11. Latest 3 months Payslip \n", updateFontArial12);
 
             Paragraph paragraphOFWHeader = new Paragraph
             {
@@ -4003,30 +4012,29 @@ namespace priland_api.Controllers
                     phraseOFW11,
                     phraseOFW112
             };
-            pdfTableCheckList.AddCell(new PdfPCell(paragraphOFWHeader) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
             pdfTableCheckList.AddCell(new PdfPCell(paragraphEmployedHeader) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
+            pdfTableCheckList.AddCell(new PdfPCell(paragraphOFWHeader) { PaddingTop = 3f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
             pdfTableCheckList.AddCell(new PdfPCell(paragraphEmployed) { PaddingLeft = 18f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
             pdfTableCheckList.AddCell(new PdfPCell(paragraphOFW) { PaddingLeft = 18f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
 
             document.Add(spaceTable);
 
-            Phrase phraseSSB1 = new Phrase("__ Self-Employed/Sole Proprietorship/Businessman", updateFontArial12);
-            Phrase phraseSSB2 = new Phrase("1. (ITR)Latest Income Tax Return with Audited Financial Statement (for the Last 2-years) \n\n", updateFontArial12);
-            Phrase phraseSSB3 = new Phrase("2. DTI Certificate of Registration and/ or SEC registration \n\n", updateFontArial12);
-            Phrase phraseSSB4 = new Phrase("3. Mayor's Business Permit \n\n", updateFontArial12);
-            Phrase phraseSSB5 = new Phrase("4. (ID)2 Valid ID's with 3 specimen signature \n\n", updateFontArial12);
-            Phrase phraseSSB6 = new Phrase("5. Cedula \n\n", updateFontArial12);
-            Phrase phraseSSB7 = new Phrase("6. (POB)Proof of Billing \n\n", updateFontArial12);
-            Phrase phraseSSB8 = new Phrase("7. (BS) Bank Statement (Latest 6 months) of Photocopy of Passbooks for the last 2 years \n\n", updateFontArial12);
-            Phrase phraseSSB9 = new Phrase("8. ID Picture 2X2 21 \n\n", updateFontArial12);
-            Phrase phraseSSB10 = new Phrase("9. (PDC) Post Dated Checks for the down payment \n\n", updateFontArial12);
-            Phrase phraseSSB11 = new Phrase("10. Loan Application Form (Bank Loan) \n\n", updateFontArial12);
-            Phrase phraseSSB12 = new Phrase("11. Marriage Contract (if Married) / Cenomar (if Single) \n\n", updateFontArial12);
+            Phrase phraseSSB1 = new Phrase("Self-Employed/Sole Proprietorship/Businessman", updateFontArial12Bold);
+            Phrase phraseSSB2 = new Phrase("1. (ITR)Latest Income Tax Return with Audited Financial Statement (for the Last 2-years) \n", updateFontArial12);
+            Phrase phraseSSB3 = new Phrase("2. DTI Certificate of Registration and/ or SEC registration \n", updateFontArial12);
+            Phrase phraseSSB4 = new Phrase("3. Mayor's Business Permit \n", updateFontArial12);
+            Phrase phraseSSB5 = new Phrase("4. (ID)2 Valid ID's with 3 specimen signature \n", updateFontArial12);
+            Phrase phraseSSB6 = new Phrase("5. Cedula \n", updateFontArial12);
+            Phrase phraseSSB7 = new Phrase("6. (POB)Proof of Billing \n", updateFontArial12);
+            Phrase phraseSSB8 = new Phrase("7. (BS) Bank Statement (Latest 6 months) of Photocopy of Passbooks for the last 2 years \n", updateFontArial12);
+            Phrase phraseSSB9 = new Phrase("8. ID Picture 2X2 21 \n", updateFontArial12);
+            Phrase phraseSSB10 = new Phrase("9. (PDC) Post Dated Checks for the down payment \n", updateFontArial12);
+            Phrase phraseSSB11 = new Phrase("10. Loan Application Form (Bank Loan) \n", updateFontArial12);
+            Phrase phraseSSB12 = new Phrase("11. Marriage Contract (if Married) / Cenomar (if Single) \n", updateFontArial12);
 
             Paragraph paragraphSSBHeader = new Paragraph
             {
                     phraseSSB1,
-
             };
             Paragraph paragraphSSB = new Paragraph
             {
@@ -4034,12 +4042,7 @@ namespace priland_api.Controllers
                     phraseSSB3,
                     phraseSSB4,
                     phraseSSB5,
-                    phraseSSB6
-                    
-            };
-
-            Paragraph paragraphSSB1 = new Paragraph
-            {
+                    phraseSSB6,
                     phraseSSB7,
                     phraseSSB8,
                     phraseSSB9,
@@ -4048,18 +4051,18 @@ namespace priland_api.Controllers
                     phraseSSB12
             };
 
-            Phrase phraseSeaman1 = new Phrase("__ Seafere/Seaman", updateFontArial12);
-            Phrase phraseSeaman2 = new Phrase("1. Contract of Employment \n\n", updateFontArial12);
-            Phrase phraseSeaman3 = new Phrase("2. (ID)2 Valid ID's with 3 specimen signature \n\n", updateFontArial12);
-            Phrase phraseSeaman4 = new Phrase("3. (POB)Proof of Billing \n\n", updateFontArial12);
-            Phrase phraseSeaman5 = new Phrase("4. Cedula \n\n", updateFontArial12);
-            Phrase phraseSeaman6 = new Phrase("5. (BS) Bank Statement (Latest 6 months) or Photocopy of Passbooks for the last 2 years \n\n", updateFontArial12);
-            Phrase phraseSeaman7 = new Phrase("6. ID Picture \n\n", updateFontArial12);
-            Phrase phraseSeaman8 = new Phrase("7. (SPA) Irrevocable Special Power of Attorney(annotated and validated by the Philippin Consulate) \n\n", updateFontArial12);
-            Phrase phraseSeaman9 = new Phrase("8. (PDC) Post Dated Check for the down payment \n\n", updateFontArial12);
-            Phrase phraseSeaman10 = new Phrase("9. Marriage Contract (if Married / Cenomar (if Single)) \n\n", updateFontArial12);
-            Phrase phraseSeaman11 = new Phrase("10. Loan Application Form (Bank Loan) \n\n", updateFontArial12);
-            Phrase phraseSeaman12 = new Phrase("11. Latest 3 months Payslip \n\n", updateFontArial12);
+            Phrase phraseSeaman1 = new Phrase("Seafere/Seaman", updateFontArial12Bold);
+            Phrase phraseSeaman2 = new Phrase("1. Contract of Employment \n", updateFontArial12);
+            Phrase phraseSeaman3 = new Phrase("2. (ID)2 Valid ID's with 3 specimen signature \n", updateFontArial12);
+            Phrase phraseSeaman4 = new Phrase("3. (POB)Proof of Billing \n", updateFontArial12);
+            Phrase phraseSeaman5 = new Phrase("4. Cedula \n", updateFontArial12);
+            Phrase phraseSeaman6 = new Phrase("5. (BS) Bank Statement (Latest 6 months) or Photocopy of Passbooks for the last 2 years \n", updateFontArial12);
+            Phrase phraseSeaman7 = new Phrase("6. ID Picture \n", updateFontArial12);
+            Phrase phraseSeaman8 = new Phrase("7. (SPA) Irrevocable Special Power of Attorney(annotated and validated by the Philippin Consulate) \n", updateFontArial12);
+            Phrase phraseSeaman9 = new Phrase("8. (PDC) Post Dated Check for the down payment \n", updateFontArial12);
+            Phrase phraseSeaman10 = new Phrase("9. Marriage Contract (if Married / Cenomar (if Single)) \n", updateFontArial12);
+            Phrase phraseSeaman11 = new Phrase("10. Loan Application Form (Bank Loan) \n", updateFontArial12);
+            Phrase phraseSeaman12 = new Phrase("11. Latest 3 months Payslip \n", updateFontArial12);
 
             Paragraph paragraphSeamanHeader = new Paragraph
             {
@@ -4071,12 +4074,7 @@ namespace priland_api.Controllers
                     phraseSeaman3,
                     phraseSeaman4,
                     phraseSeaman5,
-                    phraseSeaman6
-            };
-
-
-            Paragraph paragraphSeaman1 = new Paragraph
-            {
+                    phraseSeaman6,
                     phraseSeaman7,
                     phraseSeaman8,
                     phraseSeaman9,
@@ -4089,8 +4087,7 @@ namespace priland_api.Controllers
             pdfTableCheckList.AddCell(new PdfPCell(paragraphSeamanHeader) { PaddingLeft = 8f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
             pdfTableCheckList.AddCell(new PdfPCell(paragraphSSB) { PaddingLeft = 18f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
             pdfTableCheckList.AddCell(new PdfPCell(paragraphSeaman) { PaddingLeft = 18f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
-            pdfTableCheckList.AddCell(new PdfPCell(paragraphSSB1) { PaddingTop = 3f, PaddingLeft = 18f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
-            pdfTableCheckList.AddCell(new PdfPCell(paragraphSeaman1) { PaddingTop = 3f, PaddingLeft = 18f, PaddingRight = 5f, PaddingBottom = 6f, Border = 0 });
+
             document.Add(pdfTableCheckList);
             document.Add(spaceTable);
 
@@ -4216,38 +4213,41 @@ namespace priland_api.Controllers
             String TCP = "";
 
             String reservationFee = "";
+            String downPayment = "";
+            String amortization = "";
+            String noOfPayments = "";
 
             String applicant = "Sample";
-            String date = "";
             String address = "";
 
-            // ============
-            // Get Customer
-            // ============
-            var customer = from d in db.MstCustomers
+            var soldUnit = from d in db.TrnSoldUnits
                            where d.Id == Convert.ToInt32(id)
                            select d;
 
-            if (customer.Any())
+            if (soldUnit.Any())
             {
-                var projectLogo = from d in db.MstProjects
-                                  select d;
+                project = soldUnit.FirstOrDefault().MstProject.Project;
+                unit = soldUnit.FirstOrDefault().MstUnit.UnitCode;
+                lotArea = soldUnit.FirstOrDefault().MstUnit.Lot;
+                TCP = soldUnit.FirstOrDefault().MstUnit.Price.ToString("#,##0.00");
 
-                Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
-                logo.ScaleToFit(1000f, 60f);
+                reservationFee = soldUnit.FirstOrDefault().Reservation.ToString("#,##0.00");
+                downPayment = soldUnit.FirstOrDefault().NetEquity.ToString("#,##0.00");
+                amortization = soldUnit.FirstOrDefault().NetEquityAmortization.ToString("#,##0.00");
+                noOfPayments = soldUnit.FirstOrDefault().NetEquityNoOfPayments.ToString("#,##0");
+
+                Image logo = Image.GetInstance(soldUnit.FirstOrDefault().MstProject.ProjectLogo);
 
                 PdfPTable pdfTableCompanyDetail = new PdfPTable(2);
-                pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
+                pdfTableCompanyDetail.SetWidths(new float[] { 50f, 100f });
                 pdfTableCompanyDetail.WidthPercentage = 100;
-                pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
-                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("RESERVATION AGREEMENT", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(logo, true) { Border = 0  });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("RESERVATION AGREEMENT", updateFontArial17Bold)) { PaddingTop = 10, Border = 0, HorizontalAlignment = 2 });
                 document.Add(pdfTableCompanyDetail);
                 document.Add(line);
 
-                document.Add(spaceTable);
-
-                applicant = customer.FirstOrDefault().FirstName + " " + customer.FirstOrDefault().MiddleName + " " + customer.FirstOrDefault().LastName;
-                address = customer.FirstOrDefault().Address;
+                applicant = soldUnit.FirstOrDefault().MstCustomer.FirstName + " " + soldUnit.FirstOrDefault().MstCustomer.MiddleName + " " + soldUnit.FirstOrDefault().MstCustomer.LastName;
+                address = soldUnit.FirstOrDefault().MstCustomer.Address;
             }
 
             document.Add(spaceTable);
@@ -4307,10 +4307,10 @@ namespace priland_api.Controllers
             tblContent.AddCell(new PdfPCell(new Phrase("If I opt to obtain outside financing for the entire balance of the purchase price or any part thereof, I shall comply with the procedure and requirements of GREENTECH DEVELOPMENT CORPORATION, on commercial financing.", updateFontArial12)) { Colspan = 3, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
 
             tblContent.AddCell(new PdfPCell(new Phrase("2.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("The RESERVATION FEE of P_____________________" + reservationFee + " shall be deductible from the D/P of the TCP.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("The RESERVATION FEE of P " + reservationFee + " shall be deductible from the D/P of the TCP.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
 
             tblContent.AddCell(new PdfPCell(new Phrase("3.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("The DOWNPAYMENT of P______________________, payable in the amount of P________________ per month for ____________ (___) months.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("The DOWNPAYMENT of P " + downPayment + ", payable in the amount of P " + amortization + " per month for " + noOfPayments + " months.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
 
             tblContent.AddCell(new PdfPCell(new Phrase("4.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
             tblContent.AddCell(new PdfPCell(new Phrase("RESERVATION PERIOD", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
@@ -4421,17 +4421,15 @@ namespace priland_api.Controllers
             tblContentSignature.WidthPercentage = 100;
 
             tblContentSignature.AddCell(new PdfPCell(new Phrase(applicant.ToUpper(), updateFontArial12)) { Border = 0, HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContentSignature.AddCell(new PdfPCell(new Phrase("With my marital consent: ______________________________________", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContentSignature.AddCell(new PdfPCell(new Phrase("With my marital consent: ______________________________________", updateFontArial12)) { Border = 0, PaddingLeft = 30f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContentSignature.AddCell(new PdfPCell(new Phrase("(Name & Signature of Applicant)", updateFontArial12Bold)) { Border = 0, HorizontalAlignment = 1, PaddingBottom = 10f });
-            tblContentSignature.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { Border = 0, PaddingBottom = 10f });
+            tblContentSignature.AddCell(new PdfPCell(new Phrase("(Name & Signature of Applicant)", updateFontArial12Bold)) { Border = 0, HorizontalAlignment = 1, PaddingBottom = 5f });
+            tblContentSignature.AddCell(new PdfPCell(new Phrase("Address: " + address, updateFontArial12)) { Border = 0, PaddingLeft = 30f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f, Rowspan = 2 });
 
-            tblContentSignature.AddCell(new PdfPCell(new Phrase("Date: " + date, updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContentSignature.AddCell(new PdfPCell(new Phrase("Address: " + address, updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContentSignature.AddCell(new PdfPCell(new Phrase("Date: " + DateTime.Today.ToShortDateString(), updateFontArial12)) { Border = 0, HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
 
             document.Add(tblContentSignature);
 
-            document.Add(spaceTable);
             document.Add(spaceTable);
             document.Add(spaceTable);
 
@@ -4440,7 +4438,7 @@ namespace priland_api.Controllers
             tblContentCompanySignature.SetWidths(tblContentCompanySignatureWidths);
             tblContentCompanySignature.WidthPercentage = 100;
 
-            tblContentCompanySignature.AddCell(new PdfPCell(new Phrase("GREENTECH DEVELOPMENT CORPORATION", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 30f });
+            tblContentCompanySignature.AddCell(new PdfPCell(new Phrase("GREENTECH DEVELOPMENT CORPORATION", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 20f });
 
             tblContentCompanySignature.AddCell(new PdfPCell(new Phrase("___________________________________________", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 2f });
             tblContentCompanySignature.AddCell(new PdfPCell(new Phrase("Authorized Signature", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
