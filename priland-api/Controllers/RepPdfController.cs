@@ -195,7 +195,7 @@ namespace priland_api.Controllers
             float[] widthCellsSpaceTable = new float[] { 100f };
             spaceTable.SetWidths(widthCellsSpaceTable);
             spaceTable.WidthPercentage = 100;
-            spaceTable.AddCell(new PdfPCell(new Phrase(" ", updateFontArial10Bold)) { PaddingTop = 5f, Border = 0 });
+            spaceTable.AddCell(new PdfPCell(new Phrase(" ", updateFontArial10Bold)) { PaddingTop = 3f, Border = 0 });
 
             // ===============
             // Settings (Data)
@@ -216,7 +216,7 @@ namespace priland_api.Controllers
                 pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
                 pdfTableCompanyDetail.WidthPercentage = 100;
                 pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
-                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("CLIENT'S PROFILE", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("CLIENT'S PROFILE", updateFontArial17Bold)) { PaddingTop = 10, Border = 0, HorizontalAlignment = 2 });
                 document.Add(pdfTableCompanyDetail);
                 document.Add(line);
 
@@ -826,7 +826,7 @@ namespace priland_api.Controllers
             float[] widthCellsSpaceTable = new float[] { 100f };
             spaceTable.SetWidths(widthCellsSpaceTable);
             spaceTable.WidthPercentage = 100;
-            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 5f, Border = 0 });
+            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 3f, Border = 0 });
 
             // ===============
             // Settings (Data)
@@ -1162,7 +1162,7 @@ namespace priland_api.Controllers
             float[] widthCellsSpaceTable = new float[] { 100f };
             spaceTable.SetWidths(widthCellsSpaceTable);
             spaceTable.WidthPercentage = 100;
-            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 5f, Border = 0 });
+            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 3f, Border = 0 });
 
             // ===============
             // Settings (Data)
@@ -1373,7 +1373,7 @@ namespace priland_api.Controllers
             float[] widthCellsSpaceTable = new float[] { 100f };
             spaceTable.SetWidths(widthCellsSpaceTable);
             spaceTable.WidthPercentage = 100;
-            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 5f, Border = 0 });
+            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 3f, Border = 0 });
 
             // ===============
             // Settings (Data)
@@ -1791,7 +1791,7 @@ namespace priland_api.Controllers
                 pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
                 pdfTableCompanyDetail.WidthPercentage = 100;
                 pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
-                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Contract to Sell", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("Contract to Sell", updateFontArial17Bold)) { PaddingTop = 10, Border = 0, HorizontalAlignment = 2 });
                 document.Add(pdfTableCompanyDetail);
                 document.Add(line);
 
@@ -3720,7 +3720,7 @@ namespace priland_api.Controllers
             float[] widthCellsSpaceTable = new float[] { 100f };
             spaceTable.SetWidths(widthCellsSpaceTable);
             spaceTable.WidthPercentage = 100;
-            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 5f, Border = 0 });
+            spaceTable.AddCell(new PdfPCell(new Phrase(" ", fontArial10Bold)) { PaddingTop = 3f, Border = 0 });
 
             // =====================================
             // Get Sold Unit Equity Payment Schedule
@@ -4241,7 +4241,7 @@ namespace priland_api.Controllers
                 PdfPTable pdfTableCompanyDetail = new PdfPTable(2);
                 pdfTableCompanyDetail.SetWidths(new float[] { 50f, 100f });
                 pdfTableCompanyDetail.WidthPercentage = 100;
-                pdfTableCompanyDetail.AddCell(new PdfPCell(logo, true) { Border = 0  });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(logo, true) { Border = 0 });
                 pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("RESERVATION AGREEMENT", updateFontArial17Bold)) { PaddingTop = 10, Border = 0, HorizontalAlignment = 2 });
                 document.Add(pdfTableCompanyDetail);
                 document.Add(line);
@@ -4274,11 +4274,11 @@ namespace priland_api.Controllers
             float[] tblProjectWidths = new float[] { 5f, 5f, 5f, 5f, 5f };
             tblProjects.SetWidths(tblProjectWidths);
             tblProjects.WidthPercentage = 100;
-            tblProjects.AddCell(new PdfPCell(new Phrase("PROJECT", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblProjects.AddCell(new PdfPCell(new Phrase("UNIT", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblProjects.AddCell(new PdfPCell(new Phrase("LOT AREA", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblProjects.AddCell(new PdfPCell(new Phrase("TCP", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblProjects.AddCell(new PdfPCell(new Phrase("TRANSFER CHARGES", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblProjects.AddCell(new PdfPCell(new Phrase("PROJECT", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblProjects.AddCell(new PdfPCell(new Phrase("UNIT", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblProjects.AddCell(new PdfPCell(new Phrase("LOT AREA", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblProjects.AddCell(new PdfPCell(new Phrase("TCP", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblProjects.AddCell(new PdfPCell(new Phrase("TRANSFER CHARGES", updateFontArial10Bold)) { HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
             tblProjects.AddCell(new PdfPCell(new Phrase(project, updateFontArial10)));
             tblProjects.AddCell(new PdfPCell(new Phrase(unit, updateFontArial10)));
             tblProjects.AddCell(new PdfPCell(new Phrase(lotArea, updateFontArial10)) { HorizontalAlignment = 2 });
@@ -4301,116 +4301,116 @@ namespace priland_api.Controllers
             float[] tblContentWidths = new float[] { 5f, 5f, 80f };
             tblContent.SetWidths(tblContentWidths);
             tblContent.WidthPercentage = 100;
-            tblContent.AddCell(new PdfPCell(new Phrase("1.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("My preferred scheme is _____________________ and is subject to the approval of Greentech Development Corporation.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("1.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("My preferred scheme is _____________________ and is subject to the approval of Greentech Development Corporation.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase("If I opt to obtain outside financing for the entire balance of the purchase price or any part thereof, I shall comply with the procedure and requirements of GREENTECH DEVELOPMENT CORPORATION, on commercial financing.", updateFontArial12)) { Colspan = 3, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("If I opt to obtain outside financing for the entire balance of the purchase price or any part thereof, I shall comply with the procedure and requirements of GREENTECH DEVELOPMENT CORPORATION, on commercial financing.", updateFontArial12)) { Colspan = 3, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase("2.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("The RESERVATION FEE of P " + reservationFee + " shall be deductible from the D/P of the TCP.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("2.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("The RESERVATION FEE of P " + reservationFee + " shall be deductible from the D/P of the TCP.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase("3.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("The DOWNPAYMENT of P " + downPayment + ", payable in the amount of P " + amortization + " per month for " + noOfPayments + " months.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("3.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("The DOWNPAYMENT of P " + downPayment + ", payable in the amount of P " + amortization + " per month for " + noOfPayments + " months.", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase("4.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("RESERVATION PERIOD", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("4.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("RESERVATION PERIOD", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("4.01", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("My reservation for the subject LOT / HOUSE&LOT is good for a period of THIRTY (30) days from approval of the reservation application. Should I fail to exercise my option to purchase the LOT/HOUSE & LOT within the reservation period, GREENTECH DEVELOPMENT CORPORATION may sell the LOT / HOUSE&LOT to another applicant/buyer.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("4.01", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("My reservation for the subject LOT / HOUSE&LOT is good for a period of THIRTY (30) days from approval of the reservation application. Should I fail to exercise my option to purchase the LOT/HOUSE & LOT within the reservation period, GREENTECH DEVELOPMENT CORPORATION may sell the LOT / HOUSE&LOT to another applicant/buyer.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("4.02", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("The reservation fee is non-refundable except as provided in paragraphs 6.05 and 6.12 and shall automatically be forfeited infavor of GREENTECH DEVELOPMENT CORPORATION upon the   failure to exercise the option to purchase the LOT / HOUSE & LOT within the reservation period.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("4.02", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("The reservation fee is non-refundable except as provided in paragraphs 6.05 and 6.12 and shall automatically be forfeited infavor of GREENTECH DEVELOPMENT CORPORATION upon the   failure to exercise the option to purchase the LOT / HOUSE & LOT within the reservation period.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("4.03", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("Should I fail  to submit  the signed Contract to Sell and all other required documents  to support the proposed purchase within THIRTY(30) days from date hereof, Greentech Development Corporation at its option, may cancel  this reservation  and forfeit  in its favor any and all amounts I have paid by virtue hereof.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("4.03", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("Should I fail  to submit  the signed Contract to Sell and all other required documents  to support the proposed purchase within THIRTY(30) days from date hereof, Greentech Development Corporation at its option, may cancel  this reservation  and forfeit  in its favor any and all amounts I have paid by virtue hereof.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase("5.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("DOWNPAYMENT / MONTHLY AMORTIZATION / EARNEST MONEY", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("5.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("DOWNPAYMENT / MONTHLY AMORTIZATION / EARNEST MONEY", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase("To effect my option to purchase the property, a down payment or first monthly amortization, whichever is applicable, based on the approved Sample Computation Sheet shall be paid by the applicant within the THIRTY (30)-day reservation period.", updateFontArial12)) { Colspan = 3, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("No cancellation of the sale by the applicant will be entertained after partial or full receipt of the down payment or any monthly amortization.  Any down payment or monthly amortization given by the applicant prior to the submission of the Contract to Sell shall be treated as Earnest Money and considered as proof of the perfection of the contract.  Greentech Development Corporation will have the sole discretion or right to cancel the sale in case of default of any of the payments or in case the applicant indicates that he/she will opt to no longer continue with the sale.  The cancellation will take effect after thirty (30) days from the receipt by the applicant or, in case the applicant cannot be found, from the leaving of a copy, of the notice of cancellation at the address stated in this Agreement.  The Earnest Money will be forfeited in favor of Greentech Development Corporation in case of such cancellation.", updateFontArial12)) { Colspan = 3, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("To effect my option to purchase the property, a down payment or first monthly amortization, whichever is applicable, based on the approved Sample Computation Sheet shall be paid by the applicant within the THIRTY (30)-day reservation period.", updateFontArial12)) { Colspan = 3, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("No cancellation of the sale by the applicant will be entertained after partial or full receipt of the down payment or any monthly amortization.  Any down payment or monthly amortization given by the applicant prior to the submission of the Contract to Sell shall be treated as Earnest Money and considered as proof of the perfection of the contract.  Greentech Development Corporation will have the sole discretion or right to cancel the sale in case of default of any of the payments or in case the applicant indicates that he/she will opt to no longer continue with the sale.  The cancellation will take effect after thirty (30) days from the receipt by the applicant or, in case the applicant cannot be found, from the leaving of a copy, of the notice of cancellation at the address stated in this Agreement.  The Earnest Money will be forfeited in favor of Greentech Development Corporation in case of such cancellation.", updateFontArial12)) { Colspan = 3, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase("6.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("This reservation agreement is subject to the following TERMS:", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("This reservation agreement is subject to the following TERMS:", updateFontArial12)) { Colspan = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.01", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("This reservation is on a first-come-first-serve basis and shall only take effect upon approval of GREENTECH DEVELOPMENT CORPORATION.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.01", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("This reservation is on a first-come-first-serve basis and shall only take effect upon approval of GREENTECH DEVELOPMENT CORPORATION.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.02", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("This reservation is exclusive for the aforementioned LOT/HOUSE & LOT. A Change of the Lot/House & Lot may be allowed by GREENTECH DEVELOPMENT CORPORATION at its discretionand can be exercised only once subject to company’s policy on request for change of Lot/House & Lot.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.02", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("This reservation is exclusive for the aforementioned LOT/HOUSE & LOT. A Change of the Lot/House & Lot may be allowed by GREENTECH DEVELOPMENT CORPORATION at its discretionand can be exercised only once subject to company’s policy on request for change of Lot/House & Lot.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.03", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("This  reservation, if and when accepted by Greentech Development Corporation, shall contain the entire agreement  between myself and GREENTECH DEVELOPMENT CORPORATION as of the date of such acceptance and any stipulation, representation, agreement or promise, oral or otherwise, not contained or incorporated herein  by reference, shall not bind GREENTECH DEVELOPMENT CORPORATION.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.03", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("This  reservation, if and when accepted by Greentech Development Corporation, shall contain the entire agreement  between myself and GREENTECH DEVELOPMENT CORPORATION as of the date of such acceptance and any stipulation, representation, agreement or promise, oral or otherwise, not contained or incorporated herein  by reference, shall not bind GREENTECH DEVELOPMENT CORPORATION.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.04", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("It is understood that any representation or warranty made to me by the Sales Agent who handled this reservation that is not embodied  herein shall not be binding on Greentech Development Corporation unless reduced into writing and signed by authorized signatory of GREENTECH DEVELOPMENT CORPORATION. This reservation shall not be considered as changed, modified or altered or in anyway amended by any act/acts of tolerance by GREENTECH DEVELOPMENT CORPORATION unless such change/s, modification/s or amendment/s are made in writing and signed by the authorized signatory of Greentech Development Corporation.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.04", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("It is understood that any representation or warranty made to me by the Sales Agent who handled this reservation that is not embodied  herein shall not be binding on Greentech Development Corporation unless reduced into writing and signed by authorized signatory of GREENTECH DEVELOPMENT CORPORATION. This reservation shall not be considered as changed, modified or altered or in anyway amended by any act/acts of tolerance by GREENTECH DEVELOPMENT CORPORATION unless such change/s, modification/s or amendment/s are made in writing and signed by the authorized signatory of Greentech Development Corporation.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.05", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("In the event that the above-chosen lot has been found to be not available for sale or disposition, I agree to have the said property exchanged with another lot of similar area and value in the same subdivision, or to the cancellation of this reservation subject to the reimbursement of all the amounts I have thus far paid to GREENTECH DEVELOPMENT CORPORATION without any interest or penalty. I hereby acknowledge and confirm that in case of such cancellation, GREENTECH DEVELOPMENT CORPORATION shall have no liability whatsoever, except to reimburse all the amounts I have remitted to it without any interest or penalty.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.05", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("In the event that the above-chosen lot has been found to be not available for sale or disposition, I agree to have the said property exchanged with another lot of similar area and value in the same subdivision, or to the cancellation of this reservation subject to the reimbursement of all the amounts I have thus far paid to GREENTECH DEVELOPMENT CORPORATION without any interest or penalty. I hereby acknowledge and confirm that in case of such cancellation, GREENTECH DEVELOPMENT CORPORATION shall have no liability whatsoever, except to reimburse all the amounts I have remitted to it without any interest or penalty.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.06", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("The applicant’s failure to pay the downpayment / first amortization within the reservation period shall cause the forfeiture of the reservation fee in favor of GREENTECH DEVELOPMENT CORPORATION as damages & as compensation for the opportunity loss.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.06", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("The applicant’s failure to pay the downpayment / first amortization within the reservation period shall cause the forfeiture of the reservation fee in favor of GREENTECH DEVELOPMENT CORPORATION as damages & as compensation for the opportunity loss.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.07", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("The applicant shall not be allowed to transfer his/her Reservation Application to another individual person or Corporation unless specifically allowed by law.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.07", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("The applicant shall not be allowed to transfer his/her Reservation Application to another individual person or Corporation unless specifically allowed by law.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.08", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("Any and all payments made to a party other than the authorized representative of GREENTECH DEVELOPMENT CORPORATION to receive payments shall be at the applicant’s sole and exclusive risk and responsibility, and shall not make the GREENTECH DEVELOPMENT CORPORATION answerable or responsible in any way therefore.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.08", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("Any and all payments made to a party other than the authorized representative of GREENTECH DEVELOPMENT CORPORATION to receive payments shall be at the applicant’s sole and exclusive risk and responsibility, and shall not make the GREENTECH DEVELOPMENT CORPORATION answerable or responsible in any way therefore.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.09", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("The applicant hereby acknowledges having read and understood the Contract to Sell and other pertinent sales document and agrees to the standard terms and terms and conditions contained therein.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.09", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("The applicant hereby acknowledges having read and understood the Contract to Sell and other pertinent sales document and agrees to the standard terms and terms and conditions contained therein.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.10", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("In case one or more of the provisions contained in this Reservation Terms and Conditions shall be declared invalid, illegal or unenforceable in any respect by any competent governmental authority, the validity, legality and enforceability of the remaining  provisions contained herein shall not in any way be affected or impaired thereby.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.10", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("In case one or more of the provisions contained in this Reservation Terms and Conditions shall be declared invalid, illegal or unenforceable in any respect by any competent governmental authority, the validity, legality and enforceability of the remaining  provisions contained herein shall not in any way be affected or impaired thereby.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.11", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("This Reservation Terms and Conditions, the Contract to Sell, and The Deed of Absolute Sale to be executed pursuant hereto constitute the entire agreement of the parties concerning the sale, transfer and conveyance of the Lot/House & Lot reserved.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.11", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("This Reservation Terms and Conditions, the Contract to Sell, and The Deed of Absolute Sale to be executed pursuant hereto constitute the entire agreement of the parties concerning the sale, transfer and conveyance of the Lot/House & Lot reserved.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.12", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("I hereby acknowledge that GREENTECH DEVELOPMENT CORPORATION has the right not to accept, or withdraw or cancel its acceptance of this reservation for any cause whatsoever, at any time before the execution of a Contract to Sell in my favor by giving prior written notice of its intention to do so and refunding to me all the amount I have paid to it without interest or penalty.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.12", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("I hereby acknowledge that GREENTECH DEVELOPMENT CORPORATION has the right not to accept, or withdraw or cancel its acceptance of this reservation for any cause whatsoever, at any time before the execution of a Contract to Sell in my favor by giving prior written notice of its intention to do so and refunding to me all the amount I have paid to it without interest or penalty.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.13", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("I shall be solely responsible for establishing my legal qualifications to acquire the said Greentech Development Corporation lot and to have the same registered in my name.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.13", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("I shall be solely responsible for establishing my legal qualifications to acquire the said Greentech Development Corporation lot and to have the same registered in my name.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.14", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("My failure and/or refusal to submit necessary documents required by GREENTECH DEVELOPMENT CORPORATION within the reservation period may be a ground for forfeiture of this reservation.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.14", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("My failure and/or refusal to submit necessary documents required by GREENTECH DEVELOPMENT CORPORATION within the reservation period may be a ground for forfeiture of this reservation.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.15", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("In the event that the check covering the reservation payment/downpayment corresponding to this reservation is dishonored by the drawee bank concerned for any reason whatsoever, this reservation shall automatically be canceled and shall cease to have any force and effect, regardless of whether or not GREENTECH DEVELOPMENT CORPORATION has accepted this reservation as of the date of such dishonor.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.15", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("In the event that the check covering the reservation payment/downpayment corresponding to this reservation is dishonored by the drawee bank concerned for any reason whatsoever, this reservation shall automatically be canceled and shall cease to have any force and effect, regardless of whether or not GREENTECH DEVELOPMENT CORPORATION has accepted this reservation as of the date of such dishonor.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.16", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("This reservation and the rights and obligations of the parties hereunder shall be governed by, and construed in accordance with, the laws of the Republic of the Philippines and any action or proceeding arising out of, or relating to this reservation shall be brought exclusively in the proper courts of the province of Cebu of the Republic of the Philippines.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.16", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("This reservation and the rights and obligations of the parties hereunder shall be governed by, and construed in accordance with, the laws of the Republic of the Philippines and any action or proceeding arising out of, or relating to this reservation shall be brought exclusively in the proper courts of the province of Cebu of the Republic of the Philippines.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.17", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("All notices, letters and /or communications to me pertaining to this reservation shall be sent either personally or by registered mail to my mailing address in the Philippines as indicated herein. I undertake to promptly inform GREENTECH DEVELOPMENT CORPORATION n of any change of my address. Any such notice, letter or communication shall be deemed to have been duly delivered or given to me on the date of receipt if delivered personally, or upon the lapse of seven (7) days from its posting by mail.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.17", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("All notices, letters and /or communications to me pertaining to this reservation shall be sent either personally or by registered mail to my mailing address in the Philippines as indicated herein. I undertake to promptly inform GREENTECH DEVELOPMENT CORPORATION n of any change of my address. Any such notice, letter or communication shall be deemed to have been duly delivered or given to me on the date of receipt if delivered personally, or upon the lapse of seven (7) days from its posting by mail.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.18", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("In case of conflict between any stipulation embodied herein and any provision of the Contract to Sell, the provision of the Contract to Sell shall prevail.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.18", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("In case of conflict between any stipulation embodied herein and any provision of the Contract to Sell, the provision of the Contract to Sell shall prevail.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
-            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("6.19", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContent.AddCell(new PdfPCell(new Phrase("I hereby represent and certify that all the information I have given in this Reservation Agreement are true and accurate as of the date hereof. I undertake to notify GREENTECH DEVELOPMENT CORPORATION in writing of any change in any such information.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase(" ", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("6.19", updateFontArial12)) { HorizontalAlignment = 2, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContent.AddCell(new PdfPCell(new Phrase("I hereby represent and certify that all the information I have given in this Reservation Agreement are true and accurate as of the date hereof. I undertake to notify GREENTECH DEVELOPMENT CORPORATION in writing of any change in any such information.", updateFontArial12)) { Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
             document.Add(tblContent);
             document.Add(spaceTable);
@@ -4420,13 +4420,13 @@ namespace priland_api.Controllers
             tblContentSignature.SetWidths(tblContentSignatureWidths);
             tblContentSignature.WidthPercentage = 100;
 
-            tblContentSignature.AddCell(new PdfPCell(new Phrase(applicant.ToUpper(), updateFontArial12)) { Border = 0, HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
-            tblContentSignature.AddCell(new PdfPCell(new Phrase("With my marital consent: ______________________________________", updateFontArial12)) { Border = 0, PaddingLeft = 30f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContentSignature.AddCell(new PdfPCell(new Phrase(applicant.ToUpper(), updateFontArial12)) { Border = 0, HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContentSignature.AddCell(new PdfPCell(new Phrase("With my marital consent: ______________________________________", updateFontArial12)) { Border = 0, PaddingLeft = 30f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
             tblContentSignature.AddCell(new PdfPCell(new Phrase("(Name & Signature of Applicant)", updateFontArial12Bold)) { Border = 0, HorizontalAlignment = 1, PaddingBottom = 5f });
-            tblContentSignature.AddCell(new PdfPCell(new Phrase("Address: " + address, updateFontArial12)) { Border = 0, PaddingLeft = 30f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f, Rowspan = 2 });
+            tblContentSignature.AddCell(new PdfPCell(new Phrase("Address: " + address, updateFontArial12)) { Border = 0, PaddingLeft = 30f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f, Rowspan = 2 });
 
-            tblContentSignature.AddCell(new PdfPCell(new Phrase("Date: " + DateTime.Today.ToShortDateString(), updateFontArial12)) { Border = 0, HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContentSignature.AddCell(new PdfPCell(new Phrase("Date: " + DateTime.Today.ToShortDateString(), updateFontArial12)) { Border = 0, HorizontalAlignment = 1, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
             document.Add(tblContentSignature);
 
@@ -4438,10 +4438,10 @@ namespace priland_api.Controllers
             tblContentCompanySignature.SetWidths(tblContentCompanySignatureWidths);
             tblContentCompanySignature.WidthPercentage = 100;
 
-            tblContentCompanySignature.AddCell(new PdfPCell(new Phrase("GREENTECH DEVELOPMENT CORPORATION", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 20f });
+            tblContentCompanySignature.AddCell(new PdfPCell(new Phrase("GREENTECH DEVELOPMENT CORPORATION", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 20f });
 
-            tblContentCompanySignature.AddCell(new PdfPCell(new Phrase("___________________________________________", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 2f });
-            tblContentCompanySignature.AddCell(new PdfPCell(new Phrase("Authorized Signature", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 5f, PaddingTop = 5f, PaddingRight = 5f, PaddingBottom = 5f });
+            tblContentCompanySignature.AddCell(new PdfPCell(new Phrase("___________________________________________", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 2f });
+            tblContentCompanySignature.AddCell(new PdfPCell(new Phrase("Authorized Signature", updateFontArial12Bold)) { HorizontalAlignment = 1, Border = 0, PaddingLeft = 5f, PaddingTop = 3f, PaddingRight = 5f, PaddingBottom = 5f });
 
             document.Add(tblContentCompanySignature);
             document.Add(spaceTable);
@@ -4476,10 +4476,10 @@ namespace priland_api.Controllers
             Font updateFontArial10 = FontFactory.GetFont("Arial", 7);
             Font updateFontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
             Font updateFontArial10BoldItalic = FontFactory.GetFont("Arial", 5, Font.BOLDITALIC, BaseColor.WHITE);
-            Font updateFontArial12Bold = FontFactory.GetFont("Arial", 9, Font.BOLD);
-            Font updateFontArial12BoldItalic = FontFactory.GetFont("Arial", 9, Font.BOLDITALIC);
-            Font updateFontArial12 = FontFactory.GetFont("Arial", 9);
-            Font updateFontArial12Italic = FontFactory.GetFont("Arial", 9, Font.ITALIC);
+            Font updateFontArial12Bold = FontFactory.GetFont("Arial", 11, Font.BOLD);
+            Font updateFontArial12BoldItalic = FontFactory.GetFont("Arial", 11, Font.BOLDITALIC);
+            Font updateFontArial12 = FontFactory.GetFont("Arial", 11);
+            Font updateFontArial12Italic = FontFactory.GetFont("Arial", 11, Font.ITALIC);
             Font updateFontArial17Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
             Font updateFontArial17UNDERLINE = FontFactory.GetFont("Arial", 12, Font.UNDERLINE);
 
@@ -4499,11 +4499,11 @@ namespace priland_api.Controllers
             // =============
             document.Open();
 
-            var customer = from d in db.MstCustomers
+            var soldUnit = from d in db.TrnSoldUnits
                            where d.Id == Convert.ToInt32(id)
                            select d;
 
-            if (customer.Any())
+            if (soldUnit.Any())
             {
                 var projectLogo = from d in db.MstProjects select d;
                 Image logo = Image.GetInstance(projectLogo.FirstOrDefault().ProjectLogo);
@@ -4513,66 +4513,94 @@ namespace priland_api.Controllers
                 pdfTableCompanyDetail.SetWidths(new float[] { 100f, 100f });
                 pdfTableCompanyDetail.WidthPercentage = 100;
                 pdfTableCompanyDetail.AddCell(new PdfPCell(logo) { Border = 0 });
-                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("COMPUTATION SHEET", updateFontArial17Bold)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 2 });
+                pdfTableCompanyDetail.AddCell(new PdfPCell(new Phrase("COMPUTATION SHEET", updateFontArial17Bold)) { PaddingTop = 10, Border = 0, HorizontalAlignment = 2 });
                 document.Add(pdfTableCompanyDetail);
                 document.Add(line);
 
                 PdfPTable pdfTableComputationSheet = new PdfPTable(4);
                 pdfTableComputationSheet.SetWidths(new float[] { 25f, 25f, 100f, 100f });
                 pdfTableComputationSheet.WidthPercentage = 100;
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("TCP: ____________________________________", updateFontArial12)) { Colspan = 4, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("I. R/F: ______________________________________", updateFontArial12Bold)) { Colspan = 3, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("II. D/P: ________________ = ______________________", updateFontArial12Bold)) { Colspan = 3, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Less R/F:  ______________________________________", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Net D/P:  ______________________________________", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Terms:  ____________________________month/s @ _______% (interest / discount)", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Monthly D/P: Php____________________________month/s @ _______% (interest / discount)", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("III. BAL: ______________________________________", updateFontArial12Bold)) { Colspan = 3, PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 1 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("___ CASH", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("___ BANK", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("___ IN-HOUSE", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Term:__________months", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Int. Rate:__________%", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 20, Border = 0, HorizontalAlignment = 1 });
-                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Mo. Amortization:_________________", updateFontArial12)) { Colspan = 2, PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("TCP: " + soldUnit.FirstOrDefault().MstUnit.Price.ToString("#,##0.00"), updateFontArial12Bold)) { Colspan = 4, PaddingTop = 10, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 10, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("I. R/F: " + soldUnit.FirstOrDefault().Reservation.ToString("#,##0.00"), updateFontArial12Bold)) { Colspan = 3, PaddingTop = 10, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 10, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("II. D/P: " + soldUnit.FirstOrDefault().EquityPercent.ToString("#,##0") + "% = " + soldUnit.FirstOrDefault().EquityValue.ToString("#,##0.00"), updateFontArial12Bold)) { Colspan = 3, PaddingTop = 10, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Less Discount: " + soldUnit.FirstOrDefault().Discount.ToString("#,##0.00"), updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Less R/F: " + soldUnit.FirstOrDefault().Reservation.ToString("#,##0.00"), updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Net D/P: " + soldUnit.FirstOrDefault().NetEquity.ToString("#,##0.00"), updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Terms: " + soldUnit.FirstOrDefault().NetEquityNoOfPayments.ToString("#,##0") + " month/s @ " + soldUnit.FirstOrDefault().NetEquityInterest.ToString("#,##0") + " % (interest / discount)", updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Monthly D/P: Php " + soldUnit.FirstOrDefault().NetEquityAmortization.ToString("#,##0.00") + " / month @ " + soldUnit.FirstOrDefault().NetEquityNoOfPayments.ToString("#,##0") + " months", updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 10, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("III. BAL: " + soldUnit.FirstOrDefault().Balance.ToString("#,##0"), updateFontArial12Bold)) { Colspan = 3, PaddingTop = 10, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 3, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("___ CASH", updateFontArial12)) { Colspan = 2, PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("___ BANK", updateFontArial12)) { Colspan = 2, PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("___ IN-HOUSE", updateFontArial12)) { Colspan = 2, PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Term: " + soldUnit.FirstOrDefault().BalanceNoOfPayments.ToString("#,##0") + "months", updateFontArial12)) { Colspan = 2, PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Int. Rate: " + soldUnit.FirstOrDefault().BalanceInterest.ToString("#,##0") + "%", updateFontArial12)) { Colspan = 2, PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { Colspan = 2, PaddingTop = 10, Border = 0, HorizontalAlignment = 1 });
+                pdfTableComputationSheet.AddCell(new PdfPCell(new Phrase("Mo. Amortization: " + soldUnit.FirstOrDefault().BalanceAmortization.ToString("#,##0.00"), updateFontArial12)) { Colspan = 2, PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+
                 document.Add(pdfTableComputationSheet);
                 document.Add(line);
 
                 PdfPTable pdfTableComputationSheetAdditionalInfo = new PdfPTable(2);
                 pdfTableComputationSheetAdditionalInfo.SetWidths(new float[] { 100f, 100f });
                 pdfTableComputationSheetAdditionalInfo.WidthPercentage = 100;
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Project: _______________________________", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Unit #: ________________________________", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("______________________________________", updateFontArial12)) { PaddingTop = 30, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("______________________________________", updateFontArial12)) { PaddingTop = 30, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Project: " + soldUnit.FirstOrDefault().MstProject.Project, updateFontArial12)) { PaddingTop = 10, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Unit #: " + soldUnit.FirstOrDefault().MstUnit.UnitCode, updateFontArial12)) { PaddingTop = 10, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstCustomer.FirstName + " " + soldUnit.FirstOrDefault().MstCustomer.LastName, updateFontArial12)) { PaddingTop = 40, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("______________________________________", updateFontArial12)) { PaddingTop = 40, Border = 0, HorizontalAlignment = 0 });
+
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("BUYER", updateFontArial12Bold)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
                 pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Sales Manager", updateFontArial12Bold)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("(Signature over printed name)", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Date: _________________________________", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Legend:", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 20, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("TCP: Total Contract Price", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Approved by:", updateFontArial12Italic)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("R/F: Reservation Fee", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("D/P: Down Payment", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("BAL: Balance", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Kaiser Christopher F. Tan", updateFontArial12Bold)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Int: Interest per annum", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
-                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("President / CEo", updateFontArial12)) { PaddingTop = 5, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("(Signature over printed name)", updateFontArial12)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Date: _________________________________", updateFontArial12)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Legend:", updateFontArial12)) { PaddingTop = 10, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 10, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("TCP: Total Contract Price", updateFontArial12)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Approved by:", updateFontArial12Italic)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("R/F: Reservation Fee", updateFontArial12)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("D/P: Down Payment", updateFontArial12)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("", updateFontArial12)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("BAL: Balance", updateFontArial12)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Kaiser Christopher F. Tan", updateFontArial12Bold)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("Int: Interest per annum", updateFontArial12)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+                pdfTableComputationSheetAdditionalInfo.AddCell(new PdfPCell(new Phrase("President / CEO", updateFontArial12)) { PaddingTop = 3, Border = 0, HorizontalAlignment = 0 });
+
                 document.Add(pdfTableComputationSheetAdditionalInfo);
             }
 
