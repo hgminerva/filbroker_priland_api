@@ -51,6 +51,28 @@ namespace priland_api.Controllers
             return collectionList.ToList();
         }
 
+        [HttpGet, Route("Detail/{id}")]
+        public TrnCollectionPayment GetCollectionPaymentDetail(Int32 id)
+        {
+            var collectionList = from d in db.TrnCollectionPayments
+                                 where d.Id == id
+                                 select new TrnCollectionPayment
+                                 {
+                                     Id = d.Id,
+                                     CollectionId = d.CollectionId,
+                                     SoldUnitId = d.SoldUnitId,
+                                     SoldUnit = d.TrnSoldUnit.SoldUnitNumber,
+                                     Project = d.TrnSoldUnit.MstUnit.MstProject.Project,
+                                     PayType = d.PayType,
+                                     Amount = d.Amount,
+                                     CheckNumber = d.CheckNumber,
+                                     CheckDate = d.CheckDate.ToString(),
+                                     CheckBank = d.CheckBank,
+                                     OtherInformation = d.OtherInformation
+                                 };
+            return collectionList.FirstOrDefault();
+        }
+
         //Sold Units
         [HttpGet, Route("SoldUnits/{customerId}")]
         public List<TrnCollectionPaymentSoldUnit> GetSoldUnits(string customerId)
