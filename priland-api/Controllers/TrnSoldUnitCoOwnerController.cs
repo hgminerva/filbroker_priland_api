@@ -48,6 +48,24 @@ namespace priland_api.Controllers
             return soldUnitOwners.ToList();
         }
 
+        [HttpGet, Route("detail/{id}")]
+        public TrnSoldUnitCoOwner DetailCoOwner(String id)
+        {
+            var soldUnitOwners = from d in db.TrnSoldUnitCoOwners
+                                 where d.Id == Convert.ToInt32(id)
+                                 select new TrnSoldUnitCoOwner
+                                 {
+                                     Id = d.Id,
+                                     SoldUnitId = d.SoldUnitId,
+                                     CustomerId = d.CustomerId,
+                                     CustomerCode = d.MstCustomer.CustomerCode,
+                                     Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
+                                     Address = d.MstCustomer.Address
+                                 };
+
+            return soldUnitOwners.FirstOrDefault();
+        }
+
         [HttpPost, Route("add")]
         public HttpResponseMessage AddSoldUnitOwner(TrnSoldUnitCoOwner objSoldUnitOwner)
         {
