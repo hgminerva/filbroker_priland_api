@@ -18,6 +18,10 @@ namespace priland_api.Models
         public Decimal TLA { get; set; }
         public Decimal TFA { get; set; }
         public Decimal Price { get; set; }
+        public Decimal MiscellaneousFeeRate { get; set; }
+        public Decimal MiscellaneousFeeAmount { get; set; }
+        public Decimal VATRate { get; set; }
+        public Decimal VATAmount { get; set; }
         public Decimal TSP { get; set; }
         public String Status { get; set; }
         public Boolean IsLocked { get; set; }

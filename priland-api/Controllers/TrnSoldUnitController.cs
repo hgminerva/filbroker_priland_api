@@ -594,6 +594,19 @@ namespace priland_api.Controllers
                             UpdateTrnSoldUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
                             UpdateTrnSoldUnitData.UpdatedDateTime = DateTime.Now;
 
+                            Decimal totalPayments = 0;
+
+                            var collectionPayments = from d in db.TrnCollectionPayments
+                                                     where d.SoldUnitId == Convert.ToInt32(soldUnit.Id)
+                                                     select d;
+
+                            if (collectionPayments.Any())
+                            {
+                                totalPayments = collectionPayments.Sum(d => d.Amount);
+                            }
+
+                            UpdateTrnSoldUnitData.PriceBalance = soldUnit.Price - totalPayments;
+
                             // update unit status
                             var currentUnit = from d in db.MstUnits where d.Id == soldUnit.UnitId select d;
                             currentUnit.FirstOrDefault().Status = "CLOSE";

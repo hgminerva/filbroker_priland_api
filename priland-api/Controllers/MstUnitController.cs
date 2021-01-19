@@ -35,6 +35,10 @@ namespace priland_api.Controllers
                                   TLA = d.TLA,
                                   TFA = d.TFA,
                                   Price = d.Price,
+                                  MiscellaneousFeeRate = d.MiscellaneousFeeRate,
+                                  MiscellaneousFeeAmount = d.MiscellaneousFeeAmount,
+                                  VATRate = d.VATRate,
+                                  VATAmount = d.VATAmount,
                                   TSP = d.TSP,
                                   Status = d.Status,
                                   IsLocked = d.IsLocked,
@@ -68,6 +72,10 @@ namespace priland_api.Controllers
                                   TLA = d.TLA,
                                   TFA = d.TFA,
                                   Price = d.Price,
+                                  MiscellaneousFeeRate = d.MiscellaneousFeeRate,
+                                  MiscellaneousFeeAmount = d.MiscellaneousFeeAmount,
+                                  VATRate = d.VATRate,
+                                  VATAmount = d.VATAmount,
                                   TSP = d.TSP,
                                   Status = d.Status,
                                   IsLocked = d.IsLocked,
@@ -102,6 +110,11 @@ namespace priland_api.Controllers
                                   TLA = d.TLA,
                                   TFA = d.TFA,
                                   Price = d.Price,
+                                  MiscellaneousFeeRate = d.MiscellaneousFeeRate,
+                                  MiscellaneousFeeAmount = d.MiscellaneousFeeAmount,
+                                  VATRate = d.VATRate,
+                                  VATAmount = d.VATAmount,
+                                  TSP = d.TSP,
                                   Status = d.Status,
                                   IsLocked = d.IsLocked,
                                   CreatedBy = d.CreatedBy,
@@ -132,6 +145,10 @@ namespace priland_api.Controllers
                                   TLA = d.TLA,
                                   TFA = d.TFA,
                                   Price = d.Price,
+                                  MiscellaneousFeeRate = d.MiscellaneousFeeRate,
+                                  MiscellaneousFeeAmount = d.MiscellaneousFeeAmount,
+                                  VATRate = d.VATRate,
+                                  VATAmount = d.VATAmount,
                                   TSP = d.TSP,
                                   Status = d.Status,
                                   IsLocked = d.IsLocked,
@@ -170,6 +187,10 @@ namespace priland_api.Controllers
                             TLA = unit.TLA,
                             TFA = unit.TFA,
                             Price = unit.Price,
+                            MiscellaneousFeeRate = unit.MiscellaneousFeeRate,
+                            MiscellaneousFeeAmount = unit.MiscellaneousFeeAmount,
+                            VATRate = unit.VATRate,
+                            VATAmount = unit.VATAmount,
                             TSP = unit.TSP,
                             Status = unit.Status,
                             IsLocked = unit.IsLocked,
@@ -262,6 +283,10 @@ namespace priland_api.Controllers
                             UpdateMstUnitData.TLA = unit.TLA;
                             UpdateMstUnitData.TFA = unit.TFA;
                             UpdateMstUnitData.Price = unit.Price;
+                            UpdateMstUnitData.MiscellaneousFeeRate = unit.MiscellaneousFeeRate;
+                            UpdateMstUnitData.MiscellaneousFeeAmount = unit.MiscellaneousFeeAmount;
+                            UpdateMstUnitData.VATRate = unit.VATRate;
+                            UpdateMstUnitData.VATAmount = unit.VATAmount;
                             UpdateMstUnitData.TSP = unit.TSP;
                             UpdateMstUnitData.Status = unit.Status;
                             UpdateMstUnitData.UpdatedBy = currentUser.FirstOrDefault().Id;
@@ -318,6 +343,10 @@ namespace priland_api.Controllers
                         UpdateMstUnitData.TLA = unit.TLA;
                         UpdateMstUnitData.TFA = unit.TFA;
                         UpdateMstUnitData.Price = unit.Price;
+                        UpdateMstUnitData.MiscellaneousFeeRate = unit.MiscellaneousFeeRate;
+                        UpdateMstUnitData.MiscellaneousFeeAmount = unit.MiscellaneousFeeAmount;
+                        UpdateMstUnitData.VATRate = unit.VATRate;
+                        UpdateMstUnitData.VATAmount = unit.VATAmount;
                         UpdateMstUnitData.TSP = unit.TSP;
                         UpdateMstUnitData.Status = unit.Status;
                         UpdateMstUnitData.IsLocked = true;

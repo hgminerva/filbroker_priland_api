@@ -66,7 +66,7 @@ namespace priland_api.Controllers
                                      PayType = d.PayType,
                                      Amount = d.Amount,
                                      CheckNumber = d.CheckNumber,
-                                     CheckDate = d.CheckDate.ToString(),
+                                     CheckDate = d.CheckDate != null ? Convert.ToDateTime(d.CheckDate).ToShortDateString() : "",
                                      CheckBank = d.CheckBank,
                                      OtherInformation = d.OtherInformation
                                  };

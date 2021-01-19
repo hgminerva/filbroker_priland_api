@@ -22,7 +22,7 @@ namespace priland_api.Data
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="filbroker_priland")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="filbroker_tytans")]
 	public partial class FilbrokerDBDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -30,12 +30,15 @@ namespace priland_api.Data
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertAspNetRole(AspNetRole instance);
-    partial void UpdateAspNetRole(AspNetRole instance);
-    partial void DeleteAspNetRole(AspNetRole instance);
+    partial void Insert__MigrationHistory(__MigrationHistory instance);
+    partial void Update__MigrationHistory(__MigrationHistory instance);
+    partial void Delete__MigrationHistory(__MigrationHistory instance);
     partial void InsertTrnSoldUnitRequirementActivity(TrnSoldUnitRequirementActivity instance);
     partial void UpdateTrnSoldUnitRequirementActivity(TrnSoldUnitRequirementActivity instance);
     partial void DeleteTrnSoldUnitRequirementActivity(TrnSoldUnitRequirementActivity instance);
+    partial void InsertAspNetRole(AspNetRole instance);
+    partial void UpdateAspNetRole(AspNetRole instance);
+    partial void DeleteAspNetRole(AspNetRole instance);
     partial void InsertAspNetUserClaim(AspNetUserClaim instance);
     partial void UpdateAspNetUserClaim(AspNetUserClaim instance);
     partial void DeleteAspNetUserClaim(AspNetUserClaim instance);
@@ -140,11 +143,11 @@ namespace priland_api.Data
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<AspNetRole> AspNetRoles
+		public System.Data.Linq.Table<@__MigrationHistory> @__MigrationHistories
 		{
 			get
 			{
-				return this.GetTable<AspNetRole>();
+				return this.GetTable<@__MigrationHistory>();
 			}
 		}
 		
@@ -153,6 +156,14 @@ namespace priland_api.Data
 			get
 			{
 				return this.GetTable<TrnSoldUnitRequirementActivity>();
+			}
+		}
+		
+		public System.Data.Linq.Table<AspNetRole> AspNetRoles
+		{
+			get
+			{
+				return this.GetTable<AspNetRole>();
 			}
 		}
 		
@@ -349,84 +360,116 @@ namespace priland_api.Data
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.AspNetRoles")]
-	public partial class AspNetRole : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[__MigrationHistory]")]
+	public partial class @__MigrationHistory : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private string _Id;
+		private string _MigrationId;
 		
-		private string _Name;
+		private string _ContextKey;
 		
-		private EntitySet<AspNetUserRole> _AspNetUserRoles;
+		private System.Data.Linq.Binary _Model;
+		
+		private string _ProductVersion;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnIdChanging(string value);
-    partial void OnIdChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
+    partial void OnMigrationIdChanging(string value);
+    partial void OnMigrationIdChanged();
+    partial void OnContextKeyChanging(string value);
+    partial void OnContextKeyChanged();
+    partial void OnModelChanging(System.Data.Linq.Binary value);
+    partial void OnModelChanged();
+    partial void OnProductVersionChanging(string value);
+    partial void OnProductVersionChanged();
     #endregion
 		
-		public AspNetRole()
+		public @__MigrationHistory()
 		{
-			this._AspNetUserRoles = new EntitySet<AspNetUserRole>(new Action<AspNetUserRole>(this.attach_AspNetUserRoles), new Action<AspNetUserRole>(this.detach_AspNetUserRoles));
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="NVarChar(128) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string Id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MigrationId", DbType="NVarChar(150) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string MigrationId
 		{
 			get
 			{
-				return this._Id;
+				return this._MigrationId;
 			}
 			set
 			{
-				if ((this._Id != value))
+				if ((this._MigrationId != value))
 				{
-					this.OnIdChanging(value);
+					this.OnMigrationIdChanging(value);
 					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
+					this._MigrationId = value;
+					this.SendPropertyChanged("MigrationId");
+					this.OnMigrationIdChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Name
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContextKey", DbType="NVarChar(300) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string ContextKey
 		{
 			get
 			{
-				return this._Name;
+				return this._ContextKey;
 			}
 			set
 			{
-				if ((this._Name != value))
+				if ((this._ContextKey != value))
 				{
-					this.OnNameChanging(value);
+					this.OnContextKeyChanging(value);
 					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
+					this._ContextKey = value;
+					this.SendPropertyChanged("ContextKey");
+					this.OnContextKeyChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="AspNetRole_AspNetUserRole", Storage="_AspNetUserRoles", ThisKey="Id", OtherKey="RoleId")]
-		public EntitySet<AspNetUserRole> AspNetUserRoles
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Model", DbType="VarBinary(MAX) NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary Model
 		{
 			get
 			{
-				return this._AspNetUserRoles;
+				return this._Model;
 			}
 			set
 			{
-				this._AspNetUserRoles.Assign(value);
+				if ((this._Model != value))
+				{
+					this.OnModelChanging(value);
+					this.SendPropertyChanging();
+					this._Model = value;
+					this.SendPropertyChanged("Model");
+					this.OnModelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductVersion", DbType="NVarChar(32) NOT NULL", CanBeNull=false)]
+		public string ProductVersion
+		{
+			get
+			{
+				return this._ProductVersion;
+			}
+			set
+			{
+				if ((this._ProductVersion != value))
+				{
+					this.OnProductVersionChanging(value);
+					this.SendPropertyChanging();
+					this._ProductVersion = value;
+					this.SendPropertyChanged("ProductVersion");
+					this.OnProductVersionChanged();
+				}
 			}
 		}
 		
@@ -448,18 +491,6 @@ namespace priland_api.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_AspNetUserRoles(AspNetUserRole entity)
-		{
-			this.SendPropertyChanging();
-			entity.AspNetRole = this;
-		}
-		
-		private void detach_AspNetUserRoles(AspNetUserRole entity)
-		{
-			this.SendPropertyChanging();
-			entity.AspNetRole = null;
 		}
 	}
 	
@@ -724,6 +755,120 @@ namespace priland_api.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.AspNetRoles")]
+	public partial class AspNetRole : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Id;
+		
+		private string _Name;
+		
+		private EntitySet<AspNetUserRole> _AspNetUserRoles;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(string value);
+    partial void OnIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    #endregion
+		
+		public AspNetRole()
+		{
+			this._AspNetUserRoles = new EntitySet<AspNetUserRole>(new Action<AspNetUserRole>(this.attach_AspNetUserRoles), new Action<AspNetUserRole>(this.detach_AspNetUserRoles));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="NVarChar(128) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="AspNetRole_AspNetUserRole", Storage="_AspNetUserRoles", ThisKey="Id", OtherKey="RoleId")]
+		public EntitySet<AspNetUserRole> AspNetUserRoles
+		{
+			get
+			{
+				return this._AspNetUserRoles;
+			}
+			set
+			{
+				this._AspNetUserRoles.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_AspNetUserRoles(AspNetUserRole entity)
+		{
+			this.SendPropertyChanging();
+			entity.AspNetRole = this;
+		}
+		
+		private void detach_AspNetUserRoles(AspNetUserRole entity)
+		{
+			this.SendPropertyChanging();
+			entity.AspNetRole = null;
 		}
 	}
 	
@@ -5612,6 +5757,14 @@ namespace priland_api.Data
 		
 		private decimal _Price;
 		
+		private decimal _MiscellaneousFeeRate;
+		
+		private decimal _MiscellaneousFeeAmount;
+		
+		private decimal _VATRate;
+		
+		private decimal _VATAmount;
+		
 		private decimal _TSP;
 		
 		private string _Status;
@@ -5660,6 +5813,14 @@ namespace priland_api.Data
     partial void OnTFAChanged();
     partial void OnPriceChanging(decimal value);
     partial void OnPriceChanged();
+    partial void OnMiscellaneousFeeRateChanging(decimal value);
+    partial void OnMiscellaneousFeeRateChanged();
+    partial void OnMiscellaneousFeeAmountChanging(decimal value);
+    partial void OnMiscellaneousFeeAmountChanged();
+    partial void OnVATRateChanging(decimal value);
+    partial void OnVATRateChanged();
+    partial void OnVATAmountChanging(decimal value);
+    partial void OnVATAmountChanged();
     partial void OnTSPChanging(decimal value);
     partial void OnTSPChanged();
     partial void OnStatusChanging(string value);
@@ -5871,6 +6032,86 @@ namespace priland_api.Data
 					this._Price = value;
 					this.SendPropertyChanged("Price");
 					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MiscellaneousFeeRate", DbType="Decimal(18,5) NOT NULL")]
+		public decimal MiscellaneousFeeRate
+		{
+			get
+			{
+				return this._MiscellaneousFeeRate;
+			}
+			set
+			{
+				if ((this._MiscellaneousFeeRate != value))
+				{
+					this.OnMiscellaneousFeeRateChanging(value);
+					this.SendPropertyChanging();
+					this._MiscellaneousFeeRate = value;
+					this.SendPropertyChanged("MiscellaneousFeeRate");
+					this.OnMiscellaneousFeeRateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MiscellaneousFeeAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal MiscellaneousFeeAmount
+		{
+			get
+			{
+				return this._MiscellaneousFeeAmount;
+			}
+			set
+			{
+				if ((this._MiscellaneousFeeAmount != value))
+				{
+					this.OnMiscellaneousFeeAmountChanging(value);
+					this.SendPropertyChanging();
+					this._MiscellaneousFeeAmount = value;
+					this.SendPropertyChanged("MiscellaneousFeeAmount");
+					this.OnMiscellaneousFeeAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VATRate", DbType="Decimal(18,5) NOT NULL")]
+		public decimal VATRate
+		{
+			get
+			{
+				return this._VATRate;
+			}
+			set
+			{
+				if ((this._VATRate != value))
+				{
+					this.OnVATRateChanging(value);
+					this.SendPropertyChanging();
+					this._VATRate = value;
+					this.SendPropertyChanged("VATRate");
+					this.OnVATRateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VATAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal VATAmount
+		{
+			get
+			{
+				return this._VATAmount;
+			}
+			set
+			{
+				if ((this._VATAmount != value))
+				{
+					this.OnVATAmountChanging(value);
+					this.SendPropertyChanging();
+					this._VATAmount = value;
+					this.SendPropertyChanged("VATAmount");
+					this.OnVATAmountChanged();
 				}
 			}
 		}

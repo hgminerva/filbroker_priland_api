@@ -30,7 +30,66 @@ namespace priland_api.Controllers
                                       ProjectId = d.ProjectId,
                                       Project = d.MstProject.Project,
                                       UnitId = d.UnitId,
-                                      Unit = d.MstUnit.Block + " " + d.MstUnit.Lot,
+                                      Unit = d.MstUnit.UnitCode,
+                                      CustomerId = d.CustomerId,
+                                      Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
+                                      BrokerId = d.BrokerId,
+                                      Broker = d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName + " (" + d.MstBroker.RealtyFirm + ")",
+                                      Agent = d.Agent,
+                                      BrokerCoordinator = d.BrokerCoordinator,
+                                      ChecklistId = d.CheckListId,
+                                      Checklist = d.MstCheckList.CheckList,
+                                      Price = d.Price,
+                                      EquityValue = d.EquityValue,
+                                      EquityPercent = d.EquityPercent,
+                                      Discount = d.Discount,
+                                      Reservation = d.Reservation,
+                                      NetEquity = d.NetEquity,
+                                      NetEquityInterest = d.NetEquityInterest,
+                                      NetEquityNoOfPayments = d.NetEquityNoOfPayments,
+                                      NetEquityAmortization = d.NetEquityAmortization,
+                                      Balance = d.Balance,
+                                      BalanceInterest = d.BalanceInterest,
+                                      BalanceNoOfPayments = d.BalanceNoOfPayments,
+                                      BalanceAmortization = d.BalanceAmortization,
+                                      TotalInvestment = d.TotalInvestment,
+                                      PaymentOptions = d.PaymentOptions,
+                                      Financing = d.Financing,
+                                      Remarks = d.Remarks,
+                                      PreparedBy = d.PreparedBy,
+                                      PreparedByUser = d.MstUser2.Username,
+                                      CheckedBy = d.CheckedBy,
+                                      CheckedByUser = d.MstUser3.Username,
+                                      ApprovedBy = d.ApprovedBy,
+                                      ApprovedByUser = d.MstUser4.Username,
+                                      Status = d.Status,
+                                      IsLocked = d.IsLocked,
+                                      CreatedBy = d.CreatedBy,
+                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                      UpdatedBy = d.UpdatedBy,
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                      PricePayment = d.PricePayment != null ? d.PricePayment : 0,
+                                      PriceBalance = d.PriceBalance != null ? d.PriceBalance : 0
+                                  };
+            return TrnSoldUnitData.ToList();
+        }
+
+        // sold unit list per date as of
+        [HttpGet, Route("ListSoldUnitPerDateAsOf/{dateAsOf}")]
+        public List<TrnSoldUnit> GetTrnSoldUnitPerDateAsOf(string dateAsOf)
+        {
+            var TrnSoldUnitData = from d in db.TrnSoldUnits
+                                  where d.SoldUnitDate <= Convert.ToDateTime(dateAsOf)
+                                  orderby d.SoldUnitDate, d.SoldUnitNumber ascending
+                                  select new TrnSoldUnit
+                                  {
+                                      Id = d.Id,
+                                      SoldUnitNumber = d.SoldUnitNumber,
+                                      SoldUnitDate = d.SoldUnitDate.ToShortDateString(),
+                                      ProjectId = d.ProjectId,
+                                      Project = d.MstProject.Project,
+                                      UnitId = d.UnitId,
+                                      Unit = d.MstUnit.UnitCode,
                                       CustomerId = d.CustomerId,
                                       Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                       BrokerId = d.BrokerId,
