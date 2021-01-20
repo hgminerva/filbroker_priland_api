@@ -14,6 +14,7 @@ namespace priland_api.Models
         public String MiddleName { get; set; }
         public String FullName { get; set; }
         public String LicenseNumber { get; set; }
+        public String LicenseNumberValidUntil { get; set; }
         public String BirthDate { get; set; }
         public String CivilStatus { get; set; }
         public String Gender { get; set; }
@@ -24,6 +25,7 @@ namespace priland_api.Models
         public String EmailAddress { get; set; }
         public String Facebook { get; set; }
         public String TIN { get; set; }
+        public String HLURBRegistrationNumber { get; set; }
         public String RealtyFirm { get; set; }
         public String RealtyFirmAddress { get; set; }
         public String RealtyFirmTelephoneNumber { get; set; }
@@ -32,6 +34,9 @@ namespace priland_api.Models
         public String RealtyFirmEmailAddress { get; set; }
         public String RealtyFirmWebsite { get; set; }
         public String RealtyFirmTIN { get; set; }
+        public String RealtyFirmLicenseNumber { get; set; }
+        public String RealtyFirmLicenseNumberValidUntil { get; set; }
+        public String RealtyFormHLURBRegistrationNumber { get; set; }
         public String Organization { get; set; }
         public String Remarks { get; set; }
         public String Picture { get; set; }
@@ -46,5 +51,6 @@ namespace priland_api.Models
         public String CreatedDateTime { get; set; }
         public Int32 UpdatedBy { get; set; }
         public String UpdatedDateTime { get; set; }
+        public String Type { get; set; }
     }
 }

@@ -1,13 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="filbroker_tytans" Class="FilbrokerDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=filbroker_tytans;User ID=sa;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="DefaultConnection" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.[__MigrationHistory]" Member="__MigrationHistories">
-    <Type Name="__MigrationHistory">
-      <Column Name="MigrationId" Type="System.String" DbType="NVarChar(150) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="ContextKey" Type="System.String" DbType="NVarChar(300) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Model" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="ProductVersion" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.TrnSoldUnitRequirementActivity" Member="TrnSoldUnitRequirementActivities">
     <Type Name="TrnSoldUnitRequirementActivity">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -71,6 +63,7 @@
       <Column Name="FirstName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="MiddleName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="LicenseNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LicenseNumberValidUntil" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="BirthDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="CivilStatus" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Gender" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
@@ -81,6 +74,7 @@
       <Column Name="EmailAddress" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="Facebook" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="TIN" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="HLURBRegistrationNumber" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="RealtyFirm" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="RealtyFirmAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="RealtyFirmTelephoneNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
@@ -89,6 +83,9 @@
       <Column Name="RealtyFirmEmailAddress" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="RealtyFirmWebsite" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="RealtyFirmTIN" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="RealtyFirmLicenseNumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="RealtyFirmLicenseNumberValidUntil" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="RealtyFormHLURBRegistrationNumber" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="Organization" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Remarks" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="Picture" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
@@ -103,10 +100,9 @@
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Type" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="MstBroker_TrnCommissionRequest" Member="TrnCommissionRequests" ThisKey="Id" OtherKey="BrokerId" Type="TrnCommissionRequest" />
       <Association Name="MstBroker_TrnSoldUnit" Member="TrnSoldUnits" ThisKey="Id" OtherKey="BrokerId" Type="TrnSoldUnit" />
-      <Association Name="MstUser_MstBroker" Member="MstUser" ThisKey="CreatedBy" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
-      <Association Name="MstUser_MstBroker1" Member="MstUser1" ThisKey="UpdatedBy" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.MstCheckList" Member="MstCheckLists">
@@ -287,8 +283,6 @@
       <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="AspNetId" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Association Name="MstUser_TrnSoldUnitRequirementActivity" Member="TrnSoldUnitRequirementActivities" ThisKey="Id" OtherKey="UserId" Type="TrnSoldUnitRequirementActivity" />
-      <Association Name="MstUser_MstBroker" Member="MstBrokers" ThisKey="Id" OtherKey="CreatedBy" Type="MstBroker" />
-      <Association Name="MstUser_MstBroker1" Member="MstBrokers1" ThisKey="Id" OtherKey="UpdatedBy" Type="MstBroker" />
       <Association Name="MstUser_MstCheckList" Member="MstCheckLists" ThisKey="Id" OtherKey="CreatedBy" Type="MstCheckList" />
       <Association Name="MstUser_MstCheckList1" Member="MstCheckLists1" ThisKey="Id" OtherKey="UpdatedBy" Type="MstCheckList" />
       <Association Name="MstUser_MstCustomer" Member="MstCustomers" ThisKey="Id" OtherKey="CreatedBy" Type="MstCustomer" />

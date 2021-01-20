@@ -42,6 +42,7 @@ namespace priland_api.Controllers
                                     MiddleName = d.MiddleName,
                                     FullName = d.LastName + ", " + d.FirstName + " " + d.MiddleName,
                                     LicenseNumber = d.LicenseNumber,
+                                    LicenseNumberValidUntil = d.LicenseNumberValidUntil,
                                     BirthDate = d.BirthDate.ToShortDateString(),
                                     CivilStatus = d.CivilStatus,
                                     Gender = d.Gender,
@@ -52,6 +53,7 @@ namespace priland_api.Controllers
                                     EmailAddress = d.EmailAddress,
                                     Facebook = d.Facebook,
                                     TIN = d.TIN,
+                                    HLURBRegistrationNumber = d.HLURBRegistrationNumber,
                                     RealtyFirm = d.RealtyFirm,
                                     RealtyFirmAddress = d.RealtyFirmAddress,
                                     RealtyFirmTelephoneNumber = d.RealtyFirmTelephoneNumber,
@@ -60,6 +62,9 @@ namespace priland_api.Controllers
                                     RealtyFirmEmailAddress = d.RealtyFirmEmailAddress,
                                     RealtyFirmWebsite = d.RealtyFirmWebsite,
                                     RealtyFirmTIN = d.RealtyFirmTIN,
+                                    RealtyFirmLicenseNumber = d.RealtyFirmLicenseNumber,
+                                    RealtyFirmLicenseNumberValidUntil = d.RealtyFirmLicenseNumberValidUntil,
+                                    RealtyFormHLURBRegistrationNumber = d.RealtyFormHLURBRegistrationNumber,
                                     Organization = d.Organization,
                                     Remarks = d.Remarks,
                                     Picture = d.Picture,
@@ -73,7 +78,8 @@ namespace priland_api.Controllers
                                     CreatedBy = d.CreatedBy,
                                     CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                     UpdatedBy = d.UpdatedBy,
-                                    UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                    UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                    Type = d.Type
                                 };
             return MstBrokerData.ToList();
         }
@@ -93,6 +99,7 @@ namespace priland_api.Controllers
                                     MiddleName = d.MiddleName,
                                     FullName = d.LastName + ", " + d.FirstName + " " + d.MiddleName,
                                     LicenseNumber = d.LicenseNumber,
+                                    LicenseNumberValidUntil = d.LicenseNumberValidUntil,
                                     BirthDate = d.BirthDate.ToShortDateString(),
                                     CivilStatus = d.CivilStatus,
                                     Gender = d.Gender,
@@ -103,6 +110,7 @@ namespace priland_api.Controllers
                                     EmailAddress = d.EmailAddress,
                                     Facebook = d.Facebook,
                                     TIN = d.TIN,
+                                    HLURBRegistrationNumber = d.HLURBRegistrationNumber,
                                     RealtyFirm = d.RealtyFirm,
                                     RealtyFirmAddress = d.RealtyFirmAddress,
                                     RealtyFirmTelephoneNumber = d.RealtyFirmTelephoneNumber,
@@ -111,6 +119,9 @@ namespace priland_api.Controllers
                                     RealtyFirmEmailAddress = d.RealtyFirmEmailAddress,
                                     RealtyFirmWebsite = d.RealtyFirmWebsite,
                                     RealtyFirmTIN = d.RealtyFirmTIN,
+                                    RealtyFirmLicenseNumber = d.RealtyFirmLicenseNumber,
+                                    RealtyFirmLicenseNumberValidUntil = d.RealtyFirmLicenseNumberValidUntil,
+                                    RealtyFormHLURBRegistrationNumber = d.RealtyFormHLURBRegistrationNumber,
                                     Organization = d.Organization,
                                     Remarks = d.Remarks,
                                     Picture = d.Picture,
@@ -124,7 +135,8 @@ namespace priland_api.Controllers
                                     CreatedBy = d.CreatedBy,
                                     CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                     UpdatedBy = d.UpdatedBy,
-                                    UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                    UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                    Type = d.Type
                                 };
             return (Models.MstBroker)MstBrokerData.FirstOrDefault();
         }
@@ -157,6 +169,7 @@ namespace priland_api.Controllers
                         FirstName = broker.FirstName,
                         MiddleName = broker.MiddleName,
                         LicenseNumber = broker.LicenseNumber,
+                        LicenseNumberValidUntil = broker.LicenseNumberValidUntil,
                         BirthDate = Convert.ToDateTime(broker.BirthDate),
                         CivilStatus = broker.CivilStatus,
                         Gender = broker.Gender,
@@ -167,6 +180,7 @@ namespace priland_api.Controllers
                         EmailAddress = broker.EmailAddress,
                         Facebook = broker.Facebook,
                         TIN = broker.TIN,
+                        HLURBRegistrationNumber = broker.HLURBRegistrationNumber,
                         RealtyFirm = broker.RealtyFirm,
                         RealtyFirmAddress = broker.RealtyFirmAddress,
                         RealtyFirmTelephoneNumber = broker.RealtyFirmTelephoneNumber,
@@ -175,6 +189,9 @@ namespace priland_api.Controllers
                         RealtyFirmEmailAddress = broker.RealtyFirmEmailAddress,
                         RealtyFirmWebsite = broker.RealtyFirmWebsite,
                         RealtyFirmTIN = broker.RealtyFirmTIN,
+                        RealtyFirmLicenseNumber = broker.RealtyFirmLicenseNumber,
+                        RealtyFirmLicenseNumberValidUntil = broker.RealtyFirmLicenseNumberValidUntil,
+                        RealtyFormHLURBRegistrationNumber = broker.RealtyFormHLURBRegistrationNumber,
                         Organization = broker.Organization,
                         Remarks = broker.Remarks,
                         Picture = broker.Picture,
@@ -189,6 +206,7 @@ namespace priland_api.Controllers
                         CreatedDateTime = DateTime.Now,
                         UpdatedBy = currentUser.FirstOrDefault().Id,
                         UpdatedDateTime = DateTime.Now,
+                        Type = broker.Type
                     };
 
                     db.MstBrokers.InsertOnSubmit(newMstBroker);
@@ -269,6 +287,7 @@ namespace priland_api.Controllers
                             UpdateBrokerData.FirstName = broker.FirstName;
                             UpdateBrokerData.MiddleName = broker.MiddleName;
                             UpdateBrokerData.LicenseNumber = broker.LicenseNumber;
+                            UpdateBrokerData.LicenseNumberValidUntil = broker.LicenseNumberValidUntil;
                             UpdateBrokerData.BirthDate = Convert.ToDateTime(broker.BirthDate);
                             UpdateBrokerData.CivilStatus = broker.CivilStatus;
                             UpdateBrokerData.Gender = broker.Gender;
@@ -279,6 +298,7 @@ namespace priland_api.Controllers
                             UpdateBrokerData.EmailAddress = broker.EmailAddress;
                             UpdateBrokerData.Facebook = broker.Facebook;
                             UpdateBrokerData.TIN = broker.TIN;
+                            UpdateBrokerData.HLURBRegistrationNumber = broker.HLURBRegistrationNumber;
                             UpdateBrokerData.RealtyFirm = broker.RealtyFirm;
                             UpdateBrokerData.RealtyFirmAddress = broker.RealtyFirmAddress;
                             UpdateBrokerData.RealtyFirmTelephoneNumber = broker.RealtyFirmTelephoneNumber;
@@ -287,6 +307,9 @@ namespace priland_api.Controllers
                             UpdateBrokerData.RealtyFirmEmailAddress = broker.RealtyFirmEmailAddress;
                             UpdateBrokerData.RealtyFirmWebsite = broker.RealtyFirmWebsite;
                             UpdateBrokerData.RealtyFirmTIN = broker.RealtyFirmTIN;
+                            UpdateBrokerData.RealtyFirmLicenseNumber = broker.RealtyFirmLicenseNumber;
+                            UpdateBrokerData.RealtyFirmLicenseNumberValidUntil = broker.RealtyFirmLicenseNumberValidUntil;
+                            UpdateBrokerData.RealtyFormHLURBRegistrationNumber = broker.RealtyFormHLURBRegistrationNumber;
                             UpdateBrokerData.Organization = broker.Organization;
                             UpdateBrokerData.Remarks = broker.Remarks;
                             UpdateBrokerData.Picture = broker.Picture;
@@ -298,6 +321,7 @@ namespace priland_api.Controllers
                             UpdateBrokerData.Status = broker.Status;
                             UpdateBrokerData.UpdatedBy = currentUser.FirstOrDefault().Id;
                             UpdateBrokerData.UpdatedDateTime = DateTime.Now;
+                            UpdateBrokerData.Type = broker.Type;
 
                             db.SubmitChanges();
 
@@ -342,43 +366,49 @@ namespace priland_api.Controllers
 
                     if (currentUser.Any())
                     {
-                        var UpdateProjectData = MstBrokerData.FirstOrDefault();
+                        var UpdateBrokerData = MstBrokerData.FirstOrDefault();
 
-                        UpdateProjectData.BrokerCode = broker.BrokerCode;
-                        UpdateProjectData.LastName = broker.LastName;
-                        UpdateProjectData.FirstName = broker.FirstName;
-                        UpdateProjectData.MiddleName = broker.MiddleName;
-                        UpdateProjectData.LicenseNumber = broker.LicenseNumber;
-                        UpdateProjectData.BirthDate = Convert.ToDateTime(broker.BirthDate);
-                        UpdateProjectData.CivilStatus = broker.CivilStatus;
-                        UpdateProjectData.Gender = broker.Gender;
-                        UpdateProjectData.Address = broker.Address;
-                        UpdateProjectData.TelephoneNumber = broker.TelephoneNumber;
-                        UpdateProjectData.MobileNumber = broker.MobileNumber;
-                        UpdateProjectData.Religion = broker.Religion;
-                        UpdateProjectData.EmailAddress = broker.EmailAddress;
-                        UpdateProjectData.Facebook = broker.Facebook;
-                        UpdateProjectData.TIN = broker.TIN;
-                        UpdateProjectData.RealtyFirm = broker.RealtyFirm;
-                        UpdateProjectData.RealtyFirmAddress = broker.RealtyFirmAddress;
-                        UpdateProjectData.RealtyFirmTelephoneNumber = broker.RealtyFirmTelephoneNumber;
-                        UpdateProjectData.RealtyFirmMobileNumber = broker.RealtyFirmMobileNumber;
-                        UpdateProjectData.RealtyFirmFaxNumber = broker.RealtyFirmFaxNumber;
-                        UpdateProjectData.RealtyFirmEmailAddress = broker.RealtyFirmEmailAddress;
-                        UpdateProjectData.RealtyFirmWebsite = broker.RealtyFirmWebsite;
-                        UpdateProjectData.RealtyFirmTIN = broker.RealtyFirmTIN;
-                        UpdateProjectData.Organization = broker.Organization;
-                        UpdateProjectData.Remarks = broker.Remarks;
-                        UpdateProjectData.Picture = broker.Picture;
-                        UpdateProjectData.Attachment1 = broker.Attachment1;
-                        UpdateProjectData.Attachment2 = broker.Attachment2;
-                        UpdateProjectData.Attachment3 = broker.Attachment3;
-                        UpdateProjectData.Attachment4 = broker.Attachment4;
-                        UpdateProjectData.Attachment5 = broker.Attachment5;
-                        UpdateProjectData.Status = broker.Status;
-                        UpdateProjectData.IsLocked = true;
-                        UpdateProjectData.UpdatedBy = currentUser.FirstOrDefault().Id;
-                        UpdateProjectData.UpdatedDateTime = DateTime.Now;
+                        UpdateBrokerData.BrokerCode = broker.BrokerCode;
+                        UpdateBrokerData.LastName = broker.LastName;
+                        UpdateBrokerData.FirstName = broker.FirstName;
+                        UpdateBrokerData.MiddleName = broker.MiddleName;
+                        UpdateBrokerData.LicenseNumber = broker.LicenseNumber;
+                        UpdateBrokerData.LicenseNumberValidUntil = broker.LicenseNumberValidUntil;
+                        UpdateBrokerData.BirthDate = Convert.ToDateTime(broker.BirthDate);
+                        UpdateBrokerData.CivilStatus = broker.CivilStatus;
+                        UpdateBrokerData.Gender = broker.Gender;
+                        UpdateBrokerData.Address = broker.Address;
+                        UpdateBrokerData.TelephoneNumber = broker.TelephoneNumber;
+                        UpdateBrokerData.MobileNumber = broker.MobileNumber;
+                        UpdateBrokerData.Religion = broker.Religion;
+                        UpdateBrokerData.EmailAddress = broker.EmailAddress;
+                        UpdateBrokerData.Facebook = broker.Facebook;
+                        UpdateBrokerData.TIN = broker.TIN;
+                        UpdateBrokerData.HLURBRegistrationNumber = broker.HLURBRegistrationNumber;
+                        UpdateBrokerData.RealtyFirm = broker.RealtyFirm;
+                        UpdateBrokerData.RealtyFirmAddress = broker.RealtyFirmAddress;
+                        UpdateBrokerData.RealtyFirmTelephoneNumber = broker.RealtyFirmTelephoneNumber;
+                        UpdateBrokerData.RealtyFirmMobileNumber = broker.RealtyFirmMobileNumber;
+                        UpdateBrokerData.RealtyFirmFaxNumber = broker.RealtyFirmFaxNumber;
+                        UpdateBrokerData.RealtyFirmEmailAddress = broker.RealtyFirmEmailAddress;
+                        UpdateBrokerData.RealtyFirmWebsite = broker.RealtyFirmWebsite;
+                        UpdateBrokerData.RealtyFirmTIN = broker.RealtyFirmTIN;
+                        UpdateBrokerData.RealtyFirmLicenseNumber = broker.RealtyFirmLicenseNumber;
+                        UpdateBrokerData.RealtyFirmLicenseNumberValidUntil = broker.RealtyFirmLicenseNumberValidUntil;
+                        UpdateBrokerData.RealtyFormHLURBRegistrationNumber = broker.RealtyFormHLURBRegistrationNumber;
+                        UpdateBrokerData.Organization = broker.Organization;
+                        UpdateBrokerData.Remarks = broker.Remarks;
+                        UpdateBrokerData.Picture = broker.Picture;
+                        UpdateBrokerData.Attachment1 = broker.Attachment1;
+                        UpdateBrokerData.Attachment2 = broker.Attachment2;
+                        UpdateBrokerData.Attachment3 = broker.Attachment3;
+                        UpdateBrokerData.Attachment4 = broker.Attachment4;
+                        UpdateBrokerData.Attachment5 = broker.Attachment5;
+                        UpdateBrokerData.Status = broker.Status;
+                        UpdateBrokerData.IsLocked = true;
+                        UpdateBrokerData.UpdatedBy = currentUser.FirstOrDefault().Id;
+                        UpdateBrokerData.UpdatedDateTime = DateTime.Now;
+                        UpdateBrokerData.Type = broker.Type;
 
                         db.SubmitChanges();
 

@@ -30,9 +30,6 @@ namespace priland_api.Data
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void Insert__MigrationHistory(__MigrationHistory instance);
-    partial void Update__MigrationHistory(__MigrationHistory instance);
-    partial void Delete__MigrationHistory(__MigrationHistory instance);
     partial void InsertTrnSoldUnitRequirementActivity(TrnSoldUnitRequirementActivity instance);
     partial void UpdateTrnSoldUnitRequirementActivity(TrnSoldUnitRequirementActivity instance);
     partial void DeleteTrnSoldUnitRequirementActivity(TrnSoldUnitRequirementActivity instance);
@@ -141,14 +138,6 @@ namespace priland_api.Data
 				base(connection, mappingSource)
 		{
 			OnCreated();
-		}
-		
-		public System.Data.Linq.Table<@__MigrationHistory> @__MigrationHistories
-		{
-			get
-			{
-				return this.GetTable<@__MigrationHistory>();
-			}
 		}
 		
 		public System.Data.Linq.Table<TrnSoldUnitRequirementActivity> TrnSoldUnitRequirementActivities
@@ -356,140 +345,6 @@ namespace priland_api.Data
 			get
 			{
 				return this.GetTable<TrnSoldUnitRequirement>();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[__MigrationHistory]")]
-	public partial class @__MigrationHistory : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _MigrationId;
-		
-		private string _ContextKey;
-		
-		private System.Data.Linq.Binary _Model;
-		
-		private string _ProductVersion;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnMigrationIdChanging(string value);
-    partial void OnMigrationIdChanged();
-    partial void OnContextKeyChanging(string value);
-    partial void OnContextKeyChanged();
-    partial void OnModelChanging(System.Data.Linq.Binary value);
-    partial void OnModelChanged();
-    partial void OnProductVersionChanging(string value);
-    partial void OnProductVersionChanged();
-    #endregion
-		
-		public @__MigrationHistory()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MigrationId", DbType="NVarChar(150) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string MigrationId
-		{
-			get
-			{
-				return this._MigrationId;
-			}
-			set
-			{
-				if ((this._MigrationId != value))
-				{
-					this.OnMigrationIdChanging(value);
-					this.SendPropertyChanging();
-					this._MigrationId = value;
-					this.SendPropertyChanged("MigrationId");
-					this.OnMigrationIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContextKey", DbType="NVarChar(300) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string ContextKey
-		{
-			get
-			{
-				return this._ContextKey;
-			}
-			set
-			{
-				if ((this._ContextKey != value))
-				{
-					this.OnContextKeyChanging(value);
-					this.SendPropertyChanging();
-					this._ContextKey = value;
-					this.SendPropertyChanged("ContextKey");
-					this.OnContextKeyChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Model", DbType="VarBinary(MAX) NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
-		public System.Data.Linq.Binary Model
-		{
-			get
-			{
-				return this._Model;
-			}
-			set
-			{
-				if ((this._Model != value))
-				{
-					this.OnModelChanging(value);
-					this.SendPropertyChanging();
-					this._Model = value;
-					this.SendPropertyChanged("Model");
-					this.OnModelChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductVersion", DbType="NVarChar(32) NOT NULL", CanBeNull=false)]
-		public string ProductVersion
-		{
-			get
-			{
-				return this._ProductVersion;
-			}
-			set
-			{
-				if ((this._ProductVersion != value))
-				{
-					this.OnProductVersionChanging(value);
-					this.SendPropertyChanging();
-					this._ProductVersion = value;
-					this.SendPropertyChanged("ProductVersion");
-					this.OnProductVersionChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
@@ -1602,6 +1457,8 @@ namespace priland_api.Data
 		
 		private string _LicenseNumber;
 		
+		private string _LicenseNumberValidUntil;
+		
 		private System.DateTime _BirthDate;
 		
 		private string _CivilStatus;
@@ -1622,6 +1479,8 @@ namespace priland_api.Data
 		
 		private string _TIN;
 		
+		private string _HLURBRegistrationNumber;
+		
 		private string _RealtyFirm;
 		
 		private string _RealtyFirmAddress;
@@ -1637,6 +1496,12 @@ namespace priland_api.Data
 		private string _RealtyFirmWebsite;
 		
 		private string _RealtyFirmTIN;
+		
+		private string _RealtyFirmLicenseNumber;
+		
+		private string _RealtyFirmLicenseNumberValidUntil;
+		
+		private string _RealtyFormHLURBRegistrationNumber;
 		
 		private string _Organization;
 		
@@ -1666,13 +1531,11 @@ namespace priland_api.Data
 		
 		private System.DateTime _UpdatedDateTime;
 		
+		private string _Type;
+		
 		private EntitySet<TrnCommissionRequest> _TrnCommissionRequests;
 		
 		private EntitySet<TrnSoldUnit> _TrnSoldUnits;
-		
-		private EntityRef<MstUser> _MstUser;
-		
-		private EntityRef<MstUser> _MstUser1;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1690,6 +1553,8 @@ namespace priland_api.Data
     partial void OnMiddleNameChanged();
     partial void OnLicenseNumberChanging(string value);
     partial void OnLicenseNumberChanged();
+    partial void OnLicenseNumberValidUntilChanging(string value);
+    partial void OnLicenseNumberValidUntilChanged();
     partial void OnBirthDateChanging(System.DateTime value);
     partial void OnBirthDateChanged();
     partial void OnCivilStatusChanging(string value);
@@ -1710,6 +1575,8 @@ namespace priland_api.Data
     partial void OnFacebookChanged();
     partial void OnTINChanging(string value);
     partial void OnTINChanged();
+    partial void OnHLURBRegistrationNumberChanging(string value);
+    partial void OnHLURBRegistrationNumberChanged();
     partial void OnRealtyFirmChanging(string value);
     partial void OnRealtyFirmChanged();
     partial void OnRealtyFirmAddressChanging(string value);
@@ -1726,6 +1593,12 @@ namespace priland_api.Data
     partial void OnRealtyFirmWebsiteChanged();
     partial void OnRealtyFirmTINChanging(string value);
     partial void OnRealtyFirmTINChanged();
+    partial void OnRealtyFirmLicenseNumberChanging(string value);
+    partial void OnRealtyFirmLicenseNumberChanged();
+    partial void OnRealtyFirmLicenseNumberValidUntilChanging(string value);
+    partial void OnRealtyFirmLicenseNumberValidUntilChanged();
+    partial void OnRealtyFormHLURBRegistrationNumberChanging(string value);
+    partial void OnRealtyFormHLURBRegistrationNumberChanged();
     partial void OnOrganizationChanging(string value);
     partial void OnOrganizationChanged();
     partial void OnRemarksChanging(string value);
@@ -1754,14 +1627,14 @@ namespace priland_api.Data
     partial void OnUpdatedByChanged();
     partial void OnUpdatedDateTimeChanging(System.DateTime value);
     partial void OnUpdatedDateTimeChanged();
+    partial void OnTypeChanging(string value);
+    partial void OnTypeChanged();
     #endregion
 		
 		public MstBroker()
 		{
 			this._TrnCommissionRequests = new EntitySet<TrnCommissionRequest>(new Action<TrnCommissionRequest>(this.attach_TrnCommissionRequests), new Action<TrnCommissionRequest>(this.detach_TrnCommissionRequests));
 			this._TrnSoldUnits = new EntitySet<TrnSoldUnit>(new Action<TrnSoldUnit>(this.attach_TrnSoldUnits), new Action<TrnSoldUnit>(this.detach_TrnSoldUnits));
-			this._MstUser = default(EntityRef<MstUser>);
-			this._MstUser1 = default(EntityRef<MstUser>);
 			OnCreated();
 		}
 		
@@ -1881,6 +1754,26 @@ namespace priland_api.Data
 					this._LicenseNumber = value;
 					this.SendPropertyChanged("LicenseNumber");
 					this.OnLicenseNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LicenseNumberValidUntil", DbType="NVarChar(255)")]
+		public string LicenseNumberValidUntil
+		{
+			get
+			{
+				return this._LicenseNumberValidUntil;
+			}
+			set
+			{
+				if ((this._LicenseNumberValidUntil != value))
+				{
+					this.OnLicenseNumberValidUntilChanging(value);
+					this.SendPropertyChanging();
+					this._LicenseNumberValidUntil = value;
+					this.SendPropertyChanged("LicenseNumberValidUntil");
+					this.OnLicenseNumberValidUntilChanged();
 				}
 			}
 		}
@@ -2085,6 +1978,26 @@ namespace priland_api.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HLURBRegistrationNumber", DbType="NVarChar(255)")]
+		public string HLURBRegistrationNumber
+		{
+			get
+			{
+				return this._HLURBRegistrationNumber;
+			}
+			set
+			{
+				if ((this._HLURBRegistrationNumber != value))
+				{
+					this.OnHLURBRegistrationNumberChanging(value);
+					this.SendPropertyChanging();
+					this._HLURBRegistrationNumber = value;
+					this.SendPropertyChanged("HLURBRegistrationNumber");
+					this.OnHLURBRegistrationNumberChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RealtyFirm", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
 		public string RealtyFirm
 		{
@@ -2241,6 +2154,66 @@ namespace priland_api.Data
 					this._RealtyFirmTIN = value;
 					this.SendPropertyChanged("RealtyFirmTIN");
 					this.OnRealtyFirmTINChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RealtyFirmLicenseNumber", DbType="NVarChar(50)")]
+		public string RealtyFirmLicenseNumber
+		{
+			get
+			{
+				return this._RealtyFirmLicenseNumber;
+			}
+			set
+			{
+				if ((this._RealtyFirmLicenseNumber != value))
+				{
+					this.OnRealtyFirmLicenseNumberChanging(value);
+					this.SendPropertyChanging();
+					this._RealtyFirmLicenseNumber = value;
+					this.SendPropertyChanged("RealtyFirmLicenseNumber");
+					this.OnRealtyFirmLicenseNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RealtyFirmLicenseNumberValidUntil", DbType="NVarChar(255)")]
+		public string RealtyFirmLicenseNumberValidUntil
+		{
+			get
+			{
+				return this._RealtyFirmLicenseNumberValidUntil;
+			}
+			set
+			{
+				if ((this._RealtyFirmLicenseNumberValidUntil != value))
+				{
+					this.OnRealtyFirmLicenseNumberValidUntilChanging(value);
+					this.SendPropertyChanging();
+					this._RealtyFirmLicenseNumberValidUntil = value;
+					this.SendPropertyChanged("RealtyFirmLicenseNumberValidUntil");
+					this.OnRealtyFirmLicenseNumberValidUntilChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RealtyFormHLURBRegistrationNumber", DbType="NVarChar(255)")]
+		public string RealtyFormHLURBRegistrationNumber
+		{
+			get
+			{
+				return this._RealtyFormHLURBRegistrationNumber;
+			}
+			set
+			{
+				if ((this._RealtyFormHLURBRegistrationNumber != value))
+				{
+					this.OnRealtyFormHLURBRegistrationNumberChanging(value);
+					this.SendPropertyChanging();
+					this._RealtyFormHLURBRegistrationNumber = value;
+					this.SendPropertyChanged("RealtyFormHLURBRegistrationNumber");
+					this.OnRealtyFormHLURBRegistrationNumberChanged();
 				}
 			}
 		}
@@ -2456,10 +2429,6 @@ namespace priland_api.Data
 			{
 				if ((this._CreatedBy != value))
 				{
-					if (this._MstUser.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnCreatedByChanging(value);
 					this.SendPropertyChanging();
 					this._CreatedBy = value;
@@ -2500,10 +2469,6 @@ namespace priland_api.Data
 			{
 				if ((this._UpdatedBy != value))
 				{
-					if (this._MstUser1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnUpdatedByChanging(value);
 					this.SendPropertyChanging();
 					this._UpdatedBy = value;
@@ -2533,6 +2498,26 @@ namespace priland_api.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="NVarChar(50)")]
+		public string Type
+		{
+			get
+			{
+				return this._Type;
+			}
+			set
+			{
+				if ((this._Type != value))
+				{
+					this.OnTypeChanging(value);
+					this.SendPropertyChanging();
+					this._Type = value;
+					this.SendPropertyChanged("Type");
+					this.OnTypeChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstBroker_TrnCommissionRequest", Storage="_TrnCommissionRequests", ThisKey="Id", OtherKey="BrokerId")]
 		public EntitySet<TrnCommissionRequest> TrnCommissionRequests
 		{
@@ -2556,74 +2541,6 @@ namespace priland_api.Data
 			set
 			{
 				this._TrnSoldUnits.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstUser_MstBroker", Storage="_MstUser", ThisKey="CreatedBy", OtherKey="Id", IsForeignKey=true)]
-		public MstUser MstUser
-		{
-			get
-			{
-				return this._MstUser.Entity;
-			}
-			set
-			{
-				MstUser previousValue = this._MstUser.Entity;
-				if (((previousValue != value) 
-							|| (this._MstUser.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._MstUser.Entity = null;
-						previousValue.MstBrokers.Remove(this);
-					}
-					this._MstUser.Entity = value;
-					if ((value != null))
-					{
-						value.MstBrokers.Add(this);
-						this._CreatedBy = value.Id;
-					}
-					else
-					{
-						this._CreatedBy = default(int);
-					}
-					this.SendPropertyChanged("MstUser");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstUser_MstBroker1", Storage="_MstUser1", ThisKey="UpdatedBy", OtherKey="Id", IsForeignKey=true)]
-		public MstUser MstUser1
-		{
-			get
-			{
-				return this._MstUser1.Entity;
-			}
-			set
-			{
-				MstUser previousValue = this._MstUser1.Entity;
-				if (((previousValue != value) 
-							|| (this._MstUser1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._MstUser1.Entity = null;
-						previousValue.MstBrokers1.Remove(this);
-					}
-					this._MstUser1.Entity = value;
-					if ((value != null))
-					{
-						value.MstBrokers1.Add(this);
-						this._UpdatedBy = value.Id;
-					}
-					else
-					{
-						this._UpdatedBy = default(int);
-					}
-					this.SendPropertyChanged("MstUser1");
-				}
 			}
 		}
 		
@@ -6666,10 +6583,6 @@ namespace priland_api.Data
 		
 		private EntitySet<TrnSoldUnitRequirementActivity> _TrnSoldUnitRequirementActivities;
 		
-		private EntitySet<MstBroker> _MstBrokers;
-		
-		private EntitySet<MstBroker> _MstBrokers1;
-		
 		private EntitySet<MstCheckList> _MstCheckLists;
 		
 		private EntitySet<MstCheckList> _MstCheckLists1;
@@ -6743,8 +6656,6 @@ namespace priland_api.Data
 		public MstUser()
 		{
 			this._TrnSoldUnitRequirementActivities = new EntitySet<TrnSoldUnitRequirementActivity>(new Action<TrnSoldUnitRequirementActivity>(this.attach_TrnSoldUnitRequirementActivities), new Action<TrnSoldUnitRequirementActivity>(this.detach_TrnSoldUnitRequirementActivities));
-			this._MstBrokers = new EntitySet<MstBroker>(new Action<MstBroker>(this.attach_MstBrokers), new Action<MstBroker>(this.detach_MstBrokers));
-			this._MstBrokers1 = new EntitySet<MstBroker>(new Action<MstBroker>(this.attach_MstBrokers1), new Action<MstBroker>(this.detach_MstBrokers1));
 			this._MstCheckLists = new EntitySet<MstCheckList>(new Action<MstCheckList>(this.attach_MstCheckLists), new Action<MstCheckList>(this.detach_MstCheckLists));
 			this._MstCheckLists1 = new EntitySet<MstCheckList>(new Action<MstCheckList>(this.attach_MstCheckLists1), new Action<MstCheckList>(this.detach_MstCheckLists1));
 			this._MstCustomers = new EntitySet<MstCustomer>(new Action<MstCustomer>(this.attach_MstCustomers), new Action<MstCustomer>(this.detach_MstCustomers));
@@ -6904,32 +6815,6 @@ namespace priland_api.Data
 			set
 			{
 				this._TrnSoldUnitRequirementActivities.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstUser_MstBroker", Storage="_MstBrokers", ThisKey="Id", OtherKey="CreatedBy")]
-		public EntitySet<MstBroker> MstBrokers
-		{
-			get
-			{
-				return this._MstBrokers;
-			}
-			set
-			{
-				this._MstBrokers.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MstUser_MstBroker1", Storage="_MstBrokers1", ThisKey="Id", OtherKey="UpdatedBy")]
-		public EntitySet<MstBroker> MstBrokers1
-		{
-			get
-			{
-				return this._MstBrokers1;
-			}
-			set
-			{
-				this._MstBrokers1.Assign(value);
 			}
 		}
 		
@@ -7301,30 +7186,6 @@ namespace priland_api.Data
 		{
 			this.SendPropertyChanging();
 			entity.MstUser = null;
-		}
-		
-		private void attach_MstBrokers(MstBroker entity)
-		{
-			this.SendPropertyChanging();
-			entity.MstUser = this;
-		}
-		
-		private void detach_MstBrokers(MstBroker entity)
-		{
-			this.SendPropertyChanging();
-			entity.MstUser = null;
-		}
-		
-		private void attach_MstBrokers1(MstBroker entity)
-		{
-			this.SendPropertyChanging();
-			entity.MstUser1 = this;
-		}
-		
-		private void detach_MstBrokers1(MstBroker entity)
-		{
-			this.SendPropertyChanging();
-			entity.MstUser1 = null;
 		}
 		
 		private void attach_MstCheckLists(MstCheckList entity)
