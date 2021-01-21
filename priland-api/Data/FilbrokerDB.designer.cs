@@ -30,12 +30,12 @@ namespace priland_api.Data
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertTrnSoldUnitRequirementActivity(TrnSoldUnitRequirementActivity instance);
-    partial void UpdateTrnSoldUnitRequirementActivity(TrnSoldUnitRequirementActivity instance);
-    partial void DeleteTrnSoldUnitRequirementActivity(TrnSoldUnitRequirementActivity instance);
     partial void InsertAspNetRole(AspNetRole instance);
     partial void UpdateAspNetRole(AspNetRole instance);
     partial void DeleteAspNetRole(AspNetRole instance);
+    partial void InsertTrnSoldUnitRequirementActivity(TrnSoldUnitRequirementActivity instance);
+    partial void UpdateTrnSoldUnitRequirementActivity(TrnSoldUnitRequirementActivity instance);
+    partial void DeleteTrnSoldUnitRequirementActivity(TrnSoldUnitRequirementActivity instance);
     partial void InsertAspNetUserClaim(AspNetUserClaim instance);
     partial void UpdateAspNetUserClaim(AspNetUserClaim instance);
     partial void DeleteAspNetUserClaim(AspNetUserClaim instance);
@@ -140,19 +140,19 @@ namespace priland_api.Data
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<TrnSoldUnitRequirementActivity> TrnSoldUnitRequirementActivities
-		{
-			get
-			{
-				return this.GetTable<TrnSoldUnitRequirementActivity>();
-			}
-		}
-		
 		public System.Data.Linq.Table<AspNetRole> AspNetRoles
 		{
 			get
 			{
 				return this.GetTable<AspNetRole>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TrnSoldUnitRequirementActivity> TrnSoldUnitRequirementActivities
+		{
+			get
+			{
+				return this.GetTable<TrnSoldUnitRequirementActivity>();
 			}
 		}
 		
@@ -346,6 +346,120 @@ namespace priland_api.Data
 			{
 				return this.GetTable<TrnSoldUnitRequirement>();
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.AspNetRoles")]
+	public partial class AspNetRole : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Id;
+		
+		private string _Name;
+		
+		private EntitySet<AspNetUserRole> _AspNetUserRoles;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(string value);
+    partial void OnIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    #endregion
+		
+		public AspNetRole()
+		{
+			this._AspNetUserRoles = new EntitySet<AspNetUserRole>(new Action<AspNetUserRole>(this.attach_AspNetUserRoles), new Action<AspNetUserRole>(this.detach_AspNetUserRoles));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="NVarChar(128) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="AspNetRole_AspNetUserRole", Storage="_AspNetUserRoles", ThisKey="Id", OtherKey="RoleId")]
+		public EntitySet<AspNetUserRole> AspNetUserRoles
+		{
+			get
+			{
+				return this._AspNetUserRoles;
+			}
+			set
+			{
+				this._AspNetUserRoles.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_AspNetUserRoles(AspNetUserRole entity)
+		{
+			this.SendPropertyChanging();
+			entity.AspNetRole = this;
+		}
+		
+		private void detach_AspNetUserRoles(AspNetUserRole entity)
+		{
+			this.SendPropertyChanging();
+			entity.AspNetRole = null;
 		}
 	}
 	
@@ -558,7 +672,7 @@ namespace priland_api.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrnSoldUnitRequirement_TrnSoldUnitRequirementActivity", Storage="_TrnSoldUnitRequirement", ThisKey="SoldUnitRequirementId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrnSoldUnitRequirement_TrnSoldUnitRequirementActivity", Storage="_TrnSoldUnitRequirement", ThisKey="SoldUnitRequirementId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public TrnSoldUnitRequirement TrnSoldUnitRequirement
 		{
 			get
@@ -610,120 +724,6 @@ namespace priland_api.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.AspNetRoles")]
-	public partial class AspNetRole : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _Id;
-		
-		private string _Name;
-		
-		private EntitySet<AspNetUserRole> _AspNetUserRoles;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(string value);
-    partial void OnIdChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    #endregion
-		
-		public AspNetRole()
-		{
-			this._AspNetUserRoles = new EntitySet<AspNetUserRole>(new Action<AspNetUserRole>(this.attach_AspNetUserRoles), new Action<AspNetUserRole>(this.detach_AspNetUserRoles));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="NVarChar(128) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="AspNetRole_AspNetUserRole", Storage="_AspNetUserRoles", ThisKey="Id", OtherKey="RoleId")]
-		public EntitySet<AspNetUserRole> AspNetUserRoles
-		{
-			get
-			{
-				return this._AspNetUserRoles;
-			}
-			set
-			{
-				this._AspNetUserRoles.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_AspNetUserRoles(AspNetUserRole entity)
-		{
-			this.SendPropertyChanging();
-			entity.AspNetRole = this;
-		}
-		
-		private void detach_AspNetUserRoles(AspNetUserRole entity)
-		{
-			this.SendPropertyChanging();
-			entity.AspNetRole = null;
 		}
 	}
 	
@@ -1533,6 +1533,10 @@ namespace priland_api.Data
 		
 		private string _Type;
 		
+		private string _AssociatedBroker;
+		
+		private string _AssociatedFirm;
+		
 		private EntitySet<TrnCommissionRequest> _TrnCommissionRequests;
 		
 		private EntitySet<TrnSoldUnit> _TrnSoldUnits;
@@ -1629,6 +1633,10 @@ namespace priland_api.Data
     partial void OnUpdatedDateTimeChanged();
     partial void OnTypeChanging(string value);
     partial void OnTypeChanged();
+    partial void OnAssociatedBrokerChanging(string value);
+    partial void OnAssociatedBrokerChanged();
+    partial void OnAssociatedFirmChanging(string value);
+    partial void OnAssociatedFirmChanged();
     #endregion
 		
 		public MstBroker()
@@ -2514,6 +2522,46 @@ namespace priland_api.Data
 					this._Type = value;
 					this.SendPropertyChanged("Type");
 					this.OnTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AssociatedBroker", DbType="NVarChar(255)")]
+		public string AssociatedBroker
+		{
+			get
+			{
+				return this._AssociatedBroker;
+			}
+			set
+			{
+				if ((this._AssociatedBroker != value))
+				{
+					this.OnAssociatedBrokerChanging(value);
+					this.SendPropertyChanging();
+					this._AssociatedBroker = value;
+					this.SendPropertyChanged("AssociatedBroker");
+					this.OnAssociatedBrokerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AssociatedFirm", DbType="NVarChar(255)")]
+		public string AssociatedFirm
+		{
+			get
+			{
+				return this._AssociatedFirm;
+			}
+			set
+			{
+				if ((this._AssociatedFirm != value))
+				{
+					this.OnAssociatedFirmChanging(value);
+					this.SendPropertyChanging();
+					this._AssociatedFirm = value;
+					this.SendPropertyChanged("AssociatedFirm");
+					this.OnAssociatedFirmChanged();
 				}
 			}
 		}
@@ -3459,6 +3507,16 @@ namespace priland_api.Data
 		
 		private string _Picture;
 		
+		private string _Attachment1;
+		
+		private string _Attachment2;
+		
+		private string _Attachment3;
+		
+		private string _Attachment4;
+		
+		private string _Attachment5;
+		
 		private bool _IsLocked;
 		
 		private int _CreatedBy;
@@ -3567,6 +3625,16 @@ namespace priland_api.Data
     partial void OnStatusChanged();
     partial void OnPictureChanging(string value);
     partial void OnPictureChanged();
+    partial void OnAttachment1Changing(string value);
+    partial void OnAttachment1Changed();
+    partial void OnAttachment2Changing(string value);
+    partial void OnAttachment2Changed();
+    partial void OnAttachment3Changing(string value);
+    partial void OnAttachment3Changed();
+    partial void OnAttachment4Changing(string value);
+    partial void OnAttachment4Changed();
+    partial void OnAttachment5Changing(string value);
+    partial void OnAttachment5Changed();
     partial void OnIsLockedChanging(bool value);
     partial void OnIsLockedChanged();
     partial void OnCreatedByChanging(int value);
@@ -4425,6 +4493,106 @@ namespace priland_api.Data
 					this._Picture = value;
 					this.SendPropertyChanged("Picture");
 					this.OnPictureChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment1", DbType="NVarChar(255)")]
+		public string Attachment1
+		{
+			get
+			{
+				return this._Attachment1;
+			}
+			set
+			{
+				if ((this._Attachment1 != value))
+				{
+					this.OnAttachment1Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment1 = value;
+					this.SendPropertyChanged("Attachment1");
+					this.OnAttachment1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment2", DbType="NVarChar(255)")]
+		public string Attachment2
+		{
+			get
+			{
+				return this._Attachment2;
+			}
+			set
+			{
+				if ((this._Attachment2 != value))
+				{
+					this.OnAttachment2Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment2 = value;
+					this.SendPropertyChanged("Attachment2");
+					this.OnAttachment2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment3", DbType="NVarChar(255)")]
+		public string Attachment3
+		{
+			get
+			{
+				return this._Attachment3;
+			}
+			set
+			{
+				if ((this._Attachment3 != value))
+				{
+					this.OnAttachment3Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment3 = value;
+					this.SendPropertyChanged("Attachment3");
+					this.OnAttachment3Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment4", DbType="NVarChar(255)")]
+		public string Attachment4
+		{
+			get
+			{
+				return this._Attachment4;
+			}
+			set
+			{
+				if ((this._Attachment4 != value))
+				{
+					this.OnAttachment4Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment4 = value;
+					this.SendPropertyChanged("Attachment4");
+					this.OnAttachment4Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment5", DbType="NVarChar(255)")]
+		public string Attachment5
+		{
+			get
+			{
+				return this._Attachment5;
+			}
+			set
+			{
+				if ((this._Attachment5 != value))
+				{
+					this.OnAttachment5Changing(value);
+					this.SendPropertyChanging();
+					this._Attachment5 = value;
+					this.SendPropertyChanged("Attachment5");
+					this.OnAttachment5Changed();
 				}
 			}
 		}

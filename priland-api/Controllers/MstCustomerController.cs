@@ -43,7 +43,7 @@ namespace priland_api.Controllers
         // List
         [HttpGet, Route("List")]
         public List<MstCustomer> GetMstCustomers()
-        { 
+        {
             var MstCustomerData = from d in db.MstCustomers
                                   select new Models.MstCustomer
                                   {
@@ -90,6 +90,11 @@ namespace priland_api.Controllers
                                       Remarks = d.Remarks,
                                       Status = d.Status,
                                       Picture = d.Picture,
+                                      Attachment1 = d.Attachment1,
+                                      Attachment2 = d.Attachment2,
+                                      Attachment3 = d.Attachment3,
+                                      Attachment4 = d.Attachment4,
+                                      Attachment5 = d.Attachment5,
                                       IsLocked = d.IsLocked,
                                       CreatedBy = d.CreatedBy,
                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -150,6 +155,11 @@ namespace priland_api.Controllers
                                       Remarks = d.Remarks,
                                       Status = d.Status,
                                       Picture = d.Picture,
+                                      Attachment1 = d.Attachment1,
+                                      Attachment2 = d.Attachment2,
+                                      Attachment3 = d.Attachment3,
+                                      Attachment4 = d.Attachment4,
+                                      Attachment5 = d.Attachment5,
                                       IsLocked = d.IsLocked,
                                       CreatedBy = d.CreatedBy,
                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -223,6 +233,11 @@ namespace priland_api.Controllers
                         Remarks = customer.Remarks,
                         Status = customer.Status,
                         Picture = customer.Picture,
+                        Attachment1 = customer.Attachment1,
+                        Attachment2 = customer.Attachment2,
+                        Attachment3 = customer.Attachment3,
+                        Attachment4 = customer.Attachment4,
+                        Attachment5 = customer.Attachment5,
                         IsLocked = customer.IsLocked,
                         CreatedBy = currentUser.FirstOrDefault().Id,
                         CreatedDateTime = DateTime.Now,
@@ -253,8 +268,9 @@ namespace priland_api.Controllers
         {
             try
             {
-                var MstCustomerData = from d in db.MstCustomers 
-                                      where d.Id == Convert.ToInt32(id) select d;
+                var MstCustomerData = from d in db.MstCustomers
+                                      where d.Id == Convert.ToInt32(id)
+                                      select d;
 
                 if (MstCustomerData.Any())
                 {
@@ -289,8 +305,9 @@ namespace priland_api.Controllers
         {
             try
             {
-                var MstCustomerData = from d in db.MstCustomers 
-                                      where d.Id == Convert.ToInt32(customer.Id) select d;
+                var MstCustomerData = from d in db.MstCustomers
+                                      where d.Id == Convert.ToInt32(customer.Id)
+                                      select d;
 
                 if (MstCustomerData.Any())
                 {
@@ -335,6 +352,11 @@ namespace priland_api.Controllers
                             UpdateMstCustomerData.EmployerTelephoneNumber = customer.EmployerTelephoneNumber;
                             UpdateMstCustomerData.EmployerMobileNumber = customer.EmployerMobileNumber;
                             UpdateMstCustomerData.Picture = customer.Picture;
+                            UpdateMstCustomerData.Attachment1 = customer.Attachment1;
+                            UpdateMstCustomerData.Attachment2 = customer.Attachment2;
+                            UpdateMstCustomerData.Attachment3 = customer.Attachment3;
+                            UpdateMstCustomerData.Attachment4 = customer.Attachment4;
+                            UpdateMstCustomerData.Attachment5 = customer.Attachment5;
                             UpdateMstCustomerData.SpouseLastName = customer.SpouseLastName;
                             UpdateMstCustomerData.SpouseFirstName = customer.SpouseFirstName;
                             UpdateMstCustomerData.SpouseMiddleName = customer.SpouseMiddleName;
@@ -426,6 +448,11 @@ namespace priland_api.Controllers
                         UpdateCustomerData.EmployerTelephoneNumber = customer.EmployerTelephoneNumber;
                         UpdateCustomerData.EmployerMobileNumber = customer.EmployerMobileNumber;
                         UpdateCustomerData.Picture = customer.Picture;
+                        UpdateCustomerData.Attachment1 = customer.Attachment1;
+                        UpdateCustomerData.Attachment2 = customer.Attachment2;
+                        UpdateCustomerData.Attachment3 = customer.Attachment3;
+                        UpdateCustomerData.Attachment4 = customer.Attachment4;
+                        UpdateCustomerData.Attachment5 = customer.Attachment5;
                         UpdateCustomerData.SpouseLastName = customer.SpouseLastName;
                         UpdateCustomerData.SpouseFirstName = customer.SpouseFirstName;
                         UpdateCustomerData.SpouseMiddleName = customer.SpouseMiddleName;

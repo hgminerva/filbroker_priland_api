@@ -1,5 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="filbroker_tytans" Class="FilbrokerDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=filbroker_tytans;User ID=sa;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="DefaultConnection" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.AspNetRoles" Member="AspNetRoles">
+    <Type Name="AspNetRole">
+      <Column Name="Id" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="AspNetRole_AspNetUserRole" Member="AspNetUserRoles" ThisKey="Id" OtherKey="RoleId" Type="AspNetUserRole" />
+    </Type>
+  </Table>
   <Table Name="dbo.TrnSoldUnitRequirementActivity" Member="TrnSoldUnitRequirementActivities">
     <Type Name="TrnSoldUnitRequirementActivity">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -9,14 +16,7 @@
       <Column Name="Remarks" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="MstUser_TrnSoldUnitRequirementActivity" Member="MstUser" ThisKey="UserId" OtherKey="Id" Type="MstUser" IsForeignKey="true" />
-      <Association Name="TrnSoldUnitRequirement_TrnSoldUnitRequirementActivity" Member="TrnSoldUnitRequirement" ThisKey="SoldUnitRequirementId" OtherKey="Id" Type="TrnSoldUnitRequirement" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.AspNetRoles" Member="AspNetRoles">
-    <Type Name="AspNetRole">
-      <Column Name="Id" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Association Name="AspNetRole_AspNetUserRole" Member="AspNetUserRoles" ThisKey="Id" OtherKey="RoleId" Type="AspNetUserRole" />
+      <Association Name="TrnSoldUnitRequirement_TrnSoldUnitRequirementActivity" Member="TrnSoldUnitRequirement" ThisKey="SoldUnitRequirementId" OtherKey="Id" Type="TrnSoldUnitRequirement" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.AspNetUserClaims" Member="AspNetUserClaims">
@@ -101,6 +101,8 @@
       <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Type" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="AssociatedBroker" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="AssociatedFirm" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Association Name="MstBroker_TrnCommissionRequest" Member="TrnCommissionRequests" ThisKey="Id" OtherKey="BrokerId" Type="TrnCommissionRequest" />
       <Association Name="MstBroker_TrnSoldUnit" Member="TrnSoldUnits" ThisKey="Id" OtherKey="BrokerId" Type="TrnSoldUnit" />
     </Type>
@@ -183,6 +185,11 @@
       <Column Name="Remarks" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="Status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Picture" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment1" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment2" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment3" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment4" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Attachment5" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />

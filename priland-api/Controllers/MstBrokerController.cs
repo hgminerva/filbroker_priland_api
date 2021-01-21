@@ -79,8 +79,70 @@ namespace priland_api.Controllers
                                     CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                     UpdatedBy = d.UpdatedBy,
                                     UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                    Type = d.Type
+                                    Type = d.Type,
+                                    AssociatedBroker = d.AssociatedBroker,
+                                    AssociatedFirm = d.AssociatedFirm
                                 };
+            return MstBrokerData.ToList();
+        }
+
+        [HttpGet, Route("List/ByType/{type}")]
+        public List<MstBroker> GetMstBrokersByType(String type)
+        {
+            var MstBrokerData = from d in db.MstBrokers
+                                where d.Type == type
+                                && d.IsLocked ==  true
+                                select new MstBroker
+                                {
+                                    Id = d.Id,
+                                    BrokerCode = d.BrokerCode,
+                                    LastName = d.LastName,
+                                    FirstName = d.FirstName,
+                                    MiddleName = d.MiddleName,
+                                    FullName = d.LastName + ", " + d.FirstName + " " + d.MiddleName,
+                                    LicenseNumber = d.LicenseNumber,
+                                    LicenseNumberValidUntil = d.LicenseNumberValidUntil,
+                                    BirthDate = d.BirthDate.ToShortDateString(),
+                                    CivilStatus = d.CivilStatus,
+                                    Gender = d.Gender,
+                                    Address = d.Address,
+                                    TelephoneNumber = d.TelephoneNumber,
+                                    MobileNumber = d.MobileNumber,
+                                    Religion = d.Religion,
+                                    EmailAddress = d.EmailAddress,
+                                    Facebook = d.Facebook,
+                                    TIN = d.TIN,
+                                    HLURBRegistrationNumber = d.HLURBRegistrationNumber,
+                                    RealtyFirm = d.RealtyFirm,
+                                    RealtyFirmAddress = d.RealtyFirmAddress,
+                                    RealtyFirmTelephoneNumber = d.RealtyFirmTelephoneNumber,
+                                    RealtyFirmMobileNumber = d.RealtyFirmMobileNumber,
+                                    RealtyFirmFaxNumber = d.RealtyFirmFaxNumber,
+                                    RealtyFirmEmailAddress = d.RealtyFirmEmailAddress,
+                                    RealtyFirmWebsite = d.RealtyFirmWebsite,
+                                    RealtyFirmTIN = d.RealtyFirmTIN,
+                                    RealtyFirmLicenseNumber = d.RealtyFirmLicenseNumber,
+                                    RealtyFirmLicenseNumberValidUntil = d.RealtyFirmLicenseNumberValidUntil,
+                                    RealtyFormHLURBRegistrationNumber = d.RealtyFormHLURBRegistrationNumber,
+                                    Organization = d.Organization,
+                                    Remarks = d.Remarks,
+                                    Picture = d.Picture,
+                                    Attachment1 = d.Attachment1,
+                                    Attachment2 = d.Attachment2,
+                                    Attachment3 = d.Attachment3,
+                                    Attachment4 = d.Attachment4,
+                                    Attachment5 = d.Attachment5,
+                                    Status = d.Status,
+                                    IsLocked = d.IsLocked,
+                                    CreatedBy = d.CreatedBy,
+                                    CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                    UpdatedBy = d.UpdatedBy,
+                                    UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                    Type = d.Type,
+                                    AssociatedBroker = d.AssociatedBroker,
+                                    AssociatedFirm = d.AssociatedFirm
+                                };
+
             return MstBrokerData.ToList();
         }
 
@@ -136,7 +198,9 @@ namespace priland_api.Controllers
                                     CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                     UpdatedBy = d.UpdatedBy,
                                     UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                    Type = d.Type
+                                    Type = d.Type,
+                                    AssociatedBroker = d.AssociatedBroker,
+                                    AssociatedFirm = d.AssociatedFirm
                                 };
             return (Models.MstBroker)MstBrokerData.FirstOrDefault();
         }
@@ -206,7 +270,9 @@ namespace priland_api.Controllers
                         CreatedDateTime = DateTime.Now,
                         UpdatedBy = currentUser.FirstOrDefault().Id,
                         UpdatedDateTime = DateTime.Now,
-                        Type = broker.Type
+                        Type = broker.Type,
+                        AssociatedBroker = broker.AssociatedBroker,
+                        AssociatedFirm = broker.AssociatedFirm
                     };
 
                     db.MstBrokers.InsertOnSubmit(newMstBroker);
@@ -322,6 +388,8 @@ namespace priland_api.Controllers
                             UpdateBrokerData.UpdatedBy = currentUser.FirstOrDefault().Id;
                             UpdateBrokerData.UpdatedDateTime = DateTime.Now;
                             UpdateBrokerData.Type = broker.Type;
+                            UpdateBrokerData.AssociatedBroker = broker.AssociatedBroker;
+                            UpdateBrokerData.AssociatedFirm = broker.AssociatedFirm;
 
                             db.SubmitChanges();
 
@@ -409,6 +477,8 @@ namespace priland_api.Controllers
                         UpdateBrokerData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UpdateBrokerData.UpdatedDateTime = DateTime.Now;
                         UpdateBrokerData.Type = broker.Type;
+                        UpdateBrokerData.AssociatedBroker = broker.AssociatedBroker;
+                        UpdateBrokerData.AssociatedFirm = broker.AssociatedFirm;
 
                         db.SubmitChanges();
 

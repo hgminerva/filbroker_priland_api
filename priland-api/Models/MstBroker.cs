@@ -52,5 +52,7 @@ namespace priland_api.Models
         public Int32 UpdatedBy { get; set; }
         public String UpdatedDateTime { get; set; }
         public String Type { get; set; }
+        public String AssociatedBroker { get; set; }
+        public String AssociatedFirm { get; set; }
     }
 }
