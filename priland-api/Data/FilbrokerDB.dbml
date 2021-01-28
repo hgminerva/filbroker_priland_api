@@ -195,6 +195,10 @@
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="BusinessAddress" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="BusinessType" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="BusinessPosition" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Association Name="MstCustomer_TrnCollection" Member="TrnCollections" ThisKey="Id" OtherKey="CustomerId" Type="TrnCollection" />
       <Association Name="MstCustomer_TrnSoldUnit" Member="TrnSoldUnits" ThisKey="Id" OtherKey="CustomerId" Type="TrnSoldUnit" />
       <Association Name="MstCustomer_TrnSoldUnitCoOwner" Member="TrnSoldUnitCoOwners" ThisKey="Id" OtherKey="CustomerId" Type="TrnSoldUnitCoOwner" />

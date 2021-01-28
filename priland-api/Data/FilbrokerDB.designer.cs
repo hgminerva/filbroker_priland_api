@@ -3527,6 +3527,14 @@ namespace priland_api.Data
 		
 		private System.DateTime _UpdatedDateTime;
 		
+		private string _BusinessName;
+		
+		private string _BusinessAddress;
+		
+		private string _BusinessType;
+		
+		private string _BusinessPosition;
+		
 		private EntitySet<TrnCollection> _TrnCollections;
 		
 		private EntitySet<TrnSoldUnit> _TrnSoldUnits;
@@ -3645,6 +3653,14 @@ namespace priland_api.Data
     partial void OnUpdatedByChanged();
     partial void OnUpdatedDateTimeChanging(System.DateTime value);
     partial void OnUpdatedDateTimeChanged();
+    partial void OnBusinessNameChanging(string value);
+    partial void OnBusinessNameChanged();
+    partial void OnBusinessAddressChanging(string value);
+    partial void OnBusinessAddressChanged();
+    partial void OnBusinessTypeChanging(string value);
+    partial void OnBusinessTypeChanged();
+    partial void OnBusinessPositionChanging(string value);
+    partial void OnBusinessPositionChanged();
     #endregion
 		
 		public MstCustomer()
@@ -4701,6 +4717,86 @@ namespace priland_api.Data
 					this._UpdatedDateTime = value;
 					this.SendPropertyChanged("UpdatedDateTime");
 					this.OnUpdatedDateTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessName", DbType="NVarChar(255)")]
+		public string BusinessName
+		{
+			get
+			{
+				return this._BusinessName;
+			}
+			set
+			{
+				if ((this._BusinessName != value))
+				{
+					this.OnBusinessNameChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessName = value;
+					this.SendPropertyChanged("BusinessName");
+					this.OnBusinessNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessAddress", DbType="NVarChar(255)")]
+		public string BusinessAddress
+		{
+			get
+			{
+				return this._BusinessAddress;
+			}
+			set
+			{
+				if ((this._BusinessAddress != value))
+				{
+					this.OnBusinessAddressChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessAddress = value;
+					this.SendPropertyChanged("BusinessAddress");
+					this.OnBusinessAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessType", DbType="NVarChar(255)")]
+		public string BusinessType
+		{
+			get
+			{
+				return this._BusinessType;
+			}
+			set
+			{
+				if ((this._BusinessType != value))
+				{
+					this.OnBusinessTypeChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessType = value;
+					this.SendPropertyChanged("BusinessType");
+					this.OnBusinessTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessPosition", DbType="NVarChar(255)")]
+		public string BusinessPosition
+		{
+			get
+			{
+				return this._BusinessPosition;
+			}
+			set
+			{
+				if ((this._BusinessPosition != value))
+				{
+					this.OnBusinessPositionChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessPosition = value;
+					this.SendPropertyChanged("BusinessPosition");
+					this.OnBusinessPositionChanged();
 				}
 			}
 		}

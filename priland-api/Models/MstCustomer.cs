@@ -60,5 +60,9 @@ namespace priland_api.Models
         public String CreatedDateTime { get; set; }
         public Int32 UpdatedBy { get; set; }
         public String UpdatedDateTime { get; set; }
+        public String BusinessName { get; set; }
+        public String BusinessAddress { get; set; }
+        public String BusinessType { get; set; }
+        public String BusinessPosition { get; set; }
     }
 }

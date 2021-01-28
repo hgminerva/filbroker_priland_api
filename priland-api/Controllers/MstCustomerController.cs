@@ -99,7 +99,11 @@ namespace priland_api.Controllers
                                       CreatedBy = d.CreatedBy,
                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                       UpdatedBy = d.UpdatedBy,
-                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                      BusinessName = d.BusinessName,
+                                      BusinessAddress = d.BusinessAddress,
+                                      BusinessType = d.BusinessType,
+                                      BusinessPosition = d.BusinessPosition
                                   };
             return MstCustomerData.ToList();
         }
@@ -164,7 +168,11 @@ namespace priland_api.Controllers
                                       CreatedBy = d.CreatedBy,
                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                       UpdatedBy = d.UpdatedBy,
-                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                      BusinessName = d.BusinessName,
+                                      BusinessAddress = d.BusinessAddress,
+                                      BusinessType = d.BusinessType,
+                                      BusinessPosition = d.BusinessPosition
                                   };
             return MstCustomerData.FirstOrDefault();
         }
@@ -243,6 +251,10 @@ namespace priland_api.Controllers
                         CreatedDateTime = DateTime.Now,
                         UpdatedBy = currentUser.FirstOrDefault().Id,
                         UpdatedDateTime = DateTime.Now,
+                        BusinessName = customer.BusinessName,
+                        BusinessAddress = customer.BusinessAddress,
+                        BusinessType = customer.BusinessType,
+                        BusinessPosition = customer.BusinessPosition
                     };
 
                     db.MstCustomers.InsertOnSubmit(newMstCustomer);
@@ -368,6 +380,10 @@ namespace priland_api.Controllers
                             UpdateMstCustomerData.Status = customer.Status;
                             UpdateMstCustomerData.UpdatedBy = currentUser.FirstOrDefault().Id;
                             UpdateMstCustomerData.UpdatedDateTime = DateTime.Now;
+                            UpdateMstCustomerData.BusinessName = customer.BusinessName;
+                            UpdateMstCustomerData.BusinessAddress = customer.BusinessAddress;
+                            UpdateMstCustomerData.BusinessType = customer.BusinessType;
+                            UpdateMstCustomerData.BusinessPosition = customer.BusinessPosition;
 
                             db.SubmitChanges();
 
@@ -465,6 +481,10 @@ namespace priland_api.Controllers
                         UpdateCustomerData.IsLocked = true;
                         UpdateCustomerData.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UpdateCustomerData.UpdatedDateTime = DateTime.Now;
+                        UpdateCustomerData.BusinessName = customer.BusinessName;
+                        UpdateCustomerData.BusinessAddress = customer.BusinessAddress;
+                        UpdateCustomerData.BusinessType = customer.BusinessType;
+                        UpdateCustomerData.BusinessPosition = customer.BusinessPosition;
 
                         db.SubmitChanges();
 
