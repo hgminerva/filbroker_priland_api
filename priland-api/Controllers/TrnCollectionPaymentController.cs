@@ -65,6 +65,8 @@ namespace priland_api.Controllers
                                      Project = d.TrnSoldUnit.MstUnit.MstProject.Project,
                                      PayType = d.PayType,
                                      Amount = d.Amount,
+                                     Agent = d.TrnSoldUnit.Agent,
+                                     Broker = d.TrnSoldUnit.MstBroker.AssociatedBroker,
                                      CheckNumber = d.CheckNumber,
                                      CheckDate = d.CheckDate != null ? Convert.ToDateTime(d.CheckDate).ToShortDateString() : "",
                                      CheckBank = d.CheckBank,

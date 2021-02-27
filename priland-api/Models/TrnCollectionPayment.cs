@@ -18,5 +18,8 @@ namespace priland_api.Models
         public String CheckDate { get; set; }
         public String CheckBank { get; set; }
         public String OtherInformation { get; set; }
+        public String Agent { get; set; }
+        public String Broker { get; set; }
+
     }
 }

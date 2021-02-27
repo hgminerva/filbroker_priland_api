@@ -169,7 +169,145 @@ namespace priland_api.Controllers
                                   };
             return TrnSoldUnitData.ToList();
         }
-
+        //List per date range
+        [HttpGet, Route("ListPerCustomer/{customerId}")]
+        public List<TrnSoldUnit> GetTrnSoldUnitPerCustomer(Int32 customerId)
+        {
+            var TrnSoldUnitData = from d in db.TrnSoldUnits
+                                  where d.CustomerId == customerId && d.IsLocked == true
+                                  orderby d.SoldUnitNumber descending
+                                  select new TrnSoldUnit
+                                  {
+                                      Id = d.Id,
+                                      SoldUnitNumber = d.SoldUnitNumber,
+                                      SoldUnitDate = d.SoldUnitDate.ToShortDateString(),
+                                      ProjectId = d.ProjectId,
+                                      Project = d.MstProject.Project,
+                                      UnitId = d.UnitId,
+                                      Unit = d.MstUnit.Block + " " + d.MstUnit.Lot,
+                                      CustomerId = d.CustomerId,
+                                      Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
+                                      BrokerId = d.BrokerId,
+                                      Broker = d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
+                                      Agent = d.Agent,
+                                      BrokerCoordinator = d.BrokerCoordinator,
+                                      ChecklistId = d.CheckListId,
+                                      Checklist = d.MstCheckList.CheckList,
+                                      Price = d.Price,
+                                      TCP = d.MstUnit.Price,
+                                      TSP = d.MstUnit.TSP,
+                                      PriceDiscount = d.PriceDiscount,
+                                      PricePayment = d.PricePayment,
+                                      PriceBalance = d.PriceBalance,
+                                      EquityValue = d.EquityValue,
+                                      EquityPercent = d.EquityPercent,
+                                      EquitySpotPayment1 = d.EquitySpotPayment1,
+                                      EquitySpotPayment2 = d.EquitySpotPayment2,
+                                      EquitySpotPayment3 = d.EquitySpotPayment3,
+                                      EquitySpotPayment1Pos = d.EquitySpotPayment1Pos,
+                                      EquitySpotPayment2Pos = d.EquitySpotPayment2Pos,
+                                      EquitySpotPayment3Pos = d.EquitySpotPayment3Pos,
+                                      Discount = d.Discount,
+                                      DiscountedEquity = d.DiscountedEquity,
+                                      Reservation = d.Reservation,
+                                      NetEquity = d.NetEquity,
+                                      NetEquityBalance = d.NetEquityBalance,
+                                      NetEquityInterest = d.NetEquityInterest,
+                                      NetEquityNoOfPayments = d.NetEquityNoOfPayments,
+                                      NetEquityAmortization = d.NetEquityAmortization,
+                                      Balance = d.Balance,
+                                      BalanceInterest = d.BalanceInterest,
+                                      BalanceNoOfPayments = d.BalanceNoOfPayments,
+                                      BalanceAmortization = d.BalanceAmortization,
+                                      TotalInvestment = d.TotalInvestment,
+                                      PaymentOptions = d.PaymentOptions,
+                                      Financing = d.Financing,
+                                      Remarks = d.Remarks,
+                                      FinancingType = d.FinancingType,
+                                      PreparedBy = d.PreparedBy,
+                                      PreparedByUser = d.MstUser2.Username,
+                                      CheckedBy = d.CheckedBy,
+                                      CheckedByUser = d.MstUser3.Username,
+                                      ApprovedBy = d.ApprovedBy,
+                                      ApprovedByUser = d.MstUser4.Username,
+                                      Status = d.Status,
+                                      IsLocked = d.IsLocked,
+                                      CreatedBy = d.CreatedBy,
+                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                      UpdatedBy = d.UpdatedBy,
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                  };
+            return TrnSoldUnitData.ToList();
+        }
+        [HttpGet, Route("ListPerUnit/{unitId}")]
+        public List<TrnSoldUnit> GetTrnSoldUnitPerUnit(Int32 unitId)
+        {
+            var TrnSoldUnitData = from d in db.TrnSoldUnits
+                                  where d.UnitId == unitId && d.IsLocked == true
+                                  orderby d.SoldUnitNumber descending
+                                  select new TrnSoldUnit
+                                  {
+                                      Id = d.Id,
+                                      SoldUnitNumber = d.SoldUnitNumber,
+                                      SoldUnitDate = d.SoldUnitDate.ToShortDateString(),
+                                      ProjectId = d.ProjectId,
+                                      Project = d.MstProject.Project,
+                                      UnitId = d.UnitId,
+                                      Unit = d.MstUnit.Block + " " + d.MstUnit.Lot,
+                                      CustomerId = d.CustomerId,
+                                      Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
+                                      BrokerId = d.BrokerId,
+                                      Broker = d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
+                                      Agent = d.Agent,
+                                      BrokerCoordinator = d.BrokerCoordinator,
+                                      ChecklistId = d.CheckListId,
+                                      Checklist = d.MstCheckList.CheckList,
+                                      Price = d.Price,
+                                      TCP = d.MstUnit.Price,
+                                      TSP = d.MstUnit.TSP,
+                                      PriceDiscount = d.PriceDiscount,
+                                      PricePayment = d.PricePayment,
+                                      PriceBalance = d.PriceBalance,
+                                      EquityValue = d.EquityValue,
+                                      EquityPercent = d.EquityPercent,
+                                      EquitySpotPayment1 = d.EquitySpotPayment1,
+                                      EquitySpotPayment2 = d.EquitySpotPayment2,
+                                      EquitySpotPayment3 = d.EquitySpotPayment3,
+                                      EquitySpotPayment1Pos = d.EquitySpotPayment1Pos,
+                                      EquitySpotPayment2Pos = d.EquitySpotPayment2Pos,
+                                      EquitySpotPayment3Pos = d.EquitySpotPayment3Pos,
+                                      Discount = d.Discount,
+                                      DiscountedEquity = d.DiscountedEquity,
+                                      Reservation = d.Reservation,
+                                      NetEquity = d.NetEquity,
+                                      NetEquityBalance = d.NetEquityBalance,
+                                      NetEquityInterest = d.NetEquityInterest,
+                                      NetEquityNoOfPayments = d.NetEquityNoOfPayments,
+                                      NetEquityAmortization = d.NetEquityAmortization,
+                                      Balance = d.Balance,
+                                      BalanceInterest = d.BalanceInterest,
+                                      BalanceNoOfPayments = d.BalanceNoOfPayments,
+                                      BalanceAmortization = d.BalanceAmortization,
+                                      TotalInvestment = d.TotalInvestment,
+                                      PaymentOptions = d.PaymentOptions,
+                                      Financing = d.Financing,
+                                      Remarks = d.Remarks,
+                                      FinancingType = d.FinancingType,
+                                      PreparedBy = d.PreparedBy,
+                                      PreparedByUser = d.MstUser2.Username,
+                                      CheckedBy = d.CheckedBy,
+                                      CheckedByUser = d.MstUser3.Username,
+                                      ApprovedBy = d.ApprovedBy,
+                                      ApprovedByUser = d.MstUser4.Username,
+                                      Status = d.Status,
+                                      IsLocked = d.IsLocked,
+                                      CreatedBy = d.CreatedBy,
+                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                      UpdatedBy = d.UpdatedBy,
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                  };
+            return TrnSoldUnitData.ToList();
+        }
         //Detail
         [HttpGet, Route("Detail/{id}")]
         public TrnSoldUnit GetTrnSoldUnitId(string id)
