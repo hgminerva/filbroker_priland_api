@@ -42,7 +42,7 @@ namespace priland_api.Controllers
                                       ProjectId = d.ProjectId,
                                       Project = d.MstProject.Project,
                                       UnitId = d.UnitId,
-                                      Unit = d.MstUnit.Block + " " + d.MstUnit.Lot,
+                                      Unit = d.MstUnit.UnitCode,
                                       CustomerId = d.CustomerId,
                                       Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                       BrokerId = d.BrokerId,
@@ -114,7 +114,7 @@ namespace priland_api.Controllers
                                       ProjectId = d.ProjectId,
                                       Project = d.MstProject.Project,
                                       UnitId = d.UnitId,
-                                      Unit = d.MstUnit.Block + " " + d.MstUnit.Lot,
+                                      Unit = d.MstUnit.UnitCode,
                                       CustomerId = d.CustomerId,
                                       Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                       BrokerId = d.BrokerId,
@@ -184,7 +184,7 @@ namespace priland_api.Controllers
                                       ProjectId = d.ProjectId,
                                       Project = d.MstProject.Project,
                                       UnitId = d.UnitId,
-                                      Unit = d.MstUnit.Block + " " + d.MstUnit.Lot,
+                                      Unit = d.MstUnit.UnitCode,
                                       CustomerId = d.CustomerId,
                                       Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                       BrokerId = d.BrokerId,
@@ -239,6 +239,7 @@ namespace priland_api.Controllers
                                   };
             return TrnSoldUnitData.ToList();
         }
+
         [HttpGet, Route("ListPerUnit/{unitId}")]
         public List<TrnSoldUnit> GetTrnSoldUnitPerUnit(Int32 unitId)
         {
@@ -253,7 +254,7 @@ namespace priland_api.Controllers
                                       ProjectId = d.ProjectId,
                                       Project = d.MstProject.Project,
                                       UnitId = d.UnitId,
-                                      Unit = d.MstUnit.Block + " " + d.MstUnit.Lot,
+                                      Unit = d.MstUnit.UnitCode,
                                       CustomerId = d.CustomerId,
                                       Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                       BrokerId = d.BrokerId,
@@ -322,7 +323,7 @@ namespace priland_api.Controllers
                                       ProjectId = d.ProjectId,
                                       Project = d.MstProject.Project,
                                       UnitId = d.UnitId,
-                                      Unit = d.MstUnit.Block + " " + d.MstUnit.Lot,
+                                      Unit = d.MstUnit.UnitCode,
                                       CustomerId = d.CustomerId,
                                       Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                       BrokerId = d.BrokerId,
