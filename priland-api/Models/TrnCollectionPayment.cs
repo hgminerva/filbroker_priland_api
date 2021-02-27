@@ -19,6 +19,7 @@ namespace priland_api.Models
         public String CheckBank { get; set; }
         public String OtherInformation { get; set; }
         public String Agent { get; set; }
+        public Int32 BrokerId { get; set; }
         public String Broker { get; set; }
 
     }
