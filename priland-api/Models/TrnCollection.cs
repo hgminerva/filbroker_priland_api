@@ -10,6 +10,7 @@ namespace priland_api.Models
         public Int32 Id { get; set; }
         public String CollectionNumber { get; set; }
         public String CollectionDate { get; set; }
+        public String ManualNumber { get; set; }
         public Int32 CustomerId { get; set; }
         public String Customer { get; set; }
         public String Particulars { get; set; }

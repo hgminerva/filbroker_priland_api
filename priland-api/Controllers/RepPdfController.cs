@@ -2036,11 +2036,11 @@ namespace priland_api.Controllers
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.Block, updateFontArial12Bold)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Unit", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", updateFontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.Lot, updateFontArial12Bold)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.UnitCode, updateFontArial12Bold)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Lot Area", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", updateFontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.TLA.ToString("#,##0.00") + " square meters", updateFontArial12Bold)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
-                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("House Model", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Unit Type", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(":", updateFontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase(soldUnit.FirstOrDefault().MstUnit.MstHouseModel.HouseModel, updateFontArial12Bold)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                 pdfTableProjectContract.AddCell(new PdfPCell(new Phrase("Floor Area", updateFontArial12)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });

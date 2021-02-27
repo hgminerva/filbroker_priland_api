@@ -73,6 +73,7 @@ namespace priland_api.Controllers
                                      Id = d.Id,
                                      CollectionNumber = d.CollectionNumber,
                                      CollectionDate = d.CollectionDate.ToLongDateString(),
+                                     ManualNumber = d.ManualNumber,
                                      CustomerId = d.CustomerId,
                                      Customer = d.MstCustomer.LastName + "," + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                      Particulars = d.Particulars,
@@ -98,6 +99,7 @@ namespace priland_api.Controllers
                                  Id = d.Id,
                                  CollectionNumber = d.CollectionNumber,
                                  CollectionDate = d.CollectionDate.ToLongDateString(),
+                                 ManualNumber = d.ManualNumber,
                                  CustomerId = d.CustomerId,
                                  Customer = d.MstCustomer.LastName + "," + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                  Particulars = d.Particulars,
@@ -177,6 +179,7 @@ namespace priland_api.Controllers
                     {
                         CollectionNumber = newCollectionNumber,
                         CollectionDate = DateTime.Today,
+                        ManualNumber = "NA",
                         CustomerId = defaultCustomer,
                         Particulars = "NA",
                         PreparedBy = currentUser.FirstOrDefault().Id,
@@ -228,6 +231,7 @@ namespace priland_api.Controllers
                             var UpdateTrnCollection = currentCollection.FirstOrDefault();
 
                             UpdateTrnCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
+                            UpdateTrnCollection.ManualNumber = collection.ManualNumber;
                             UpdateTrnCollection.CustomerId = collection.CustomerId;
                             UpdateTrnCollection.Particulars = collection.Particulars;
                             UpdateTrnCollection.PreparedBy = collection.PreparedBy;
@@ -285,6 +289,7 @@ namespace priland_api.Controllers
                             var UpdateTrnCollection = currentCollection.FirstOrDefault();
 
                             UpdateTrnCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
+                            UpdateTrnCollection.ManualNumber = collection.ManualNumber;
                             UpdateTrnCollection.CustomerId = collection.CustomerId;
                             UpdateTrnCollection.Particulars = collection.Particulars;
                             UpdateTrnCollection.PreparedBy = collection.PreparedBy;
@@ -413,7 +418,5 @@ namespace priland_api.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
-
-
     }
 }

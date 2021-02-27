@@ -8735,6 +8735,8 @@ namespace priland_api.Data
 		
 		private System.DateTime _CollectionDate;
 		
+		private string _ManualNumber;
+		
 		private int _CustomerId;
 		
 		private string _Particulars;
@@ -8779,6 +8781,8 @@ namespace priland_api.Data
     partial void OnCollectionNumberChanged();
     partial void OnCollectionDateChanging(System.DateTime value);
     partial void OnCollectionDateChanged();
+    partial void OnManualNumberChanging(string value);
+    partial void OnManualNumberChanged();
     partial void OnCustomerIdChanging(int value);
     partial void OnCustomerIdChanged();
     partial void OnParticularsChanging(string value);
@@ -8869,6 +8873,26 @@ namespace priland_api.Data
 					this._CollectionDate = value;
 					this.SendPropertyChanged("CollectionDate");
 					this.OnCollectionDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManualNumber", DbType="NVarChar(255)")]
+		public string ManualNumber
+		{
+			get
+			{
+				return this._ManualNumber;
+			}
+			set
+			{
+				if ((this._ManualNumber != value))
+				{
+					this.OnManualNumberChanging(value);
+					this.SendPropertyChanging();
+					this._ManualNumber = value;
+					this.SendPropertyChanged("ManualNumber");
+					this.OnManualNumberChanged();
 				}
 			}
 		}
