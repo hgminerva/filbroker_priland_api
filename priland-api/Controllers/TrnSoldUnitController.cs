@@ -52,6 +52,11 @@ namespace priland_api.Controllers
                                       ChecklistId = d.CheckListId,
                                       Checklist = d.MstCheckList.CheckList,
                                       Price = d.Price,
+                                      TCP = d.MstUnit.Price,
+                                      TSP = d.MstUnit.TSP,
+                                      PriceDiscount = d.PriceDiscount,
+                                      PricePayment = d.PricePayment,
+                                      PriceBalance = d.PriceBalance,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
                                       EquitySpotPayment1 = d.EquitySpotPayment1,
@@ -76,6 +81,7 @@ namespace priland_api.Controllers
                                       PaymentOptions = d.PaymentOptions,
                                       Financing = d.Financing,
                                       Remarks = d.Remarks,
+                                      FinancingType = d.FinancingType,
                                       PreparedBy = d.PreparedBy,
                                       PreparedByUser = d.MstUser2.Username,
                                       CheckedBy = d.CheckedBy,
@@ -118,7 +124,11 @@ namespace priland_api.Controllers
                                       ChecklistId = d.CheckListId,
                                       Checklist = d.MstCheckList.CheckList,
                                       Price = d.Price,
+                                      TCP = d.MstUnit.Price,
+                                      TSP = d.MstUnit.TSP,
                                       PriceDiscount = d.PriceDiscount,
+                                      PricePayment = d.PricePayment,
+                                      PriceBalance = d.PriceBalance,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
                                       EquitySpotPayment1 = d.EquitySpotPayment1,
@@ -143,6 +153,7 @@ namespace priland_api.Controllers
                                       PaymentOptions = d.PaymentOptions,
                                       Financing = d.Financing,
                                       Remarks = d.Remarks,
+                                      FinancingType = d.FinancingType,
                                       PreparedBy = d.PreparedBy,
                                       PreparedByUser = d.MstUser2.Username,
                                       CheckedBy = d.CheckedBy,
@@ -173,16 +184,21 @@ namespace priland_api.Controllers
                                       ProjectId = d.ProjectId,
                                       Project = d.MstProject.Project,
                                       UnitId = d.UnitId,
-                                      Unit = d.MstUnit.UnitCode,
+                                      Unit = d.MstUnit.Block + " " + d.MstUnit.Lot,
                                       CustomerId = d.CustomerId,
+                                      Customer = d.MstCustomer.LastName + ", " + d.MstCustomer.FirstName + " " + d.MstCustomer.MiddleName,
                                       BrokerId = d.BrokerId,
+                                      Broker = d.MstBroker.LastName + ", " + d.MstBroker.FirstName + " " + d.MstBroker.MiddleName,
                                       Agent = d.Agent,
                                       BrokerCoordinator = d.BrokerCoordinator,
                                       ChecklistId = d.CheckListId,
+                                      Checklist = d.MstCheckList.CheckList,
                                       Price = d.Price,
                                       TCP = d.MstUnit.Price,
                                       TSP = d.MstUnit.TSP,
                                       PriceDiscount = d.PriceDiscount,
+                                      PricePayment = d.PricePayment,
+                                      PriceBalance = d.PriceBalance,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
                                       EquitySpotPayment1 = d.EquitySpotPayment1,
@@ -209,17 +225,17 @@ namespace priland_api.Controllers
                                       Remarks = d.Remarks,
                                       FinancingType = d.FinancingType,
                                       PreparedBy = d.PreparedBy,
-                                      PreparedByUser = d.MstUser3.Username,
+                                      PreparedByUser = d.MstUser2.Username,
                                       CheckedBy = d.CheckedBy,
-                                      CheckedByUser = d.MstUser1.Username,
+                                      CheckedByUser = d.MstUser3.Username,
                                       ApprovedBy = d.ApprovedBy,
-                                      ApprovedByUser = d.MstUser.Username,
+                                      ApprovedByUser = d.MstUser4.Username,
                                       Status = d.Status,
                                       IsLocked = d.IsLocked,
                                       CreatedBy = d.CreatedBy,
                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                       UpdatedBy = d.UpdatedBy,
-                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                   };
 
             return (TrnSoldUnit)TrnSoldUnitData.FirstOrDefault();
@@ -312,7 +328,6 @@ namespace priland_api.Controllers
                         {
                             SoldUnitNumber = soldUnitNumber,
                             SoldUnitDate = Convert.ToDateTime(soldUnit.SoldUnitDate),
-
                             ProjectId = projectId,
                             UnitId = unitId,
                             CustomerId = customerId,
@@ -320,9 +335,10 @@ namespace priland_api.Controllers
                             Agent = soldUnit.Agent,
                             BrokerCoordinator = soldUnit.BrokerCoordinator,
                             CheckListId = checklistId,
-
                             Price = price,
-
+                            PriceDiscount = 0,
+                            PricePayment = 0,
+                            PriceBalance = 0,
                             EquityValue = 0,
                             EquityPercent = 0,
                             EquitySpotPayment1 = 0,
@@ -343,19 +359,15 @@ namespace priland_api.Controllers
                             BalanceInterest = 0,
                             BalanceNoOfPayments = 0,
                             BalanceAmortization = 0,
-
                             TotalInvestment = totalInvestment,
                             PaymentOptions = paymentOptions,
                             Financing = financing,
-
                             Remarks = soldUnit.Remarks,
                             FinancingType = financingType.FirstOrDefault().Value,
-
                             PreparedBy = currentUser.FirstOrDefault().Id,
                             CheckedBy = checkedBy,
                             ApprovedBy = approvedBy,
                             Status = soldUnit.Status,
-
                             IsLocked = soldUnit.IsLocked,
                             CreatedBy = currentUser.FirstOrDefault().Id,
                             CreatedDateTime = DateTime.Now,
@@ -461,6 +473,7 @@ namespace priland_api.Controllers
                             UpdateTrnSoldUnitData.BrokerCoordinator = soldUnit.BrokerCoordinator;
                             UpdateTrnSoldUnitData.CheckListId = soldUnit.ChecklistId;
                             UpdateTrnSoldUnitData.Price = soldUnit.Price;
+                            UpdateTrnSoldUnitData.PriceDiscount = soldUnit.PriceDiscount;
                             UpdateTrnSoldUnitData.EquityValue = soldUnit.EquityValue;
                             UpdateTrnSoldUnitData.EquityPercent = soldUnit.EquityPercent;
                             UpdateTrnSoldUnitData.EquitySpotPayment1 = soldUnit.EquitySpotPayment1;
@@ -561,6 +574,7 @@ namespace priland_api.Controllers
                             UpdateTrnSoldUnitData.BrokerCoordinator = soldUnit.BrokerCoordinator;
                             UpdateTrnSoldUnitData.CheckListId = soldUnit.ChecklistId;
                             UpdateTrnSoldUnitData.Price = soldUnit.Price;
+                            UpdateTrnSoldUnitData.PriceDiscount = soldUnit.PriceDiscount;
                             UpdateTrnSoldUnitData.EquityValue = soldUnit.EquityValue;
                             UpdateTrnSoldUnitData.EquityPercent = soldUnit.EquityPercent;
                             UpdateTrnSoldUnitData.EquitySpotPayment1 = soldUnit.EquitySpotPayment1;
