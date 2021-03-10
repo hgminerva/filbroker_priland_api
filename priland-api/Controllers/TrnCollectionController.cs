@@ -119,14 +119,60 @@ namespace priland_api.Controllers
         {
             Decimal pricePayment = 0;
 
-            var collectionPayment = from d in db.TrnCollectionPayments
-                                    where d.SoldUnitId == soldUnitId
-                                    && d.TrnCollection.IsLocked == true
-                                    select d;
+            var collectionPayments = from d in db.TrnCollectionPayments
+                                     where d.SoldUnitId == soldUnitId
+                                     && d.TrnCollection.IsLocked == true
+                                     select d;
 
-            if (collectionPayment.Any())
+            if (collectionPayments.Any())
             {
-                pricePayment = collectionPayment.Sum(d => d.Amount);
+                pricePayment = collectionPayments.Sum(d => d.Amount);
+
+                foreach (var collectionPayment in collectionPayments)
+                {
+                    var equitySchedule = from d in db.TrnSoldUnitEquitySchedules
+                                         where d.Id == collectionPayment.SoldUnitEquityScheduleId
+                                         select d;
+
+                    if (equitySchedule.Any())
+                    {
+                        var updateEquitySchedule = equitySchedule.FirstOrDefault();
+                        updateEquitySchedule.CheckNumber = collectionPayment.CheckNumber;
+                        updateEquitySchedule.CheckDate = collectionPayment.CheckDate;
+                        updateEquitySchedule.CheckBank = collectionPayment.CheckBank;
+                        updateEquitySchedule.PaidAmount = collectionPayment.Amount;
+                        updateEquitySchedule.BalanceAmount = equitySchedule.FirstOrDefault().Amortization - collectionPayment.Amount;
+                        db.SubmitChanges();
+                    }
+                }
+            }
+            else
+            {
+                var unlockedCollectionPayments = from d in db.TrnCollectionPayments
+                                                 where d.SoldUnitId == soldUnitId
+                                                 && d.TrnCollection.IsLocked == false
+                                                 select d;
+
+                if (unlockedCollectionPayments.Any())
+                {
+                    foreach (var unlockedCollectionPayment in unlockedCollectionPayments)
+                    {
+                        var equitySchedule = from d in db.TrnSoldUnitEquitySchedules
+                                             where d.Id == unlockedCollectionPayment.SoldUnitEquityScheduleId
+                                             select d;
+
+                        if (equitySchedule.Any())
+                        {
+                            var updateEquitySchedule = equitySchedule.FirstOrDefault();
+                            updateEquitySchedule.CheckNumber = "";
+                            updateEquitySchedule.CheckDate = null;
+                            updateEquitySchedule.CheckBank = "";
+                            updateEquitySchedule.PaidAmount = 0;
+                            updateEquitySchedule.BalanceAmount = equitySchedule.FirstOrDefault().Amortization;
+                            db.SubmitChanges();
+                        }
+                    }
+                }
             }
 
             var soldUnit = from d in db.TrnSoldUnits
@@ -287,7 +333,6 @@ namespace priland_api.Controllers
                         if (currentCollection.FirstOrDefault().IsLocked == false)
                         {
                             var UpdateTrnCollection = currentCollection.FirstOrDefault();
-
                             UpdateTrnCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
                             UpdateTrnCollection.ManualNumber = collection.ManualNumber;
                             UpdateTrnCollection.CustomerId = collection.CustomerId;
@@ -356,12 +401,23 @@ namespace priland_api.Controllers
                     if (trnCollection.Any())
                     {
                         var UnLockTrnCollection = trnCollection.FirstOrDefault();
-
                         UnLockTrnCollection.IsLocked = false;
                         UnLockTrnCollection.UpdatedBy = currentUser.FirstOrDefault().Id;
                         UnLockTrnCollection.UpdatedDateTime = DateTime.Now;
-
                         db.SubmitChanges();
+
+                        var collectionPayments = from d in db.TrnCollectionPayments
+                                                 where d.CollectionId == Convert.ToInt32(collection.Id)
+                                                 group d by new { d.SoldUnitId } into g
+                                                 select g.Key;
+
+                        if (collectionPayments.ToList().Any())
+                        {
+                            foreach (var collectionPayment in collectionPayments)
+                            {
+                                UpdateAccountsReceivable(collectionPayment.SoldUnitId);
+                            }
+                        }
 
                         return Request.CreateResponse(HttpStatusCode.OK);
 

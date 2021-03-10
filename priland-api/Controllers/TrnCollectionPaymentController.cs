@@ -40,6 +40,8 @@ namespace priland_api.Controllers
                                      CollectionId = d.CollectionId,
                                      SoldUnitId = d.SoldUnitId,
                                      SoldUnit = d.TrnSoldUnit.SoldUnitNumber,
+                                     SoldUnitEquityScheduleId = d.SoldUnitEquityScheduleId,
+                                     SoldUnitEquitySchedule = d.TrnSoldUnitEquitySchedule.PaymentDate.ToShortDateString(),
                                      Project = d.TrnSoldUnit.MstUnit.MstProject.Project,
                                      PayType = d.PayType,
                                      Amount = d.Amount,
@@ -65,6 +67,8 @@ namespace priland_api.Controllers
                                      CollectionId = d.CollectionId,
                                      SoldUnitId = d.SoldUnitId,
                                      SoldUnit = d.TrnSoldUnit.SoldUnitNumber,
+                                     SoldUnitEquityScheduleId = d.SoldUnitEquityScheduleId,
+                                     SoldUnitEquitySchedule = d.TrnSoldUnitEquitySchedule.PaymentDate.ToShortDateString(),
                                      Project = d.TrnSoldUnit.MstUnit.MstProject.Project,
                                      PayType = d.PayType,
                                      Amount = d.Amount,
@@ -131,12 +135,13 @@ namespace priland_api.Controllers
                         {
                             CollectionId = collectionPayment.CollectionId,
                             SoldUnitId = collectionPayment.SoldUnitId,
+                            SoldUnitEquityScheduleId = collectionPayment.SoldUnitEquityScheduleId,
                             PayType = collectionPayment.PayType,
                             Amount = collectionPayment.Amount,
                             CheckNumber = collectionPayment.CheckNumber,
                             CheckDate = Convert.ToDateTime(collectionPayment.CheckDate),
                             CheckBank = collectionPayment.CheckBank,
-                            OtherInformation = collectionPayment.OtherInformation,
+                            OtherInformation = collectionPayment.OtherInformation
                         };
 
                         db.TrnCollectionPayments.InsertOnSubmit(newCollectionPayment);
@@ -181,6 +186,7 @@ namespace priland_api.Controllers
                     {
                         var updateCollectionPayment = currentCollectionPayments.FirstOrDefault();
                         updateCollectionPayment.SoldUnitId = collectionPayment.SoldUnitId;
+                        updateCollectionPayment.SoldUnitEquityScheduleId = collectionPayment.SoldUnitEquityScheduleId;
                         updateCollectionPayment.PayType = collectionPayment.PayType;
                         updateCollectionPayment.Amount = collectionPayment.Amount;
                         updateCollectionPayment.CheckNumber = collectionPayment.CheckNumber;
@@ -233,6 +239,39 @@ namespace priland_api.Controllers
                 Debug.WriteLine(e);
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
+        }
+
+        [HttpGet, Route("collection/report/{startDate}/{endDate}")]
+        public List<TrnCollectionPayment> GetCollectionPayment(String startDate, String endDate)
+        {
+            var collectionList = from d in db.TrnCollectionPayments
+                                 where d.TrnCollection.CollectionDate >= Convert.ToDateTime(startDate)
+                                 && d.TrnCollection.CollectionDate <= Convert.ToDateTime(endDate)
+                                 && d.TrnCollection.IsLocked == true
+                                 select new TrnCollectionPayment
+                                 {
+                                     Id = d.Id,
+                                     CollectionId = d.CollectionId,
+                                     CollectionDate = d.TrnCollection.CollectionDate.ToShortDateString(),
+                                     CollectionManualNumber = d.TrnCollection.ManualNumber,
+                                     CollectionCustomer = d.TrnCollection.MstCustomer.LastName + ", " + d.TrnCollection.MstCustomer.FirstName + " " + d.TrnCollection.MstCustomer.MiddleName,
+                                     CollectionPreparedBy = d.TrnCollection.MstUser.FullName,
+                                     SoldUnitId = d.SoldUnitId,
+                                     SoldUnit = d.TrnSoldUnit.SoldUnitNumber,
+                                     SoldUnitEquityScheduleId = d.SoldUnitEquityScheduleId,
+                                     SoldUnitEquitySchedule = d.TrnSoldUnitEquitySchedule.PaymentDate.ToShortDateString(),
+                                     Project = d.TrnSoldUnit.MstUnit.MstProject.Project,
+                                     PayType = d.PayType,
+                                     Amount = d.Amount,
+                                     Agent = d.TrnSoldUnit.Agent,
+                                     BrokerId = d.TrnSoldUnit.BrokerId,
+                                     Broker = d.TrnSoldUnit.BrokerCoordinator,
+                                     CheckNumber = d.CheckNumber,
+                                     CheckDate = d.CheckDate.ToString(),
+                                     CheckBank = d.CheckBank,
+                                     OtherInformation = d.OtherInformation
+                                 };
+            return collectionList.ToList();
         }
     }
 }

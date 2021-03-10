@@ -9383,6 +9383,8 @@ namespace priland_api.Data
 		
 		private int _SoldUnitId;
 		
+		private int _SoldUnitEquityScheduleId;
+		
 		private string _PayType;
 		
 		private decimal _Amount;
@@ -9399,6 +9401,8 @@ namespace priland_api.Data
 		
 		private EntityRef<TrnSoldUnit> _TrnSoldUnit;
 		
+		private EntityRef<TrnSoldUnitEquitySchedule> _TrnSoldUnitEquitySchedule;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -9409,6 +9413,8 @@ namespace priland_api.Data
     partial void OnCollectionIdChanged();
     partial void OnSoldUnitIdChanging(int value);
     partial void OnSoldUnitIdChanged();
+    partial void OnSoldUnitEquityScheduleIdChanging(int value);
+    partial void OnSoldUnitEquityScheduleIdChanged();
     partial void OnPayTypeChanging(string value);
     partial void OnPayTypeChanged();
     partial void OnAmountChanging(decimal value);
@@ -9427,6 +9433,7 @@ namespace priland_api.Data
 		{
 			this._TrnCollection = default(EntityRef<TrnCollection>);
 			this._TrnSoldUnit = default(EntityRef<TrnSoldUnit>);
+			this._TrnSoldUnitEquitySchedule = default(EntityRef<TrnSoldUnitEquitySchedule>);
 			OnCreated();
 		}
 		
@@ -9494,6 +9501,30 @@ namespace priland_api.Data
 					this._SoldUnitId = value;
 					this.SendPropertyChanged("SoldUnitId");
 					this.OnSoldUnitIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SoldUnitEquityScheduleId", DbType="Int NOT NULL")]
+		public int SoldUnitEquityScheduleId
+		{
+			get
+			{
+				return this._SoldUnitEquityScheduleId;
+			}
+			set
+			{
+				if ((this._SoldUnitEquityScheduleId != value))
+				{
+					if (this._TrnSoldUnitEquitySchedule.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSoldUnitEquityScheduleIdChanging(value);
+					this.SendPropertyChanging();
+					this._SoldUnitEquityScheduleId = value;
+					this.SendPropertyChanged("SoldUnitEquityScheduleId");
+					this.OnSoldUnitEquityScheduleIdChanged();
 				}
 			}
 		}
@@ -9682,6 +9713,40 @@ namespace priland_api.Data
 						this._SoldUnitId = default(int);
 					}
 					this.SendPropertyChanged("TrnSoldUnit");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrnSoldUnitEquitySchedule_TrnCollectionPayment", Storage="_TrnSoldUnitEquitySchedule", ThisKey="SoldUnitEquityScheduleId", OtherKey="Id", IsForeignKey=true)]
+		public TrnSoldUnitEquitySchedule TrnSoldUnitEquitySchedule
+		{
+			get
+			{
+				return this._TrnSoldUnitEquitySchedule.Entity;
+			}
+			set
+			{
+				TrnSoldUnitEquitySchedule previousValue = this._TrnSoldUnitEquitySchedule.Entity;
+				if (((previousValue != value) 
+							|| (this._TrnSoldUnitEquitySchedule.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TrnSoldUnitEquitySchedule.Entity = null;
+						previousValue.TrnCollectionPayments.Remove(this);
+					}
+					this._TrnSoldUnitEquitySchedule.Entity = value;
+					if ((value != null))
+					{
+						value.TrnCollectionPayments.Add(this);
+						this._SoldUnitEquityScheduleId = value.Id;
+					}
+					else
+					{
+						this._SoldUnitEquityScheduleId = default(int);
+					}
+					this.SendPropertyChanged("TrnSoldUnitEquitySchedule");
 				}
 			}
 		}
@@ -12394,6 +12459,12 @@ namespace priland_api.Data
 		
 		private string _Remarks;
 		
+		private decimal _PaidAmount;
+		
+		private decimal _BalanceAmount;
+		
+		private EntitySet<TrnCollectionPayment> _TrnCollectionPayments;
+		
 		private EntityRef<TrnSoldUnit> _TrnSoldUnit;
 		
     #region Extensibility Method Definitions
@@ -12416,10 +12487,15 @@ namespace priland_api.Data
     partial void OnCheckBankChanged();
     partial void OnRemarksChanging(string value);
     partial void OnRemarksChanged();
+    partial void OnPaidAmountChanging(decimal value);
+    partial void OnPaidAmountChanged();
+    partial void OnBalanceAmountChanging(decimal value);
+    partial void OnBalanceAmountChanged();
     #endregion
 		
 		public TrnSoldUnitEquitySchedule()
 		{
+			this._TrnCollectionPayments = new EntitySet<TrnCollectionPayment>(new Action<TrnCollectionPayment>(this.attach_TrnCollectionPayments), new Action<TrnCollectionPayment>(this.detach_TrnCollectionPayments));
 			this._TrnSoldUnit = default(EntityRef<TrnSoldUnit>);
 			OnCreated();
 		}
@@ -12588,6 +12664,59 @@ namespace priland_api.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaidAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal PaidAmount
+		{
+			get
+			{
+				return this._PaidAmount;
+			}
+			set
+			{
+				if ((this._PaidAmount != value))
+				{
+					this.OnPaidAmountChanging(value);
+					this.SendPropertyChanging();
+					this._PaidAmount = value;
+					this.SendPropertyChanged("PaidAmount");
+					this.OnPaidAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BalanceAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal BalanceAmount
+		{
+			get
+			{
+				return this._BalanceAmount;
+			}
+			set
+			{
+				if ((this._BalanceAmount != value))
+				{
+					this.OnBalanceAmountChanging(value);
+					this.SendPropertyChanging();
+					this._BalanceAmount = value;
+					this.SendPropertyChanged("BalanceAmount");
+					this.OnBalanceAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrnSoldUnitEquitySchedule_TrnCollectionPayment", Storage="_TrnCollectionPayments", ThisKey="Id", OtherKey="SoldUnitEquityScheduleId")]
+		public EntitySet<TrnCollectionPayment> TrnCollectionPayments
+		{
+			get
+			{
+				return this._TrnCollectionPayments;
+			}
+			set
+			{
+				this._TrnCollectionPayments.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrnSoldUnit_TrnSoldUnitEquitySchedule", Storage="_TrnSoldUnit", ThisKey="SoldUnitId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public TrnSoldUnit TrnSoldUnit
 		{
@@ -12640,6 +12769,18 @@ namespace priland_api.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_TrnCollectionPayments(TrnCollectionPayment entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrnSoldUnitEquitySchedule = this;
+		}
+		
+		private void detach_TrnCollectionPayments(TrnCollectionPayment entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrnSoldUnitEquitySchedule = null;
 		}
 	}
 	

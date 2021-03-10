@@ -43,8 +43,11 @@ namespace priland_api.Controllers
                                                     CheckNumber = d.CheckNumber,
                                                     CheckDate = formatNullableDate(d.CheckDate),
                                                     CheckBank = d.CheckBank,
-                                                    Remarks = d.Remarks
+                                                    Remarks = d.Remarks,
+                                                    PaidAmount = d.PaidAmount,
+                                                    BalanceAmount = d.BalanceAmount
                                                 };
+
             return TrnSoldUnitEquityScheduleData.ToList();
         }
 
@@ -64,8 +67,11 @@ namespace priland_api.Controllers
                                                     CheckNumber = d.CheckNumber,
                                                     CheckDate = formatNullableDate(d.CheckDate),
                                                     CheckBank = d.CheckBank,
-                                                    Remarks = d.Remarks
+                                                    Remarks = d.Remarks,
+                                                    PaidAmount = d.PaidAmount,
+                                                    BalanceAmount = d.BalanceAmount
                                                 };
+
             return TrnSoldUnitEquityScheduleData.ToList();
         }
 
@@ -84,7 +90,9 @@ namespace priland_api.Controllers
                                                     CheckNumber = d.CheckNumber,
                                                     CheckDate = formatNullableDate(d.CheckDate),
                                                     CheckBank = d.CheckBank,
-                                                    Remarks = d.Remarks
+                                                    Remarks = d.Remarks,
+                                                    PaidAmount = d.PaidAmount,
+                                                    BalanceAmount = d.BalanceAmount
                                                 };
 
             return TrnSoldUnitEquityScheduleData.FirstOrDefault();
@@ -136,7 +144,9 @@ namespace priland_api.Controllers
                         {
                             SoldUnitId = Convert.ToInt32(id),
                             PaymentDate = paymentDate,
-                            Amortization = monthlyAmortization
+                            Amortization = monthlyAmortization,
+                            PaidAmount = 0,
+                            BalanceAmount = monthlyAmortization
                         };
 
                         db.TrnSoldUnitEquitySchedules.InsertOnSubmit(insertSchedule);

@@ -84,6 +84,34 @@ namespace priland_api.Controllers
             return MstUserRightData.ToList();
         }
 
+        [HttpGet, Route("ListPerCurrentUser/{page}")]
+        public MstUserRight GetMstUserRightsPerCurrentUser(string page)
+        {
+            var currentUser = from d in db.MstUsers
+                              where d.AspNetId == User.Identity.GetUserId()
+                              select d;
+
+            var MstUserRightData = from d in db.MstUserRights
+                                   where d.SysPage.Page == page
+                                   && d.UserId == currentUser.FirstOrDefault().Id
+                                   select new Models.MstUserRight
+                                   {
+                                       Id = d.Id,
+                                       UserId = d.UserId,
+                                       PageId = d.PageId,
+                                       Page = d.SysPage.Page,
+                                       PageURL = d.SysPage.Url,
+                                       CanEdit = d.CanEdit,
+                                       CanSave = d.CanSave,
+                                       CanLock = d.CanLock,
+                                       CanUnLock = d.CanUnlock,
+                                       CanPrint = d.CanPrint,
+                                       CanDelete = d.CanDelete
+                                   };
+
+            return MstUserRightData.FirstOrDefault();
+        }
+
         // Detail
         [HttpGet, Route("Detail/{id}")]
         public MstUserRight GetMstUserRightId(string id)
@@ -179,8 +207,9 @@ namespace priland_api.Controllers
         {
             try
             {
-                var MstUserRightData = from d in db.MstUserRights 
-                                       where d.Id == Convert.ToInt32(id) select d;
+                var MstUserRightData = from d in db.MstUserRights
+                                       where d.Id == Convert.ToInt32(id)
+                                       select d;
 
                 if (MstUserRightData.Any())
                 {

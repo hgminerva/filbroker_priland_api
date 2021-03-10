@@ -400,6 +400,7 @@
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="CollectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SoldUnitId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SoldUnitEquityScheduleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PayType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Amount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="CheckNumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
@@ -408,6 +409,7 @@
       <Column Name="OtherInformation" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="TrnCollection_TrnCollectionPayment" Member="TrnCollection" ThisKey="CollectionId" OtherKey="Id" Type="TrnCollection" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="TrnSoldUnit_TrnCollectionPayment" Member="TrnSoldUnit" ThisKey="SoldUnitId" OtherKey="Id" Type="TrnSoldUnit" IsForeignKey="true" />
+      <Association Name="TrnSoldUnitEquitySchedule_TrnCollectionPayment" Member="TrnSoldUnitEquitySchedule" ThisKey="SoldUnitEquityScheduleId" OtherKey="Id" Type="TrnSoldUnitEquitySchedule" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.TrnCommissionRequest" Member="TrnCommissionRequests">
@@ -524,6 +526,9 @@
       <Column Name="CheckDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="CheckBank" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="Remarks" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PaidAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="BalanceAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Association Name="TrnSoldUnitEquitySchedule_TrnCollectionPayment" Member="TrnCollectionPayments" ThisKey="Id" OtherKey="SoldUnitEquityScheduleId" Type="TrnCollectionPayment" />
       <Association Name="TrnSoldUnit_TrnSoldUnitEquitySchedule" Member="TrnSoldUnit" ThisKey="SoldUnitId" OtherKey="Id" Type="TrnSoldUnit" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>

@@ -15,5 +15,7 @@ namespace priland_api.Models
         public String CheckDate { get; set; }
         public String CheckBank { get; set; }
         public String Remarks { get; set; }
+        public Decimal PaidAmount { get; set; }
+        public Decimal BalanceAmount { get; set; }
     }
 }
