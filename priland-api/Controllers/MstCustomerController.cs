@@ -108,6 +108,76 @@ namespace priland_api.Controllers
             return MstCustomerData.ToList();
         }
 
+        // List
+        [HttpGet, Route("Sorted/List")]
+        public List<MstCustomer> GetMstCustomersSorted()
+        {
+            var MstCustomerData = from d in db.MstCustomers
+                                  where d.IsLocked == true
+                                  select new Models.MstCustomer
+                                  {
+                                      Id = d.Id,
+                                      CustomerCode = d.CustomerCode,
+                                      LastName = d.LastName,
+                                      FirstName = d.FirstName,
+                                      MiddleName = d.MiddleName,
+                                      FullName = d.LastName + ", " + d.FirstName + " " + d.MiddleName,
+                                      CivilStatus = d.CivilStatus,
+                                      Gender = d.Gender,
+                                      Citizen = d.Citizen,
+                                      BirthDate = d.BirthDate.ToShortDateString(),
+                                      TIN = d.TIN,
+                                      IdType = d.IdType,
+                                      IdNumber = d.IdNumber,
+                                      Address = d.Address,
+                                      City = d.City,
+                                      Province = d.Province,
+                                      Country = d.Country,
+                                      ZipCode = d.ZipCode,
+                                      EmailAddress = d.EmailAddress,
+                                      TelephoneNumber = d.TelephoneNumber,
+                                      MobileNumber = d.MobileNumber,
+                                      Employer = d.Employer,
+                                      EmployerIndustry = d.EmployerIndustry,
+                                      NoOfYearsEmployed = d.NoOfYearsEmployed,
+                                      Position = d.Position,
+                                      EmploymentStatus = d.EmploymentStatus,
+                                      EmployerAddress = d.EmployerAddress,
+                                      EmployerCity = d.EmployerCity,
+                                      EmployerProvince = d.EmployerProvince,
+                                      EmployerCountry = d.EmployerCountry,
+                                      EmployerZipCode = d.EmployerZipCode,
+                                      EmployerTelephoneNumber = d.EmployerTelephoneNumber,
+                                      EmployerMobileNumber = d.EmployerMobileNumber,
+                                      SpouseLastName = d.SpouseLastName,
+                                      SpouseFirstName = d.SpouseFirstName,
+                                      SpouseMiddleName = d.SpouseMiddleName,
+                                      SpouseBirthDate = formatNullableDate(d.SpouseBirthDate),
+                                      SpouseCitizen = d.SpouseCitizen,
+                                      SpouseEmployer = d.SpouseEmployer,
+                                      SpouseTIN = d.SpouseTIN,
+                                      Remarks = d.Remarks,
+                                      Status = d.Status,
+                                      Picture = d.Picture,
+                                      Attachment1 = d.Attachment1,
+                                      Attachment2 = d.Attachment2,
+                                      Attachment3 = d.Attachment3,
+                                      Attachment4 = d.Attachment4,
+                                      Attachment5 = d.Attachment5,
+                                      IsLocked = d.IsLocked,
+                                      CreatedBy = d.CreatedBy,
+                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                      UpdatedBy = d.UpdatedBy,
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                      BusinessName = d.BusinessName,
+                                      BusinessAddress = d.BusinessAddress,
+                                      BusinessType = d.BusinessType,
+                                      BusinessPosition = d.BusinessPosition
+                                  };
+
+            return MstCustomerData.OrderBy(d => d.FullName).ToList();
+        }
+
         // Detail
         [HttpGet, Route("Detail/{id}")]
         public Models.MstCustomer GetMstCustomer(string id)
