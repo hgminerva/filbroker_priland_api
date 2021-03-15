@@ -51,12 +51,16 @@ namespace priland_api.Controllers
                                       BrokerCoordinator = d.BrokerCoordinator,
                                       ChecklistId = d.CheckListId,
                                       Checklist = d.MstCheckList.CheckList,
+                                      MiscellaneousFeeAmount = d.MiscellaneousFeeAmount,
+                                      VATAmount = d.VATAmount,
                                       Price = d.Price,
                                       TCP = d.MstUnit.Price,
                                       TSP = d.MstUnit.TSP,
                                       PriceDiscount = d.PriceDiscount,
                                       PricePayment = d.PricePayment,
                                       PriceBalance = d.PriceBalance,
+                                      DownpaymentValue = d.DownpaymentValue,
+                                      DownpaymentPercent = d.DownpaymentPercent,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
                                       EquitySpotPayment1 = d.EquitySpotPayment1,
@@ -123,12 +127,16 @@ namespace priland_api.Controllers
                                       BrokerCoordinator = d.BrokerCoordinator,
                                       ChecklistId = d.CheckListId,
                                       Checklist = d.MstCheckList.CheckList,
+                                      MiscellaneousFeeAmount = d.MiscellaneousFeeAmount,
+                                      VATAmount = d.VATAmount,
                                       Price = d.Price,
                                       TCP = d.MstUnit.Price,
                                       TSP = d.MstUnit.TSP,
                                       PriceDiscount = d.PriceDiscount,
                                       PricePayment = d.PricePayment,
                                       PriceBalance = d.PriceBalance,
+                                      DownpaymentValue = d.DownpaymentValue,
+                                      DownpaymentPercent = d.DownpaymentPercent,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
                                       EquitySpotPayment1 = d.EquitySpotPayment1,
@@ -193,12 +201,16 @@ namespace priland_api.Controllers
                                       BrokerCoordinator = d.BrokerCoordinator,
                                       ChecklistId = d.CheckListId,
                                       Checklist = d.MstCheckList.CheckList,
+                                      MiscellaneousFeeAmount = d.MiscellaneousFeeAmount,
+                                      VATAmount = d.VATAmount,
                                       Price = d.Price,
                                       TCP = d.MstUnit.Price,
                                       TSP = d.MstUnit.TSP,
                                       PriceDiscount = d.PriceDiscount,
                                       PricePayment = d.PricePayment,
                                       PriceBalance = d.PriceBalance,
+                                      DownpaymentValue = d.DownpaymentValue,
+                                      DownpaymentPercent = d.DownpaymentPercent,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
                                       EquitySpotPayment1 = d.EquitySpotPayment1,
@@ -263,12 +275,16 @@ namespace priland_api.Controllers
                                       BrokerCoordinator = d.BrokerCoordinator,
                                       ChecklistId = d.CheckListId,
                                       Checklist = d.MstCheckList.CheckList,
+                                      MiscellaneousFeeAmount = d.MiscellaneousFeeAmount,
+                                      VATAmount = d.VATAmount,
                                       Price = d.Price,
                                       TCP = d.MstUnit.Price,
                                       TSP = d.MstUnit.TSP,
                                       PriceDiscount = d.PriceDiscount,
                                       PricePayment = d.PricePayment,
                                       PriceBalance = d.PriceBalance,
+                                      DownpaymentValue = d.DownpaymentValue,
+                                      DownpaymentPercent = d.DownpaymentPercent,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
                                       EquitySpotPayment1 = d.EquitySpotPayment1,
@@ -332,12 +348,16 @@ namespace priland_api.Controllers
                                       BrokerCoordinator = d.BrokerCoordinator,
                                       ChecklistId = d.CheckListId,
                                       Checklist = d.MstCheckList.CheckList,
+                                      MiscellaneousFeeAmount = d.MiscellaneousFeeAmount,
+                                      VATAmount = d.VATAmount,
                                       Price = d.Price,
                                       TCP = d.MstUnit.Price,
                                       TSP = d.MstUnit.TSP,
                                       PriceDiscount = d.PriceDiscount,
                                       PricePayment = d.PricePayment,
                                       PriceBalance = d.PriceBalance,
+                                      DownpaymentValue = d.DownpaymentValue,
+                                      DownpaymentPercent = d.DownpaymentPercent,
                                       EquityValue = d.EquityValue,
                                       EquityPercent = d.EquityPercent,
                                       EquitySpotPayment1 = d.EquitySpotPayment1,
@@ -403,6 +423,8 @@ namespace priland_api.Controllers
 
                     Int32 projectId = 0;
                     Int32 unitId = 0;
+                    Decimal unitMiscFeeAmount = 0;
+                    Decimal unitVATAmount = 0;
                     Int32 checklistId = 0;
 
                     Int32 customerId = 0;
@@ -418,6 +440,8 @@ namespace priland_api.Controllers
                         {
                             var unit = projects.FirstOrDefault().MstUnits.Where(d => d.Status == "OPEN" && d.IsLocked == true).FirstOrDefault();
                             unitId = unit.Id;
+                            unitMiscFeeAmount = unit.MiscellaneousFeeAmount;
+                            unitVATAmount = unit.VATAmount;
                             price = unit.Price;
                         }
                         if (projects.FirstOrDefault().MstCheckLists.Where(d => d.Status == "ACTIVE" && d.IsLocked == true).Count() > 0)
@@ -474,10 +498,14 @@ namespace priland_api.Controllers
                             Agent = soldUnit.Agent,
                             BrokerCoordinator = soldUnit.BrokerCoordinator,
                             CheckListId = checklistId,
+                            MiscellaneousFeeAmount = unitMiscFeeAmount,
+                            VATAmount = unitVATAmount,
                             Price = price,
                             PriceDiscount = 0,
                             PricePayment = 0,
                             PriceBalance = 0,
+                            DownpaymentValue = 0,
+                            DownpaymentPercent = 0,
                             EquityValue = 0,
                             EquityPercent = 0,
                             EquitySpotPayment1 = 0,
@@ -611,8 +639,12 @@ namespace priland_api.Controllers
                             UpdateTrnSoldUnitData.Agent = soldUnit.Agent;
                             UpdateTrnSoldUnitData.BrokerCoordinator = soldUnit.BrokerCoordinator;
                             UpdateTrnSoldUnitData.CheckListId = soldUnit.ChecklistId;
+                            UpdateTrnSoldUnitData.MiscellaneousFeeAmount = soldUnit.MiscellaneousFeeAmount;
+                            UpdateTrnSoldUnitData.VATAmount = soldUnit.VATAmount;
                             UpdateTrnSoldUnitData.Price = soldUnit.Price;
                             UpdateTrnSoldUnitData.PriceDiscount = soldUnit.PriceDiscount;
+                            UpdateTrnSoldUnitData.DownpaymentValue = soldUnit.DownpaymentValue;
+                            UpdateTrnSoldUnitData.DownpaymentPercent = soldUnit.DownpaymentPercent;
                             UpdateTrnSoldUnitData.EquityValue = soldUnit.EquityValue;
                             UpdateTrnSoldUnitData.EquityPercent = soldUnit.EquityPercent;
                             UpdateTrnSoldUnitData.EquitySpotPayment1 = soldUnit.EquitySpotPayment1;
@@ -712,8 +744,12 @@ namespace priland_api.Controllers
                             UpdateTrnSoldUnitData.Agent = soldUnit.Agent;
                             UpdateTrnSoldUnitData.BrokerCoordinator = soldUnit.BrokerCoordinator;
                             UpdateTrnSoldUnitData.CheckListId = soldUnit.ChecklistId;
+                            UpdateTrnSoldUnitData.MiscellaneousFeeAmount = soldUnit.MiscellaneousFeeAmount;
+                            UpdateTrnSoldUnitData.VATAmount = soldUnit.VATAmount;
                             UpdateTrnSoldUnitData.Price = soldUnit.Price;
                             UpdateTrnSoldUnitData.PriceDiscount = soldUnit.PriceDiscount;
+                            UpdateTrnSoldUnitData.DownpaymentValue = soldUnit.DownpaymentValue;
+                            UpdateTrnSoldUnitData.DownpaymentPercent = soldUnit.DownpaymentPercent;
                             UpdateTrnSoldUnitData.EquityValue = soldUnit.EquityValue;
                             UpdateTrnSoldUnitData.EquityPercent = soldUnit.EquityPercent;
                             UpdateTrnSoldUnitData.EquitySpotPayment1 = soldUnit.EquitySpotPayment1;
@@ -981,9 +1017,11 @@ namespace priland_api.Controllers
                                     Agent = soldUnit.Agent,
                                     BrokerCoordinator = soldUnit.BrokerCoordinator,
                                     CheckListId = checklistId,
-
+                                    MiscellaneousFeeAmount = soldUnit.MiscellaneousFeeAmount,
+                                    VATAmount = soldUnit.VATAmount,
                                     Price = price,
-
+                                    DownpaymentValue = soldUnit.DownpaymentValue,
+                                    DownpaymentPercent = soldUnit.DownpaymentPercent,
                                     EquityValue = 0,
                                     EquityPercent = 0,
                                     EquitySpotPayment1 = 0,
@@ -1004,19 +1042,15 @@ namespace priland_api.Controllers
                                     BalanceInterest = 0,
                                     BalanceNoOfPayments = 0,
                                     BalanceAmortization = 0,
-
                                     TotalInvestment = totalInvestment,
                                     PaymentOptions = paymentOptions,
                                     Financing = financing,
-
                                     Remarks = soldUnit.Remarks,
-
                                     FinancingType = financingType.FirstOrDefault().Value,
                                     PreparedBy = currentUser.FirstOrDefault().Id,
                                     CheckedBy = currentUser.FirstOrDefault().Id,
                                     ApprovedBy = currentUser.FirstOrDefault().Id,
                                     Status = soldUnit.Status,
-
                                     IsLocked = false,
                                     CreatedBy = currentUser.FirstOrDefault().Id,
                                     CreatedDateTime = DateTime.Now,
@@ -1033,7 +1067,6 @@ namespace priland_api.Controllers
                             {
                                 return 0;
                             }
-
                         }
                         else
                         {

@@ -123,6 +123,32 @@ namespace priland_api.Controllers
                         db.SubmitChanges();
                     }
 
+                    Data.TrnSoldUnitEquitySchedule insertReservationSchedule = new Data.TrnSoldUnitEquitySchedule()
+                    {
+                        SoldUnitId = Convert.ToInt32(id),
+                        PaymentDate = soldUnits.FirstOrDefault().SoldUnitDate,
+                        Amortization = soldUnits.FirstOrDefault().Reservation,
+                        PaidAmount = 0,
+                        BalanceAmount = soldUnits.FirstOrDefault().Reservation,
+                        Remarks = "Reservation Fee"
+                    };
+
+                    db.TrnSoldUnitEquitySchedules.InsertOnSubmit(insertReservationSchedule);
+                    db.SubmitChanges();
+
+                    Data.TrnSoldUnitEquitySchedule insertDownpaymentSchedule = new Data.TrnSoldUnitEquitySchedule()
+                    {
+                        SoldUnitId = Convert.ToInt32(id),
+                        PaymentDate = soldUnits.FirstOrDefault().SoldUnitDate,
+                        Amortization = soldUnits.FirstOrDefault().DownpaymentValue,
+                        PaidAmount = 0,
+                        BalanceAmount = soldUnits.FirstOrDefault().DownpaymentValue,
+                        Remarks = "Downpayment"
+                    };
+
+                    db.TrnSoldUnitEquitySchedules.InsertOnSubmit(insertDownpaymentSchedule);
+                    db.SubmitChanges();
+
                     // Insert new schedules
                     Int32 noOfPayments = Decimal.ToInt32(soldUnits.FirstOrDefault().NetEquityNoOfPayments);
                     decimal amortization = soldUnits.FirstOrDefault().NetEquityAmortization;
@@ -146,12 +172,42 @@ namespace priland_api.Controllers
                             PaymentDate = paymentDate,
                             Amortization = monthlyAmortization,
                             PaidAmount = 0,
-                            BalanceAmount = monthlyAmortization
+                            BalanceAmount = monthlyAmortization,
+                            Remarks = "Equity " + p
                         };
 
                         db.TrnSoldUnitEquitySchedules.InsertOnSubmit(insertSchedule);
+                        db.SubmitChanges();
+
+                        if (p == noOfPayments)
+                        {
+                            Data.TrnSoldUnitEquitySchedule insertMiscFeeSchedule = new Data.TrnSoldUnitEquitySchedule()
+                            {
+                                SoldUnitId = Convert.ToInt32(id),
+                                PaymentDate = paymentDate.AddMonths(p + 1),
+                                Amortization = soldUnits.FirstOrDefault().MiscellaneousFeeAmount,
+                                PaidAmount = 0,
+                                BalanceAmount = soldUnits.FirstOrDefault().MiscellaneousFeeAmount,
+                                Remarks = "Miscellaneous Fee"
+                            };
+
+                            db.TrnSoldUnitEquitySchedules.InsertOnSubmit(insertMiscFeeSchedule);
+                            db.SubmitChanges();
+
+                            Data.TrnSoldUnitEquitySchedule insertBalanceSchedule = new Data.TrnSoldUnitEquitySchedule()
+                            {
+                                SoldUnitId = Convert.ToInt32(id),
+                                PaymentDate = paymentDate.AddMonths(p + 1),
+                                Amortization = soldUnits.FirstOrDefault().Balance,
+                                PaidAmount = 0,
+                                BalanceAmount = soldUnits.FirstOrDefault().Balance,
+                                Remarks = "Balance"
+                            };
+
+                            db.TrnSoldUnitEquitySchedules.InsertOnSubmit(insertBalanceSchedule);
+                            db.SubmitChanges();
+                        }
                     }
-                    db.SubmitChanges();
                 }
 
                 return Request.CreateResponse(HttpStatusCode.OK);

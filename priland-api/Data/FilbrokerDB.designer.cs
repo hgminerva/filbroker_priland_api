@@ -10531,9 +10531,17 @@ namespace priland_api.Data
 		
 		private int _CheckListId;
 		
-		private decimal _PriceDiscount;
+		private decimal _MiscellaneousFeeAmount;
+		
+		private decimal _VATAmount;
 		
 		private decimal _Price;
+		
+		private decimal _PriceDiscount;
+		
+		private decimal _DownpaymentValue;
+		
+		private decimal _DownpaymentPercent;
 		
 		private decimal _EquityValue;
 		
@@ -10661,10 +10669,18 @@ namespace priland_api.Data
     partial void OnBrokerCoordinatorChanged();
     partial void OnCheckListIdChanging(int value);
     partial void OnCheckListIdChanged();
-    partial void OnPriceDiscountChanging(decimal value);
-    partial void OnPriceDiscountChanged();
+    partial void OnMiscellaneousFeeAmountChanging(decimal value);
+    partial void OnMiscellaneousFeeAmountChanged();
+    partial void OnVATAmountChanging(decimal value);
+    partial void OnVATAmountChanged();
     partial void OnPriceChanging(decimal value);
     partial void OnPriceChanged();
+    partial void OnPriceDiscountChanging(decimal value);
+    partial void OnPriceDiscountChanged();
+    partial void OnDownpaymentValueChanging(decimal value);
+    partial void OnDownpaymentValueChanged();
+    partial void OnDownpaymentPercentChanging(decimal value);
+    partial void OnDownpaymentPercentChanged();
     partial void OnEquityValueChanging(decimal value);
     partial void OnEquityValueChanged();
     partial void OnEquityPercentChanging(decimal value);
@@ -10979,22 +10995,42 @@ namespace priland_api.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceDiscount", DbType="Decimal(18,5) NOT NULL")]
-		public decimal PriceDiscount
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MiscellaneousFeeAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal MiscellaneousFeeAmount
 		{
 			get
 			{
-				return this._PriceDiscount;
+				return this._MiscellaneousFeeAmount;
 			}
 			set
 			{
-				if ((this._PriceDiscount != value))
+				if ((this._MiscellaneousFeeAmount != value))
 				{
-					this.OnPriceDiscountChanging(value);
+					this.OnMiscellaneousFeeAmountChanging(value);
 					this.SendPropertyChanging();
-					this._PriceDiscount = value;
-					this.SendPropertyChanged("PriceDiscount");
-					this.OnPriceDiscountChanged();
+					this._MiscellaneousFeeAmount = value;
+					this.SendPropertyChanged("MiscellaneousFeeAmount");
+					this.OnMiscellaneousFeeAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VATAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal VATAmount
+		{
+			get
+			{
+				return this._VATAmount;
+			}
+			set
+			{
+				if ((this._VATAmount != value))
+				{
+					this.OnVATAmountChanging(value);
+					this.SendPropertyChanging();
+					this._VATAmount = value;
+					this.SendPropertyChanged("VATAmount");
+					this.OnVATAmountChanged();
 				}
 			}
 		}
@@ -11015,6 +11051,66 @@ namespace priland_api.Data
 					this._Price = value;
 					this.SendPropertyChanged("Price");
 					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceDiscount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal PriceDiscount
+		{
+			get
+			{
+				return this._PriceDiscount;
+			}
+			set
+			{
+				if ((this._PriceDiscount != value))
+				{
+					this.OnPriceDiscountChanging(value);
+					this.SendPropertyChanging();
+					this._PriceDiscount = value;
+					this.SendPropertyChanged("PriceDiscount");
+					this.OnPriceDiscountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DownpaymentValue", DbType="Decimal(18,5) NOT NULL")]
+		public decimal DownpaymentValue
+		{
+			get
+			{
+				return this._DownpaymentValue;
+			}
+			set
+			{
+				if ((this._DownpaymentValue != value))
+				{
+					this.OnDownpaymentValueChanging(value);
+					this.SendPropertyChanging();
+					this._DownpaymentValue = value;
+					this.SendPropertyChanged("DownpaymentValue");
+					this.OnDownpaymentValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DownpaymentPercent", DbType="Decimal(18,5) NOT NULL")]
+		public decimal DownpaymentPercent
+		{
+			get
+			{
+				return this._DownpaymentPercent;
+			}
+			set
+			{
+				if ((this._DownpaymentPercent != value))
+				{
+					this.OnDownpaymentPercentChanging(value);
+					this.SendPropertyChanging();
+					this._DownpaymentPercent = value;
+					this.SendPropertyChanged("DownpaymentPercent");
+					this.OnDownpaymentPercentChanged();
 				}
 			}
 		}

@@ -22,8 +22,12 @@ namespace priland_api.Models
         public String BrokerCoordinator { get; set; }
         public Int32 ChecklistId { get; set; }
         public String Checklist { get; set; }
-        public Decimal PriceDiscount { get; set; }
+        public Decimal MiscellaneousFeeAmount { get; set; }
+        public Decimal VATAmount { get; set; }
         public Decimal Price { get; set; }
+        public Decimal PriceDiscount { get; set; }
+        public Decimal DownpaymentValue { get; set; }
+        public Decimal DownpaymentPercent { get; set; }
         public Decimal TCP { get; set; }
         public Decimal TSP { get; set; }
         public Decimal EquityValue { get; set; }
