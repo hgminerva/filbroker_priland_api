@@ -177,6 +177,7 @@ namespace priland_api.Controllers
                                   };
             return TrnSoldUnitData.ToList();
         }
+
         //List per date range
         [HttpGet, Route("ListPerCustomer/{customerId}")]
         public List<TrnSoldUnit> GetTrnSoldUnitPerCustomer(Int32 customerId)
@@ -721,6 +722,8 @@ namespace priland_api.Controllers
                         var soldUnits = from d in db.TrnSoldUnits
                                         where d.UnitId == soldUnit.UnitId
                                         && d.Id != soldUnit.Id
+                                        && d.Status == "SOLD"
+                                        && d.IsLocked == true
                                         select d;
 
                         if (soldUnits.Any())

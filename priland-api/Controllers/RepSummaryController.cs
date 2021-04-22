@@ -256,21 +256,129 @@ namespace priland_api.Controllers
         public List<MstBroker> GetBrokerListFilterByUpdateDateTime(string dateStart, string dateEnd)
         {
             var MstBrokerList = from d in db.MstBrokers
-                                  where d.UpdatedDateTime >= Convert.ToDateTime(dateStart) &&
-                                        d.UpdatedDateTime <= Convert.ToDateTime(dateEnd)
-                                  select new MstBroker
-                                  {
-                                      Id = d.Id,
-                                      BrokerCode = d.BrokerCode,
-                                      LastName = d.LastName,
-                                      FirstName = d.FirstName,
-                                      Gender = d.Gender,
-                                      Address = d.Address,
-                                      EmailAddress = d.EmailAddress,
-                                      TelephoneNumber = d.TelephoneNumber
-                                  };
+                                where d.UpdatedDateTime >= Convert.ToDateTime(dateStart) &&
+                                      d.UpdatedDateTime <= Convert.ToDateTime(dateEnd)
+                                select new MstBroker
+                                {
+                                    Id = d.Id,
+                                    BrokerCode = d.BrokerCode,
+                                    LastName = d.LastName,
+                                    FirstName = d.FirstName,
+                                    Gender = d.Gender,
+                                    Address = d.Address,
+                                    EmailAddress = d.EmailAddress,
+                                    TelephoneNumber = d.TelephoneNumber
+                                };
 
             return MstBrokerList.ToList();
         }
+
+        // capital gains per date range
+        [HttpGet, Route("ListCapitalGains/{dateStart}/{dateEnd}")]
+        public List<TrnSoldUnit> GetTrnSoldUnitForCapitalGains(string dateStart, string dateEnd)
+        {
+            List<TrnSoldUnit> soldUnits = new List<TrnSoldUnit>();
+
+            var collectionPaymentData = from d in db.TrnCollectionPayments
+                                        where d.TrnCollection.CollectionDate >= Convert.ToDateTime(dateStart)
+                                        && d.TrnCollection.CollectionDate <= Convert.ToDateTime(dateEnd)
+                                        && d.TrnCollection.IsLocked == true
+                                        group d by new
+                                        {
+                                            d.SoldUnitId,
+                                            SoldUnit = d.TrnSoldUnit,
+                                        } into g
+                                        select g;
+
+            if (collectionPaymentData.ToList().Any())
+            {
+                foreach (var collectionData in collectionPaymentData.ToList())
+                {
+                    var data = collectionData.Key;
+
+                    Decimal ratio = 0;
+
+                    if (data.SoldUnit.Price > 0)
+                    {
+                        if (data.SoldUnit.PricePayment != null)
+                        {
+                            ratio = Math.Round((Convert.ToDecimal(data.SoldUnit.PricePayment) / data.SoldUnit.Price) * 100, MidpointRounding.AwayFromZero);
+                        }
+                    }
+
+                    if (ratio > 25)
+                    {
+                        String lastPaymentDate = "";
+
+                        var equitySchedule = from d in db.TrnSoldUnitEquitySchedules
+                                             where d.SoldUnitId == data.SoldUnitId
+                                             && d.PaidAmount > 0
+                                             orderby d.Id descending
+                                             select d;
+
+                        if (equitySchedule.Any())
+                        {
+                            lastPaymentDate = equitySchedule.FirstOrDefault().PaymentDate.ToShortDateString();
+                        }
+
+                        Decimal collectedAmount = collectionData.Sum(d => d.Amount);
+
+                        soldUnits.Add(new TrnSoldUnit()
+                        {
+                            SoldUnitNumber = data.SoldUnit.SoldUnitNumber,
+                            Customer = data.SoldUnit.MstCustomer.LastName + ", " + data.SoldUnit.MstCustomer.FirstName + " " + data.SoldUnit.MstCustomer.MiddleName,
+                            Unit = data.SoldUnit.MstUnit.UnitCode,
+                            TSP = data.SoldUnit.MstUnit.TSP,
+                            PricePayment = collectedAmount,
+                            LastPaymentDate = lastPaymentDate,
+                            Ratio = ratio
+                        });
+                    }
+                }
+            }
+
+            return soldUnits;
+        }
+
+        // PDC monitoring per date range
+        [HttpGet, Route("ListPDCMonitoring/{dateStart}/{dateEnd}")]
+        public List<TrnSoldUnitEquitySchedule> GetTrnSoldUnitPDCMonitoring(string dateStart, string dateEnd)
+        {
+            var TrnSoldUnitEquityScheduleData = from d in db.TrnSoldUnitEquitySchedules
+                                                where d.TrnSoldUnit.SoldUnitDate >= Convert.ToDateTime(dateStart)
+                                                && d.TrnSoldUnit.SoldUnitDate <= Convert.ToDateTime(dateEnd)
+                                                && d.TrnSoldUnit.IsLocked == true
+                                                && d.CheckNumber != ""
+                                                select new TrnSoldUnitEquitySchedule
+                                                {
+                                                    Id = d.Id,
+                                                    SoldUnitId = d.SoldUnitId,
+                                                    SoldUnitNumber = d.TrnSoldUnit.SoldUnitNumber,
+                                                    SoldUnitCustomer = d.TrnSoldUnit.MstCustomer.LastName + ", " + d.TrnSoldUnit.MstCustomer.FirstName + " " + d.TrnSoldUnit.MstCustomer.MiddleName,
+                                                    PaymentDate = Convert.ToString(d.PaymentDate.Year) + "-" + Convert.ToString(d.PaymentDate.Month + 100).Substring(1, 2) + "-" + Convert.ToString(d.PaymentDate.Day + 100).Substring(1, 2),
+                                                    Amortization = d.Amortization,
+                                                    CheckNumber = d.CheckNumber,
+                                                    CheckDate = formatNullableDate(d.CheckDate),
+                                                    CheckBank = d.CheckBank,
+                                                    Remarks = d.Remarks,
+                                                    PaidAmount = d.PaidAmount,
+                                                    BalanceAmount = d.BalanceAmount
+                                                };
+
+            return TrnSoldUnitEquityScheduleData.ToList();
+        }
+
+        private String formatNullableDate(DateTime? nullableDate)
+        {
+            if (nullableDate.HasValue)
+            {
+                return nullableDate.Value.ToShortDateString();
+            }
+            else
+            {
+                return "";
+            }
+        }
+
     }
 }

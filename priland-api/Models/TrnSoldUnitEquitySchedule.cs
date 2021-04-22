@@ -9,6 +9,8 @@ namespace priland_api.Models
     {
         public Int32 Id { get; set; }
         public Int32 SoldUnitId { get; set; }
+        public String SoldUnitNumber { get; set; }
+        public String SoldUnitCustomer { get; set; }
         public String PaymentDate { get; set; }
         public Decimal Amortization { get; set; }
         public String CheckNumber { get; set; }

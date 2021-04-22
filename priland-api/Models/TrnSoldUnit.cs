@@ -69,5 +69,8 @@ namespace priland_api.Models
         public String UpdatedDateTime { get; set; }
         public Decimal? PriceBalance { get; set; }
         public Decimal? PricePayment { get; set; }
+
+        public String LastPaymentDate { get; set; }
+        public Decimal Ratio { get; set; }
     }
 }
